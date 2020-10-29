@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#eae8fe">
+    <RelativeLayout
+        android:id="@+id/back_bezy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/back_image"
+            android:fontFamily="sans-serif-light"
+            android:text="Forgot Password"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/back_image"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:src="@drawable/ic_baseline_keyboard_backspace_24" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_button"
+        android:layout_below="@+id/back_bezy">
+        <TextView
+            android:id="@+id/tv_what"
+            android:layout_width="350dp"
+            android:layout_height="40dp"
+            android:text="Enter your registered Email Id?"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="150dp"
+            android:textColor="#031C30"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/otp_textlayout"
+            android:layout_below="@id/tv_what"
+            android:hint="Enter Mail Id"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_margin="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email_send"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:inputType="text"
+                android:ems="6"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/btn_logedin"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Next"
+            android:layout_below="@id/otp_textlayout"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/login_button_background"
+            android:layout_margin="10dp"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#FFF"/>
+    </RelativeLayout>
+
+</RelativeLayout>

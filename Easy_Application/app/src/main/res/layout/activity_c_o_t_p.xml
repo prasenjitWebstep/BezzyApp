@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#eae8fe"
+    tools:context="com.bezzy.Ui.View.activity.COTPActivity">
+    <RelativeLayout
+        android:id="@+id/back_bezy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/back_image"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="OTP Verification"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/back_image"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:src="@drawable/ic_baseline_keyboard_backspace_24"
+            app:tint="@color/colorPrimaryDark"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/back_bezy"
+        android:background="@drawable/rounded_button">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Verification"
+                android:textColor="@color/colourblack"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:layout_marginTop="40dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter the 4 digit OTP"
+                android:textColor="@color/colourblack"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"/>
+
+            <com.mukesh.OtpView
+                android:id="@+id/otp_vieww"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:inputType="number"
+                android:itemBackground="#e0e0e0"
+                android:textColor="@color/colourblack"
+                app:OtpItemCount="4"
+                app:OtpLineColor="#e0e0e0"
+                app:OtpViewType="rectangle"
+                android:layout_gravity="center"/>
+
+
+
+            <Button
+                android:id="@+id/btnVerifyy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/login_button_background"
+                android:text="Verify Otp"
+                android:textAllCaps="false"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
