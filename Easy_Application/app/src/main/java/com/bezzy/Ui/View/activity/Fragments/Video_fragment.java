@@ -43,6 +43,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.bezzy.Ui.View.utils.UploadHelper.getFileDataFromDrawable;
+
 
 public class Video_fragment extends Fragment {
 
@@ -56,7 +58,7 @@ public class Video_fragment extends Fragment {
 
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
-    int MY_SOCKET_TIMEOUT_MS=5000;
+    int MY_SOCKET_TIMEOUT_MS=150000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -175,7 +177,9 @@ public class Video_fragment extends Fragment {
                 if (data != null) {
                     Toast.makeText(getActivity(), "Video content URI: " + data.getData(),Toast.LENGTH_LONG).show();
                     video = data.getData();
-                    videoPath = getPath(video);
+                    Log.e("FetechedVideo",video.toString());
+                    /*videoPath = getPath(video);
+                    Log.e("FetechedVideoPath",videoPath);*/
                     initializePlayer(video);
                     // uploadFile(video.getPath());
 
@@ -245,7 +249,8 @@ public class Video_fragment extends Fragment {
             @Override
             protected Map<String, DataPart> getByteData() throws AuthFailureError {
                 Map<String, DataPart> params = new HashMap<>();
-                params.put("post_video", new DataPart(video.toString(), UploadHelper.getFileDataFromDrawable(getActivity(),video)));
+                long videoname = System.currentTimeMillis();
+                params.put("post_video", new DataPart(videoname + ".mp4", getFileDataFromDrawable(getActivity(),video)));
                 return params;
             }
         };
