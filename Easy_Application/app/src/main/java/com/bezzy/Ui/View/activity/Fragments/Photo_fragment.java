@@ -3,6 +3,7 @@ package com.bezzy.Ui.View.activity.Fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -150,6 +151,8 @@ public class Photo_fragment extends Fragment {
     private void pickImageFromGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent,IMAGE_PICK_CODE);
     }
 
@@ -170,19 +173,33 @@ public class Photo_fragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            //imageView.setImageURI(data.getData());
-            resultUri = data.getData();
-            try{
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),resultUri);
-                imageView.setImageBitmap(bitmap);
-                //uploadImage(bitmap, APIs.BASE_URL+APIs.POSTIMAGE);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (data.getClipData() != null) {
+                ClipData mClipData = data.getClipData();
+                for (int i = 0; i < mClipData.getItemCount(); i++) {
+                    ClipData.Item item = mClipData.getItemAt(i);
+                    resultUri = item.getUri();
+                    // display your images
+                    imageView.setImageURI(resultUri);
+                }
+            } else if (data.getData() != null) {
+                resultUri = data.getData();
+                // display your image
+                imageView.setImageURI(resultUri);
             }
         }
+            //imageView.setImageURI(data.getData());
+//            resultUri = data.getData();
+//            try{
+//                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),resultUri);
+//                imageView.setImageBitmap(bitmap);
+//                //uploadImage(bitmap, APIs.BASE_URL+APIs.POSTIMAGE);
+//
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+       // }
 //        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 //            CropImage.ActivityResult result = CropImage.getActivityResult(data);
 //            if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
