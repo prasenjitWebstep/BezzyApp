@@ -138,7 +138,7 @@ public class Photo_fragment extends Fragment {
 
                     progressDialog.show();
 
-                    //uploadImage(bitmap, APIs.BASE_URL+APIs.POSTIMAGE,caption_upload);
+                    uploadImage(bitmap, APIs.BASE_URL+APIs.POSTIMAGE);
 
                 }
                 else {
@@ -178,66 +178,44 @@ public class Photo_fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
 
-            if (data.getClipData() != null) {
-                ClipData mClipData = data.getClipData();
-                for (int i = 0; i < mClipData.getItemCount(); i++) {
-                    ClipData.Item item = mClipData.getItemAt(i);
-                    resultUri = item.getUri();
-                    // display your images
-                    imageView.setImageURI(resultUri);
-                }
-            } else if (data.getData() != null) {
+            try {
                 resultUri = data.getData();
-                //resultUri = data.getData();
                 filePath = getPath(resultUri);
-                uploadBitmap(bitmap,APIs.BASE_URL+ APIs.POSTIMAGE);
-                // display your image
-                imageView.setImageURI(resultUri);
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),resultUri);
+                imageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
-            //imageView.setImageURI(data.getData());
-//            resultUri = data.getData();
-//            try{
-//                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),resultUri);
-//                imageView.setImageBitmap(bitmap);
-//                //uploadImage(bitmap, APIs.BASE_URL+APIs.POSTIMAGE);
-//
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-       // }
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-//                imageView.setImageURI(data.getData());
-//                resultUri = data.getData();
-//                try {
-//                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
-//
-//                        uploadImage(bitmap, APIs.BASE_URL+APIs.POSTIMAGE);
-//
-//                    //imageView.setImageBitmap(bitmap);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    Log.e("Exception",e.toString());
+
+
+//            if (data.getClipData() != null) {
+//                ClipData mClipData = data.getClipData();
+//                for (int i = 0; i < mClipData.getItemCount(); i++) {
+//                    ClipData.Item item = mClipData.getItemAt(i);
+//                    resultUri = item.getUri();
+//                    // display your images
+//                    imageView.setImageURI(resultUri);
 //                }
-//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception error = result.getError();
-//                Log.e("ExceptionError",error.toString());
+//            } else if (data.getData() != null) {
+//                resultUri = data.getData();
+//                //resultUri = data.getData();
+//                filePath = getPath(resultUri);
+//                uploadBitmap(bitmap,APIs.BASE_URL+ APIs.POSTIMAGE);
+//                // display your image
+//                imageView.setImageURI(resultUri);
 //            }
-//        }
+        }
+
     }
 
     public String getPath(Uri uri) {
-        Cursor cursor = getContext().getContentResolver().query(uri, null, null, null, null);
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);
         document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
         cursor.close();
 
-        cursor = getContext().getContentResolver().query(
+        cursor = getActivity().getContentResolver().query(
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
         cursor.moveToFirst();
@@ -252,17 +230,30 @@ public class Photo_fragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-
-
-    private void uploadBitmap(final Bitmap bitmap,String url) {
+    private void uploadImage(final Bitmap bitmap,String url) {
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
+                        String response2 = new String(response.data);
+
+                        Log.e("RESPONSE2", response2);
                         try {
-                            JSONObject obj = new JSONObject(new String(response.data));
-                            Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            JSONObject object = new JSONObject(response2);
+                            String status = object.getString("resp");
+                            if (status.equals("success")) {
+                                //
+                                progressDialog.dismiss();
+                                String msg = object.getString("message");
+                                Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+                            } else {
+                                //progressDialog.dismiss();
+                                String message = object.getString("message");
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                            }
+//                            JSONObject obj = new JSONObject(new String(response.data));
+//                            Toast.makeText(getContext().getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -271,87 +262,37 @@ public class Photo_fragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                         Log.e("GotError",""+error.getMessage());
                     }
                 }) {
 
 
             @Override
-            protected Map<String, VolleyMultipartRequest.DataPart> getByteData() {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                // params.put("tags", "ccccc");  add string parameters
+                params.put("userID", Utility.getUserId(getActivity()));
+                params.put("post_content","hi");
+                return params;
+            }
+            @Override
+            protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
-                params.put("image", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                params.put("post_image", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
                 return params;
             }
         };
 
-        //adding the request to volley
-        Volley.newRequestQueue(getContext()).add(volleyMultipartRequest);
-    }
-//    private void uploadImage(final Bitmap bitmap, String url, final String caption_upload) {
-//        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//
-//                Log.e("Response",response);
-//                try {
-//                    JSONObject object = new JSONObject(response);
-//                    String resp = object.getString("resp");
-//                    if(resp.equals("success")){
-//                        progressDialog.dismiss();
-//                        Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_LONG).show();
-//                        Intent intent = new Intent(getActivity(),Profile.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        startActivity(intent);
-//
-//                    }else{
-//                        progressDialog.dismiss();
-//                        Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_SHORT).show();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//
-//                    progressDialog.dismiss();
-//                    Log.e("Exception",e.toString());
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//                progressDialog.dismiss();
-//                Log.e("Error",error.toString());
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                HashMap<String,String> map = new HashMap<>();
-//                map.put("userID", Utility.getUserId(getActivity()));
-////                map.put("post_image",getEncoded64ImageStringFromBitmap(bitmap));
-//                map.put("post_content",caption_upload);
-//                //Log.e("image",map.get("profile_picture"));
-//                return map;
-//            }
-//        };
-//
-//        RequestQueue queue = Volley.newRequestQueue(getActivity());
-//        queue.add(request);
-//        request.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//
-//    }
 
-//    public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
-//        byte[] byteFormat = stream.toByteArray();
-//        // get the base 64 string
-//        String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
-//        base64String= imgString;
-//        //Log.d("hello",imgString);
-//        return imgString;
-//    }
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue rQueue = Volley.newRequestQueue(getActivity());
+        rQueue.add(volleyMultipartRequest);
+        //adding the request to volley
+        //Volley.newRequestQueue(getActivity()).add(volleyMultipartRequest);
+    }
 }
