@@ -13,5 +13,5 @@ public class APIs {
     public static String PERSONALIMAGEUPDATE = "api/UpdateProfilePicture";
     public static String SOCIALLOGINURL = "api/SocialLoginData";
     public static String POSTIMAGE = "api/PostImage";
-    public static String POSTVIDEO ="http://bezzy.websteptech.co.uk/api/PostVideo";
+    public static String POSTVIDEO ="api/PostVideo";
 }
