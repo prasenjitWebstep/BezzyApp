@@ -46,17 +46,36 @@
             android:layout_marginRight="10dp"/>
     </RelativeLayout>
 
-    <ImageView
+    <LinearLayout
+        android:id="@+id/postUpload"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:src="@drawable/bezzy_upload"
-        android:id="@+id/image_view"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:scaleType="centerCrop"/>
+        android:layout_height="350dp"
+        android:background="#EFF6FE"
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload a Post"
+            android:textColor="@color/colourblack"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"/>
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_backup"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerDisplayImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
     <EditText
@@ -68,7 +87,6 @@
         android:inputType="textMultiLine"
         android:layout_marginBottom="10dp"
         android:textColorHint="@color/gradstart"
-        android:layout_below="@id/image_view"
         android:background="@color/colourwhite"
         android:minLines="5"
         android:gravity="top"

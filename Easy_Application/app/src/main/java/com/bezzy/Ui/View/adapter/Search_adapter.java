@@ -87,7 +87,6 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
                     if(sucess.equals("success")){
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, HomeFragment.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }
                 } catch (JSONException e) {
