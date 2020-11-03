@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class Video_fragment extends Fragment {
 
     VideoView videoView;
     TextView bufferText;
+    EditText editText;
     Button pickVideo,uploadVideo;
     private static final int REQUEST_PICK_VIDEO = 3;// Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
@@ -74,7 +76,8 @@ public class Video_fragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_video_fragment, container, false);
         videoView = view.findViewById(R.id.video_view);
-        bufferText = view.findViewById(R.id.ed_content);
+        bufferText = view.findViewById(R.id.bufferingtext);
+        editText = view.findViewById(R.id.ed_content);
         uploadVideo = view.findViewById(R.id.upload);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
