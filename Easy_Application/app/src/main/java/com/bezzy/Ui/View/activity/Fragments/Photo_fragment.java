@@ -52,6 +52,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -280,9 +281,12 @@ public class Photo_fragment extends Fragment {
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
-                params.put("post_image", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                params.put("post_image", new DataPart("["+imagename+ ".png"+"]", getFileDataFromDrawable(bitmap)));
                 return params;
             }
+
+
+
         };
 
 
