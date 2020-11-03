@@ -4,15 +4,18 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -154,11 +157,40 @@ public class Photo_fragment extends Fragment {
         return view;
     }
     private void pickImageFromGallery(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,IMAGE_PICK_CODE);
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Choose your profile picture");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Take Photo")) {
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+
+                } else if (options[item].equals("Choose from Gallery")) {
+//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    startActivityForResult(pickPhoto , 1);
+                            Intent intent = new Intent(Intent.ACTION_PICK);
+                            intent.setType("image/*");
+                            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(intent,IMAGE_PICK_CODE);
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+//        Intent intent = new Intent(Intent.ACTION_PICK);
+//        intent.setType("image/*");
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(intent,IMAGE_PICK_CODE);
     }
 
     @Override
@@ -177,9 +209,33 @@ public class Photo_fragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+        if(resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        bitmap = (Bitmap) data.getExtras().get("data");
+                        imageView.setImageBitmap(bitmap);
+                    }
 
-            if(data.getClipData()!=null){
+                    break;
+                case 1000:
+                    if (resultCode == RESULT_OK && data != null) {
+//                        Uri selectedImage =  data.getData();
+//                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//                        if (selectedImage != null) {
+//                            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+//                                    filePathColumn, null, null, null);
+//                            if (cursor != null) {
+//                                cursor.moveToFirst();
+//
+//                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                                String picturePath = cursor.getString(columnIndex);
+//                                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//                                cursor.close();
+//                            }
+//                        }
+
+                                    if(data.getClipData()!=null){
                 ClipData mClipData = data.getClipData();
                 int j = mClipData.getItemCount();
                 for (int i = 0; i < mClipData.getItemCount(); i++){
@@ -203,35 +259,65 @@ public class Photo_fragment extends Fragment {
                 imageView.setImageURI(resultUri);
 
             }
-
-//            try {
-//                resultUri = data.getData();
-//                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
-//                imageView.setImageBitmap(bitmap);
-//
-//
-//
-////            if (data.getClipData() != null) {
-////                ClipData mClipData = data.getClipData();
-////                for (int i = 0; i < mClipData.getItemCount(); i++) {
-////                    ClipData.Item item = mClipData.getItemAt(i);
-////                    resultUri = item.getUri();
-////                    // display your images
-////                    imageView.setImageURI(resultUri);
-////                }
-////            } else if (data.getData() != null) {
-////                resultUri = data.getData();
-////                //resultUri = data.getData();
-////                filePath = getPath(resultUri);
-////                uploadBitmap(bitmap,APIs.BASE_URL+ APIs.POSTIMAGE);
-////                // display your image
-////                imageView.setImageURI(resultUri);
-////            }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-
+                    }
+                    break;
+            }
         }
+//        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+//
+//            if(data.getClipData()!=null){
+//                ClipData mClipData = data.getClipData();
+//                int j = mClipData.getItemCount();
+//                for (int i = 0; i < mClipData.getItemCount(); i++){
+//                    ClipData.Item item = mClipData.getItemAt(i);
+//                    try {
+//                        //resultUri = data.getData();
+//                        resultUri = item.getUri();
+//                        filePath = getPath(resultUri);
+//                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),resultUri);
+//                        imageView.setImageBitmap(bitmap);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }else if(data.getData() != null){
+//                resultUri = data.getData();
+//                //resultUri = data.getData();
+//                filePath = getPath(resultUri);
+//                //uploadBitmap(bitmap,APIs.BASE_URL+ APIs.POSTIMAGE);
+//                // display your image
+//                imageView.setImageURI(resultUri);
+//
+//            }
+//
+////            try {
+////                resultUri = data.getData();
+////                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
+////                imageView.setImageBitmap(bitmap);
+////
+////
+////
+//////            if (data.getClipData() != null) {
+//////                ClipData mClipData = data.getClipData();
+//////                for (int i = 0; i < mClipData.getItemCount(); i++) {
+//////                    ClipData.Item item = mClipData.getItemAt(i);
+//////                    resultUri = item.getUri();
+//////                    // display your images
+//////                    imageView.setImageURI(resultUri);
+//////                }
+//////            } else if (data.getData() != null) {
+//////                resultUri = data.getData();
+//////                //resultUri = data.getData();
+//////                filePath = getPath(resultUri);
+//////                uploadBitmap(bitmap,APIs.BASE_URL+ APIs.POSTIMAGE);
+//////                // display your image
+//////                imageView.setImageURI(resultUri);
+//////            }
+////            } catch (IOException e) {
+////                e.printStackTrace();
+////            }
+//
+//        }
     }
     public String getPath(Uri uri) {
         Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
