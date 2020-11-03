@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colourwhite"
     tools:context="com.bezzy.Ui.View.activity.Fragments.ProfileFragment">
 
 
@@ -162,7 +163,7 @@
             android:layout_marginLeft="100dp"
             android:layout_marginRight="5dp"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"/>
+            android:textSize="12sp"/>
 
         <ImageButton
             android:layout_width="70dp"
@@ -177,8 +178,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/edit_part"
-        android:layout_marginBottom="70dp">
+        android:layout_below="@id/edit_part">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/postRecyclerView"

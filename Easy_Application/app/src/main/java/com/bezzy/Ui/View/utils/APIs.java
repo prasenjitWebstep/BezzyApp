@@ -3,6 +3,7 @@ package com.bezzy.Ui.View.utils;
 public class APIs {
 
     public static String BASE_URL = "http://bezzy.websteptech.co.uk/";
+    public static String PROFILE_IMAGE_BASE_URL = "http://bezzy.websteptech.co.uk/public/profile/";
     public static String LOGIN_URL = "api/login";
     public static String REGISTRATION = "api/registration";
     public static String OTPVERIFICATION = "api/verifyotp";
@@ -14,4 +15,6 @@ public class APIs {
     public static String SOCIALLOGINURL = "api/SocialLoginData";
     public static String POSTIMAGE = "api/PostImage";
     public static String POSTVIDEO ="api/PostVideo";
+    public static String REGISTERUSERLIST = "api/RegisterUserList";
+    public static String FRIENDREQUEST = "api/friendreqsend";
 }
