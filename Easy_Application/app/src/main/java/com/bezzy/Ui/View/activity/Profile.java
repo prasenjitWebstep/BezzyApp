@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.app.ProgressDialog;
@@ -53,6 +54,8 @@ public class Profile extends AppCompatActivity/* implements NavigationView.OnNav
 
         //SessionManager.getInstance(getApplicationContext()).userLogout();
         BottomNavigationView btmnav = findViewById(R.id.bottomnav);
+        btmnav.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
+        btmnav.getMenu().getItem(2).setEnabled(false);
         btmnav.setOnNavigationItemSelectedListener(navlistner);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new HomeFragment()).commit();
         floatingActionButton = findViewById(R.id.floatingActionButton);

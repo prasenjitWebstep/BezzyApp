@@ -46,39 +46,15 @@
             android:layout_marginRight="10dp"/>
     </RelativeLayout>
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:id="@+id/image_part"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/upload_photo_back"
-        android:layout_margin="5dp"
-        android:layout_below="@+id/back_bezy">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upload a photo"
-            android:textColor="#000"
-            android:textSize="18sp"
-            android:fontFamily="sans-serif-medium"
-            android:textStyle="normal"
-            android:textAlignment="center"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/bezzy_upload"
-            android:id="@+id/image_view"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:scaleType="centerCrop"/>
-
-    </LinearLayout>
+        android:src="@drawable/bezzy_upload"
+        android:id="@+id/image_view"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:scaleType="centerCrop"/>
 
 
 
@@ -94,7 +70,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:textColorHint="@color/gradstart"
-        android:layout_below="@id/image_part"
+        android:layout_below="@id/image_view"
         android:background="@color/colourwhite"
         android:minLines="5"
         android:gravity="top"

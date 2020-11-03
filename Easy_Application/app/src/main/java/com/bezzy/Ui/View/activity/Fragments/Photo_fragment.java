@@ -66,7 +66,6 @@ public class Photo_fragment extends Fragment {
     Bitmap bitmap;
     Uri resultUri;
     int MY_SOCKET_TIMEOUT_MS=10000;
-    LinearLayout image_part;
     ProgressDialog progressDialog;
 
 
@@ -88,7 +87,6 @@ public class Photo_fragment extends Fragment {
         caption = view.findViewById(R.id.ed_content);
         caption_upload = caption.getText().toString();
         button = view.findViewById(R.id.upload);
-        image_part = view.findViewById(R.id.image_part);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
@@ -204,6 +202,7 @@ public class Photo_fragment extends Fragment {
 //            }
 //        }
     }
+
     private void uploadImage(final Bitmap bitmap, String url, final String caption_upload) {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

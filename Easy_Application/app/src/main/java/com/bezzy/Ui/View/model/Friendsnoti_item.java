@@ -2,36 +2,29 @@ package com.bezzy.Ui.View.model;
 
 public class Friendsnoti_item
 {
-    int img;
-    String header,desc;
+    String header,desc,img,id;
 
-    public Friendsnoti_item(int img, String header, String desc) {
-        this.img = img;
+    public Friendsnoti_item(String header, String desc, String img, String id) {
         this.header = header;
         this.desc = desc;
-    }
-
-    public int getImg() {
-        return img;
-    }
-
-    public void setImg(int img) {
         this.img = img;
+        this.id = id;
     }
 
     public String getHeader() {
         return header;
     }
 
-    public void setHeader(String header) {
-        this.header = header;
-    }
-
     public String getDesc() {
         return desc;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public String getImg() {
+        return img;
     }
+
+    public String getId() {
+        return id;
+    }
+
 }

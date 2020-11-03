@@ -1,6 +1,7 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -55,6 +57,7 @@ public class Video_fragment extends Fragment {
     private static final String PLAYBACK_TIME = "play_time";
     private Uri video;
     private String videoPath;
+    ProgressDialog progressDialog;
 
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
@@ -70,12 +73,16 @@ public class Video_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_video_fragment, container, false);
-        videoView = view.findViewById(R.id.videoview);
-        bufferText = view.findViewById(R.id.bufferingtext);
-        pickVideo = view.findViewById(R.id.pickVideo);
-        uploadVideo = view.findViewById(R.id.uploadVideo);
+        videoView = view.findViewById(R.id.video_view);
+        bufferText = view.findViewById(R.id.ed_content);
+        uploadVideo = view.findViewById(R.id.upload);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Posting Please wait....");
+        progressDialog.setCancelable(false);
 
-        pickVideo.setOnClickListener(new View.OnClickListener() {
+        videoView.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
+
+        videoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pickVideoFromgallery();
@@ -85,6 +92,7 @@ public class Video_fragment extends Fragment {
         uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 uploadVideo( APIs.BASE_URL+ APIs.POSTVIDEO);
             }
         });
@@ -147,7 +155,7 @@ public class Video_fragment extends Fragment {
                         }
 
                         // Start playing!
-                        videoView.start();
+                        /*videoView.start();*/
                     }
                 });
 
@@ -217,23 +225,26 @@ public class Video_fragment extends Fragment {
                     JSONObject object = new JSONObject(response2);
                     String status = object.getString("resp");
                     if (status.equals("success")) {
+
+                        progressDialog.dismiss();
                         //
                         String msg = object.getString("message");
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
                     } else {
-                        //progressDialog.dismiss();
+                        progressDialog.dismiss();
                         String message = object.getString("message");
                         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    //progressDialog.dismiss();
+                    progressDialog.dismiss();
                     Log.e("ImageUploadException", e.toString());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Log.e("VolleyError",error.toString());
             }
         }
