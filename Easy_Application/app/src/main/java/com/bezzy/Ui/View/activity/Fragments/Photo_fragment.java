@@ -94,7 +94,7 @@ public class Photo_fragment extends Fragment {
         caption = view.findViewById(R.id.ed_content);
         caption_upload = caption.getText().toString();
         button = view.findViewById(R.id.upload);
-        image_part = view.findViewById(R.id.image_part);
+        //image_part = view.findViewById(R.id.image_part);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
