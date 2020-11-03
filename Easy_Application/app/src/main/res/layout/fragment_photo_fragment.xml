@@ -48,7 +48,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="500dp"
         android:src="@drawable/bezzy_upload"
         android:id="@+id/image_view"
         android:layout_gravity="center"
@@ -62,12 +62,10 @@
     <EditText
         android:id="@+id/ed_content"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:hint="Say Something....."
         android:layout_centerInParent="true"
         android:inputType="textMultiLine"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:textColorHint="@color/gradstart"
         android:layout_below="@id/image_view"

@@ -179,67 +179,41 @@ public class Photo_fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
 
-//            try {
-//                resultUri = data.getData();
-//                filePath = getPath(resultUri);
-//                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),resultUri);
-//                imageView.setImageBitmap(bitmap);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-
-
-            if (data.getClipData() != null) {
-                ClipData mClipData = data.getClipData();
-                for (int i = 0; i < mClipData.getItemCount(); i++) {
-                    ClipData.Item item = mClipData.getItemAt(i);
-                    try {
-                        //resultUri = data.getData();
-                        resultUri = item.getUri();
-                        filePath = getPath(resultUri);
-                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),resultUri);
-                        imageView.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-//                    resultUri = item.getUri();
-                    // display your images
-                    //imageView.setImageURI(resultUri);
-                }
-            } else if (data.getData() != null) {
+            try {
                 resultUri = data.getData();
-                //resultUri = data.getData();
-                filePath = getPath(resultUri);
-                //uploadBitmap(bitmap,APIs.BASE_URL+ APIs.POSTIMAGE);
-                // display your image
-                imageView.setImageURI(resultUri);
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
+                imageView.setImageBitmap(bitmap);
+
+
+//            if (data.getClipData() != null) {
+//                ClipData mClipData = data.getClipData();
+//                for (int i = 0; i < mClipData.getItemCount(); i++) {
+//                    ClipData.Item item = mClipData.getItemAt(i);
+//                    resultUri = item.getUri();
+//                    // display your images
+//                    imageView.setImageURI(resultUri);
+//                }
+//            } else if (data.getData() != null) {
+//                resultUri = data.getData();
+//                //resultUri = data.getData();
+//                filePath = getPath(resultUri);
+//                uploadBitmap(bitmap,APIs.BASE_URL+ APIs.POSTIMAGE);
+//                // display your image
+//                imageView.setImageURI(resultUri);
+//            }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
         }
-
-    }
-
-    public String getPath(Uri uri) {
-        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
-        cursor.close();
-
-        cursor = getActivity().getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
-
-        return path;
     }
 
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
+
     private void uploadImage(final Bitmap bitmap,String url) {
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
@@ -273,7 +247,7 @@ public class Photo_fragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                        Log.e("GotError",error.getMessage());
+                        Log.e("GotError",""+error.getMessage());
                     }
                 }) {
 
@@ -290,11 +264,9 @@ public class Photo_fragment extends Fragment {
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
-                params.put("post_image[]", new DataPart(imagename+ ".png", getFileDataFromDrawable(bitmap)));
+                params.put("post_image[]", new DataPart(+imagename+ ".jpeg", getFileDataFromDrawable(bitmap)));
                 return params;
             }
-
-
 
         };
 
