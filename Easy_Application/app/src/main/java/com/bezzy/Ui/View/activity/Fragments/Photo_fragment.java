@@ -185,6 +185,7 @@ public class Photo_fragment extends Fragment {
                 imageView.setImageBitmap(bitmap);
 
 
+
 //            if (data.getClipData() != null) {
 //                ClipData mClipData = data.getClipData();
 //                for (int i = 0; i < mClipData.getItemCount(); i++) {
