@@ -122,7 +122,6 @@ public class ProfileFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
                 try {
                     JSONObject object = new JSONObject(response);
                     Log.e("Response",response);
@@ -134,13 +133,18 @@ public class ProfileFragment extends Fragment {
                         for(int i = 0; i< array.length(); i++){
 
                             JSONObject object1 = array.getJSONObject(i);
+                            String data = object1.getString("post_url");
+//                            String data = object1.getString(String.valueOf(i));
+                            Log.e("DADADAD",data);
                             postList.add(new PostModel(object1.getJSONArray("post_url"),object1.getString("post_id")));
-
                         }
                         Log.e("Called","Adapter Called");
                         postRecyclerView.setAdapter((new PostAdapter(postList,getActivity())));
                     }
                 } catch (JSONException e) {
+                    if(e instanceof JSONException){
+                        Log.e("HJIJHGHU","HGGVHJKLLHVGGH");
+                    }
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
                 }
