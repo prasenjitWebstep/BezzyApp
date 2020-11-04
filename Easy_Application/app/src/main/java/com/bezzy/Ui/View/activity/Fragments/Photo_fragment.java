@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -85,6 +87,7 @@ public class Photo_fragment extends Fragment {
     ProgressDialog progressDialog;
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
+    int option;
 
 
 
@@ -143,11 +146,11 @@ public class Photo_fragment extends Fragment {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},100);
                     return;
                 }
-
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
-                intent.setType("image/*");
-                startActivityForResult(intent,1);
+                pickImageFromGallery();
+//                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+//                intent.setType("image/*");
+//                startActivityForResult(intent,1);
 
             }
         });
@@ -165,7 +168,16 @@ public class Photo_fragment extends Fragment {
 
                     progressDialog.show();
 
-                    upload(APIs.BASE_URL+APIs.POSTIMAGE);
+                    switch (option){
+                        case 0:
+                            uploadCam(APIs.BASE_URL+APIs.POSTIMAGE);
+                            break;
+                        case 1000:
+                            upload(APIs.BASE_URL+APIs.POSTIMAGE);
+                            break;
+                    }
+
+
 
                 }
                 else {
@@ -180,43 +192,87 @@ public class Photo_fragment extends Fragment {
         return view;
     }
     private void pickImageFromGallery(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,IMAGE_PICK_CODE);
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Choose your profile picture");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Take Photo")) {
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+
+                } else if (options[item].equals("Choose from Gallery")) {
+//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    startActivityForResult(pickPhoto , 1);
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(intent,IMAGE_PICK_CODE);
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+//        Intent intent = new Intent(Intent.ACTION_PICK);
+//        intent.setType("image/*");
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(intent,IMAGE_PICK_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 & resultCode == RESULT_OK) {
-            bitmapList = new ArrayList<>();
-            ClipData clipData = data.getClipData();
-            if (clipData != null) {
-                for (int i = 0; i < clipData.getItemCount(); i++) {
-                    Uri imageUri = clipData.getItemAt(i).getUri();
-                    try {
-                        InputStream is = getActivity().getContentResolver().openInputStream(imageUri);
-                        Bitmap bitmap = BitmapFactory.decodeStream(is);
-                        bitmapList.add(bitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+        if(resultCode == Activity.RESULT_OK){
+            switch (requestCode){
+                case 0:
+                    option = 0;
+                    if (resultCode == RESULT_OK && data != null) {
+                        bitmap = (Bitmap) data.getExtras().get("data");
+                        imageView.setImageBitmap(bitmap);
                     }
-                }
-            } else {
-                Uri imageUri = data.getData();
-                try {
-                    InputStream is = getActivity().getContentResolver().openInputStream(imageUri);
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
-                    bitmapList.add(bitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+
+                    break;
+                case 1000:
+                    option = 1000;
+                    if (resultCode == RESULT_OK && data != null) {
+
+                        bitmapList = new ArrayList<>();
+                        ClipData clipData = data.getClipData();
+                        if (clipData != null) {
+                            for (int i = 0; i < clipData.getItemCount(); i++) {
+                                Uri imageUri = clipData.getItemAt(i).getUri();
+                                try {
+                                    InputStream is = getActivity().getContentResolver().openInputStream(imageUri);
+                                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                    bitmapList.add(bitmap);
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+                            Uri imageUri = data.getData();
+                            try {
+                                InputStream is = getActivity().getContentResolver().openInputStream(imageUri);
+                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                bitmapList.add(bitmap);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(),bitmapList));
+                    }
+                    break;
             }
-
-            recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(),bitmapList));
-
         }
     }
 
@@ -224,6 +280,70 @@ public class Photo_fragment extends Fragment {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+
+    public void uploadCam(String url){
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        String response2 = new String(response.data);
+
+                        Log.e("RESPONSE2", response2);
+                        try {
+                            JSONObject object = new JSONObject(response2);
+                            String status = object.getString("resp");
+                            if (status.equals("success")) {
+                                //
+                                progressDialog.dismiss();
+                                String msg = object.getString("message");
+                                Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+                            } else {
+                                //progressDialog.dismiss();
+                                String message = object.getString("message");
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                            }
+//                            JSONObject obj = new JSONObject(new String(response.data));
+//                            Toast.makeText(getContext().getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.e("GotError",""+error.getMessage());
+                    }
+                }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                // params.put("tags", "ccccc");  add string parameters
+                params.put("userID", Utility.getUserId(getActivity()));
+                params.put("post_content","hi");
+                return params;
+            }
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imagename = System.currentTimeMillis();
+                params.put("post_image[]", new DataPart(+imagename+ ".jpeg", getFileDataFromDrawable(bitmap)));
+                return params;
+            }
+
+        };
+
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue rQueue = Volley.newRequestQueue(getActivity());
+        rQueue.add(volleyMultipartRequest);
     }
 
     public void upload(String url){
