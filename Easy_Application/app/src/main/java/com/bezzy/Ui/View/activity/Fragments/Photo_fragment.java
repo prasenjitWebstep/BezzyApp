@@ -236,8 +236,17 @@ public class Photo_fragment extends Fragment {
                 case 0:
                     option = 0;
                     if (resultCode == RESULT_OK && data != null) {
+                        bitmapList = new ArrayList<>();
                         bitmap = (Bitmap) data.getExtras().get("data");
-                        imageView.setImageBitmap(bitmap);
+                        bitmapList.add(bitmap);
+                        //
+                        //
+                        //
+                        //
+                        //
+                        //
+                        // imageView.setImageBitmap(bitmap);
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(),bitmapList));
                     }
 
                     break;
