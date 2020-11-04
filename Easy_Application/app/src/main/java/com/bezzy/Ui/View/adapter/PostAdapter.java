@@ -5,10 +5,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bezzy.Ui.View.activity.Fragments.ProfileFragment;
 import com.bezzy.Ui.View.model.PostItem;
@@ -43,18 +48,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
 
-        JSONArray array = postItems.get(position).getArray();
+        for(PostModel model : postItems){
 
-        for(int i = 0;i< array.length();i++){
-
-            try {
-                Glide.with(context).load(array.getString(i)).into(holder.imagepost);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            Log.e("Image",model.getImage());
 
         }
 
+        Glide.with(context)
+                .load(postItems.get(position).getImage())
+                .into(holder.imageDisp);
 
     }
 
@@ -65,13 +67,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     class PostViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView imagepost;
+        ImageView imageDisp;
 
         public PostViewHolder(@NonNull View itemView) {
 
             super(itemView);
 
-            imagepost=itemView.findViewById(R.id.imagepost);
+            imageDisp = itemView.findViewById(R.id.imageDisp);
 
         }
     }

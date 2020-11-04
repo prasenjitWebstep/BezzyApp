@@ -2,20 +2,21 @@ package com.bezzy.Ui.View.model;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
+
 public class PostModel {
-    JSONArray array;
-    String id;
+    String id,image;
 
-    public PostModel(JSONArray array, String id) {
-        this.array = array;
+    public PostModel(String id, String image) {
         this.id = id;
-    }
-
-    public JSONArray getArray() {
-        return array;
+        this.image = image;
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

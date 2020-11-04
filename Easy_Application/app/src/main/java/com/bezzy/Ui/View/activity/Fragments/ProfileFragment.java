@@ -57,6 +57,7 @@ public class ProfileFragment extends Fragment {
     CircleImageView circularImg;
     TextView userName,following,follower,Likes,userBio;
     ArrayList<PostModel> postList;
+    ArrayList<String> imgList;
     RecyclerView postRecyclerView;
 
 
@@ -74,6 +75,7 @@ public class ProfileFragment extends Fragment {
         Likes = view.findViewById(R.id.Likes);
         userBio = view.findViewById(R.id.userBio);
         postList = new ArrayList<>();
+        imgList = new ArrayList<>();
 
 
 
@@ -131,12 +133,13 @@ public class ProfileFragment extends Fragment {
 
 
                         JSONArray array = object.getJSONArray("user_all_posts");
-                        for(int i = 0; i< array.length(); i++){
-
-                            JSONObject object1 = array.getJSONObject(i);
-                            postList.add(new PostModel(object1.getJSONArray("post_url"),object1.getString("post_id")));
-
+                        JSONArray array1 = array.getJSONArray(array.length()-1);
+                        Log.e("Array",array1.toString());
+                        for(int i=0;i<array1.length();i++){
+                            JSONObject object1 = array1.getJSONObject(i);
+                            postList.add(new PostModel(object1.getString("post_id"),object1.getString("post_url")));
                         }
+
                         Log.e("Called","Adapter Called");
                         postRecyclerView.setAdapter((new PostAdapter(postList,getActivity())));
                     }
