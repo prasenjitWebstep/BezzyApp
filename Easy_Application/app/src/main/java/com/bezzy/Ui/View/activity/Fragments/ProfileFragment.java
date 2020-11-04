@@ -126,6 +126,7 @@ public class ProfileFragment extends Fragment {
             public void onResponse(String response) {
 
                 try {
+
                     JSONObject object = new JSONObject(response);
                     Log.e("Response",response);
                     String resp = object.getString("resp");
