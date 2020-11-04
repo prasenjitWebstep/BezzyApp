@@ -132,8 +132,13 @@ public class ProfileFragment extends Fragment {
 
                         JSONArray array = object.getJSONArray("user_all_posts");
                         for(int i = 0; i< array.length(); i++){
-                            JSONObject object1 = array.getJSONObject(i);
-                            postList.add(new PostItem(object1.getString("post_url")));
+                            JSONArray array1 = array.getJSONArray(i);
+                            for(int j = 0;j < array1.length();j++){
+                                Log.e("Entered","True");
+                                JSONObject object1 = array1.getJSONObject(i);
+                                postList.add(new PostItem(object1.getString("post_url")));
+                            }
+
                         }
                         Log.e("Called","Adapter Called");
                         postRecyclerView.setAdapter((new PostAdapter(postList,getActivity())));

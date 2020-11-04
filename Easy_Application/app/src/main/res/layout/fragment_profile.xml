@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colourwhite"
+    android:background="#e0e0e0"
     tools:context="com.bezzy.Ui.View.activity.Fragments.ProfileFragment">
 
 
@@ -170,7 +170,7 @@
             android:layout_height="50dp"
             android:src="@drawable/youtube3"
             android:layout_gravity="center"
-            android:background="#fff"
+            android:background="#e0e0e0"
             android:layout_toRightOf="@id/edit_btn"/>
 
     </RelativeLayout>
