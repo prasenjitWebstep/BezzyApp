@@ -46,6 +46,31 @@
             android:layout_marginRight="10dp"/>
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/postUpload"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="#EFF6FE"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload a Post"
+            android:textColor="@color/colourblack"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/imageViewVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_backup"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
     <VideoView
         android:layout_width="match_parent"
         android:layout_height="350dp"
@@ -53,6 +78,7 @@
         android:id="@+id/video_view"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         android:padding="10dp"/>
 
 
