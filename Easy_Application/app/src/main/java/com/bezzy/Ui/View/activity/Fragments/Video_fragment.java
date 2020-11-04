@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +53,8 @@ import static com.bezzy.Ui.View.utils.UploadHelper.getFileDataFromDrawable;
 
 public class Video_fragment extends Fragment {
 
+    ImageView imageView,back_image;
+    LinearLayout postUpload;
     VideoView videoView;
     TextView bufferText;
     EditText editText;
@@ -77,6 +81,9 @@ public class Video_fragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_video_fragment, container, false);
         videoView = view.findViewById(R.id.video_view);
         editText = view.findViewById(R.id.ed_content);
+        postUpload = view.findViewById(R.id.postUpload);
+        back_image = view.findViewById(R.id.back_image);
+        imageView = view.findViewById(R.id.imageViewVideo);
         bufferText = view.findViewById(R.id.bufferingtext);
         uploadVideo = view.findViewById(R.id.upload);
         progressDialog = new ProgressDialog(getActivity());
@@ -85,7 +92,7 @@ public class Video_fragment extends Fragment {
 
         videoView.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
 
-        videoView.setOnClickListener(new View.OnClickListener() {
+        postUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pickVideoFromgallery();
@@ -138,6 +145,8 @@ public class Video_fragment extends Fragment {
         // Show the "Buffering..." message while the video loads.
         bufferText.setVisibility(VideoView.VISIBLE);
         if (uri != null){
+            postUpload.setVisibility(View.GONE);
+            videoView.setVisibility(View.VISIBLE);
             videoView.setVideoURI(uri);
         }
         // Listener for onPrepared() event (runs after the media is prepared).
