@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Fragments.HomeFragment;
+import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.model.Friendsnoti_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
@@ -56,7 +57,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
     @Override
     public void onBindViewHolder(@NonNull searchViewHolder holder, final int position) {
-        Glide.with(context).load(APIs.PROFILE_IMAGE_BASE_URL +dataholder.get(position).getImg()).into(holder.img);
+        Glide.with(context).load(dataholder.get(position).getImg()).into(holder.img);
         holder.header.setText(dataholder.get(position).getHeader());
         if(dataholder.get(position).getDesc().equals("null")){
             holder.desc.setVisibility(View.GONE);
@@ -86,7 +87,8 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, HomeFragment.class);
+                        Intent intent = new Intent(context, Profile.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                 } catch (JSONException e) {

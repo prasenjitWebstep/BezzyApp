@@ -191,10 +191,12 @@ public class Photo_fragment extends Fragment {
         });
         return view;
     }
+
     private void pickImageFromGallery(){
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(false);
         builder.setTitle("Choose your profile picture");
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -221,6 +223,7 @@ public class Photo_fragment extends Fragment {
             }
         });
         builder.show();
+
 //        Intent intent = new Intent(Intent.ACTION_PICK);
 //        intent.setType("image/*");
 //        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -324,7 +327,7 @@ public class Photo_fragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 // params.put("tags", "ccccc");  add string parameters
                 params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content","hi");
+                params.put("post_content",caption_upload);
                 return params;
             }
             @Override

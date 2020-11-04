@@ -30,6 +30,7 @@ import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.adapter.PostAdapter;
 import com.bezzy.Ui.View.model.PostItem;
 import com.bezzy.Ui.View.activity.Editprofile;
+import com.bezzy.Ui.View.model.PostModel;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
@@ -55,7 +56,7 @@ public class ProfileFragment extends Fragment {
     Button button;
     CircleImageView circularImg;
     TextView userName,following,follower,Likes,userBio;
-    ArrayList<PostItem> postList;
+    ArrayList<PostModel> postList;
     RecyclerView postRecyclerView;
 
 
@@ -107,7 +108,6 @@ public class ProfileFragment extends Fragment {
         if(Utility.internet_check(getActivity())) {
 
             postRequest(APIs.BASE_URL+APIs.GETDATA);
-
         }
         else {
 
@@ -132,12 +132,9 @@ public class ProfileFragment extends Fragment {
 
                         JSONArray array = object.getJSONArray("user_all_posts");
                         for(int i = 0; i< array.length(); i++){
-                            JSONArray array1 = array.getJSONArray(i);
-                            for(int j = 0;j < array1.length();j++){
-                                Log.e("Entered","True");
-                                JSONObject object1 = array1.getJSONObject(i);
-                                postList.add(new PostItem(object1.getString("post_url")));
-                            }
+
+                            JSONObject object1 = array.getJSONObject(i);
+                            postList.add(new PostModel(object1.getJSONArray("post_url"),object1.getString("post_id")));
 
                         }
                         Log.e("Called","Adapter Called");

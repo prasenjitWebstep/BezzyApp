@@ -12,20 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bezzy.Ui.View.activity.Fragments.ProfileFragment;
 import com.bezzy.Ui.View.model.PostItem;
+import com.bezzy.Ui.View.model.PostModel;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
-    ArrayList<PostItem> postItems;
+    ArrayList<PostModel> postItems;
     Context context;
 
-    public PostAdapter(ArrayList<PostItem> postItems, Context context) {
+    public PostAdapter(ArrayList<PostModel> postItems, Context context) {
         this.postItems = postItems;
         this.context = context;
     }
@@ -39,10 +43,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
 
-        Log.e("ImagedDisplayed","True");
-        Log.e("Values",postItems.get(position).getImage());
+        JSONArray array = postItems.get(position).getArray();
 
-        Glide.with(context).load(postItems.get(position).getImage()).into(holder.imagepost);
+        for(int i = 0;i< array.length();i++){
+
+            try {
+                Glide.with(context).load(array.getString(i)).into(holder.imagepost);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
     }
 
     @Override
