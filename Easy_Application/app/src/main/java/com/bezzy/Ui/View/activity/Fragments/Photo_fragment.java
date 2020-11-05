@@ -310,6 +310,9 @@ public class Photo_fragment extends Fragment {
                                 progressDialog.dismiss();
                                 String msg = object.getString("message");
                                 Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getActivity().getApplicationContext(),Profile.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
                             } else {
                                 //progressDialog.dismiss();
                                 String message = object.getString("message");

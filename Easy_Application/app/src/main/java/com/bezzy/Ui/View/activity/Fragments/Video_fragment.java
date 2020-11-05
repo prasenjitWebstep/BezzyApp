@@ -36,6 +36,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.UploadHelper;
 import com.bezzy.Ui.View.utils.Utility;
@@ -99,6 +100,15 @@ public class Video_fragment extends Fragment {
             }
         });
 
+        back_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), Profile.class);
+                startActivity(i);
+                ((Activity) getActivity()).overridePendingTransition(0, 0);
+            }
+        });
+
         uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +153,7 @@ public class Video_fragment extends Fragment {
 
     private void initializePlayer(Uri uri) {
         // Show the "Buffering..." message while the video loads.
-        bufferText.setVisibility(VideoView.VISIBLE);
+        bufferText.setVisibility(VideoView.GONE);
         if (uri != null){
             postUpload.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
@@ -177,9 +187,9 @@ public class Video_fragment extends Fragment {
                 new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        Toast.makeText(getActivity(),
-                                "R.string.toast_message",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),
+//                                "R.string.toast_message",
+//                                Toast.LENGTH_SHORT).show();
 
                         // Return the video position to the start.
                         videoView.seekTo(0);
@@ -195,7 +205,7 @@ public class Video_fragment extends Fragment {
 
             if (requestCode == REQUEST_PICK_VIDEO) {
                 if (data != null) {
-                    Toast.makeText(getActivity(), "Video content URI: " + data.getData(),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), "Video content URI: " + data.getData(),Toast.LENGTH_LONG).show();
                     video = data.getData();
                     Log.e("FetechedVideo",video.toString());
                     /*videoPath = getPath(video);
@@ -242,6 +252,9 @@ public class Video_fragment extends Fragment {
                         //
                         String msg = object.getString("message");
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getActivity().getApplicationContext(),Profile.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     } else {
                         progressDialog.dismiss();
                         String message = object.getString("message");
