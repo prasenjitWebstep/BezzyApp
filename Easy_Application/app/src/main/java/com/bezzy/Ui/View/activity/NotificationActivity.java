@@ -1,6 +1,8 @@
 package com.bezzy.Ui.View.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.adapter.Notifi_Adapter;
+import com.bezzy.Ui.View.model.Notification_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
@@ -23,27 +27,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class NotificationActivity extends AppCompatActivity {
 
-    TextView textView;
-    Button button;
+    ArrayList<Notification_item> dataholder;
+    RecyclerView recyclerView;
+    Notification_item ob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
-        textView = findViewById(R.id.show);
-        button = findViewById(R.id.button);
+        recyclerView=findViewById(R.id.noti_listf);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                show(APIs.BASE_URL+APIs.NOTIFICATION+"/"+ Utility.getUserId(getApplicationContext()));
-            }
-        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        dataholder=new ArrayList<>();
+        show(APIs.BASE_URL+APIs.NOTIFICATION+"/"+ Utility.getUserId(getApplicationContext()));
+
     }
 
     private void show(String url){
@@ -60,8 +65,13 @@ public class NotificationActivity extends AppCompatActivity {
                         for(int i=0;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
                             Log.e("OBJECT",object1.toString());
+
+                            ob = new Notification_item(object1.getString("activity_message"));
+                            dataholder.add(ob);
+
+
                             String time = object1.getString("created_at");
-                            textView.setText(object1.getString("created_at"));
+                            //textView.setText(object1.getString("created_at"));
 //                            Date current = Calendar.getInstance().getTime();
 //                            Log.e("TIME",current.toString());
 
@@ -72,6 +82,8 @@ public class NotificationActivity extends AppCompatActivity {
                             //if()
                             //check using if else one hour
                         }
+
+                        recyclerView.setAdapter(new Notifi_Adapter(getApplicationContext(),dataholder));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

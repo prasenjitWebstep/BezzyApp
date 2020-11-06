@@ -35,7 +35,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
 
     @Override
     public void onBindViewHolder(@NonNull NoyificationViewHolder holder, int position) {
-        holder.img.setImageResource(dataholder.get(position).getImg());
+//        holder.img.setImageResource(dataholder.get(position).getImg());
         holder.descrip.setText(dataholder.get(position).getDescrip());
 
     }
@@ -46,11 +46,12 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
     }
 
     public class NoyificationViewHolder extends RecyclerView.ViewHolder{
-        ImageView img;
+       // ImageView img;
         TextView descrip;
 
         public NoyificationViewHolder(@NonNull View itemView) {
             super(itemView);
+            descrip = itemView.findViewById(R.id.title_text);
         }
     }
 }

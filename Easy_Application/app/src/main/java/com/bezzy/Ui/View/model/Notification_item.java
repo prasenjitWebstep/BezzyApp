@@ -6,7 +6,7 @@ public class Notification_item {
     String descrip;
     String name;
 
-    public Notification_item(int img, int imgic, String descrip, String name) {
+    public Notification_item( String descrip) {
         this.img = img;
         this.imgic = imgic;
         this.descrip = descrip;

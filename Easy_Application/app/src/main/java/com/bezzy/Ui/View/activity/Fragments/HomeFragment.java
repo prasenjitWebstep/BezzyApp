@@ -1,6 +1,7 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -21,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
+import com.bezzy.Ui.View.activity.NotificationActivity;
 import com.bezzy.Ui.View.adapter.Friendsnoti_adapter;
 import com.bezzy.Ui.View.adapter.Search_adapter;
 import com.bezzy.Ui.View.model.Friendsnoti_item;
@@ -44,6 +47,7 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     Friendsnoti_item ob1;
     Search_adapter adapter;
+    ImageView noti;
 
 
     @Override
@@ -56,10 +60,18 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
 
         recyclerView=view.findViewById(R.id.friendsnoti_listf);
+        noti = view.findViewById(R.id.noti);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        noti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NotificationActivity.class);
+                startActivity(intent);
+            }
+        });
         dataholder=new ArrayList<>();
 
         if(Utility.internet_check(getActivity())) {
