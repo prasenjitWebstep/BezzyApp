@@ -79,7 +79,6 @@ public class NotificationActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         });
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
