@@ -15,8 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.bezzy.Ui.View.activity.Fragments.Imageshow"></activity>
-        <activity android:name="com.bezzy.Ui.View.activity.Upload" />
+        <activity android:name="com.bezzy.Ui.View.activity.Upload"></activity>
         <activity android:name="com.bezzy.Ui.View.activity.showprofile" />
         <activity
             android:name="com.bezzy.Ui.View.activity.COTPActivity"
@@ -29,9 +28,8 @@
             android:theme="@style/OtpTheme" />
         <activity android:name="com.bezzy.Ui.View.activity.Welcome" />
         <activity android:name="com.bezzy.Ui.View.activity.Forgot_pas" />
-        <activity
-            android:name="com.bezzy.Ui.View.activity.Profile"
-            android:theme="@style/MaterialTheme" />
+        <activity android:name="com.bezzy.Ui.View.activity.Profile"
+            android:theme="@style/MaterialTheme"/>
         <activity
             android:name="com.bezzy.Ui.View.activity.Registration"
             android:theme="@style/LoginTheme" />
