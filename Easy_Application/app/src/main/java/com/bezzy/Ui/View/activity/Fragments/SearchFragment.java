@@ -55,6 +55,7 @@ public class SearchFragment extends Fragment {
     String search;
     ProgressDialog progressDialog;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
