@@ -47,11 +47,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * A simple {@link Fragment} subclass.
 
- * create an instance of this fragment.
- */
 public class ProfileFragment extends Fragment {
     Button button;
     CircleImageView circularImg;

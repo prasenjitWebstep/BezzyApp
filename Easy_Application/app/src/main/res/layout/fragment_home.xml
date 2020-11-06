@@ -4,11 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bezzy.Ui.View.activity.Fragments.HomeFragment">
+    <RelativeLayout
+        android:id="@+id/back_bezy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/rounded_button">
+
+        <TextView
+            android:id="@+id/go_bezzy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/back_image"
+            android:fontFamily="sans-serif-light"
+            android:text="Home"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/back_image"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_baseline_keyboard_backspace_24"
+            />
+        <ImageView
+            android:id="@+id/upload"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/notification"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendsnoti_listf"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/back_bezy">
 
     </androidx.recyclerview.widget.RecyclerView>
 

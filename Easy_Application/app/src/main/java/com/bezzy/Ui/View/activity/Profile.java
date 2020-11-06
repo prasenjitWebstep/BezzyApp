@@ -40,8 +40,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Profile extends AppCompatActivity/* implements NavigationView.OnNavigationItemSelectedListener*/ {
-    Button btn_logout;
+public class Profile extends AppCompatActivity {
+
     String url = "http://bezzy.websteptech.co.uk/api/logout";
     ProgressDialog progressDialog;
     FloatingActionButton floatingActionButton;
@@ -63,8 +63,8 @@ public class Profile extends AppCompatActivity/* implements NavigationView.OnNav
        /* NavigationView navigationView = findViewById(R.id.bottomnav);
         //navigationView.setNavigationItemSelectedListener(this);
         navigateToFragment(new HomeFragment());*/
-        Toolbar toolbar=findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       /* Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
         progressDialog = new ProgressDialog(Profile.this);
         progressDialog.setMessage("Logging Out Please Wait...");
         progressDialog.setCancelable(false);
