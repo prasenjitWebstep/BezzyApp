@@ -31,6 +31,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,6 +162,7 @@ public class LoginActivity extends AppCompatActivity {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("username",etUsername.getText().toString());
                 map.put("password",etPassword.getText().toString());
+                map.put("device_token", FirebaseInstanceId.getInstance().getToken());
                 return map;
             }
         };

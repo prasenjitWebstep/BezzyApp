@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="30dp"
     tools:context="com.bezzy.Ui.View.activity.Fragments.SearchFragment">
 
 
@@ -13,17 +12,14 @@
         android:layout_height="wrap_content"
         android:queryHint="Search Here"
         android:iconifiedByDefault="false"
+        android:layout_margin="10dp"
         android:id="@+id/searchView"/>
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:layout_marginTop="10dp"/>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/www"
-        android:text="gfdfsgh"/>
 </LinearLayout>
