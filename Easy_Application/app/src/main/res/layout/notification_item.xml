@@ -34,9 +34,9 @@
 <!--                />-->
             <LinearLayout
                 android:id="@+id/text_part"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/img_logo"
+
                 android:orientation="vertical"
                 android:layout_centerInParent="true">
                 <TextView
@@ -63,6 +63,23 @@
                     android:textColor="#000"
                     android:layout_marginRight="10dp"
                     />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/acceptButton"
+                        android:text="ACCEPT"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rejectButton"
+                        android:layout_toRightOf="@+id/acceptButton"
+                        android:text="REJECT"/>
+                </RelativeLayout>
             </LinearLayout>
 
 
