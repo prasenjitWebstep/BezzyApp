@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,10 +24,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.adapter.SearchAdapter;
 import com.bezzy.Ui.View.adapter.Search_adapter;
 import com.bezzy.Ui.View.model.Friendsnoti_item;
+import com.bezzy.Ui.View.model.Searchnoti_item;
 import com.bezzy.Ui.View.utils.APIs;
+import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 
 import org.json.JSONArray;
@@ -39,10 +46,14 @@ public class SearchFragment extends Fragment {
 
     SearchView searchView;
     Button button;
+    ImageView imgSearch;
+    AutoCompleteTextView autocompleteHeader;
     //RecyclerView recyclerView;
     ArrayList<Friendsnoti_item> dataholder;
     RecyclerView recyclerViewSearchResult;
     Friendsnoti_item ob1;
+    String search;
+    ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,25 +61,37 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         //recyclerView = view.findViewById(R.id.recyclerView);
-        searchView = view.findViewById(R.id.searchView);
+        autocompleteHeader = view.findViewById(R.id.autocompleteHeader);
+        imgSearch = view.findViewById(R.id.imgSearch);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Searching People Please wait...");
+
         recyclerViewSearchResult = view.findViewById(R.id.recyclerViewSearchResult);
         dataholder = new ArrayList<>();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerViewSearchResult.setLayoutManager(linearLayoutManager);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+            public void onClick(View v) {
+                if(Utility.internet_check(getActivity().getApplicationContext())) {
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                search(APIs.BASE_URL+APIs.SEARCH);
-                return false;
+                    progressDialog.show();
+                    search = autocompleteHeader.getText().toString();
+                    search(APIs.BASE_URL+APIs.SEARCH);
+                    dataholder.clear();
+
+                }
+                else {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity().getApplicationContext(),"No Network!",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
+
         return view;
     }
 
@@ -82,16 +105,22 @@ public class SearchFragment extends Fragment {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
+                        progressDialog.dismiss();
+                        autocompleteHeader.getText().clear();
                         JSONArray array = object.getJSONArray("search_result");
                         for(int i = 0;i<array.length();i++){
+
                             JSONObject object1 = array.getJSONObject(i);
 
                             ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"));
                             dataholder.add(ob1);
-
                         }
+                        recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));
+
+                    }else{
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
                     }
-                    recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -105,7 +134,7 @@ public class SearchFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
-                map.put("searchval",searchView.getQuery().toString());
+                map.put("searchval",search);
                 Log.e("Value",map.get("searchval"));
                 //searchView.getQuery().toString()
                 return map;

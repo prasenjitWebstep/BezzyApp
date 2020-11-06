@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Fragments.HomeFragment;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.model.Friendsnoti_item;
+import com.bezzy.Ui.View.model.Searchnoti_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
