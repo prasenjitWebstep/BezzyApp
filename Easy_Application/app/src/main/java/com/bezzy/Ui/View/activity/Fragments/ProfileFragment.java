@@ -1,10 +1,12 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
+import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.PostAdapter;
 import com.bezzy.Ui.View.model.PostItem;
 import com.bezzy.Ui.View.activity.Editprofile;
@@ -55,6 +59,9 @@ public class ProfileFragment extends Fragment {
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
+    ProgressDialog progressDialog;
+    String url = "http://bezzy.websteptech.co.uk/api/logout";
+    ImageView imageView;
 
 
 
@@ -70,6 +77,7 @@ public class ProfileFragment extends Fragment {
         follower = view.findViewById(R.id.follower);
         Likes = view.findViewById(R.id.Likes);
         userBio = view.findViewById(R.id.userBio);
+        imageView=view.findViewById(R.id.logout);
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
 
@@ -94,6 +102,12 @@ public class ProfileFragment extends Fragment {
                 Intent intent=new Intent(getActivity(), Editprofile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+            }
+        });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
             }
         });
 
@@ -164,5 +178,60 @@ public class ProfileFragment extends Fragment {
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(request);
+    }
+    public void logout(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Log out");
+        builder.setMessage("Are you sure to Log out?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                progressDialog.show();
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            String resp = object.getString("resp");
+                            if(resp.equals("success")){
+                                progressDialog.dismiss();
+                                Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(),LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                Utility.setLogin(getActivity(),"0");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put("profile_id", Utility.getUserId(getActivity()));
+                        return map;
+                    }
+                };
+
+                RequestQueue queue = Volley.newRequestQueue(getActivity());
+                queue.add(stringRequest);
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
     }
 }
