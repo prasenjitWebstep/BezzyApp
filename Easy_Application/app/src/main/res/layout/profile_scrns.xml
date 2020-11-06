@@ -11,14 +11,10 @@
         android:layout_marginBottom="75dp"
         android:background="#e0e0e0">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar"/>
         <FrameLayout
             android:id="@+id/frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"/>
+            android:layout_height="match_parent"/>
 
     </RelativeLayout>
 

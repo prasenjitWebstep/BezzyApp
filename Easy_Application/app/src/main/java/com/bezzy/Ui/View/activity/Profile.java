@@ -164,6 +164,7 @@ public class Profile extends AppCompatActivity {
         }
 
     }
+
     public void logout(){
         AlertDialog.Builder builder = new AlertDialog.Builder(Profile.this);
         builder.setTitle("Log out");

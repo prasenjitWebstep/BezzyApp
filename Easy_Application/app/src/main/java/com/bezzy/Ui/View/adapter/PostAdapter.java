@@ -1,6 +1,7 @@
 package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.bezzy.Ui.View.activity.Fragments.ImageshowFragment;
 import com.bezzy.Ui.View.activity.Fragments.ProfileFragment;
+import com.bezzy.Ui.View.activity.ImageDisplayActivity;
 import com.bezzy.Ui.View.model.PostItem;
 import com.bezzy.Ui.View.model.PostModel;
 import com.bezzy.Ui.View.utils.Utility;
@@ -46,7 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PostViewHolder holder, final int position) {
 
         for(PostModel model : postItems){
 
@@ -57,6 +60,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         Glide.with(context)
                 .load(postItems.get(position).getImage())
                 .into(holder.imageDisp);
+
+        holder.imageDisp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(postItems.get(position).getType().equals("image")){
+                    Intent intent = new Intent(context, ImageDisplayActivity.class);
+                    intent.putExtra("id",postItems.get(position).getId());
+                    intent.putExtra("postId",postItems.get(position).getPostId());
+                    intent.putExtra("type",postItems.get(position).getType());
+                    context.startActivity(intent);
+                }
+            }
+        });
 
     }
 

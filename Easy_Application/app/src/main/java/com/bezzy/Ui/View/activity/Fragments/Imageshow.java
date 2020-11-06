@@ -12,9 +12,7 @@ import kr.pe.burt.android.lib.androidgradientimageview.AndroidGradientImageView;
 
 public class Imageshow extends AppCompatActivity {
 
-    AndroidGradientImageView imageView;
-    ImageView back_image;
-    TextView username,servicesText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
