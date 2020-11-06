@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
+import com.bezzy.Ui.View.activity.NotificationActivity;
 import com.bezzy.Ui.View.adapter.PostAdapter;
 import com.bezzy.Ui.View.model.PostItem;
 import com.bezzy.Ui.View.activity.Editprofile;
@@ -59,6 +61,7 @@ public class ProfileFragment extends Fragment {
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
+    ImageButton imageButton;
 
 
 
@@ -74,6 +77,7 @@ public class ProfileFragment extends Fragment {
         follower = view.findViewById(R.id.follower);
         Likes = view.findViewById(R.id.Likes);
         userBio = view.findViewById(R.id.userBio);
+        imageButton = view.findViewById(R.id.imageButton);
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
 
@@ -90,6 +94,14 @@ public class ProfileFragment extends Fragment {
             userBio.setVisibility(View.VISIBLE);
             userBio.setText(Utility.getBio(getActivity()));
         }
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), NotificationActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         button.setOnClickListener(new View.OnClickListener() {

@@ -18,4 +18,5 @@ public class APIs {
     public static String REGISTERUSERLIST = "api/RegisterUserList";
     public static String FRIENDREQUEST = "api/friendreqsend";
     public static String SEARCH = "api/searchregisteruser";
+    public static String NOTIFICATION = "api/Notificationlist";
 }

@@ -168,6 +168,7 @@
         <ImageButton
             android:layout_width="70dp"
             android:layout_height="50dp"
+            android:id="@+id/imageButton"
             android:src="@drawable/youtube3"
             android:layout_gravity="center"
             android:background="#e0e0e0"
