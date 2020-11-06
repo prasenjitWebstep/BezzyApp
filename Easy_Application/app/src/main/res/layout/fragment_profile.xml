@@ -6,6 +6,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#e0e0e0"
     tools:context="com.bezzy.Ui.View.activity.Fragments.ProfileFragment">
+    <RelativeLayout
+        android:id="@+id/back_bezy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_button">
+
+        <TextView
+            android:id="@+id/go_bezzy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/back_image"
+            android:fontFamily="sans-serif-light"
+            android:text="Profile"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/back_image"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_baseline_keyboard_backspace_24"
+            />
+        <ImageView
+            android:id="@+id/upload"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/menu"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
 
 
     <LinearLayout
@@ -13,7 +48,10 @@
         android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@id/back_bezy"
+        android:layout_marginTop="10dp"
+        >
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circularImg"
             android:layout_width="100dp"
