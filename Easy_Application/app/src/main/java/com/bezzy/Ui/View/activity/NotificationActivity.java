@@ -64,6 +64,7 @@ public class NotificationActivity extends AppCompatActivity {
                             textView.setText(object1.getString("created_at"));
 //                            Date current = Calendar.getInstance().getTime();
 //                            Log.e("TIME",current.toString());
+
                             Calendar rightnow = Calendar.getInstance();
                             int current = rightnow.get(Calendar.HOUR_OF_DAY); //24 hrs
                             int twelve = rightnow.get(Calendar.HOUR); //12 hr
