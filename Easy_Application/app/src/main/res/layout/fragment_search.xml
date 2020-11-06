@@ -3,23 +3,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.bezzy.Ui.View.activity.Fragments.SearchFragment">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:padding="10dp">
 
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:queryHint="Search Here"
-        android:iconifiedByDefault="false"
-        android:layout_margin="10dp"
-        android:id="@+id/searchView"/>
+    <AutoCompleteTextView
+        android:id="@+id/autocompleteHeader"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:textColor="@color/colourblack"
+        android:textSize="17sp"
+        android:hint="Search Here"
+        android:textColorHint="@color/colourblack"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:backgroundTint="@color/colourblack"/>
+
+    <ImageView
+        android:id="@+id/imgSearch"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_weight=".15"
+        android:src="@drawable/ic_search"
+        app:tint="@color/colourblack"
+        android:layout_marginLeft="5dp"
+        android:layout_gravity="center_vertical"/>
+
+</LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSearchResult"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"/>
 
 </LinearLayout>

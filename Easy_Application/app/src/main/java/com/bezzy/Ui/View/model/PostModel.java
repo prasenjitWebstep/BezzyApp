@@ -5,11 +5,13 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 
 public class PostModel {
-    String id,image;
+    String id,image,type,postId;
 
-    public PostModel(String id, String image) {
+    public PostModel(String id, String image,String type,String postId) {
         this.id = id;
         this.image = image;
+        this.type = type;
+        this.postId = postId;
     }
 
     public String getId() {
@@ -18,5 +20,13 @@ public class PostModel {
 
     public String getImage() {
         return image;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getPostId() {
+        return postId;
     }
 }
