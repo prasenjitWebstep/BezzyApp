@@ -72,7 +72,7 @@ public class NotificationActivity extends AppCompatActivity {
                             dataholder.add(ob);
 
 
-                            String time = object1.getString("created_at");
+                            /*String time = object1.getString("created_at");
                             //textView.setText(object1.getString("created_at"));
 //                            Date current = Calendar.getInstance().getTime();
 //                            Log.e("TIME",current.toString());
@@ -82,13 +82,14 @@ public class NotificationActivity extends AppCompatActivity {
                             int twelve = rightnow.get(Calendar.HOUR); //12 hr
 
                             //if()
-                            //check using if else one hour
+                            //check using if else one hour*/
                         }
 
                         recyclerView.setAdapter(new Notifi_Adapter(getApplicationContext(),dataholder));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e("Exception",e.toString());
                 }
             }
         }, new Response.ErrorListener() {
