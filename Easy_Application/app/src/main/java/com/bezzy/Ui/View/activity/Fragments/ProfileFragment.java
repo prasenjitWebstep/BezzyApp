@@ -15,13 +15,10 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +30,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
-import com.bezzy.Ui.View.activity.NotificationActivity;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.PostAdapter;
 import com.bezzy.Ui.View.model.PostItem;
@@ -56,16 +52,16 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class ProfileFragment extends Fragment{
+public class ProfileFragment extends Fragment {
     Button button;
     CircleImageView circularImg;
     TextView userName,following,follower,Likes,userBio;
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
-    ImageButton imageButton;
-    ImageView upload;
     ProgressDialog progressDialog;
+    String url = "http://bezzy.websteptech.co.uk/api/logout";
+    ImageView imageView;
 
 
 
@@ -81,13 +77,9 @@ public class ProfileFragment extends Fragment{
         follower = view.findViewById(R.id.follower);
         Likes = view.findViewById(R.id.Likes);
         userBio = view.findViewById(R.id.userBio);
-        imageButton = view.findViewById(R.id.imageButton);
-        upload = view.findViewById(R.id.upload);
+        imageView=view.findViewById(R.id.logout);
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Logging Out");
-        progressDialog.setCancelable(false);
 
 
 
@@ -103,14 +95,6 @@ public class ProfileFragment extends Fragment{
             userBio.setText(Utility.getBio(getActivity()));
         }
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), NotificationActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,11 +104,10 @@ public class ProfileFragment extends Fragment{
                 startActivity(intent);
             }
         });
-
-        upload.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout(APIs.BASE_URL+"api/logout");
+                logout();
             }
         });
 
@@ -147,7 +130,56 @@ public class ProfileFragment extends Fragment{
 
     }
 
-    public void logout(final String url){
+    private void postRequest(String url) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+
+                    JSONObject object = new JSONObject(response);
+                    Log.e("Response",response);
+                    String resp = object.getString("resp");
+                    if(resp.equals("true")){
+
+
+                        JSONArray array = object.getJSONArray("user_all_posts");
+                        JSONArray array1 = array.getJSONArray(array.length()-1);
+                        Log.e("Array",array1.toString());
+                        for(int i=0;i<array1.length();i++){
+                            JSONObject object1 = array1.getJSONObject(i);
+                            postList.add(new PostModel(object1.getString("post_id"),object1.getString("post_url"),object1.getString("post_type"),object1.getString("id")));
+                        }
+
+                        Log.e("Called","Adapter Called");
+                        postRecyclerView.setAdapter((new PostAdapter(postList,getActivity())));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("Exception",e.toString());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("Exception",error.toString());
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("profile_id", Utility.getUserId(getActivity()));
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue.add(request);
+    }
+    public void logout(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Log out");
         builder.setMessage("Are you sure to Log out?");
@@ -202,55 +234,4 @@ public class ProfileFragment extends Fragment{
         alertDialog.show();
 
     }
-
-    private void postRequest(String url) {
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                try {
-
-                    JSONObject object = new JSONObject(response);
-                    Log.e("Response",response);
-                    String resp = object.getString("resp");
-                    if(resp.equals("true")){
-
-
-                        JSONArray array = object.getJSONArray("user_all_posts");
-                        JSONArray array1 = array.getJSONArray(array.length()-1);
-                        Log.e("Array",array1.toString());
-                        for(int i=0;i<array1.length();i++){
-                            JSONObject object1 = array1.getJSONObject(i);
-                            postList.add(new PostModel(object1.getString("post_id"),object1.getString("post_url"),object1.getString("post_type"),object1.getString("id")));
-                        }
-
-                        Log.e("Called","Adapter Called");
-                        postRecyclerView.setAdapter((new PostAdapter(postList,getActivity())));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("Exception",e.toString());
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.e("Exception",error.toString());
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("profile_id", Utility.getUserId(getActivity()));
-                return map;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        queue.add(request);
-    }
-
 }

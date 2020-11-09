@@ -33,7 +33,7 @@
             android:src="@drawable/ic_baseline_keyboard_backspace_24"
             />
         <ImageView
-            android:id="@+id/upload"
+            android:id="@+id/logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
