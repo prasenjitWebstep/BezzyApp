@@ -1,10 +1,12 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,10 +15,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +34,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.NotificationActivity;
+import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.PostAdapter;
 import com.bezzy.Ui.View.model.PostItem;
 import com.bezzy.Ui.View.activity.Editprofile;
@@ -50,7 +56,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment{
     Button button;
     CircleImageView circularImg;
     TextView userName,following,follower,Likes,userBio;
@@ -58,6 +64,8 @@ public class ProfileFragment extends Fragment {
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
     ImageButton imageButton;
+    ImageView upload;
+    ProgressDialog progressDialog;
 
 
 
@@ -74,8 +82,12 @@ public class ProfileFragment extends Fragment {
         Likes = view.findViewById(R.id.Likes);
         userBio = view.findViewById(R.id.userBio);
         imageButton = view.findViewById(R.id.imageButton);
+        upload = view.findViewById(R.id.upload);
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Logging Out");
+        progressDialog.setCancelable(false);
 
 
 
@@ -109,6 +121,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout(APIs.BASE_URL+"api/logout");
+            }
+        });
+
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
 
         Log.e("Called","GridCalled");
@@ -125,6 +144,62 @@ public class ProfileFragment extends Fragment {
         }
 
         return view;
+
+    }
+
+    public void logout(final String url){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Log out");
+        builder.setMessage("Are you sure to Log out?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                progressDialog.show();
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            String resp = object.getString("resp");
+                            if(resp.equals("success")){
+                                progressDialog.dismiss();
+                                Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(),LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                Utility.setLogin(getActivity(),"0");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put("profile_id", Utility.getUserId(getActivity()));
+                        return map;
+                    }
+                };
+
+                RequestQueue queue = Volley.newRequestQueue(getActivity());
+                queue.add(stringRequest);
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
     }
 
@@ -177,4 +252,5 @@ public class ProfileFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(request);
     }
+
 }

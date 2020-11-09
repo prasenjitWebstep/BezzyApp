@@ -49,12 +49,12 @@ public class NotificationFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         dataholder=new ArrayList<>();
-        show(APIs.BASE_URL+APIs.NOTIFICATION+"/"+ Utility.getUserId(getContext()));
+        /*show(APIs.BASE_URL+APIs.NOTIFICATION+"/"+ Utility.getUserId(getContext()));*/
         return view;
 
     }
 
-    private void show(String url){
+    /*private void show(String url){
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -97,5 +97,5 @@ public class NotificationFragment extends Fragment {
         });
         RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(request);
-    }
+    }*/
 }

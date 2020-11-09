@@ -20,4 +20,6 @@ public class APIs {
     public static String SEARCH = "api/searchregisteruser";
     public static String NOTIFICATION = "api/Notificationlist";
     public static String GETIMAGEDETAILS = "api/postimagevideodetails";
+    public static String ACCEPTREQUEST = "api/AcceptFriendRequest";
+    public static String REJECTREQUEST = "api/RejectFriendRequest";
 }

@@ -1,32 +1,23 @@
 package com.bezzy.Ui.View.model;
 
 public class Notification_item {
-    int img;
-    int imgic;
+    String img;
+    String type;
     String descrip;
-    String name;
+    String fromId;
 
-    public Notification_item( String descrip) {
-        this.img = img;
-        this.imgic = imgic;
+    public Notification_item(String type, String descrip,String fromId) {
+        this.type = type;
         this.descrip = descrip;
-        this.name = name;
+        this.fromId = fromId;
     }
 
-    public int getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(int img) {
-        this.img = img;
-    }
-
-    public int getImgic() {
-        return imgic;
-    }
-
-    public void setImgic(int imgic) {
-        this.imgic = imgic;
+    public String getType() {
+        return type;
     }
 
     public String getDescrip() {
@@ -37,11 +28,7 @@ public class Notification_item {
         this.descrip = descrip;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public String getFromId() {
+        return fromId;
     }
 }

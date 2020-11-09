@@ -37,6 +37,7 @@ public class NotificationActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Notification_item ob;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,7 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void show(String url){
+        dataholder.clear();
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -66,7 +68,7 @@ public class NotificationActivity extends AppCompatActivity {
                             JSONObject object1 = array.getJSONObject(i);
                             Log.e("OBJECT",object1.toString());
 
-                            ob = new Notification_item(object1.getString("activity_message"));
+                            ob = new Notification_item(object1.getString("notification_type"),object1.getString("activity_message"),object1.getString("from_id"));
                             dataholder.add(ob);
 
 
