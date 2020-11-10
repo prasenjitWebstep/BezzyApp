@@ -171,5 +171,17 @@ public class Utility {
         return memIdPreferences.getString("following", "");
     }
 
+    public static void setNotificationStatus(Context mContext, String type) {
+        SharedPreferences preferences = mContext.getSharedPreferences("Bezzy", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("status", type);
+        editor.apply();
+    }
+
+    public static String getNotificationStatus(Context mContext) {
+        SharedPreferences memIdPreferences = mContext.getSharedPreferences("Bezzy", 0); // 0 - for private mode
+        return memIdPreferences.getString("status", "");
+    }
+
 
 }

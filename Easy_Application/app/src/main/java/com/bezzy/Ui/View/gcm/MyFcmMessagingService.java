@@ -86,6 +86,8 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String messageBody, String title) {
 
+        Utility.setNotificationStatus(this,"1");
+
         int notificationId = new Random().nextInt(60000);
 
         Intent intent = new Intent(this, NotificationActivity.class);
@@ -134,6 +136,8 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
 
     private void sendNotification(String messageBody, Bitmap image, String title, String imageUri) {
+
+        Utility.setNotificationStatus(this,"1");
 
         int notificationId = new Random().nextInt(60000);
 

@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -47,13 +49,15 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     Friendsnoti_item ob1;
     Search_adapter adapter;
-    ImageView noti;
+    FrameLayout noti;
+    TextView cart_badge;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Please wait....");
         progressDialog.setCancelable(false);
@@ -61,6 +65,13 @@ public class HomeFragment extends Fragment {
 
         recyclerView=view.findViewById(R.id.friendsnoti_listf);
         noti = view.findViewById(R.id.noti);
+        cart_badge = view.findViewById(R.id.cart_badge);
+
+        if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
+            cart_badge.setVisibility(View.VISIBLE);
+        }else{
+            cart_badge.setVisibility(View.GONE);
+        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);

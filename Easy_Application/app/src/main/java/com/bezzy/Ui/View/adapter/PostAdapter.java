@@ -80,14 +80,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageDisp;
-        VideoView videoView;
 
         public PostViewHolder(@NonNull View itemView) {
 
             super(itemView);
 
             imageDisp = itemView.findViewById(R.id.imageDisp);
-            videoView=itemView.findViewById(R.id.videoDidp);
 
         }
     }

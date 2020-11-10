@@ -80,6 +80,9 @@ public class ProfileFragment extends Fragment {
         imageView=view.findViewById(R.id.logout);
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Logging Out Please Wait....");
+        progressDialog.setCancelable(false);
 
 
 
