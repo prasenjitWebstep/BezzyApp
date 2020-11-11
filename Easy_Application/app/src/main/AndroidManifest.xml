@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.bezzy.Ui.View.activity.NotificationActivity"></activity>
+        <activity android:name="com.bezzy.Ui.View.activity.Friendsfeed"></activity>
+        <activity android:name="com.bezzy.Ui.View.activity.NotificationActivity" />
         <activity android:name="com.bezzy.Ui.View.activity.Upload" />
         <activity android:name="com.bezzy.Ui.View.activity.showprofile" />
         <activity
@@ -33,13 +34,15 @@
             android:name="com.bezzy.Ui.View.activity.Profile"
             android:theme="@style/MaterialTheme" />
         <activity
-            android:name="com.bezzy.Ui.View.activity.Fragments.VideoDisplayActivity"
+            android:name="com.bezzy.Ui.View.activity.Editprofile$VideoDisplayActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:theme="@style/MaterialTheme" />
+        <!--
+ <activity
+            android:name="com.bezzy.Ui.View.activity.Editprofile.VideoDisplayActivity"
             android:theme="@style/MaterialTheme"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
-       <!-- <activity
-            android:name="com.bezzy.Ui.View.activity.Fragments.VideoDisplayActivity"
-            android:theme="@style/MaterialTheme"
-            android:screenOrientation="fullSensor"/>-->
+            android:screenOrientation="fullSensor"/>
+        -->
         <activity
             android:name="com.bezzy.Ui.View.activity.Registration"
             android:theme="@style/LoginTheme" />
@@ -57,9 +60,11 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name="com.bezzy.Ui.View.activity.ImageDisplayActivity"
+        <activity
+            android:name="com.bezzy.Ui.View.activity.ImageDisplayActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MaterialTheme"/>
+            android:theme="@style/MaterialTheme" />
+
         <service
             android:name="com.bezzy.Ui.View.gcm.MyFcmMessagingService"
             android:permission="com.google.android.c2dm.permission.SEND">

@@ -8,12 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bezzy.Ui.View.activity.Fragments.VideoDisplayActivity;
+import com.bezzy.Ui.View.activity.Editprofile;
 import com.bezzy.Ui.View.activity.ImageDisplayActivity;
 import com.bezzy.Ui.View.model.PostModel;
 import com.bezzy_application.R;
@@ -67,7 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     context.startActivity(intent);
                 }
                 else  {
-                    Intent intent = new Intent(context, VideoDisplayActivity.class);
+                    Intent intent = new Intent(context, Editprofile.VideoDisplayActivity.class);
                     intent.putExtra("id", postItems.get(position).getId());
                     intent.putExtra("postId", postItems.get(position).getPostId());
                     intent.putExtra("type", postItems.get(position).getType());
