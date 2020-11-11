@@ -75,9 +75,9 @@ public class ProfileFragment extends Fragment {
         button=view.findViewById(R.id.edit_btn);
         circularImg = view.findViewById(R.id.circularImg);
         userName = view.findViewById(R.id.userName);
-        following = view.findViewById(R.id.following);
-        follower = view.findViewById(R.id.follower);
-        Likes = view.findViewById(R.id.Likes);
+        following = view.findViewById(R.id.following_num);
+        follower = view.findViewById(R.id.follower_num);
+        Likes = view.findViewById(R.id.like_num);
         userBio = view.findViewById(R.id.userBio);
         imageView=view.findViewById(R.id.logout);
         imageButton=view.findViewById(R.id.imageButton);
