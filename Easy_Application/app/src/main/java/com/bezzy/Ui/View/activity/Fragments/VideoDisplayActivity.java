@@ -19,12 +19,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bezzy.Ui.View.activity.ImageDisplayActivity;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
-import com.bumptech.glide.Glide;
 import com.potyvideo.library.AndExoPlayerView;
 
 import org.json.JSONException;
@@ -61,13 +59,12 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
         if(Utility.internet_check(VideoDisplayActivity.this)) {
 
-            postRequest(APIs.BASE_URL+APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type);
+            postRequest(APIs.BASE_URL+ APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type);
         }
         else {
 
-            Toast.makeText(VideoDisplayActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(VideoDisplayActivity.this,"No Network!", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void postRequest(String url) {
@@ -108,6 +105,5 @@ public class VideoDisplayActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(VideoDisplayActivity.this);
         queue.add(request);
     }
-
 
 }

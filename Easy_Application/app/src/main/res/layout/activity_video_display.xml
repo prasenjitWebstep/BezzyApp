@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bezzy.Ui.View.activity.Fragments.VideoDisplayActivity">
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardAdv"
         android:layout_width="match_parent"
@@ -55,29 +54,29 @@
                     android:orientation="vertical">
 
                     <com.potyvideo.library.AndExoPlayerView
-                    android:id="@+id/andExoPlayerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_weight="1"
-                    app:andexo_aspect_ratio="aspect_16_9"
-                    app:andexo_full_screen="true"
-                    app:andexo_play_when_ready="true"
-                    app:andexo_show_controller="true"
-                    app:andexo_resize_mode="Fit" />
+                        android:id="@+id/andExoPlayerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:layout_weight="1"
+                        app:andexo_aspect_ratio="aspect_16_9"
+                        app:andexo_full_screen="true"
+                        app:andexo_play_when_ready="true"
+                        app:andexo_show_controller="true"
+                        app:andexo_resize_mode="Fit" />
 
-                <TextView
-                    android:id="@+id/servicesText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="2"
-                    android:textColor="#fff"
-                    android:layout_above="@id/user_descrecyl"
-                    android:text="This is bio"
-                    android:textSize="18sp"
-                    android:padding="5dp"
-                    android:fontFamily="sans-serif-thin"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="10dp"/>
+                    <TextView
+                        android:id="@+id/servicesText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:textColor="#fff"
+                        android:layout_above="@id/user_descrecyl"
+                        android:text="This is bio"
+                        android:textSize="18sp"
+                        android:padding="5dp"
+                        android:fontFamily="sans-serif-thin"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="10dp"/>
 
                     <LinearLayout
                         android:id="@+id/user_descrecyl"
@@ -169,9 +168,9 @@
                     </LinearLayout>
 
 
-            </LinearLayout>
-
                 </LinearLayout>
+
+            </LinearLayout>
 
         </RelativeLayout>
 

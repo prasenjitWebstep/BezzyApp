@@ -37,6 +37,10 @@
             android:theme="@style/MaterialTheme"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
         <activity
+            android:name="com.bezzy.Ui.View.activity.Fragments.VideoDisplayActivity"
+            android:theme="@style/MaterialTheme"
+            android:screenOrientation="fullSensor"/>
+        <activity
             android:name="com.bezzy.Ui.View.activity.Registration"
             android:theme="@style/LoginTheme" />
         <activity

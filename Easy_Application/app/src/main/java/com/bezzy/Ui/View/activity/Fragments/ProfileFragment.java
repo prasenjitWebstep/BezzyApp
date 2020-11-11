@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,7 @@ public class ProfileFragment extends Fragment {
     ProgressDialog progressDialog;
     String url = "http://bezzy.websteptech.co.uk/api/logout";
     ImageView imageView;
+    ImageButton imageButton;
 
 
 
@@ -78,6 +80,7 @@ public class ProfileFragment extends Fragment {
         Likes = view.findViewById(R.id.Likes);
         userBio = view.findViewById(R.id.userBio);
         imageView=view.findViewById(R.id.logout);
+        imageButton=view.findViewById(R.id.imageButton);
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
         progressDialog = new ProgressDialog(getActivity());
@@ -105,6 +108,15 @@ public class ProfileFragment extends Fragment {
                 Intent intent=new Intent(getActivity(), Editprofile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+            }
+        });
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), VideoDisplayActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
             }
         });
         imageView.setOnClickListener(new View.OnClickListener() {
