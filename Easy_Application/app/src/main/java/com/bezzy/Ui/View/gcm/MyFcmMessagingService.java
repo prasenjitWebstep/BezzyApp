@@ -43,6 +43,8 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
         Log.e(TAG, "From: " + remoteMessage.getFrom());
 
+        Utility.setNotificationStatus(this,"1");
+
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Message data payload: " + remoteMessage.getData());
@@ -85,8 +87,6 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody, String title) {
-
-        Utility.setNotificationStatus(this,"1");
 
         int notificationId = new Random().nextInt(60000);
 

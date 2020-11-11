@@ -39,7 +39,7 @@ public class UploadHelper {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             InputStream iStream =   context.getContentResolver().openInputStream(uri);
-            int bufferSize = 2048;
+            int bufferSize = 1024;
             byte[] buffer = new byte[bufferSize];
 
             // we need to know how may bytes were read to write them to the byteBuffer

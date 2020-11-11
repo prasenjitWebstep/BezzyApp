@@ -1,6 +1,7 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -25,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
+import com.bezzy.Ui.View.activity.NotificationActivity;
 import com.bezzy.Ui.View.adapter.SearchAdapter;
 import com.bezzy.Ui.View.adapter.Search_adapter;
 import com.bezzy.Ui.View.model.Friendsnoti_item;
@@ -54,6 +58,8 @@ public class SearchFragment extends Fragment {
     Friendsnoti_item ob1;
     String search;
     ProgressDialog progressDialog;
+    FrameLayout noti;
+    TextView cart_badge;
 
 
     @Override
@@ -67,6 +73,23 @@ public class SearchFragment extends Fragment {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Searching People Please wait...");
+
+        noti = view.findViewById(R.id.noti);
+        cart_badge = view.findViewById(R.id.cart_badge);
+
+        if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
+            cart_badge.setVisibility(View.VISIBLE);
+        }else{
+            cart_badge.setVisibility(View.GONE);
+        }
+
+        noti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NotificationActivity.class);
+                startActivity(intent);
+            }
+        });
 
         recyclerViewSearchResult = view.findViewById(R.id.recyclerViewSearchResult);
         dataholder = new ArrayList<>();

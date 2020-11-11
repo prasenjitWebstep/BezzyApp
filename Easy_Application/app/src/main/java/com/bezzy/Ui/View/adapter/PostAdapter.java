@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 .load(postItems.get(position).getImage())
                 .into(holder.imageDisp);
 
+        if(postItems.get(position).getType().equals("video")){
+            holder.play.setVisibility(View.VISIBLE);
+        }else {
+            holder.play.setVisibility(View.GONE);
+        }
+
         holder.imageDisp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,12 +87,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageDisp;
+        TextView play;
 
         public PostViewHolder(@NonNull View itemView) {
 
             super(itemView);
 
             imageDisp = itemView.findViewById(R.id.imageDisp);
+            play = itemView.findViewById(R.id.play);
 
         }
     }

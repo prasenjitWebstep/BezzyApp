@@ -22,7 +22,7 @@
             android:fontFamily="sans-serif-light"
             android:text="New Post"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical" />
 

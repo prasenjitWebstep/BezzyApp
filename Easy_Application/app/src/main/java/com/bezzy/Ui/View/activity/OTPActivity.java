@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.mukesh.OtpView;
 
 import org.json.JSONException;
@@ -121,6 +122,7 @@ public class OTPActivity extends AppCompatActivity {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("otp_code",otp_view.getText().toString());
                 map.put("userID",Utility.getUserId(OTPActivity.this));
+                map.put("device_token", FirebaseInstanceId.getInstance().getToken());
                 return map;
             }
         };

@@ -287,6 +287,7 @@ public class Video_fragment extends Fragment {
                 Map<String, DataPart> params = new HashMap<>();
                 long videoname = System.currentTimeMillis();
                 params.put("post_video", new DataPart(videoname + ".mp4", getFileDataFromDrawable(getActivity(),video)));
+                Log.e("Value",params.get("post_video").toString());
                 return params;
             }
         };
