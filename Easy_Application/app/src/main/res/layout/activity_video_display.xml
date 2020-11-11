@@ -56,9 +56,9 @@
                     <com.potyvideo.library.AndExoPlayerView
                         android:id="@+id/andExoPlayerView"
                         android:layout_width="match_parent"
-                        android:layout_height="400dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        app:andexo_aspect_ratio="aspect_16_9"
+                        app:andexo_aspect_ratio="aspect_match"
                         app:andexo_full_screen="true"
                         app:andexo_play_when_ready="true"
                         app:andexo_show_controller="true"

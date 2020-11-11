@@ -43,7 +43,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         back_image = findViewById(R.id.back_image);
         username = findViewById(R.id.username);
         servicesText = findViewById(R.id.servicesText);
-        imageView = findViewById(R.id.imageHolder);
+        //imageView = findViewById(R.id.imageHolder);
 
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
