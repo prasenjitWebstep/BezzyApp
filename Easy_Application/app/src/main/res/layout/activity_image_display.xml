@@ -9,98 +9,54 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="20dp"
-        app:cardElevation="10dp"
-        app:cardBackgroundColor="#fff">
-        <LinearLayout
+        app:cardElevation="10dp">
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:background="@drawable/video_background_gradient">
 
-            <RelativeLayout
-                android:id="@+id/back_bezy"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:background="@color/colourwhite">
-
-                <TextView
-                    android:id="@+id/username"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/back_bezy"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="2"
-                    android:textColor="@color/colorPrimary"
-                    android:text="User Name"
-                    android:textSize="17sp"
-                    android:padding="10dp"
-                    android:fontFamily="sans-serif-thin"
-                    android:textStyle="bold"
-                    android:layout_toRightOf="@+id/back_image"/>
-
-                <ImageView
-                    android:id="@+id/back_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_baseline_keyboard_backspace_24"
-                    android:layout_alignParentLeft="true"
-                    />
-
-                <FrameLayout
-                    android:id="@+id/noti"
-                    style="?attr/actionButtonStyle"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".12"
-                    android:clipToPadding="false"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="5dp"
-                    android:focusable="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/notification"/>
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true">
 
                     <TextView
-                        android:id="@+id/cart_badge"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_gravity="right|end|top"
-                        android:layout_marginEnd="-5dp"
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/cart_items"
-                        android:gravity="center"
-                        android:padding="3dp"
-                        android:textColor="@android:color/white"
-                        android:textSize="9sp"
-                        android:visibility="gone"/>
+                        android:layout_toRightOf="@id/back_image"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_vertical" />
 
-                </FrameLayout>
+                    <ImageView
+                        android:id="@+id/back_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        android:src="@drawable/ic_baseline_keyboard_backspace_24"
+                        />
+                </RelativeLayout>
 
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <kr.pe.burt.android.lib.androidgradientimageview.AndroidGradientImageView
-                    android:id="@+id/imageHolder"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:giv_x="0.0"
-                    app:giv_y="0.0"
-                    app:giv_rotate="30.0"
-                    app:giv_endColor="#000"
-                    app:giv_endOffset="0.9"/>
+                    android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/imageHolder"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/servicesText"
@@ -206,11 +162,11 @@
                     </LinearLayout>
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 

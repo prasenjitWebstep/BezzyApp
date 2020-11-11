@@ -31,9 +31,8 @@ import kr.pe.burt.android.lib.androidgradientimageview.AndroidGradientImageView;
 
 public class ImageDisplayActivity extends AppCompatActivity {
 
-    ImageView back_image;
+    ImageView back_image,imageView;
     TextView username,servicesText;
-    AndroidGradientImageView imageView;
     String id,postId,type;
 
     @Override
