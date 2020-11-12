@@ -44,8 +44,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Registration extends AppCompatActivity {
+public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     TextInputEditText ed_name, ed_username, ed_email, ed_password, ed_cnfpasswd,ed_dob;
+    TextView ed_gender;
     Spinner spinner;
     private String str_gender;
     Button btn_register;
@@ -75,7 +76,7 @@ public class Registration extends AppCompatActivity {
         textInputEmail = findViewById(R.id.text_input_email);
         textInputUsername = findViewById(R.id.text_input_username);
         textInputPassword = findViewById(R.id.text_input_password);
-        //spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinner);
         imageView=findViewById(R.id.back_image);
         progressDialog = new ProgressDialog(Registration.this);
         progressDialog.setCancelable(false);
@@ -85,14 +86,14 @@ public class Registration extends AppCompatActivity {
         other_btn=findViewById(R.id.radio_other);
         str_gender=null;
 
-        //ed_gender = findViewById(R.id.gender);
+        ed_gender = findViewById(R.id.gender);
         btn_register = findViewById(R.id.register);
-        //Spinner spinner = (Spinner) findViewById(R.id.spinner);
-       /* ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.gender, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);*/
+        spinner.setOnItemSelectedListener(this);
 
 
         btn_register.setOnClickListener(new View.OnClickListener() {
@@ -246,5 +247,20 @@ public class Registration extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(Registration.this);
         queue.add(request);
     }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        str_gender = parent.getItemAtPosition(position).toString();
+        Log.e("Gender",str_gender);
+        Toast.makeText(parent.getContext(),str_gender,Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }
