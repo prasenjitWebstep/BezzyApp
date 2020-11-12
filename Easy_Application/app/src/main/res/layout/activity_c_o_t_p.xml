@@ -98,6 +98,15 @@
                 android:layout_marginRight="10dp"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Resend OTP?"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="15sp"
+                android:textColor="@color/colourblack"/>
 
 
         </LinearLayout>
