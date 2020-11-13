@@ -7,4 +7,7 @@
     <color name="gragend">#10c0ff</color>
     <color name="colourblack">#000</color>
     <color name="colourwhite">#FFF</color>
+    <color name="lightgrey">#f4f4f4</color>
+    <color name="deeporange">#f93f07</color>
+    <color name="lightorange">#f1b45c</color>
 </resources>

@@ -26,8 +26,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.NotificationActivity;
+import com.bezzy.Ui.View.adapter.Friendsfeed_Adapter;
 import com.bezzy.Ui.View.adapter.Friendsnoti_adapter;
 import com.bezzy.Ui.View.adapter.Search_adapter;
+import com.bezzy.Ui.View.model.Friendsfeed_item;
 import com.bezzy.Ui.View.model.Friendsnoti_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
@@ -51,6 +53,7 @@ public class HomeFragment extends Fragment {
     Search_adapter adapter;
     FrameLayout noti;
     TextView cart_badge;
+    ArrayList<Friendsfeed_item> friendsfeed_items;
 
 
     @Override
@@ -84,13 +87,14 @@ public class HomeFragment extends Fragment {
             }
         });
         dataholder=new ArrayList<>();
+        friendsfeed_items = new ArrayList<>();
 
         if(Utility.internet_check(getActivity())) {
 
             progressDialog.show();
 
             postRequest(APIs.BASE_URL+APIs.GETDATA);
-            registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
+            friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
 
         }
         else {
@@ -103,12 +107,62 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private void friendsBlockList(String url) {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response",response);
+                try {
+                    JSONObject object1 = new JSONObject(response);
+                    String status = object1.getString("status");
+                    if(status.equals("success")){
+                        progressDialog.dismiss();
+                        JSONArray array = object1.getJSONObject("total_feed_response").getJSONArray("friend_list");
+                        for(int i = 0;i<array.length();i++){
+                            JSONObject object11 = array.getJSONObject(i);
+                            Friendsfeed_item item = new Friendsfeed_item(object11.getString("friend_id"),object11.getString("friend_name"),object11.getString("friend_photo"),object11.getString("past_post_days"),object11.getString("today_post"));
+                            friendsfeed_items.add(item);
+                        }
+                        recyclerView.setAdapter(new Friendsfeed_Adapter(getActivity(),friendsfeed_items));
+                    }else{
+                        if(Utility.internet_check(getActivity())) {
+
+                            progressDialog.show();
+
+                            Log.e("Result","1");
+
+                            registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
+
+                        }
+                        else {
+
+                            progressDialog.dismiss();
+
+                            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        queue.add(request);
+    }
+
     private void registerUserResult(String url) {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 Log.e("REsponse",response);
+                progressDialog.dismiss();
 
                 try {
                     JSONObject object = new JSONObject(response);

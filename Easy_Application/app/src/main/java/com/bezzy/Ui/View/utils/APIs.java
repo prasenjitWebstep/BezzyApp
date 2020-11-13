@@ -22,4 +22,5 @@ public class APIs {
     public static String GETIMAGEDETAILS = "api/postimagevideodetails";
     public static String ACCEPTREQUEST = "api/AcceptFriendRequest";
     public static String REJECTREQUEST = "api/RejectFriendRequest";
+    public static String FRIENDSBLOCKLIST = "api/friendblocklist";
 }
