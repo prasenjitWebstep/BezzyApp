@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eae8fe">
     <RelativeLayout
         android:id="@+id/back_bezy"
@@ -11,6 +10,7 @@
         android:layout_alignParentTop="true">
 
         <TextView
+            android:id="@+id/go_bezzy"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
@@ -42,39 +42,29 @@
         android:layout_below="@id/back_bezy">
 
         <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:src="@drawable/welcome_image"
-        />
-            <TextView
-                android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:src="@drawable/welcome_image"
+                />
+            <Button
+                android:id="@+id/welcome_btn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Welcome  User"
-                android:textColor="@color/colourblack"
-                android:textSize="22sp"
-                android:textStyle="normal"
-                android:fontFamily="sans-serif-medium"/>
-    <Button
-        android:id="@+id/welcome_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_margin="20dp"
-        android:text="Back to Home"
-        android:background="@drawable/login_button_background"
-        android:textColor="#fff"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-light"
-        />
-    </LinearLayout>
+                android:layout_marginTop="50dp"
+                android:layout_margin="20dp"
+                android:text="Back to Home"
+                android:background="@drawable/login_button_background"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-light"
+                />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 
 </RelativeLayout>

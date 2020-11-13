@@ -14,7 +14,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <RelativeLayout
+         <RelativeLayout
             android:id="@+id/user_part"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,9 +76,7 @@
                 android:padding="5dp"
                 app:tint="#A8A4A4"
                 android:layout_marginTop="5dp"/>
-
-
-        </RelativeLayout>
+           </RelativeLayout>
 
 
             <LinearLayout
@@ -109,7 +107,14 @@
                         app:andexo_full_screen="true"
                         app:andexo_play_when_ready="true"
                         app:andexo_show_controller="true"
-                        app:andexo_resize_mode="Fit" />
+                        app:andexo_resize_mode="Fit"
+                        android:visibility="gone"/>
+                    <ImageView
+                        android:id="@+id/imageHolder"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:visibility="gone"/>
 
 
                 </androidx.cardview.widget.CardView>

@@ -226,6 +226,39 @@
             android:clickable="true"/>
 
     </RelativeLayout>
+   <!-- <LinearLayout
+        android:id="@+id/gallery_part"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_below="@id/edit_part">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            app:tabMode="scrollable"
+            android:layout_below="@+id/edit_part"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="center"
+            android:layout_weight="2"
+            >
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:icon="@drawable/ic_baseline_border_all_24"
+
+                />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_baseline_favorite_border_24"
+                />
+        </com.google.android.material.tabs.TabLayout>
+
+
+
+
+    </LinearLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"

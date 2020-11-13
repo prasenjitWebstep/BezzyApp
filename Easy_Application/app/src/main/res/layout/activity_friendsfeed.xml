@@ -8,7 +8,7 @@
     android:background="@drawable/spl_button_background">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:cardCornerRadius="15dp">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/frds_feed"
@@ -17,5 +17,6 @@
 
     </androidx.recyclerview.widget.RecyclerView>
     </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>

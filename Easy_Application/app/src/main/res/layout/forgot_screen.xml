@@ -39,7 +39,7 @@
             android:id="@+id/tv_what"
             android:layout_width="350dp"
             android:layout_height="40dp"
-            android:text="Enter your registered Email Id?"
+            android:text="Enter your registered Email Id"
             android:textSize="20sp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="150dp"
