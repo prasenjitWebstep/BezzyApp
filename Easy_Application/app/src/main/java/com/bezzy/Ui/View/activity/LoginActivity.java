@@ -133,12 +133,14 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
+
                     if(resp.equals("true")){
                         progressDialog.dismiss();
-                        Utility.setLogin(LoginActivity.this,"1");
+                        String name = object.getJSONObject("usedetails").getString("get_name");
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this,Profile.class);
+                        Intent intent = new Intent(LoginActivity.this,Welcome.class);
+                        intent.putExtra("name",name);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }else{

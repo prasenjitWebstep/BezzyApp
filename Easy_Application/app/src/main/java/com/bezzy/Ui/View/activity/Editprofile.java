@@ -68,6 +68,7 @@ public class Editprofile extends AppCompatActivity {
     int MY_SOCKET_TIMEOUT_MS = 10000;
     Uri resultUri;
     Bitmap bitmap;
+    TextView gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +78,15 @@ public class Editprofile extends AppCompatActivity {
         profile_image = findViewById(R.id.profile_image);
         btn_update=findViewById(R.id.update);
         ed_dob = findViewById(R.id.dob);
+        gender=findViewById(R.id.gendeer);
 
         ed_email = findViewById(R.id.email);
         ed_name = findViewById(R.id.fullname);
         ed_username = findViewById(R.id.username);
         ed_bio = findViewById(R.id.bio);
-        male_btn=findViewById(R.id.radio_male);
+        /*male_btn=findViewById(R.id.radio_male);
         female_btn=findViewById(R.id.radio_female);
-        other_btn=findViewById(R.id.radio_other);
+        other_btn=findViewById(R.id.radio_other);*/
 
         Glide.with(Editprofile.this).load(Utility.getImage(Editprofile.this)).into(profile_image);
 
@@ -167,7 +169,7 @@ public class Editprofile extends AppCompatActivity {
                 Updateprofile();
             }
         });
-        if(Utility.getGender(Editprofile.this).equals("Male")){
+        /*if(Utility.getGender(Editprofile.this).equals("Male")){
             str_gender = "Male";
             male_btn.setChecked(true);
 
@@ -180,8 +182,8 @@ public class Editprofile extends AppCompatActivity {
             str_gender = "Other";
             other_btn.setChecked(true);
 
-        }
-        male_btn.setOnClickListener(new View.OnClickListener() {
+        }*/
+       /* male_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 male_btn.setChecked(true);
@@ -211,7 +213,7 @@ public class Editprofile extends AppCompatActivity {
                 str_gender = "Other";
 
             }
-        });
+        });*/
 
     }
     private void callApiUpdateProfile(String url) {
@@ -256,7 +258,7 @@ public class Editprofile extends AppCompatActivity {
                 map.put("fullname",ed_name.getText().toString());
                 map.put("email",ed_email.getText().toString());
                 map.put("dob",ed_dob.getText().toString());
-                map.put("gender",str_gender);
+
                 map.put("user_bio",ed_bio.getText().toString());
 
                 return map;

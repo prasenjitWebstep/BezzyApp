@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eae8fe">
     <RelativeLayout
         android:id="@+id/back_bezy"
@@ -37,7 +38,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="3dp"
         android:elevation="3dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
         android:layout_below="@id/back_bezy">
 

@@ -150,9 +150,22 @@
                         android:textColor="@color/colourblack"
                         android:focusable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/gendeer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/back_image"
+                    android:fontFamily="sans-serif-light"
+                   android:hint="Gender"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="17sp"
+                    android:layout_marginLeft="20dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
 
 
-                <LinearLayout
+               <!-- <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="3"
@@ -182,7 +195,7 @@
 
                             android:layout_weight="1"/>
                     </RadioGroup>
-                </LinearLayout>
+                </LinearLayout>-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_input_bio"
                     android:layout_width="match_parent"

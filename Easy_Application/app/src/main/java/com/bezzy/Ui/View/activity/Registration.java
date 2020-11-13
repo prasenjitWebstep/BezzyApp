@@ -81,9 +81,9 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         progressDialog = new ProgressDialog(Registration.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Please Wait..");
-        male_btn=findViewById(R.id.radio_male);
+       /* male_btn=findViewById(R.id.radio_male);
         female_btn=findViewById(R.id.radio_female);
-        other_btn=findViewById(R.id.radio_other);
+        other_btn=findViewById(R.id.radio_other);*/
         str_gender=null;
 
         ed_gender = findViewById(R.id.gender);
@@ -134,7 +134,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
 
 
-        male_btn.setOnClickListener(new View.OnClickListener() {
+        /*male_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 male_btn.setChecked(true);
@@ -143,9 +143,9 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                 str_gender = "Male";
 
             }
-        });
+        });*/
 
-        female_btn.setOnClickListener(new View.OnClickListener() {
+        /*female_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 male_btn.setChecked(false);
@@ -164,7 +164,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                 str_gender = "Other";
 
             }
-        });
+        });*/
 
     }
     public void Register() {

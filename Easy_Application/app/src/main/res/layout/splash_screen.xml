@@ -43,6 +43,6 @@
         android:background="@drawable/spl_button_background"
         android:text="Get Started"
         android:textColor="#007dfe"
-        android:visibility="gone"/>
+        />
 
 </RelativeLayout>
