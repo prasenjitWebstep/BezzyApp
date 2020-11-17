@@ -77,6 +77,7 @@ public class Profile extends AppCompatActivity {
         });
 
     }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navlistner=new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -1,6 +1,7 @@
 package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bezzy.Ui.View.activity.Friendsfeed;
 import com.bezzy.Ui.View.model.Friendsfeed_item;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
@@ -37,7 +40,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendsfeedHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FriendsfeedHolder holder, final int position) {
 
         Glide.with(context)
                 .load(friendList.get(position).getFriendPhoto())
@@ -60,6 +63,18 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
             holder.userPost.setTextColor(Color.parseColor("#f93f07"));
         }
 
+        holder.friendsCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Friendsfeed.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("id",friendList.get(position).getFriendId());
+                intent.putExtra("name",friendList.get(position).getFriendName());
+                intent.putExtra("image",friendList.get(position).getFriendPhoto());
+                context.startActivity(intent);
+            }
+        });
+
 
     }
 
@@ -74,6 +89,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
         TextView userName,userPost,postBadge;
         FrameLayout noti;
         ImageView video,oldPost;
+        CardView friendsCard;
 
         public FriendsfeedHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,6 +100,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
             noti = itemView.findViewById(R.id.noti);
             video = itemView.findViewById(R.id.video);
             oldPost = itemView.findViewById(R.id.oldPost);
+            friendsCard = itemView.findViewById(R.id.friendsCard);
         }
     }
 }

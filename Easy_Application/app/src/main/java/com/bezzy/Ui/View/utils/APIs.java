@@ -23,4 +23,6 @@ public class APIs {
     public static String ACCEPTREQUEST = "api/AcceptFriendRequest";
     public static String REJECTREQUEST = "api/RejectFriendRequest";
     public static String FRIENDSBLOCKLIST = "api/friendblocklist";
+    public static String FRIENDPOSTLIST = "api/friendblockdetails";
+    public static String LIKEPOST = "api/postlikedislike";
 }

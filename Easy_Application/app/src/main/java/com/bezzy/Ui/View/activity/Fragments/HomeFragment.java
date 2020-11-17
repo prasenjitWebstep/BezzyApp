@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
     Friendsnoti_item ob1;
     Search_adapter adapter;
     FrameLayout noti;
-    TextView cart_badge;
+    TextView cart_badge,go_bezzy;
     ArrayList<Friendsfeed_item> friendsfeed_items;
 
 
@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment {
         recyclerView=view.findViewById(R.id.friendsnoti_listf);
         noti = view.findViewById(R.id.noti);
         cart_badge = view.findViewById(R.id.cart_badge);
+        go_bezzy = view.findViewById(R.id.go_bezzy);
 
         if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
             cart_badge.setVisibility(View.VISIBLE);
@@ -117,6 +118,7 @@ public class HomeFragment extends Fragment {
                     String status = object1.getString("status");
                     if(status.equals("success")){
                         progressDialog.dismiss();
+                        go_bezzy.setText("My Friends Block");
                         JSONArray array = object1.getJSONObject("total_feed_response").getJSONArray("friend_list");
                         for(int i = 0;i<array.length();i++){
                             JSONObject object11 = array.getJSONObject(i);
@@ -125,6 +127,7 @@ public class HomeFragment extends Fragment {
                         }
                         recyclerView.setAdapter(new Friendsfeed_Adapter(getActivity(),friendsfeed_items));
                     }else{
+                        go_bezzy.setText("Add Friends");
                         if(Utility.internet_check(getActivity())) {
 
                             progressDialog.show();

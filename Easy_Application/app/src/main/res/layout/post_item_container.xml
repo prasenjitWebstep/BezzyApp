@@ -30,11 +30,10 @@
                 android:textColor="@color/white"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:background="@drawable/ic_play_button"
+                android:background="@drawable/play_button"
                 android:textSize="12sp"
                 android:padding="5dp"
-                android:textStyle="bold"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
