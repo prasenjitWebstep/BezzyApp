@@ -56,10 +56,6 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     private TextInputLayout textInputUsername;
     private TextInputLayout textInputPassword;
     ProgressDialog progressDialog;
-    RadioGroup gender_gr;
-    RadioButton male_btn;
-    RadioButton female_btn;
-    RadioButton other_btn;
 
 
 
@@ -81,14 +77,11 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         progressDialog = new ProgressDialog(Registration.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Please Wait..");
-        male_btn=findViewById(R.id.radio_male);
-        female_btn=findViewById(R.id.radio_female);
-        other_btn=findViewById(R.id.radio_other);
-        str_gender=null;
+        str_gender = "null";
 
         ed_gender = findViewById(R.id.gender);
         btn_register = findViewById(R.id.register);
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.gender, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,40 +125,6 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-
-
-        male_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                male_btn.setChecked(true);
-                female_btn.setChecked(false);
-                other_btn.setChecked(false);
-                str_gender = "Male";
-
-            }
-        });
-
-        female_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                male_btn.setChecked(false);
-                female_btn.setChecked(true);
-                other_btn.setChecked(false);
-                str_gender = "Female";
-
-            }
-        });
-        other_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                male_btn.setChecked(false);
-                female_btn.setChecked(false);
-                other_btn.setChecked(true);
-                str_gender = "Other";
-
-            }
-        });
-
     }
     public void Register() {
         if(ed_username.getText().toString().isEmpty()){
@@ -184,10 +143,10 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             ed_cnfpasswd.setError("password not matched");
         }else if(ed_dob.getText().toString().isEmpty()){
             ed_dob.setError("Enter Date of Birth");
-        }else if(str_gender.equals(null)){
+        }else if(str_gender.equals("null")){
             Toast.makeText(Registration.this, "Please select your gender", Toast.LENGTH_SHORT).show();
         }else{
-            if(Utility.internet_check(Registration.this)) {
+            if(Utility.internet_check(Registration.this)){
                 progressDialog.show();
                 callApiRegistration(APIs.BASE_URL+APIs.REGISTRATION);
             }
@@ -248,19 +207,19 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         queue.add(request);
     }
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
         str_gender = parent.getItemAtPosition(position).toString();
         Log.e("Gender",str_gender);
-        Toast.makeText(parent.getContext(),str_gender,Toast.LENGTH_LONG).show();
+        /*Toast.makeText(parent.getContext(),str_gender,Toast.LENGTH_LONG).show();*/
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent){
 
     }
 
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    public void onPointerCaptureChanged(boolean hasCapture){
 
     }
 }

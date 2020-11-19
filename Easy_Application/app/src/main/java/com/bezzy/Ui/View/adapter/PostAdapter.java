@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bezzy.Ui.View.activity.Editprofile;
 import com.bezzy.Ui.View.activity.ImageDisplayActivity;
+import com.bezzy.Ui.View.activity.VideoDisplayActivity;
 import com.bezzy.Ui.View.model.PostModel;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
@@ -66,7 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     context.startActivity(intent);
                 }
                 else  {
-                    Intent intent = new Intent(context, Editprofile.VideoDisplayActivity.class);
+                    Intent intent = new Intent(context, VideoDisplayActivity.class);
                     intent.putExtra("id", postItems.get(position).getId());
                     intent.putExtra("postId", postItems.get(position).getPostId());
                     intent.putExtra("type", postItems.get(position).getType());

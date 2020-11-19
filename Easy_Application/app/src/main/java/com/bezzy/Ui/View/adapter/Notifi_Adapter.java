@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -22,10 +23,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.NotificationActivity;
+import com.bezzy.Ui.View.activity.Registration;
 import com.bezzy.Ui.View.model.Notification_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,10 +40,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.NoyificationViewHolder> {
     Context context;
     ArrayList<Notification_item> dataholder;
+    ProgressDialog progressDialog;
 
-    public Notifi_Adapter(Context context, ArrayList<Notification_item> dataholder) {
+    public Notifi_Adapter(Context context, ArrayList<Notification_item> dataholder, ProgressDialog progressDialog) {
         this.context = context;
         this.dataholder = dataholder;
+        this.progressDialog = progressDialog;
     }
 
     @NonNull
@@ -53,17 +58,31 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoyificationViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final NoyificationViewHolder holder, final int position) {
 //        holder.img.setImageResource(dataholder.get(position).getImg());
         holder.descrip.setText(dataholder.get(position).getDescrip());
 
-        if(dataholder.get(position).getType().equals("1")){
+        Glide.with(context)
+                .load(dataholder.get(position).getImg())
+                .into(holder.img_logo);
+
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.setCancelable(false);
+
+        if(dataholder.get(position).getType().equals("1") && dataholder.get(position).getFriendrequestStatus().equals("3")){
             holder.relativeShow.setVisibility(View.VISIBLE);
             holder.acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    callApiAccept(APIs.BASE_URL+APIs.ACCEPTREQUEST+"/"+dataholder.get(position).getFromId()+"/"+ Utility.getUserId(context));
+                    if(Utility.internet_check(context)){
+                        progressDialog.show();
+                        callApiAccept(APIs.BASE_URL+APIs.ACCEPTREQUEST+"/"+dataholder.get(position).getFromId()+"/"+ Utility.getUserId(context),holder.relativeShow);
+                    }
+                    else {
+                        progressDialog.dismiss();
+                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+                    }
 
                 }
             });
@@ -72,7 +91,16 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
                 @Override
                 public void onClick(View v) {
 
-                    callApiReject(APIs.BASE_URL+APIs.REJECTREQUEST+"/"+dataholder.get(position).getFromId()+"/"+ Utility.getUserId(context));
+                    if(Utility.internet_check(context)){
+                        progressDialog.show();
+                        callApiReject(APIs.BASE_URL+APIs.REJECTREQUEST+"/"+dataholder.get(position).getFromId()+"/"+ Utility.getUserId(context),holder.relativeShow);
+                    }
+                    else {
+                        progressDialog.dismiss();
+                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+                    }
+
+
 
                 }
             });
@@ -82,7 +110,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
 
     }
 
-    private void callApiReject(String url) {
+    private void callApiReject(String url, final RelativeLayout relativeShow) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -91,12 +119,16 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
                     JSONObject object1 = new JSONObject(response);
                     String status = object1.getString("status");
                     if(status.equals("success")){
+                        progressDialog.dismiss();
                         Toast.makeText(context,object1.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, NotificationActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        context.startActivity(intent);
+                        if(object1.getString("friend_request_status").equals("2")){
+                            relativeShow.setVisibility(View.GONE);
+                        }
+                    }else{
+                        progressDialog.dismiss();
                     }
                 } catch (JSONException e) {
+                    progressDialog.dismiss();
                     e.printStackTrace();
                 }
 
@@ -105,7 +137,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressDialog.dismiss();
             }
         });
 
@@ -113,7 +145,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
         queue.add(request);
     }
 
-    private void callApiAccept(String url) {
+    private void callApiAccept(String url, final RelativeLayout relativeShow) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -124,13 +156,17 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
                     JSONObject object1 = new JSONObject(response);
                     String status = object1.getString("status");
                     if(status.equals("success")){
+                        progressDialog.dismiss();
                         Toast.makeText(context,object1.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, NotificationActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
+                        if(object1.getString("friend_request_status").equals("1")){
+                            relativeShow.setVisibility(View.GONE);
+                        }
+                    }else{
+                        progressDialog.dismiss();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    progressDialog.dismiss();
                 }
 
 
@@ -138,7 +174,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressDialog.dismiss();
             }
         });
 
@@ -162,7 +198,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
             super(itemView);
             descrip = itemView.findViewById(R.id.title_text);
             img_logo = itemView.findViewById(R.id.img_logo);
-            relativeShow = itemView.findViewById(R.id.relativeShow);
+            relativeShow = itemView.findViewById(R.id.relativeAcceptRejectShow);
             acceptButton = itemView.findViewById(R.id.acceptButton);
             rejectButton = itemView.findViewById(R.id.rejectButton);
         }

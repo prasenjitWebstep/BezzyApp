@@ -151,38 +151,24 @@
                         android:focusable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="3"
-                    android:layout_margin="10dp"
-                    android:padding="5dp">
-                    <RadioGroup
+                    android:enabled="true"
+                    app:errorEnabled="true"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ed_gender"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
-                        <RadioButton android:id="@+id/radio_male"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/male"
+                        android:hint="Gender"
+                        android:textSize="15sp"
+                        android:textColor="@color/colourblack"
+                        android:focusable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                            android:layout_weight="1"/>
-                        <RadioButton android:id="@+id/radio_female"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/female"
-
-                            android:layout_weight="1"/>
-                        <RadioButton android:id="@+id/radio_other"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/other"
-
-                            android:layout_weight="1"/>
-                    </RadioGroup>
-                </LinearLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_input_bio"
                     android:layout_width="match_parent"
@@ -196,7 +182,7 @@
                         android:id="@+id/bio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="bio"
+                        android:hint="Bio"
                         android:inputType="textWebEmailAddress"
                         android:textSize="15sp"
                         android:textColor="@color/colourblack"/>

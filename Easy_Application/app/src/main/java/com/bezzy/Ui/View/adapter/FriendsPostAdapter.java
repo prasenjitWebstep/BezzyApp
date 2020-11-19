@@ -1,6 +1,7 @@
 package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.CommentActivity;
 import com.bezzy.Ui.View.activity.Friendsfeed;
 import com.bezzy.Ui.View.model.FriendsPostModel;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
@@ -190,6 +192,16 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
                     Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        holder.chat_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",friendsModelList.get(position).getPost_id());
+                context.startActivity(intent);
             }
         });
 

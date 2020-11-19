@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment {
                         recyclerView.setAdapter(new Friendsfeed_Adapter(getActivity(),friendsfeed_items));
                     }else{
                         go_bezzy.setText("Add Friends");
-                        if(Utility.internet_check(getActivity())) {
+                        if(Utility.internet_check(getActivity().getApplicationContext())) {
 
                             progressDialog.show();
 

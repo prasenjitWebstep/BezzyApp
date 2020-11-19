@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment {
 
         Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(circularImg);
 
-        userName.setText(Utility.getUserName(getActivity()));
+        userName.setText(Utility.getName(getActivity()));
 
         following.setText(Utility.getFollowing(getActivity()));
         follower.setText(Utility.getFollowers(getActivity()));

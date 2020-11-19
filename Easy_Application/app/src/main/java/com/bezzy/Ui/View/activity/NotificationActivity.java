@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,6 +41,7 @@ public class NotificationActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Notification_item ob;
     ImageView back_image;
+    ProgressDialog dialog;
 
 
     @Override
@@ -47,6 +50,9 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
         recyclerView=findViewById(R.id.noti_listf);
         back_image = findViewById(R.id.back_image);
+        dialog = new ProgressDialog(NotificationActivity.this);
+        dialog.setMessage("Loading Please Wait...");
+        dialog.setCancelable(false);
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +69,22 @@ public class NotificationActivity extends AppCompatActivity {
         Utility.setNotificationStatus(this,"0");
 
         dataholder=new ArrayList<>();
-        show(APIs.BASE_URL+APIs.NOTIFICATION+"/"+ Utility.getUserId(getApplicationContext()));
+
+        if(Utility.internet_check(NotificationActivity.this)) {
+
+            dialog.show();
+
+            Log.e("Result","1");
+
+            show(APIs.BASE_URL+APIs.NOTIFICATION+"/"+ Utility.getUserId(NotificationActivity.this));
+
+        }
+        else {
+
+            dialog.dismiss();
+
+            Toast.makeText(NotificationActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -72,18 +93,31 @@ public class NotificationActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("RSESS",response);
+                Log.e("RESPONSE",response);
                 try {
                     JSONObject object = new JSONObject(response);
                     String status = object.getString("status");
                     if(status.equals("success")){
+                        dialog.dismiss();
                         JSONArray array = object.getJSONArray("notification_list");
-                        Log.e("ARRAY",array.toString());
-                        for(int i=0;i<array.length();i++){
-                            JSONObject object1 = array.getJSONObject(i);
-                            Log.e("OBJECT",object1.toString());
 
-                            ob = new Notification_item(object1.getString("notification_type"),object1.getString("activity_message"),object1.getString("from_id"));
+                        for(int i=0;i<array.length();i++){
+
+                            JSONObject object1 = array.getJSONObject(i);
+
+                            String type = object1.getString("notification_type");
+                            String fromId,friendRequestStatus;
+                            if(type.equals("1")){
+                                fromId =  object1.getString("from_id");
+                                friendRequestStatus = object1.getString("friend_request_status");
+                            }else{
+                                fromId = "0";
+                                friendRequestStatus = "0";
+                            }
+                            String description = object1.getString("activity_message");
+                            String userImage = object1.getString("userimage");
+
+                            ob = new Notification_item(userImage,type,description,fromId,friendRequestStatus);
                             dataholder.add(ob);
 
 
@@ -100,9 +134,12 @@ public class NotificationActivity extends AppCompatActivity {
                             //check using if else one hour*/
                         }
 
-                        recyclerView.setAdapter(new Notifi_Adapter(getApplicationContext(),dataholder));
+                        recyclerView.setAdapter(new Notifi_Adapter(getApplicationContext(),dataholder,dialog));
+                    }else{
+                        dialog.dismiss();
                     }
                 } catch (JSONException e) {
+                    dialog.dismiss();
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
                 }
@@ -110,6 +147,8 @@ public class NotificationActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+                Log.e("Error",error.toString());
             }
         });
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());

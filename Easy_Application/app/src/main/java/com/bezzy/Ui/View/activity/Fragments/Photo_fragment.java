@@ -74,7 +74,6 @@ public class Photo_fragment extends Fragment {
     Button button;
     String base64String;
     String filePath;
-    String caption_upload;
     //Image request code
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
@@ -105,7 +104,6 @@ public class Photo_fragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         // button = view.findViewById(R.id.choose_image_button);
         caption = view.findViewById(R.id.ed_content);
-        caption_upload = caption.getText().toString();
         button = view.findViewById(R.id.upload);
         //image_part = view.findViewById(R.id.image_part);
         progressDialog = new ProgressDialog(getActivity());
@@ -160,9 +158,6 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(caption.getText().toString().isEmpty()){
-                    caption_upload = "null";
-                }
                 if(Utility.internet_check(getActivity())) {
 
                     progressDialog.show();
@@ -176,14 +171,12 @@ public class Photo_fragment extends Fragment {
                             break;
                     }
 
-
-
                 }
                 else {
 
                     progressDialog.dismiss();
-
                     Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+
                 }
 
             }
@@ -241,13 +234,6 @@ public class Photo_fragment extends Fragment {
                         bitmapList = new ArrayList<>();
                         bitmap = (Bitmap) data.getExtras().get("data");
                         bitmapList.add(bitmap);
-                        //
-                        //
-                        //
-                        //
-                        //
-                        //
-                        // imageView.setImageBitmap(bitmap);
                         recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(),bitmapList));
                     }
 
@@ -289,7 +275,7 @@ public class Photo_fragment extends Fragment {
 
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -338,7 +324,7 @@ public class Photo_fragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 // params.put("tags", "ccccc");  add string parameters
                 params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content",caption_upload);
+                params.put("post_content",caption.getText().toString());
                 return params;
             }
             @Override
@@ -393,7 +379,7 @@ public class Photo_fragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("userID", Utility.getUserId(getActivity().getApplicationContext()));
-                params.put("post_content", caption_upload);
+                params.put("post_content", caption.getText().toString());
                 return params;
             }
 

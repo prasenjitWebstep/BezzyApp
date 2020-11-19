@@ -4,17 +4,22 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -36,6 +41,7 @@ import com.bezzy.Ui.View.model.Searchnoti_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,19 +54,15 @@ import java.util.Map;
 
 public class SearchFragment extends Fragment {
 
-    SearchView searchView;
-    Button button;
-    ImageView imgSearch;
-    AutoCompleteTextView autocompleteHeader;
+    ImageButton imgSearchBtn;
     //RecyclerView recyclerView;
     ArrayList<Friendsnoti_item> dataholder;
     RecyclerView recyclerViewSearchResult;
     Friendsnoti_item ob1;
     String search;
     ProgressDialog progressDialog;
-    FrameLayout noti;
-    TextView cart_badge;
-
+    TextInputEditText searchName;
+    CardView cardSearch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,28 +70,30 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         //recyclerView = view.findViewById(R.id.recyclerView);
-        autocompleteHeader = view.findViewById(R.id.autocompleteHeader);
-        imgSearch = view.findViewById(R.id.imgSearch);
+        imgSearchBtn = view.findViewById(R.id.imgSearchBtn);
+        cardSearch = view.findViewById(R.id.cardSearch);
+        searchName = view.findViewById(R.id.searchName);
+        search = "null";
+
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Searching People Please wait...");
+        progressDialog.setMessage("Please wait....");
 
-        noti = view.findViewById(R.id.noti);
-        cart_badge = view.findViewById(R.id.cart_badge);
-
-        if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
-            cart_badge.setVisibility(View.VISIBLE);
-        }else{
-            cart_badge.setVisibility(View.GONE);
-        }
-
-        noti.setOnClickListener(new View.OnClickListener() {
+        imgSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NotificationActivity.class);
-                startActivity(intent);
+                if(cardSearch.getVisibility() == View.VISIBLE){
+                    cardSearch.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_up));
+                    cardSearch.setVisibility(View.GONE);
+                }else{
+                    cardSearch.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out_down));
+                    cardSearch.setVisibility(View.VISIBLE);
+                }
+
             }
         });
+
+
 
         recyclerViewSearchResult = view.findViewById(R.id.recyclerViewSearchResult);
         dataholder = new ArrayList<>();
@@ -97,26 +101,106 @@ public class SearchFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerViewSearchResult.setLayoutManager(linearLayoutManager);
 
-        imgSearch.setOnClickListener(new View.OnClickListener() {
+        if(Utility.internet_check(getActivity())) {
+
+            progressDialog.show();
+
+            Log.e("Result","1");
+
+            registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
+
+        }
+        else {
+
+            progressDialog.dismiss();
+
+            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
+        searchName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                if(Utility.internet_check(getActivity().getApplicationContext())) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    progressDialog.show();
-                    search = autocompleteHeader.getText().toString();
-                    search(APIs.BASE_URL+APIs.SEARCH);
-                    dataholder.clear();
+            }
 
-                }
-                else {
-                    progressDialog.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(),"No Network!",Toast.LENGTH_SHORT).show();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(!searchName.getText().toString().isEmpty()){
+                    if(Utility.internet_check(getActivity().getApplicationContext())) {
+
+                        search = searchName.getText().toString();
+                        search(APIs.BASE_URL+APIs.SEARCH);
+                        dataholder.clear();
+
+                    }
+                    else {
+                        Toast.makeText(getActivity().getApplicationContext(),"No Network!",Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    search = "null";
                 }
 
             }
         });
 
         return view;
+    }
+
+    private void registerUserResult(String url) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("REsponse",response);
+                progressDialog.dismiss();
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("resp");
+                    if(resp.equals("success")){
+                        JSONArray array = object.getJSONArray("all_user_list");
+                        for(int i = 0 ;i<array.length();i++){
+                            JSONObject object1 = array.getJSONObject(i);
+
+                            ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"));
+                            dataholder.add(ob1);
+
+                        }
+
+                        recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));
+
+                    }
+                } catch (JSONException e) {
+                    Log.e("Exception",e.toString());
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("Exception",error.toString());
+                progressDialog.dismiss();
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("log_userID", Utility.getUserId(getActivity()));
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue.add(request);
     }
 
     private void search(String url){
@@ -129,23 +213,22 @@ public class SearchFragment extends Fragment {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
-                        progressDialog.dismiss();
-                        autocompleteHeader.getText().clear();
                         JSONArray array = object.getJSONArray("search_result");
                         for(int i = 0;i<array.length();i++){
 
                             JSONObject object1 = array.getJSONObject(i);
 
                             ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"));
+                            dataholder.clear();
                             dataholder.add(ob1);
                         }
                         recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));
 
                     }else{
-                        progressDialog.dismiss();
                         Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
+                    Log.e("Exception",e.toString());
                     e.printStackTrace();
                 }
             }
@@ -159,6 +242,7 @@ public class SearchFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("searchval",search);
+                map.put("loguser_id",Utility.getUserId(getActivity()));
                 Log.e("Value",map.get("searchval"));
                 //searchView.getQuery().toString()
                 return map;
