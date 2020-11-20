@@ -26,6 +26,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.CommentActivity;
 import com.bezzy.Ui.View.activity.Friendsfeed;
+import com.bezzy.Ui.View.activity.PostImageVideoViewActivity;
 import com.bezzy.Ui.View.model.FriendsPostModel;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy.Ui.View.utils.APIs;
@@ -93,6 +94,15 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         if(friendsModelList.get(position).getPost_type().equals("video")){
             holder.videoDisp.setVisibility(View.VISIBLE);
+            holder.imageDisp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, PostImageVideoViewActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("postId",friendsModelList.get(position).getPost_id());
+                    context.startActivity(intent);
+                }
+            });
             holder.imageShow.setVisibility(View.GONE);
             holder.recyclerImageShow.setVisibility(View.GONE);
             JSONArray array = friendsModelList.get(position).getPost_image_video();
@@ -112,6 +122,15 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             int size = array.length();
             if(size<2){
                 holder.imageShow.setVisibility(View.VISIBLE);
+                holder.imageShow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, PostImageVideoViewActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("postId",friendsModelList.get(position).getPost_id());
+                        context.startActivity(intent);
+                    }
+                });
                 holder.recyclerImageShow.setVisibility(View.GONE);
                 holder.videoDisp.setVisibility(View.GONE);
                 for(int i=0;i<array.length();i++){
@@ -140,7 +159,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
                     try {
                         JSONObject object = array.getJSONObject(i);
-                        postModelObj = new FriendsPostModelImage(object.getString("post_url"),object.getString("id"),object.getString("post_type"));
+                        postModelObj = new FriendsPostModelImage(object.getString("post_url"),friendsModelList.get(position).post_id,object.getString("post_type"));
                         postModelList.add(postModelObj);
 
                     } catch (JSONException e) {

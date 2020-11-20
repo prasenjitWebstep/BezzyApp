@@ -1,14 +1,17 @@
 package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bezzy.Ui.View.activity.PostImageVideoViewActivity;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
@@ -32,11 +35,21 @@ public class FriendsImagePostAdapter extends RecyclerView.Adapter<FriendsImagePo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendsImagePostHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FriendsImagePostHolder holder, final int position) {
 
         Glide.with(context)
                 .load(postList.get(position).getPostUrl())
                 .into(holder.imageDisp);
+
+        holder.imageDisp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PostImageVideoViewActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",postList.get(position).getPostId());
+                context.startActivity(intent);
+            }
+        });
 
     }
 

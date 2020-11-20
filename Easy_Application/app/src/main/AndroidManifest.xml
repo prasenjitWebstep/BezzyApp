@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.bezzy.Ui.View.activity.Friendsfeed"></activity>
+        <activity android:name="com.bezzy.Ui.View.activity.PostImageVideoViewActivity"></activity>
+        <activity android:name="com.bezzy.Ui.View.activity.CommentActivity" />
+        <activity android:name="com.bezzy.Ui.View.activity.VideoDisplayActivity" />
+        <activity android:name="com.bezzy.Ui.View.activity.Friendsfeed" />
         <activity android:name="com.bezzy.Ui.View.activity.NotificationActivity" />
         <activity android:name="com.bezzy.Ui.View.activity.Upload" />
         <activity android:name="com.bezzy.Ui.View.activity.showprofile" />
