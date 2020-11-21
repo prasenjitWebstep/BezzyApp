@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
+import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.activity.NotificationActivity;
 import com.bezzy.Ui.View.adapter.Friendsfeed_Adapter;
 import com.bezzy.Ui.View.adapter.Friendsnoti_adapter;
@@ -54,6 +55,7 @@ public class HomeFragment extends Fragment {
     FrameLayout noti;
     TextView cart_badge,go_bezzy;
     ArrayList<Friendsfeed_item> friendsfeed_items;
+    ImageView chatButton;
 
 
     @Override
@@ -70,6 +72,7 @@ public class HomeFragment extends Fragment {
         noti = view.findViewById(R.id.noti);
         cart_badge = view.findViewById(R.id.cart_badge);
         go_bezzy = view.findViewById(R.id.go_bezzy);
+        chatButton = view.findViewById(R.id.chatButton);
 
         if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
             cart_badge.setVisibility(View.VISIBLE);

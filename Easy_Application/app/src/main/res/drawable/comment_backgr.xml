@@ -5,8 +5,8 @@ android:shape="rectangle" >
 
 </solid>
     <stroke
-        android:width="2dp"
-        android:color="@color/black">
+        android:width=".7dp"
+        android:color="@color/gradstart">
 
     </stroke>
 

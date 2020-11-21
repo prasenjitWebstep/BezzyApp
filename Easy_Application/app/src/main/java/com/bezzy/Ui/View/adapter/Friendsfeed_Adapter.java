@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Friendsfeed;
+import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.model.FriendsPostModel;
 import com.bezzy.Ui.View.model.Friendsfeed_item;
 import com.bezzy.Ui.View.utils.APIs;
@@ -117,6 +118,17 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
             }
         });
 
+        holder.chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Massage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("FrndId",friendList.get(position).getFriendId());
+                intent.putExtra("userImage",friendList.get(position).getFriendPhoto());
+                intent.putExtra("userName",friendList.get(position).getFriendName());
+                context.startActivity(intent);
+            }
+        });
 
 
         /*holder.friendsCard.setOnClickListener(new View.OnClickListener() {
@@ -204,7 +216,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
         CircleImageView circularImg;
         TextView userName,userPost,postBadge;
         FrameLayout noti;
-        ImageView video,oldPost;
+        ImageView video,oldPost,chatButton;
         CardView friendsCard;
         CardView friendsPostCards;
         RecyclerView frds_feed;
@@ -221,6 +233,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
             friendsCard = itemView.findViewById(R.id.friendsCard);
             friendsPostCards = itemView.findViewById(R.id.friendsPostCards);
             frds_feed = itemView.findViewById(R.id.frds_feed);
+            chatButton = itemView.findViewById(R.id.chatButton);
         }
     }
 }

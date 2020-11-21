@@ -8,20 +8,21 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bezzy.Ui.View.model.ChatMessageModel;
 import com.bezzy_application.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Chatbox_adapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
     private Context mContext;
-    private List<Chatbox_adapter> mMessageList;
+    private ArrayList<ChatMessageModel> mMessageList;
 
-    public Chatbox_adapter(Context mContext, List<Chatbox_adapter> mMessageList) {
+    public Chatbox_adapter(Context mContext, ArrayList<ChatMessageModel> mMessageList) {
         this.mContext = mContext;
         this.mMessageList = mMessageList;
-
     }
 
     @NonNull

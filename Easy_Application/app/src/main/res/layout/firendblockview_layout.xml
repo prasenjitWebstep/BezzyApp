@@ -17,7 +17,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardFriends"
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
+                android:layout_height="130dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
@@ -128,7 +128,17 @@
                                 android:paddingBottom="5dp"
                                 android:paddingRight="5dp"
                                 android:layout_below="@+id/userName"
-                                android:visibility="gone"/>
+                                android:visibility="invisible"/>
+
+                            <ImageView
+                                android:id="@+id/chatButton"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_chat"
+                                android:layout_centerInParent="true"
+                                android:layout_below="@+id/userPost"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/background_circle"/>
 
                         </RelativeLayout>
 

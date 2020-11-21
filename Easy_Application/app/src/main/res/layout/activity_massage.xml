@@ -74,6 +74,7 @@
                     android:textColor="#000"
                     android:layout_marginRight="10dp"
                     android:fontFamily="sans-serif-thin"
+                    android:visibility="invisible"
                     />
             </LinearLayout>
 
@@ -174,7 +175,8 @@
             android:layout_marginRight="5dp"
             android:padding="5dp"
             app:tint="#A8A4A4"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
