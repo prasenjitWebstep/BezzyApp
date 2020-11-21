@@ -38,7 +38,7 @@ import java.util.ArrayList;
 public class PostImageVideoViewActivity extends AppCompatActivity {
 
     String postId;
-    ImageView back_image,imageShow,fav_btn,favBtnfilled;
+    ImageView back_image,imageShow,fav_btn,favBtnfilled,comment_btn;
     TextView following_num,following_numm,servicesText;
     AndExoPlayerView andExoPlayerView;
     RecyclerView recyclerImageShow;
@@ -62,8 +62,9 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
         following_numm = findViewById(R.id.following_numm);
         andExoPlayerView = findViewById(R.id.andExoPlayerView);
         recyclerImageShow = findViewById(R.id.recyclerImageShow);
+        comment_btn=findViewById(R.id.chat_btn);
         servicesText = findViewById(R.id.servicesText);
-        progressDialog = new ProgressDialog(PostImageVideoViewActivity.this);
+        progressDialog =new ProgressDialog(PostImageVideoViewActivity.this);
         progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
 
@@ -79,6 +80,15 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
 
             Toast.makeText(PostImageVideoViewActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
+        comment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostImageVideoViewActivity.this, CommentActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",postId);
+                PostImageVideoViewActivity.this.startActivity(intent);
+            }
+        });
 
     }
 
