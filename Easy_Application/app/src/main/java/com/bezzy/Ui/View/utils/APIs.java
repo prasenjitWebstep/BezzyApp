@@ -26,4 +26,6 @@ public class APIs {
     public static String FRIENDPOSTLIST = "api/friendblockdetails";
     public static String LIKEPOST = "api/postlikedislike";
     public static String FRIENDSBLOCKDETAILS = "api/friendsingleblockdetails";
+    public static String COMMENT_POST ="api/comment-post";
+    public static String COMMENT_LIST ="api/comment-list";
 }
