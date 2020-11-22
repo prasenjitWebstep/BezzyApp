@@ -5,38 +5,11 @@
     android:layout_height="match_parent"
     android:background="#eae8fe">
 
-    <RelativeLayout
-        android:id="@+id/back_bezy"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/back_image"
-            android:fontFamily="sans-serif-light"
-            android:text="Bezzy"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical" />
-
-        <ImageView
-            android:id="@+id/back_image"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:clickable="true"
-            android:src="@drawable/ic_baseline_keyboard_backspace_24"
-            />
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/back_bezy"
         android:background="@drawable/rounded_button">
 
         <RelativeLayout
@@ -56,7 +29,8 @@
                     android:paddingRight="10dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
-                    android:layout_marginTop="40dp"/>
+                    android:layout_marginTop="40dp"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -66,7 +40,8 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:paddingRight="10dp"
-                    android:paddingLeft="10dp"/>
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="40dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
 
@@ -127,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="Forgot Password?"
+                    android:text="Forget Password?"
                     android:textColor="@color/gradstart"
                     android:textSize="15sp"
                     android:paddingLeft="10dp"

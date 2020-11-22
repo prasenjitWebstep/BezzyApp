@@ -18,7 +18,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
-            android:text="Go Home"
+            android:text="Go Login"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp"
             android:textStyle="bold"

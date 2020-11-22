@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +45,7 @@ public class Chatbox_adapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-       /* UserMessage message = (UserMessage) mMessageList.get(position);
+        /*UserMessage message = (UserMessage) mMessageList.get(position);
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
@@ -75,15 +76,23 @@ public class Chatbox_adapter extends RecyclerView.Adapter {
 
 
     private class ReceiveMassageHolder extends RecyclerView.ViewHolder{
+        TextView rcvmsg,rcvtime;
+
 
         public ReceiveMassageHolder(@NonNull View itemView) {
             super(itemView);
+            rcvmsg=itemView.findViewById(R.id.rcv_message_body);
+            rcvtime=itemView.findViewById(R.id.rcv_message_time);
         }
     }
     private class SentMassageHolder extends RecyclerView.ViewHolder{
+        TextView sendmsg,sendtime;
 
         public SentMassageHolder(@NonNull View itemView) {
+
             super(itemView);
+            sendmsg=itemView.findViewById(R.id.text_message_body);
+            sendtime=itemView.findViewById(R.id.text_message_time);
         }
     }
 

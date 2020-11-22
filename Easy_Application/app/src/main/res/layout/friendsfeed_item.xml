@@ -168,11 +168,11 @@
 
                         <ImageView
                             android:id="@+id/favBtn"
-                            android:src="@drawable/ic_favorite"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            app:tint="#e0e0e0"/>
+                            android:src="@drawable/ic_heart"
+                             />
 
                         <ImageView
                             android:id="@+id/favBtnfilled"
@@ -210,7 +210,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            app:tint="#e0e0e0"/>
+                            />
 
                     </RelativeLayout>
 

@@ -78,7 +78,7 @@ public class Massage extends AppCompatActivity {
 
                 if(Utility.internet_check(Massage.this)) {
 
-                    chatList(APIs.BASE_URL+APIs.ADDCHAT);
+                    addchat(APIs.BASE_URL+APIs.ADDCHAT);
                 }
                 else {
 
@@ -91,9 +91,55 @@ public class Massage extends AppCompatActivity {
 
     }
 
-    private void chatList(String url) {
+    private void addchat(String url) {
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("ChatResponse",response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String sucess = object.getString("status");
+                    if(sucess.equals("success")){
+                        JSONArray array = object.getJSONArray("chat_history_list");
+                        for(int i = 0;i< array.length(); i++){
+                            JSONObject object1 = array.getJSONObject(i);
+                            messageModel = new ChatMessageModel(object1.getString("message_by"),object1.getString("chat_message"),object1.getString("chat_date_time"));
+                            modelArrayList.add(messageModel);
+                        }
+                        reyclerview_message_list.setAdapter(new Chatbox_adapter(Massage.this,modelArrayList));
+                    }
+
+                } catch (JSONException e) {
+                    Log.e("Exception",e.toString());
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error",error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("from_userID",Utility.getUserId(Massage.this));
+                map.put("to_userID",id);
+                map.put("chat_message",edittext_chatbox.getText().toString());
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(Massage.this);
+        queue.add(request);
+    }
+    private void chatList(String url) {
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 

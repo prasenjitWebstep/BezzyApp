@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment {
     RecyclerView postRecyclerView;
     ProgressDialog progressDialog;
     String url = "http://bezzy.websteptech.co.uk/api/logout";
-    ImageView imageView;
+    ImageView imageView,edit_pencil;
     ImageButton imageButton;
 
 
@@ -67,7 +67,6 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_profile, container, false);
-        button=view.findViewById(R.id.edit_btn);
         circularImg = view.findViewById(R.id.circularImg);
         userName = view.findViewById(R.id.userName);
         following = view.findViewById(R.id.following_num);
@@ -75,7 +74,8 @@ public class ProfileFragment extends Fragment {
         Likes = view.findViewById(R.id.like_num);
         userBio = view.findViewById(R.id.userBio);
         imageView=view.findViewById(R.id.logout);
-        imageButton=view.findViewById(R.id.imageButton);
+        edit_pencil=view.findViewById(R.id.edit_pancil);
+
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
         progressDialog = new ProgressDialog(getActivity());
@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
         }
 
 
-        button.setOnClickListener(new View.OnClickListener() {
+        edit_pencil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(), Editprofile.class);
@@ -105,12 +105,7 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
