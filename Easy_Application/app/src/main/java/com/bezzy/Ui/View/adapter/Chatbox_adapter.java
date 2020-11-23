@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bezzy.Ui.View.model.ChatMessageModel;
 import com.bezzy_application.R;
+import com.like.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Chatbox_adapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if (viewType == VIEW_TYPE_MESSAGE_SENT) {
+       /* if (viewType == mMessageList.get(viewType).getMessage_by().equals("self")) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.send_massage_item, parent, false);
             return new SentMassageHolder(view);
@@ -38,14 +39,17 @@ public class Chatbox_adapter extends RecyclerView.Adapter {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recived_massage_item, parent, false);
             return new ReceiveMassageHolder(view);
-        }
+        }*/
 
         return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        /*UserMessage message = (UserMessage) mMessageList.get(position);
+
+        /*if (mMessageList.get(position).getMessage_by().equals("self")){
+        }
+       *//* UserMessage message = (UserMessage) mMessageList.get(position);
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
@@ -59,11 +63,11 @@ public class Chatbox_adapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mMessageList.size();
     }
-   /* @Override
+    @Override
     public int getItemViewType(int position) {
-        UserMessage message = (UserMessage) mMessageList.get(position);
+        /*UserMessage message = (UserMessage) mMessageList.get(position);
 
         if (message.getSender().getUserId().equals(SendBird.getCurrentUser().getUserId())) {
             // If the current user is the sender of the message
@@ -71,8 +75,9 @@ public class Chatbox_adapter extends RecyclerView.Adapter {
         } else {
             // If some other user sent the message
             return VIEW_TYPE_MESSAGE_RECEIVED;
-        }
-    }*/
+        }*/
+        return  position;
+    }
 
 
     private class ReceiveMassageHolder extends RecyclerView.ViewHolder{
@@ -84,6 +89,18 @@ public class Chatbox_adapter extends RecyclerView.Adapter {
             rcvmsg=itemView.findViewById(R.id.rcv_message_body);
             rcvtime=itemView.findViewById(R.id.rcv_message_time);
         }
+
+        /*void bind(UserMessage message) {
+            messageText.setText(message.getMessage());
+
+            // Format the stored timestamp into a readable String using method.
+            timeText.setText(Utils.formatDateTime(message.getCreatedAt()));
+            nameText.setText(message.getSender().getNickname());
+
+            // Insert the profile image from the URL into the ImageView.
+            Utils.displayRoundImageFromUrl(mContext, message.getSender().getProfileUrl(), profileImage);
+
+        }*/
     }
     private class SentMassageHolder extends RecyclerView.ViewHolder{
         TextView sendmsg,sendtime;

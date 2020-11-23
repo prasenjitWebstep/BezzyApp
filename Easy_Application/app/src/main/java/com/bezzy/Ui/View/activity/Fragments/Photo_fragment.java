@@ -118,7 +118,7 @@ public class Photo_fragment extends Fragment {
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), Profile.class);
+                Intent i = new Intent(getActivity(),Profile.class);
                 startActivity(i);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }

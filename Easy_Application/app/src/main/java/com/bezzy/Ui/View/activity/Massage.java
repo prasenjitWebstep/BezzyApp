@@ -72,6 +72,16 @@ public class Massage extends AppCompatActivity {
                 .load(image)
                 .into(img_logo);
 
+        if(Utility.internet_check(Massage.this)) {
+
+            chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id);
+        }
+        else {
+
+            Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+
+        }
+
         send_msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,13 +113,19 @@ public class Massage extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
-                        JSONArray array = object.getJSONArray("chat_history_list");
+
+                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id);
+                        edittext_chatbox.getText().clear();
+
+                       /* JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
                             JSONObject object1 = array.getJSONObject(i);
-                            messageModel = new ChatMessageModel(object1.getString("message_by"),object1.getString("chat_message"),object1.getString("chat_date_time"));
+                            messageModel = new ChatMessageModel(object1.getString("message_by"),
+                                    object1.getString("chat_message"),
+                                    object1.getString("chat_date_time"));
                             modelArrayList.add(messageModel);
                         }
-                        reyclerview_message_list.setAdapter(new Chatbox_adapter(Massage.this,modelArrayList));
+                        reyclerview_message_list.setAdapter(new Chatbox_adapter(Massage.this,modelArrayList));*/
                     }
 
                 } catch (JSONException e) {
@@ -152,7 +168,9 @@ public class Massage extends AppCompatActivity {
                         JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
                             JSONObject object1 = array.getJSONObject(i);
-                            messageModel = new ChatMessageModel(object1.getString("message_by"),object1.getString("chat_message"),object1.getString("chat_date_time"));
+                            messageModel = new ChatMessageModel(object1.getString("message_by"),
+                                    object1.getString("chat_message"),
+                                    object1.getString("chat_date_time"));
                             modelArrayList.add(messageModel);
                         }
                         reyclerview_message_list.setAdapter(new Chatbox_adapter(Massage.this,modelArrayList));
@@ -169,16 +187,9 @@ public class Massage extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.e("Error",error.toString());
             }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("from_userID",Utility.getUserId(Massage.this));
-                map.put("to_userID",id);
-                map.put("chat_message",edittext_chatbox.getText().toString());
-                return map;
-            }
-        };
+        });
+
+
 
         RequestQueue queue = Volley.newRequestQueue(Massage.this);
         queue.add(request);

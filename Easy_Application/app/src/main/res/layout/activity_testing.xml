@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bezzy.Ui.View.activity.Testing">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/lightgrey">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:textSize="20sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:typeface="serif"
+                        android:text="Name"
+                        android:id="@+id/tv_uName"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:typeface="serif"
+                        android:text="Name"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/tv_uStatus"/>
+
+                </LinearLayout>
+                <ImageButton
+                    android:id="@+id/imgBtnCall"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight=".3"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/ago"/>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight=".3"
+                    android:theme="@style/ThemeOverlay.AppCompat.Light"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp">
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/cardView"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_above="@+id/messagePart">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/messagePart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="3dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:hint="Type Message"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
+                android:minLines="1"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:overScrollMode="always"
+                android:padding="5dp"/>
+
+            <ImageButton
+                android:id="@+id/imgBtnCamera"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/ic_baseline_camera_alt_24"/>
+
+            <ImageButton
+                android:id="@+id/imgBtnSend"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="13dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/right_arrow"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
