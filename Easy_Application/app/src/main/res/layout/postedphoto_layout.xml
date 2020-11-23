@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
-    android:layout_marginLeft="1dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/imageDisp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardAdv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/dsz"
-        android:layout_marginRight="1dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginTop="1dp"/>
+        app:cardCornerRadius="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        app:cardBackgroundColor="@color/lightgrey">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageDisp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dsz"/>
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

@@ -107,6 +107,8 @@ public class CommentActivity extends AppCompatActivity {
     }
     private void commentList(String url) {
 
+        dataholder.clear();
+
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

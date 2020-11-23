@@ -45,6 +45,7 @@
                         android:layout_margin="10dp"
                         android:clickable="true"
                         android:src="@drawable/ic_baseline_keyboard_backspace_24"
+                        android:visibility="invisible"
                         />
                 </RelativeLayout>
 

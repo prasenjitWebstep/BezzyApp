@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    tools:context="com.bezzy.Ui.View.activity.Fragments.ProfileFragment">
+    tools:context="com.bezzy.Ui.View.activity.FriendsProfileActivity">
+
     <RelativeLayout
         android:id="@+id/back_bezy"
         android:layout_width="match_parent"
@@ -40,7 +40,8 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_logout"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:visibility="gone"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/user_edit"
@@ -64,7 +65,6 @@
                 app:civ_border_width="1dp"
                 app:civ_border_color="#FF000000"
                 android:layout_gravity="top"
-                android:src="@drawable/assess_profile1"
                 android:layout_margin="2dp"/>
 
             <LinearLayout
@@ -77,7 +77,7 @@
                     android:id="@+id/userName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="User Name"
+                    android:hint="Name"
                     android:padding="3dp"
                     android:textSize="15sp"
                     android:textColor="@color/colourblack"
@@ -143,8 +143,7 @@
                     android:textColor="@color/black"
                     android:textStyle="normal"
                     android:fontFamily="sans-serif-medium"
-                    android:maxLines="3"
-                    android:visibility="gone"/>
+                    android:maxLines="3"/>
 
             </LinearLayout>
 
@@ -157,7 +156,8 @@
                 android:focusable="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/cart_items"
-                android:backgroundTint="@color/colorPrimary">
+                android:backgroundTint="@color/colorPrimary"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/editProfile"
@@ -170,7 +170,7 @@
 
             </FrameLayout>
 
-            </LinearLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 
@@ -307,39 +307,39 @@
 
 
     </RelativeLayout>
-   <!-- <LinearLayout
-        android:id="@+id/gallery_part"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:layout_below="@id/edit_part">
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            app:tabMode="scrollable"
-            android:layout_below="@+id/edit_part"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabGravity="center"
-            android:layout_weight="2"
-            >
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+    <!-- <LinearLayout
+         android:id="@+id/gallery_part"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:weightSum="2"
+         android:layout_below="@id/edit_part">
+         <com.google.android.material.tabs.TabLayout
+             android:id="@+id/tabLayout"
+             app:tabMode="scrollable"
+             android:layout_below="@+id/edit_part"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             app:tabGravity="center"
+             android:layout_weight="2"
+             >
+             <com.google.android.material.tabs.TabItem
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
 
-                android:icon="@drawable/ic_baseline_border_all_24"
+                 android:icon="@drawable/ic_baseline_border_all_24"
 
-                />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_baseline_favorite_border_24"
-                />
-        </com.google.android.material.tabs.TabLayout>
-
-
+                 />
+             <com.google.android.material.tabs.TabItem
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:icon="@drawable/ic_baseline_favorite_border_24"
+                 />
+         </com.google.android.material.tabs.TabLayout>
 
 
-    </LinearLayout>-->
+
+
+     </LinearLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"

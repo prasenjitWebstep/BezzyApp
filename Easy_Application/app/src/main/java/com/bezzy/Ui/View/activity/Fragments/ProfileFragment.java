@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
+import com.bezzy.Ui.View.activity.MyFriendsList;
 import com.bezzy.Ui.View.adapter.PostAdapter;
 import com.bezzy.Ui.View.activity.Editprofile;
 import com.bezzy.Ui.View.model.PostModel;
@@ -51,14 +52,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileFragment extends Fragment {
     Button button;
     CircleImageView circularImg;
-    TextView userName,following,follower,Likes,userBio;
+    TextView userName,following,follower,Likes,userBio,userFriends,userFriendsHeading;
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
     ProgressDialog progressDialog;
     String url = "http://bezzy.websteptech.co.uk/api/logout";
-    ImageView imageView,edit_pencil;
-    ImageButton imageButton;
+    ImageView imageView,editProfile;
 
 
 
@@ -74,7 +74,9 @@ public class ProfileFragment extends Fragment {
         Likes = view.findViewById(R.id.like_num);
         userBio = view.findViewById(R.id.userBio);
         imageView=view.findViewById(R.id.logout);
-        edit_pencil=view.findViewById(R.id.edit_pancil);
+        editProfile = view.findViewById(R.id.editProfile);
+        userFriends = view.findViewById(R.id.userFriends);
+        userFriendsHeading = view.findViewById(R.id.userFriendsHeading);
 
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
@@ -90,6 +92,26 @@ public class ProfileFragment extends Fragment {
 
         following.setText(Utility.getFollowing(getActivity()));
         follower.setText(Utility.getFollowers(getActivity()));
+        userFriends.setText(Utility.getFollowers(getActivity()));
+
+        userFriendsHeading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), MyFriendsList.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+        userFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), MyFriendsList.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
         Likes.setText(Utility.getLike(getActivity()));
         if(!Utility.getBio(getActivity()).equals("null")){
             userBio.setVisibility(View.VISIBLE);
@@ -97,7 +119,7 @@ public class ProfileFragment extends Fragment {
         }
 
 
-        edit_pencil.setOnClickListener(new View.OnClickListener() {
+        editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(), Editprofile.class);

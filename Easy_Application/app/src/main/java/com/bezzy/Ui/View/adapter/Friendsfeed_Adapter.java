@@ -28,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.FriendsProfileActivity;
 import com.bezzy.Ui.View.activity.Friendsfeed;
 import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.model.FriendsPostModel;
@@ -70,6 +71,17 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
         Glide.with(context)
                 .load(friendList.get(position).getFriendPhoto())
                 .into(holder.circularImg);
+
+        holder.circularImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FriendsProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("friendId",friendList.get(position).getFriendId());
+                intent.putExtra("screen","1");
+                context.startActivity(intent);
+            }
+        });
 
         holder.userName.setText(friendList.get(position).getFriendName());
 
