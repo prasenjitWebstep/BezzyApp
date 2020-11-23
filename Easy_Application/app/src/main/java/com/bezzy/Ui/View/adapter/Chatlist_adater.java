@@ -39,7 +39,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
         holder.tvName.setText(chatlistItem.getUserName());
         holder.tvDate.setText(chatlistItem.getDate());
         holder.tvLastmsg.setText(chatlistItem.getLastmsg());
-        Glide.with(context).load(chatlistItem.getUrlProfile()).into(holder.image);
+        Glide.with(context).load(chatlistItem.getImage()).into(holder.image);
 
     }
 

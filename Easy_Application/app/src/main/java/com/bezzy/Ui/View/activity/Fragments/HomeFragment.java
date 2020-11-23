@@ -121,11 +121,15 @@ public class HomeFragment extends Fragment {
                     String status = object1.getString("status");
                     if(status.equals("success")){
                         progressDialog.dismiss();
-                        go_bezzy.setText("My Friends Block");
+                        go_bezzy.setText("Friend's List");
                         JSONArray array = object1.getJSONObject("total_feed_response").getJSONArray("friend_list");
                         for(int i = 0;i<array.length();i++){
                             JSONObject object11 = array.getJSONObject(i);
-                            Friendsfeed_item item = new Friendsfeed_item(object11.getString("friend_id"),object11.getString("friend_name"),object11.getString("friend_photo"),object11.getString("past_post_days"),object11.getString("today_post"));
+                            Friendsfeed_item item = new Friendsfeed_item(object11.getString("friend_id"),
+                                    object11.getString("friend_name"),
+                                    object11.getString("friend_photo"),
+                                    object11.getString("past_post_days"),
+                                    object11.getString("today_post"));
                             friendsfeed_items.add(item);
                         }
                         recyclerView.setAdapter(new Friendsfeed_Adapter(getActivity(),friendsfeed_items));
@@ -167,7 +171,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
-                Log.e("REsponse",response);
+                Log.e("Response",response);
                 progressDialog.dismiss();
 
                 try {
