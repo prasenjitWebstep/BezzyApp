@@ -35,7 +35,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         app:civ_border_width="0.5dp"
                         app:civ_border_color="#5ADDED"
                         android:layout_gravity="center"
@@ -45,11 +45,13 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2.5"
+                        android:layout_marginLeft="5dp"
                         android:orientation="vertical">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            >
 
                             <ImageView
                                 android:id="@+id/oldPost"
@@ -138,7 +140,9 @@
                                 android:layout_centerInParent="true"
                                 android:layout_below="@+id/userPost"
                                 android:layout_marginTop="10dp"
-                                android:background="@drawable/background_circle"/>
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"/>
 
                         </RelativeLayout>
 

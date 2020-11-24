@@ -24,7 +24,7 @@
             android:textSize="17sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="18dp"/>
 
         <ImageView
             android:id="@+id/back_image"
@@ -71,6 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginLeft="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -101,6 +102,7 @@
                         android:textColor="@color/deeporange"
                         android:textStyle="normal"
                         android:text="Friends"
+                        android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"/>
                     <TextView
                         android:id="@+id/userFriends"
@@ -113,6 +115,7 @@
                         android:paddingBottom="3dp"
                         android:textColor="@color/black"
                         android:textStyle="normal"
+                        android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="265"/>
 
@@ -130,6 +133,7 @@
                     android:textColor="@color/deeporange"
                     android:textStyle="normal"
                     android:text="Bio"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="sans-serif-medium"/>
                 <TextView
                     android:id="@+id/userBio"
@@ -165,6 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="3dp"
+                    android:layout_marginRight="3dp"
                     android:src="@drawable/ic_pencil"
                     app:tint="@color/white"/>
 
@@ -350,7 +355,7 @@
             android:id="@+id/postRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@color/white">
 
         </androidx.recyclerview.widget.RecyclerView>

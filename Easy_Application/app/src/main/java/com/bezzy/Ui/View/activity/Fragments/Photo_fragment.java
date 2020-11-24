@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -31,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -85,6 +87,7 @@ public class Photo_fragment extends Fragment {
     ProgressDialog progressDialog;
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
+    Button uoload;
     int option;
 
 
@@ -110,10 +113,11 @@ public class Photo_fragment extends Fragment {
         progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);
+        uoload=view.findViewById(R.id.upload_post);
         bitmapList = new ArrayList<>();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
-        recyclerDisplayImg.setLayoutManager(linearLayoutManager);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
+        recyclerDisplayImg.setLayoutManager(layoutManager);
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +138,7 @@ public class Photo_fragment extends Fragment {
 //                }
 //            }
 //        });
-        imageView.setOnClickListener(new View.OnClickListener() {
+        uoload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

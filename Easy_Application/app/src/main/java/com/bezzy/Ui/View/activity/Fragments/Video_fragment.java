@@ -59,11 +59,12 @@ public class Video_fragment extends Fragment {
     VideoView videoView;
     TextView bufferText;
     EditText editText;
-    Button pickVideo,uploadVideo;
+    Button pickVideo,uploadVideo,Post_upload;
     private static final int REQUEST_PICK_VIDEO = 3;// Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
     private Uri video;
     private String videoPath;
+
     ProgressDialog progressDialog;
 
     // Current playback position (in milliseconds).
@@ -80,21 +81,29 @@ public class Video_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_video_fragment, container, false);
-        videoView = view.findViewById(R.id.video_view);
+        videoView = view.findViewById(R.id.video_vieww);
         editText = view.findViewById(R.id.ed_content);
-        postUpload = view.findViewById(R.id.postUpload);
+        postUpload = view.findViewById(R.id.uploadd_video);
+        Post_upload=view.findViewById(R.id.upload);
         back_image = view.findViewById(R.id.back_image);
-        imageView = view.findViewById(R.id.imageViewVideo);
-        bufferText = view.findViewById(R.id.bufferingtext);
-        uploadVideo = view.findViewById(R.id.upload);
+
+//        bufferText = view.findViewById(R.id.bufferingtext);
+        uploadVideo = view.findViewById(R.id.upload_post);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
 
         videoView.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
 
-        postUpload.setOnClickListener(new View.OnClickListener() {
+        /*testButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View v) {
+                pickVideoFromgallery();
+            }
+        });*/
+
+       uploadVideo.setOnClickListener(new View.OnClickListener() {
+         @Override
             public void onClick(View v) {
                 pickVideoFromgallery();
             }
@@ -109,7 +118,7 @@ public class Video_fragment extends Fragment {
             }
         });
 
-        uploadVideo.setOnClickListener(new View.OnClickListener() {
+        Post_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressDialog.show();

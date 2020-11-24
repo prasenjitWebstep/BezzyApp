@@ -37,6 +37,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
     public void onBindViewHolder(@NonNull ChatListHolder holder, int position) {
         Chatlist_item chatlistItem=chatholder.get(position);
         holder.tvName.setText(chatlistItem.getUserName());
+        holder.tvunread.setText(chatlistItem.getUnreadmsg());
         holder.tvDate.setText(chatlistItem.getDate());
         holder.tvLastmsg.setText(chatlistItem.getLastmsg());
         Glide.with(context).load(chatlistItem.getImage()).into(holder.image);
@@ -49,7 +50,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
     }
 
     public class ChatListHolder extends RecyclerView.ViewHolder{
-        private TextView tvName,tvLastmsg,tvDate;
+        private TextView tvName,tvLastmsg,tvDate,tvunread;
         private CircleImageView image;
 
         public ChatListHolder(@NonNull View itemView) {
@@ -57,6 +58,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
             tvDate=itemView.findViewById(R.id.date);
             tvLastmsg=itemView.findViewById(R.id.lastmsg);
             tvName=itemView.findViewById(R.id.user_name);
+            tvunread=itemView.findViewById(R.id.msg_number);
             image=itemView.findViewById(R.id.chat_image);
 
 

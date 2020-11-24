@@ -22,7 +22,7 @@
             android:textSize="17sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="18dp"/>
 
         <ImageView
             android:id="@+id/back_image"
@@ -54,10 +54,11 @@
             android:layout_marginRight="10dp">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="30dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
-                android:src="@drawable/notification"/>
+                android:src="@drawable/notification"
+                android:background="@drawable/rounded_circle"/>
 
             <TextView
                 android:id="@+id/cart_badge"
