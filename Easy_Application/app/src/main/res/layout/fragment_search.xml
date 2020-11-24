@@ -27,7 +27,7 @@
             android:textSize="17sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="18dp"/>
 
         <ImageView
             android:id="@+id/back_image"
