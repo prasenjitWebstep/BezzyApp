@@ -58,7 +58,7 @@ public class MyFriendsList extends AppCompatActivity {
             progressDialog.show();
             Log.e("Result","1");
 
-            friendList(APIs.BASE_URL+APIs.FREIND_LIST);
+            friendList(APIs.BASE_URL+APIs.FRIEND_LIST);
 
         }
         else {

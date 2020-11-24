@@ -43,6 +43,6 @@
         android:src="@drawable/ic_baseline_add_24"
         app:layout_anchor="@id/bottomApp"
         app:tint="@color/colourwhite"
-        android:backgroundTint="@color/colorPrimary"/>
+        android:backgroundTint="@color/gradstart"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

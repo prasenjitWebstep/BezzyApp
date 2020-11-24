@@ -30,4 +30,6 @@ public class APIs {
     public static String CHAT_LIST = "api/chat-list";
     public static String COMMENT_POST = "api/comment-post";
     public static String COMMENT_LIST = "api/comment-list";
+    public static String CHAT_NOTI_LIST = "api/chat-notification-list";
+    public static String FRIEND_LIST = "api/getuserfriendlist";
 }

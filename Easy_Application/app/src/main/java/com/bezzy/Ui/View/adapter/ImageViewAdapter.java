@@ -37,7 +37,7 @@ public class ImageViewAdapter extends RecyclerView.Adapter<ImageViewAdapter.Imag
 
         Glide.with(context)
                 .load(bitList.get(position))
-                .into(holder.imageDisplay);
+                .into(holder.imageDisp);
 
     }
 
@@ -49,11 +49,11 @@ public class ImageViewAdapter extends RecyclerView.Adapter<ImageViewAdapter.Imag
     public class ImageHolder extends RecyclerView.ViewHolder{
         TextView tvtime;
 
-        ImageView imageDisplay;
+        ImageView imageDisp;
 
         public ImageHolder(@NonNull View itemView) {
             super(itemView);
-            imageDisplay = itemView.findViewById(R.id.imageDisplay);
+            imageDisp = itemView.findViewById(R.id.imageDisp);
         }
     }
 }

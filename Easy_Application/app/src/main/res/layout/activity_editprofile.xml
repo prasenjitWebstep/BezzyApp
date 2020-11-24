@@ -18,7 +18,7 @@
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
             android:text="Edit Profile"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/gradstart"
             android:textSize="17sp"
             android:layout_marginLeft="10dp"
             android:textStyle="bold"

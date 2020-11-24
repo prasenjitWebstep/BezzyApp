@@ -155,6 +155,8 @@ public class Massage extends AppCompatActivity {
     }
     private void chatList(String url) {
 
+        modelArrayList.clear();
+
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

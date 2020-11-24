@@ -18,8 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -112,8 +114,8 @@ public class Photo_fragment extends Fragment {
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);
         bitmapList = new ArrayList<>();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false);
-        recyclerDisplayImg.setLayoutManager(linearLayoutManager);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
+        recyclerDisplayImg.setLayoutManager(layoutManager);
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
