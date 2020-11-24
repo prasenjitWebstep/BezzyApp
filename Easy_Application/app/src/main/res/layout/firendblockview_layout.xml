@@ -136,13 +136,13 @@
                                 android:id="@+id/chatButton"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:src="@drawable/ic_chat"
+                                android:src="@drawable/ic_chat_c"
                                 android:layout_centerInParent="true"
                                 android:layout_below="@+id/userPost"
                                 android:layout_marginTop="10dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_marginRight="10dp"
-                                android:layout_marginBottom="5dp"/>
+                                android:layout_marginBottom="10dp"/>
 
                         </RelativeLayout>
 

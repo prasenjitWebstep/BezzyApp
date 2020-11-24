@@ -59,12 +59,11 @@ public class Video_fragment extends Fragment {
     VideoView videoView;
     TextView bufferText;
     EditText editText;
-    Button pickVideo,uploadVideo,Post_upload;
+    Button pickVideo,uploadVideo;
     private static final int REQUEST_PICK_VIDEO = 3;// Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
     private Uri video;
     private String videoPath;
-
     ProgressDialog progressDialog;
 
     // Current playback position (in milliseconds).
@@ -81,29 +80,22 @@ public class Video_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_video_fragment, container, false);
-        videoView = view.findViewById(R.id.video_vieww);
+        videoView = view.findViewById(R.id.video_view);
         editText = view.findViewById(R.id.ed_content);
-        postUpload = view.findViewById(R.id.uploadd_video);
-        Post_upload=view.findViewById(R.id.upload);
+        postUpload = view.findViewById(R.id.postUpload);
+        //pickVideo=view.findViewById(R.id.upload_post);
         back_image = view.findViewById(R.id.back_image);
-
-//        bufferText = view.findViewById(R.id.bufferingtext);
-        uploadVideo = view.findViewById(R.id.upload_post);
+        imageView = view.findViewById(R.id.imageViewVideo);
+        //bufferText = view.findViewById(R.id.bufferingtext);
+        uploadVideo = view.findViewById(R.id.upload);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
 
         videoView.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
 
-        /*testButton.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                pickVideoFromgallery();
-            }
-        });*/
-
-       uploadVideo.setOnClickListener(new View.OnClickListener() {
-         @Override
             public void onClick(View v) {
                 pickVideoFromgallery();
             }
@@ -118,7 +110,7 @@ public class Video_fragment extends Fragment {
             }
         });
 
-        Post_upload.setOnClickListener(new View.OnClickListener() {
+        uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
@@ -162,7 +154,7 @@ public class Video_fragment extends Fragment {
 
     private void initializePlayer(Uri uri) {
         // Show the "Buffering..." message while the video loads.
-        bufferText.setVisibility(VideoView.GONE);
+        //bufferText.setVisibility(VideoView.GONE);
         if (uri != null){
             postUpload.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
@@ -175,7 +167,7 @@ public class Video_fragment extends Fragment {
                     public void onPrepared(MediaPlayer mediaPlayer) {
 
                         // Hide buffering message.
-                        bufferText.setVisibility(VideoView.INVISIBLE);
+                        //bufferText.setVisibility(VideoView.INVISIBLE);
 
                         // Restore saved position, if available.
                         if (mCurrentPosition > 0) {
