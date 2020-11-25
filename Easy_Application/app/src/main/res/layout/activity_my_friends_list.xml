@@ -25,7 +25,7 @@
             android:textSize="17sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="18dp"/>
 
         <ImageView
             android:id="@+id/back_image"
@@ -49,6 +49,8 @@
         android:id="@+id/recyclerFriendsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
 
 </LinearLayout>

@@ -20,6 +20,8 @@
         <activity android:name="com.bezzy.Ui.View.activity.Editprofile" />
         <activity android:name="com.bezzy.Ui.View.activity.PostImageVideoViewActivity" />
         <activity android:name="com.bezzy.Ui.View.activity.Massage" />
+        <activity android:name="com.bezzy.Ui.View.activity.Testing"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
         <activity
             android:name="com.bezzy.Ui.View.activity.CommentActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
