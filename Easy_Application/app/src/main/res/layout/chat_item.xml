@@ -7,10 +7,11 @@
     android:padding="10dp">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/chat_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/assess_profile1"/>
     <RelativeLayout
+        android:id="@+id/relativeHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp">
@@ -24,10 +25,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
                 android:text="Username"/>
+
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
@@ -36,8 +38,8 @@
                 android:text="16/11/20"
                 android:textColor="#2E2E2E"/>
 
-
         </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/last_part"
             android:layout_width="match_parent"
@@ -52,6 +54,7 @@
             android:textSize="14sp"
             android:text="Last massage"
             android:layout_alignParentLeft="true"/>
+
         <TextView
             android:id="@+id/msg_number"
             android:layout_width="20dp"

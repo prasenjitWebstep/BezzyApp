@@ -1,17 +1,34 @@
 package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.Massage;
+import com.bezzy.Ui.View.activity.MyFriendsList;
 import com.bezzy.Ui.View.model.Chatlist_item;
+import com.bezzy.Ui.View.utils.APIs;
+import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -34,14 +51,76 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatListHolder holder, int position) {
-        Chatlist_item chatlistItem=chatholder.get(position);
+    public void onBindViewHolder(@NonNull ChatListHolder holder, final int position) {
+        final Chatlist_item chatlistItem=chatholder.get(position);
         holder.tvName.setText(chatlistItem.getUserName());
-        holder.tvunread.setText(chatlistItem.getUnreadmsg());
-        holder.tvDate.setText(chatlistItem.getDate());
+        if(!chatlistItem.getUnreadmsg().equals("0")){
+            holder.tvunread.setVisibility(View.VISIBLE);
+            holder.tvunread.setText(chatlistItem.getUnreadmsg());
+        }else{
+            holder.tvunread.setVisibility(View.GONE);
+        }
+
+        String s[] = chatlistItem.getDate().split(" ",2);
+        String date = s[0];
+        holder.tvDate.setText(date);
         holder.tvLastmsg.setText(chatlistItem.getLastmsg());
         Glide.with(context).load(chatlistItem.getImage()).into(holder.image);
 
+        holder.relativeHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(Utility.internet_check(context)) {
+
+
+                    readChatNoti(APIs.BASE_URL+APIs.CHAT_NOTIFICATION_READ+"/"+Utility.getUserId(context)+"/"+chatlistItem.getUserID(),chatlistItem.getUserID(),chatlistItem.getImage(),chatlistItem.getUserName());
+
+                }
+                else {
+
+                    Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+
+    }
+
+    private void readChatNoti(String s, final String userID, final String image, final String url) {
+        StringRequest request = new StringRequest(Request.Method.GET, s, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("Response",response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String status = object.getString("status");
+                    if(status.equals("success")){
+                        Intent intent = new Intent(context, Massage.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("FrndId",userID);
+                        intent.putExtra("userImage",image);
+                        intent.putExtra("userName",url);
+                        context.startActivity(intent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
     }
 
     @Override
@@ -52,6 +131,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
     public class ChatListHolder extends RecyclerView.ViewHolder{
         private TextView tvName,tvLastmsg,tvDate,tvunread;
         private CircleImageView image;
+        RelativeLayout relativeHolder;
 
         public ChatListHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,8 +140,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
             tvName=itemView.findViewById(R.id.user_name);
             tvunread=itemView.findViewById(R.id.msg_number);
             image=itemView.findViewById(R.id.chat_image);
-
-
+            relativeHolder = itemView.findViewById(R.id.relativeHolder);
 
 
 

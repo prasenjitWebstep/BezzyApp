@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,14 +28,18 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
         this.mMessageList = mMessageList;
     }
 
+    public void setData(ArrayList<ChatMessageModel> newData) {
+        this.mMessageList.clear();
+        mMessageList.addAll(newData);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ReceiveMassageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recived_massage_item, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
         return new ReceiveMassageHolder(view);
-        /*view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recived_massage_item, parent, false);
-        return new ReceiveMassageHolder(view);*/
     }
 
     @Override
@@ -42,9 +47,18 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
         if(mMessageList.get(position).getMessage_by().equals("self")){
             holder.layoutSender.setVisibility(View.VISIBLE);
             holder.send_message_body.setText(mMessageList.get(position).getChat_message());
+
+            String s[] = mMessageList.get(position).getChat_date_time().split(" ",2);
+            String time = s[1];
+            String time2 = time.substring(0,5);
+            holder.send_message_time.setText(time2);
         }else{
             holder.layoutreceiver.setVisibility(View.VISIBLE);
             holder.rcv_message_body.setText(mMessageList.get(position).getChat_message());
+            String s[] = mMessageList.get(position).getChat_date_time().split(" ",2);
+            String time = s[1];
+            String time2 = time.substring(0,5);
+            holder.rcv_message_time.setText(time2);
 
         }
     }
@@ -79,7 +93,8 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
 
     public class ReceiveMassageHolder extends RecyclerView.ViewHolder{
         TextView rcv_message_body,rcv_message_time,send_message_body,send_message_time;
-        LinearLayout layoutreceiver,layoutSender;
+        RelativeLayout layoutreceiver;
+        LinearLayout layoutSender;
 
 
         public ReceiveMassageHolder(@NonNull View itemView) {
@@ -116,14 +131,14 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
         }
     }*/
 
-    /*@Override
+    @Override
     public int getItemViewType(int position) {
 
         if(mMessageList.get(position).getMessage_by().equals("self")){
-            return R.layout.send_massage_item;
+            return R.layout.sender_message_layout;
         }else{
             return R.layout.recived_massage_item;
         }
-    }*/
+    }
 
 }

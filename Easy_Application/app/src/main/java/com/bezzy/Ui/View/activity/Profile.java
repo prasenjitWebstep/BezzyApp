@@ -7,10 +7,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +33,7 @@ import com.bezzy.Ui.View.activity.Fragments.ChatFragment;
 import com.bezzy.Ui.View.activity.Fragments.HomeFragment;
 import com.bezzy.Ui.View.activity.Fragments.ProfileFragment;
 import com.bezzy.Ui.View.activity.Fragments.SearchFragment;
+import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,18 +43,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Profile extends AppCompatActivity {
 
-    String url = "http://bezzy.websteptech.co.uk/api/logout";
     ProgressDialog progressDialog;
     FloatingActionButton floatingActionButton;
+    Boolean isInBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_scrns);
+
+        if (!isApplicationBroughtToBackground()) {
+            Log.e("Check","APP in foreground");
+        }else{
+            Log.e("Check","APP in background");
+        }
 
 
         //SessionManager.getInstance(getApplicationContext()).userLogout();
@@ -76,6 +88,49 @@ public class Profile extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean isApplicationBroughtToBackground() {
+        ActivityManager am = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(this.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void callApi(String url, final String online) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response",response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("userID",Utility.getUserId(Profile.this));
+                map.put("user_active_status",online);
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(Profile.this);
+        queue.add(request);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("STOP","CALLED");
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navlistner=new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -154,7 +209,7 @@ public class Profile extends AppCompatActivity {
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.logoutt:
@@ -164,9 +219,9 @@ public class Profile extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
-    }
+    }*/
 
-    public void logout(){
+    /*public void logout(){
         AlertDialog.Builder builder = new AlertDialog.Builder(Profile.this);
         builder.setTitle("Log out");
         builder.setMessage("Are you sure to Log out?");
@@ -220,6 +275,6 @@ public class Profile extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-    }
+    }*/
 }
 

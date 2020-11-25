@@ -1,15 +1,20 @@
 package com.bezzy.Ui.View.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +51,12 @@ public class Massage extends AppCompatActivity {
     EditText edittext_chatbox;
     ImageView send_msg;
     ChatMessageModel messageModel;
+    LinearLayoutManager linearLayoutManager;
     ArrayList<ChatMessageModel> modelArrayList;
+    NestedScrollView nestedview;
+    int page;
+    ProgressBar chatProgress;
+    Chatbox_adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -62,37 +72,65 @@ public class Massage extends AppCompatActivity {
         reyclerview_message_list = findViewById(R.id.reyclerview_message_list);
         edittext_chatbox = findViewById(R.id.edittext_chatbox);
         send_msg = findViewById(R.id.send_msg);
+        nestedview = findViewById(R.id.nestedview);
+        chatProgress = findViewById(R.id.chatProgress);
         modelArrayList = new ArrayList<>();
+        page = 1;
+        linearLayoutManager = new LinearLayoutManager(Massage.this);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Massage.this);
-        reyclerview_message_list.setLayoutManager(linearLayoutManager);
-
+        callApi();
+        
         title_text.setText(name);
         Glide.with(Massage.this)
                 .load(image)
                 .into(img_logo);
 
-        if(Utility.internet_check(Massage.this)) {
 
-            chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id);
-        }
-        else {
 
-            Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+       /* nestedview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
 
-        }
+                    page++;
+
+                    if(Utility.internet_check(Massage.this)) {
+
+
+                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
+                    }
+                    else {
+
+
+                        Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }
+            }
+        });*/
 
         send_msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(Utility.internet_check(Massage.this)) {
+                if(!edittext_chatbox.getText().toString().isEmpty()){
+                    try {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                    if(Utility.internet_check(Massage.this)) {
 
-                    addchat(APIs.BASE_URL+APIs.ADDCHAT);
-                }
-                else {
+                        addchat(APIs.BASE_URL+APIs.ADDCHAT);
+                    }
+                    else {
 
-                    Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+
+                    }
 
                 }
 
@@ -100,6 +138,33 @@ public class Massage extends AppCompatActivity {
         });
 
     }
+
+    private void callApi() {
+        if(Utility.internet_check(Massage.this)) {
+
+            chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id/*+"/"+String.valueOf(page)*/);
+        }
+        else {
+
+            Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+
+        }
+
+        refresh(5000);
+    }
+
+    private void refresh(int i) {
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                callApi();
+            }
+        };
+
+        handler.postDelayed(runnable,i);
+    }
+
 
     private void addchat(String url) {
 
@@ -114,10 +179,11 @@ public class Massage extends AppCompatActivity {
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
 
-                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id);
                         edittext_chatbox.getText().clear();
 
-                       /* JSONArray array = object.getJSONArray("chat_history_list");
+                        callApi();
+
+                        /*JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
                             JSONObject object1 = array.getJSONObject(i);
                             messageModel = new ChatMessageModel(object1.getString("message_by"),
@@ -157,11 +223,14 @@ public class Massage extends AppCompatActivity {
 
         modelArrayList.clear();
 
+        Log.e("URL",url);
+
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 Log.e("ChatResponse",response);
+
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -175,7 +244,12 @@ public class Massage extends AppCompatActivity {
                                     object1.getString("chat_date_time"));
                             modelArrayList.add(messageModel);
                         }
-                        reyclerview_message_list.setAdapter(new Chatbox_adapter(Massage.this,modelArrayList));
+
+                        linearLayoutManager.setStackFromEnd(true);
+                        reyclerview_message_list.setLayoutManager(linearLayoutManager);
+                        adapter = new Chatbox_adapter(Massage.this,modelArrayList);
+                        adapter.notifyDataSetChanged();
+                        reyclerview_message_list.setAdapter(adapter);
                     }
 
                 } catch (JSONException e) {
@@ -187,6 +261,7 @@ public class Massage extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 Log.e("Error",error.toString());
             }
         });

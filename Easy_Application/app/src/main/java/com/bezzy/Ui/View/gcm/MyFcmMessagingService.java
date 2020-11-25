@@ -14,7 +14,9 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.bezzy.Ui.View.activity.Fragments.ChatFragment;
 import com.bezzy.Ui.View.activity.LoginActivity;
+import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.activity.NotificationActivity;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
@@ -33,17 +35,16 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FirebaseMessageService";
     public static final String NOTIFICATION_CHANNEL_ID = "10001";
     Bitmap bitmap;
-    String title,message,imageUri;
+    String title,message,type;
     PendingIntent pendingIntent;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        title=message=imageUri="";
+        title=message=type="";
 
         Log.e(TAG, "From: " + remoteMessage.getFrom());
 
-        Utility.setNotificationStatus(this,"1");
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
@@ -64,7 +65,14 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
         Log.e("MESSAGE",message);
 
-        //imageUri will contain URL of the image to be displayed with Notification
+        type = remoteMessage.getData().get("type");
+
+        Log.e("TYPE",type);
+
+        sendNotification(message, title,type);
+
+
+        /*//imageUri will contain URL of the image to be displayed with Notification
         imageUri = remoteMessage.getData().get("image");
 
 
@@ -81,7 +89,7 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
             sendNotification(message, bitmap,title,imageUri);
 
-        }
+        }*/
 
 
     }
@@ -135,13 +143,20 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
     }
 
 
-    private void sendNotification(String messageBody, Bitmap image, String title, String imageUri) {
-
-        Utility.setNotificationStatus(this,"1");
+    private void sendNotification(String messageBody, String title, String type) {
 
         int notificationId = new Random().nextInt(60000);
 
-        if(Utility.getLogin(this).equals("1")){
+        if(!type.equals("chat_box_msg")){
+            Utility.setNotificationStatus(this,"1");
+        }
+
+        if(Utility.getLogin(this).equals("1") && type.equals("chat_box_msg")){
+            Intent intent = new Intent(this, ChatFragment.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }else if(Utility.getLogin(this).equals("1")){
             Intent intent = new Intent(this, NotificationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -155,12 +170,12 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setLargeIcon(image)/*Notification icon image*/
+                /*.setLargeIcon(image)*//*Notification icon image*/
                 .setSmallIcon(getNotificationIcon())
                 .setContentTitle(title)
                 .setContentText(messageBody)
-                .setStyle(new NotificationCompat.BigPictureStyle()
-                        .bigPicture(image))/*Notification with Image*/
+                /*.setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(image))*//*Notification with Image*/
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
@@ -204,6 +219,6 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
     private int getNotificationIcon() {
         boolean useWhiteIcon = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT);
-        return useWhiteIcon ? R.drawable.logo : R.mipmap.ic_launcher_round;
+        return useWhiteIcon ? R.mipmap.ic_launcher : R.mipmap.ic_launcher_round;
     }
 }
