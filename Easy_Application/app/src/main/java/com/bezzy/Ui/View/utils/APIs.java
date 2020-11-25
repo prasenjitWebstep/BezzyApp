@@ -24,12 +24,15 @@ public class APIs {
     public static String REJECTREQUEST = "api/RejectFriendRequest";
     public static String FRIENDSBLOCKLIST = "api/friendblocklist";
     public static String FRIENDPOSTLIST = "api/friendblockdetails";
-    public static String FREIND_LIST = "api/getuserfriendlist";
+    public static String FREIND_LIST="api/getuserfriendlist";
     public static String LIKEPOST = "api/postlikedislike";
     public static String FRIENDSBLOCKDETAILS = "api/friendsingleblockdetails";
     public static String ADDCHAT = "api/add-chat-data";
-    public static String CHAT_NOTI_LIST = "api/chat-notification-list";
+    public static String CHAT_NOTI_LIST="api/chat-notification-list";
     public static String CHAT_LIST = "api/chat-list";
     public static String COMMENT_POST = "api/comment-post";
     public static String COMMENT_LIST = "api/comment-list";
+    public static String FRIEND_LIST = "api/getuserfriendlist";
+    public static String CHAT_NOTIFICATION_READ = "api/click-on-chat-notification";
+    public static String GET_USER_ACTIVE_STATUS = "api/appbasic_userative_status";
 }

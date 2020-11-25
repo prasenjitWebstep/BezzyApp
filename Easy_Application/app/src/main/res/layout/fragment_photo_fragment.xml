@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
         android:background="@drawable/rounded_button">
 
         <TextView
@@ -21,8 +20,8 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
-            android:text="Photo"
-            android:textColor="@color/colorPrimaryDark"
+            android:text="New Post"
+            android:textColor="@color/gradstart"
             android:textSize="17sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical" />
@@ -34,130 +33,66 @@
             android:layout_margin="10dp"
             android:src="@drawable/ic_baseline_keyboard_backspace_24"
             />
-        <!--<Button
-            android:id="@+id/upload"
-            android:textSize="16sp"
-            android:text="POST"
-            android:background="@drawable/login_button_background"
-            android:layout_width="60dp"
-            android:layout_height="30dp"
-            android:textColor="#fff"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"/>-->
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
+    <LinearLayout
+        android:id="@+id/postUpload"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#EFF6FE"
+        android:orientation="vertical"
         android:layout_below="@+id/back_bezy">
 
-        <RelativeLayout
-            android:id="@+id/postUpload"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#EFF6FE"
-            android:orientation="vertical">
+            android:text="Upload a Post"
+            android:textColor="@color/colourblack"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"/>
 
-            <!--<TextView
-                android:id="@+id/upload_post"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Upload a Post"
-                android:textColor="@color/gradstart"
-                android:textSize="14sp"
-                android:layout_gravity="left"
-                android:layout_marginTop="10dp"
-                android:textStyle="normal"
-                android:layout_marginLeft="18sp"
-                android:fontFamily="sans-serif-medium"/>-->
-            <Button
-                android:id="@+id/upload_post"
-                android:layout_width="120dp"
-                android:layout_height="30dp"
-                android:layout_gravity="right"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/login_button_background"
-                android:text="Upload Photo"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:layout_alignParentRight="true"/>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_backup"
+            android:layout_gravity="center"/>
 
-            <!-- <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_backup"
-                android:layout_gravity="center"/>-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerDisplayImg"
-                android:layout_width="wrap_content"
-                android:layout_height="350dp"
-                android:layout_below="@+id/upload_post"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical" />
+    </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="15dp"
-                android:layout_below="@id/recyclerDisplayImg">
-                <LinearLayout
-                    android:id="@+id/ed_commnets"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
-                    <EditText
-                        android:id="@+id/ed_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Write Something here....."
-                        android:layout_centerInParent="true"
-                        android:inputType="textMultiLine"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:textColorHint="@color/gradstart"
-                        android:background="@drawable/upload_background"
-                        android:minLines="3"
-                        android:gravity="top"
-                        android:padding="5dp"/>
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/upload"
-                    android:textSize="12sp"
-                    android:text="POST"
-                    android:background="@drawable/login_button_background"
-                    android:layout_width="60dp"
-                    android:layout_height="25dp"
-                    android:textColor="#fff"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_below="@id/ed_commnets"
-                    android:layout_marginBottom="10dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerDisplayImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/postUpload"/>
 
 
-            </RelativeLayout>
+    <EditText
+        android:id="@+id/ed_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Say Something....."
+        android:inputType="textMultiLine"
+        android:layout_marginBottom="10dp"
+        android:textColorHint="@color/gradstart"
+        android:background="@color/colourwhite"
+        android:minLines="5"
+        android:gravity="top"
+        android:padding="5dp"
+        android:layout_below="@+id/recyclerDisplayImg"/>
 
-        </RelativeLayout>
-
-    </ScrollView>
-
-
+    <Button
+        android:id="@+id/upload"
+        android:textSize="15sp"
+        android:text="POST"
+        android:background="@drawable/login_button_background"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"/>
 
 </RelativeLayout>
