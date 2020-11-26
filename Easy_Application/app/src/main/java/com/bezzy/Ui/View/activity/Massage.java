@@ -77,6 +77,8 @@ public class Massage extends AppCompatActivity {
         modelArrayList = new ArrayList<>();
         page = 1;
         linearLayoutManager = new LinearLayoutManager(Massage.this);
+        linearLayoutManager.setStackFromEnd(true);
+        reyclerview_message_list.setLayoutManager(linearLayoutManager);
 
         callApi();
         
@@ -181,7 +183,17 @@ public class Massage extends AppCompatActivity {
 
                         edittext_chatbox.getText().clear();
 
-                        callApi();
+                        if(Utility.internet_check(Massage.this)) {
+
+
+                            chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id/*+"/"+String.valueOf(page)*/);
+                        }
+                        else {
+
+
+                            Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+
+                        }
 
                         /*JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
@@ -245,8 +257,6 @@ public class Massage extends AppCompatActivity {
                             modelArrayList.add(messageModel);
                         }
 
-                        linearLayoutManager.setStackFromEnd(true);
-                        reyclerview_message_list.setLayoutManager(linearLayoutManager);
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);
                         adapter.notifyDataSetChanged();
                         reyclerview_message_list.setAdapter(adapter);

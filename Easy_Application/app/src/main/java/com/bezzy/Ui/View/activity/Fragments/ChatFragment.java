@@ -49,7 +49,7 @@ public class ChatFragment extends Fragment {
         chatlist.setLayoutManager(linearLayoutManager);
 
         dataholder=new ArrayList<>();
-        if(Utility.internet_check(getActivity())) {
+        /*if(Utility.internet_check(getActivity())) {
 
 
 
@@ -62,10 +62,26 @@ public class ChatFragment extends Fragment {
 
 
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-        }
+        }*/
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dataholder=new ArrayList<>();
+        if(Utility.internet_check(getActivity())) {
+
+            chatNotiList(APIs.BASE_URL+APIs.CHAT_NOTI_LIST+"/"+Utility.getUserId(getActivity()));
+
+        }
+        else {
+            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void chatNotiList(String url){
+        dataholder.clear();
         StringRequest request=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

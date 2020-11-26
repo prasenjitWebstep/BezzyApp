@@ -98,9 +98,6 @@ public class SearchFragment extends Fragment {
         recyclerViewSearchResult = view.findViewById(R.id.recyclerViewSearchResult);
         dataholder = new ArrayList<>();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        recyclerViewSearchResult.setLayoutManager(linearLayoutManager);
-
         if(Utility.internet_check(getActivity())) {
 
             progressDialog.show();
@@ -135,8 +132,8 @@ public class SearchFragment extends Fragment {
                     if(Utility.internet_check(getActivity().getApplicationContext())) {
 
                         search = searchName.getText().toString();
-                        search(APIs.BASE_URL+APIs.SEARCH);
                         dataholder.clear();
+                        search(APIs.BASE_URL+APIs.SEARCH);
 
                     }
                     else {
@@ -164,14 +161,18 @@ public class SearchFragment extends Fragment {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
+                        dataholder.clear();
                         JSONArray array = object.getJSONArray("all_user_list");
                         for(int i = 0 ;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
 
-                            ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"));
+                            ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"),"");
                             dataholder.add(ob1);
 
                         }
+
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                        recyclerViewSearchResult.setLayoutManager(linearLayoutManager);
 
                         recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));
 
@@ -218,8 +219,7 @@ public class SearchFragment extends Fragment {
 
                             JSONObject object1 = array.getJSONObject(i);
 
-                            ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"));
-                            dataholder.clear();
+                            ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"),object1.getString("user_relation_status"));
                             dataholder.add(ob1);
                         }
                         recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));

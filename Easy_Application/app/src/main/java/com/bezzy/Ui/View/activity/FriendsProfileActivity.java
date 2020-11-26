@@ -72,24 +72,6 @@ public class FriendsProfileActivity extends AppCompatActivity {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         postRecyclerView.setLayoutManager(layoutManager);
 
-        userFriendsHeading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FriendsProfileActivity.this, MyFriendsList.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-
-        userFriends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FriendsProfileActivity.this, MyFriendsList.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-
 
         if(Utility.internet_check(FriendsProfileActivity.this)) {
 
@@ -121,6 +103,27 @@ public class FriendsProfileActivity extends AppCompatActivity {
 
                         userName.setText(object.getJSONObject("usedetails").getString("get_name"));
                         userFriends.setText(object.getJSONObject("usedetails").getString("number_of_friend"));
+
+                        userFriends.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(FriendsProfileActivity.this, FriendsFriendList.class);
+                                intent.putExtra("FriendId",friendsId);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        });
+
+                        userFriendsHeading.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(FriendsProfileActivity.this, FriendsFriendList.class);
+                                intent.putExtra("FriendId",friendsId);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        });
+
                         Glide.with(FriendsProfileActivity.this).load(object.getJSONObject("usedetails").getString("profile_pic")).into(circularImg);
 
                         String bio = object.getJSONObject("usedetails").getString("bio");

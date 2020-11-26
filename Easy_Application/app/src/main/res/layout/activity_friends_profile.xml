@@ -113,8 +113,7 @@
                         android:paddingBottom="3dp"
                         android:textColor="@color/black"
                         android:textStyle="normal"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="265"/>
+                        android:fontFamily="sans-serif-medium"/>
 
                 </LinearLayout>
 

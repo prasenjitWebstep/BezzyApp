@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyFriendsList extends AppCompatActivity {
+public class FriendsFriendList extends AppCompatActivity {
 
     RecyclerView recyclerFriendsList;
     ProgressDialog progressDialog;
@@ -44,39 +43,40 @@ public class MyFriendsList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_friends_list);
+        setContentView(R.layout.activity_friends_friend_list);
 
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
-        progressDialog = new ProgressDialog(MyFriendsList.this);
+        progressDialog = new ProgressDialog(FriendsFriendList.this);
         progressDialog.setMessage("Loading Please Wait...");
         progressDialog.setCancelable(false);
         holderList = new ArrayList<>();
+        friendId = getIntent().getExtras().getString("FriendId");
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(MyFriendsList.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(FriendsFriendList.this);
         recyclerFriendsList.setLayoutManager(layoutManager);
 
-        if(Utility.internet_check(MyFriendsList.this)) {
+        if(Utility.internet_check(FriendsFriendList.this)) {
 
             //dialog.show();
             progressDialog.show();
             Log.e("Result","1");
 
-            friendList(APIs.BASE_URL+APIs.FRIEND_LIST);
+            friendList(APIs.BASE_URL+APIs.PROFILE_FRIEND_LIST+"/"+Utility.getUserId(FriendsFriendList.this)+"/"+friendId);
 
         }
         else {
 
             //dialog.dismiss();
             progressDialog.dismiss();
-            Toast.makeText(MyFriendsList.this,"No Network!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(FriendsFriendList.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void friendList(String url) {
         holderList.clear();
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -85,14 +85,14 @@ public class MyFriendsList extends AppCompatActivity {
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
                         progressDialog.dismiss();
-                        go_bezzy.setText(object.getString("login_user_name"));
+                        go_bezzy.setText(object.getString("profile_user_name"));
                         JSONArray array = object.getJSONArray("friend_list");
                         for(int i=0;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
-                            holderObj = new FriendsHolder(object1.getString("friend_id"),object1.getString("name"),object1.getString("image"),"");
+                            holderObj = new FriendsHolder(object1.getString("friend_id"),object1.getString("name"),object1.getString("image"),object1.getString("user_relation_status"));
                             holderList.add(holderObj);
                         }
-                        MyFriendsAdapter adapter = new MyFriendsAdapter(MyFriendsList.this,holderList,"1");
+                        MyFriendsAdapter adapter = new MyFriendsAdapter(FriendsFriendList.this,holderList,"2");
                         recyclerFriendsList.setAdapter(adapter);
                     }else{
                         progressDialog.dismiss();
@@ -109,16 +109,9 @@ public class MyFriendsList extends AppCompatActivity {
                 progressDialog.dismiss();
                 Log.e("Exception",error.toString());
             }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("loguser_id",Utility.getUserId(MyFriendsList.this));
-                return map;
-            }
-        };
+        });
 
-        RequestQueue queue = Volley.newRequestQueue(MyFriendsList.this);
+        RequestQueue queue = Volley.newRequestQueue(FriendsFriendList.this);
         queue.add(request);
     }
 }

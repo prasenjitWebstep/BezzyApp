@@ -21,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Fragments.HomeFragment;
+import com.bezzy.Ui.View.activity.FriendsProfileActivity;
+import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.model.Friendsnoti_item;
 import com.bezzy.Ui.View.model.Searchnoti_item;
@@ -60,19 +62,42 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
     public void onBindViewHolder(@NonNull searchViewHolder holder, final int position) {
         Glide.with(context).load(dataholder.get(position).getImg()).into(holder.img);
         holder.header.setText(dataholder.get(position).getHeader());
-        if(dataholder.get(position).getDesc().equals("null")){
-            holder.desc.setVisibility(View.GONE);
+
+
+        if(dataholder.get(position).getUser_relation_status().equals("1")){
+            holder.chat.setVisibility(View.VISIBLE);
+            holder.addFriend.setVisibility(View.INVISIBLE);
+            holder.chat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, Massage.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("FrndId",dataholder.get(position).getId());
+                    intent.putExtra("userImage",dataholder.get(position).getImg());
+                    intent.putExtra("userName",dataholder.get(position).getHeader());
+                    context.startActivity(intent);
+                }
+            });
         }else{
-            holder.desc.setVisibility(View.VISIBLE);
-            holder.desc.setText(dataholder.get(position).getDesc());
+            holder.addFriend.setVisibility(View.VISIBLE);
+            holder.chat.setVisibility(View.INVISIBLE);
+            holder.addFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    callApiFriendRequest(APIs.BASE_URL+APIs.FRIENDREQUEST,dataholder.get(position).getId(),position);
+
+                }
+            });
         }
 
-        holder.add_img.setOnClickListener(new View.OnClickListener() {
+        holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                callApiFriendRequest(APIs.BASE_URL+APIs.FRIENDREQUEST,dataholder.get(position).getId(),position);
-
+                Intent intent = new Intent(context, FriendsProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("friendId",dataholder.get(position).getId());
+                context.startActivity(intent);
             }
         });
 
@@ -125,15 +150,15 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
     public  class searchViewHolder extends RecyclerView.ViewHolder{
          CircleImageView img;
-         TextView header,desc;
-         ImageView add_img;
+         TextView header;
+         ImageView addFriend,chat;
 
         public searchViewHolder(@NonNull View itemView) {
             super(itemView);
             img=itemView.findViewById(R.id.img_logo);
             header=itemView.findViewById(R.id.title_text);
-            desc=itemView.findViewById(R.id.descrip);
-            add_img = itemView.findViewById(R.id.add_img);
+            addFriend = itemView.findViewById(R.id.addFriend);
+            chat = itemView.findViewById(R.id.chat);
         }
     }
 

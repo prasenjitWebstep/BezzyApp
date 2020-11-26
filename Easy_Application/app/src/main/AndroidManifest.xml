@@ -15,8 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.bezzy.Ui.View.activity.FriendsProfileActivity"></activity>
-        <activity android:name="com.bezzy.Ui.View.activity.MyFriendsList"></activity>
+        <activity android:name="com.bezzy.Ui.View.activity.FriendsFriendList"></activity>
+        <activity android:name="com.bezzy.Ui.View.activity.FriendsProfileActivity" />
+        <activity android:name="com.bezzy.Ui.View.activity.MyFriendsList" />
         <activity android:name="com.bezzy.Ui.View.activity.Editprofile" />
         <activity android:name="com.bezzy.Ui.View.activity.PostImageVideoViewActivity" />
         <activity android:name="com.bezzy.Ui.View.activity.Massage" />

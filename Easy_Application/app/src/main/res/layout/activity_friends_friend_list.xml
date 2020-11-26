@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bezzy.Ui.View.activity.MyFriendsList">
+    tools:context="com.bezzy.Ui.View.activity.FriendsFriendList">
 
     <RelativeLayout
         android:id="@+id/back_bezy"

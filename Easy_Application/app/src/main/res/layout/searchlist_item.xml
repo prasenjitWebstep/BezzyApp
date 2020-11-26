@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginBottom="5dp"
         android:layout_marginEnd="5dp"
@@ -19,16 +19,16 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_logo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
+                android:padding="5dp"
                 app:civ_border_width="0.5dp"
                 app:civ_border_color="#5ADDED"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/add_img"/>
+                android:layout_alignParentLeft="true"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/text_part"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,49 +37,38 @@
                 android:layout_centerInParent="true">
                 <TextView
                     android:id="@+id/title_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="User Name"
+                    android:singleLine="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
                     android:textSize="15sp"
                     android:textColor="#000"
+                    android:layout_marginRight="30dp"/>
 
-                    />
-                <TextView
-                    android:id="@+id/descrip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1 New Post"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:textSize="12sp"
-                    android:textColor="#000"
-                    android:layout_marginRight="10dp"
-                    />
-            </LinearLayout>
+                <ImageView
+                    android:id="@+id/addFriend"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_toRightOf="@+id/title_text"
+                    android:src="@drawable/ic_add_friend"
+                    android:layout_marginLeft="-30dp"
+                    app:tint="@color/gradstart"/>
 
 
-            <ImageView
-                android:id="@+id/add_img"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/add_img"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="5dp"
-                android:padding="5dp"
-                app:tint="#A8A4A4"
-                android:layout_marginTop="5dp"/>
+                <ImageView
+                    android:id="@+id/chat"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_toRightOf="@+id/title_text"
+                    android:src="@drawable/ic_chat"
+                    android:layout_marginLeft="-30dp"
+                    app:tint="@color/gradstart"
+                    android:visibility="gone"/>
 
+            </RelativeLayout>
 
-
-
-        </RelativeLayout>
-
-
-
-
+            </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
