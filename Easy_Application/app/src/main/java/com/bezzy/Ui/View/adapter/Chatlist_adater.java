@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,11 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
     public void onBindViewHolder(@NonNull ChatListHolder holder, final int position) {
         final Chatlist_item chatlistItem=chatholder.get(position);
         holder.tvName.setText(chatlistItem.getUserName());
+        if(chatlistItem.getActiveStatus().equals("true")){
+            holder.imgActive.setVisibility(View.VISIBLE);
+        }else{
+            holder.imgActive.setVisibility(View.GONE);
+        }
         if(!chatlistItem.getUnreadmsg().equals("0")){
             holder.tvunread.setVisibility(View.VISIBLE);
             holder.tvunread.setText(chatlistItem.getUnreadmsg());
@@ -132,6 +138,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
         private TextView tvName,tvLastmsg,tvDate,tvunread;
         private CircleImageView image;
         RelativeLayout relativeHolder;
+        ImageView imgActive;
 
         public ChatListHolder(@NonNull View itemView) {
             super(itemView);
@@ -141,6 +148,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
             tvunread=itemView.findViewById(R.id.msg_number);
             image=itemView.findViewById(R.id.chat_image);
             relativeHolder = itemView.findViewById(R.id.relativeHolder);
+            imgActive = itemView.findViewById(R.id.imgActive);
 
 
 

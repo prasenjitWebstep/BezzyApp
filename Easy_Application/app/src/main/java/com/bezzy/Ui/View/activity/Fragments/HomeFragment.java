@@ -98,7 +98,6 @@ public class HomeFragment extends Fragment {
             progressDialog.show();
 
             postRequest(APIs.BASE_URL+APIs.GETDATA);
-            friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
 
         }
         else {
@@ -111,7 +110,26 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(Utility.internet_check(getActivity())) {
+
+            progressDialog.show();
+
+            friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
+
+        }
+        else {
+
+            progressDialog.dismiss();
+
+            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void friendsBlockList(String url) {
+        friendsfeed_items.clear();
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

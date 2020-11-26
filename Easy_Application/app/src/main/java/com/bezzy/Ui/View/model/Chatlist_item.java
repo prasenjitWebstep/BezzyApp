@@ -7,14 +7,16 @@ public class Chatlist_item {
     private String date;
     private String unreadmsg;
     private String userimage;
+    private String activeStatus;
 
-    public Chatlist_item(String userID, String userName, String lastmsg, String date, String unreadmsg, String userimage) {
+    public Chatlist_item(String userID, String userName, String lastmsg, String date, String unreadmsg, String userimage, String activeStatus) {
         this.userID = userID;
         this.userName = userName;
         this.lastmsg = lastmsg;
         this.date = date;
         this.unreadmsg = unreadmsg;
         this.userimage = userimage;
+        this.activeStatus = activeStatus;
     }
 
     public String getUserID() {
@@ -39,5 +41,9 @@ public class Chatlist_item {
 
     public String getImage() {
         return userimage;
+    }
+
+    public String getActiveStatus() {
+        return activeStatus;
     }
 }

@@ -99,7 +99,8 @@ public class ChatFragment extends Fragment {
                                     object11.getString("chat_message"),
                                     object11.getString("chat_date_time"),
                                     object11.getString("unread_msg"),
-                                    object11.getString("userimage")
+                                    object11.getString("userimage"),
+                                    object11.getString("user_active_status")
                             );
                             dataholder.add(chatlist_item);
 

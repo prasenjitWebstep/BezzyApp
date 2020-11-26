@@ -163,7 +163,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
                     JSONObject object=new JSONObject(response);
                     String status=object.getString("status");
                     if (status.equals("success")){
-                        Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,object.getString("alert_msg"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, MyFriendsList.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
