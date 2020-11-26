@@ -7,31 +7,39 @@
         android:id="@+id/layoutSender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/send_msg_backgr"
         android:layout_alignParentRight="true"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp">
-
-        <TextView
-            android:id="@+id/send_message_body"
-            android:text="hi man, how are you?"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/send_msg_backgr"
+        android:orientation="horizontal">
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp"
-            android:textColor="@color/white"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/send_message_body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="hi man, how are you?"
+                android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/send_message_time"
-            android:text="11:40"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:padding="5dp"
-            android:layout_marginRight="15dp"
-            android:layout_gravity="right"
-            android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/send_message_time"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_below="@id/send_message_body"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@+id/send_message_body"
+                android:text="11:40"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+        </RelativeLayout>
+
 
     </LinearLayout>
 

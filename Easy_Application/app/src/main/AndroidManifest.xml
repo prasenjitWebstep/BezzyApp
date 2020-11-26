@@ -26,13 +26,15 @@
         <activity android:name="com.bezzy.Ui.View.activity.VideoDisplayActivity" />
         <activity android:name="com.bezzy.Ui.View.activity.Friendsfeed" />
         <activity android:name="com.bezzy.Ui.View.activity.NotificationActivity" />
-        <activity android:name="com.bezzy.Ui.View.activity.Upload" />
+        <activity android:name="com.bezzy.Ui.View.activity.Upload"
+            android:theme="@style/UploadTheme"
+            />
         <activity android:name="com.bezzy.Ui.View.activity.showprofile" />
         <activity
             android:name="com.bezzy.Ui.View.activity.COTPActivity"
             android:theme="@style/OtpTheme" />
         <activity android:name="com.bezzy.Ui.View.activity.Changepassword" />
-        <activity android:name="com.bezzy.Ui.View.activity.Editprofile" />
+
         <activity
             android:name="com.bezzy.Ui.View.activity.OTPActivity"
             android:label="@string/title_activity_o_t_p"

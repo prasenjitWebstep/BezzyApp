@@ -54,12 +54,12 @@ import static com.bezzy.Ui.View.utils.UploadHelper.getFileDataFromDrawable;
 
 public class Video_fragment extends Fragment {
 
-    ImageView imageView,back_image;
+    ImageView imageView, back_image;
     LinearLayout postUpload;
     VideoView videoView;
     TextView bufferText;
     EditText editText;
-    Button pickVideo,uploadVideo;
+    Button pickVideo, uploadVideo;
     private static final int REQUEST_PICK_VIDEO = 3;// Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
     private Uri video;
@@ -68,7 +68,7 @@ public class Video_fragment extends Fragment {
 
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
-    int MY_SOCKET_TIMEOUT_MS=150000;
+    int MY_SOCKET_TIMEOUT_MS = 150000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,13 +79,13 @@ public class Video_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_video_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_video_fragment, container, false);
         videoView = view.findViewById(R.id.video_view);
         editText = view.findViewById(R.id.ed_content);
         postUpload = view.findViewById(R.id.postUpload);
         back_image = view.findViewById(R.id.back_image);
         imageView = view.findViewById(R.id.imageViewVideo);
-        bufferText = view.findViewById(R.id.bufferingtext);
+
         uploadVideo = view.findViewById(R.id.upload);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
@@ -113,26 +113,28 @@ public class Video_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
-                uploadVideo( APIs.BASE_URL+ APIs.POSTVIDEO);
+                uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO);
             }
         });
         //setup the media controller widget and attach it to the video view
         MediaController controller = new MediaController(getContext());
+
         controller.setMediaPlayer(videoView);
         videoView.setMediaController(controller);
 
         return view;
     }
 
-    private void pickVideoFromgallery(){
+    private void pickVideoFromgallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("video/*");
-        startActivityForResult(intent,REQUEST_PICK_VIDEO);
+        startActivityForResult(intent, REQUEST_PICK_VIDEO);
     }
+
     @Override
     public void onPause() {
         super.onPause();
-        if(Build.VERSION.SDK_INT< Build.VERSION_CODES.N){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             videoView.pause();
         }
     }
@@ -148,13 +150,13 @@ public class Video_fragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(PLAYBACK_TIME,videoView.getCurrentPosition());
+        outState.putInt(PLAYBACK_TIME, videoView.getCurrentPosition());
     }
 
     private void initializePlayer(Uri uri) {
         // Show the "Buffering..." message while the video loads.
-        bufferText.setVisibility(VideoView.GONE);
-        if (uri != null){
+        //bufferText.setVisibility(VideoView.GONE);
+        if (uri != null) {
             postUpload.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
             videoView.setVideoURI(uri);
@@ -166,7 +168,7 @@ public class Video_fragment extends Fragment {
                     public void onPrepared(MediaPlayer mediaPlayer) {
 
                         // Hide buffering message.
-                        bufferText.setVisibility(VideoView.INVISIBLE);
+                        //bufferText.setVisibility(VideoView.INVISIBLE);
 
                         // Restore saved position, if available.
                         if (mCurrentPosition > 0) {
@@ -207,7 +209,7 @@ public class Video_fragment extends Fragment {
                 if (data != null) {
                     //Toast.makeText(getActivity(), "Video content URI: " + data.getData(),Toast.LENGTH_LONG).show();
                     video = data.getData();
-                    Log.e("FetechedVideo",video.toString());
+                    Log.e("FetechedVideo", video.toString());
                     /*videoPath = getPath(video);
                     Log.e("FetechedVideoPath",videoPath);*/
                     initializePlayer(video);
@@ -215,14 +217,13 @@ public class Video_fragment extends Fragment {
 
                 }
             }
-        }
-        else if (resultCode != Activity.RESULT_CANCELED) {
+        } else if (resultCode != Activity.RESULT_CANCELED) {
             Toast.makeText(getActivity(), "Sorry, there was an error!", Toast.LENGTH_LONG).show();
         }
     }
 
     public String getPath(Uri uri) {
-        String[] projection = { MediaStore.Video.Media.DATA };
+        String[] projection = {MediaStore.Video.Media.DATA};
         Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
         if (cursor != null) {
             // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
@@ -235,7 +236,7 @@ public class Video_fragment extends Fragment {
             return null;
     }
 
-    private void uploadVideo(String url){
+    private void uploadVideo(String url) {
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
@@ -252,7 +253,7 @@ public class Video_fragment extends Fragment {
                         //
                         String msg = object.getString("message");
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getActivity().getApplicationContext(),Profile.class);
+                        Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     } else {
@@ -270,24 +271,25 @@ public class Video_fragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Log.e("VolleyError",error.toString());
+                Log.e("VolleyError", error.toString());
             }
         }
-        ){
+        ) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 // params.put("tags", "ccccc");  add string parameters
                 params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content",editText.getText().toString());
+                params.put("post_content", editText.getText().toString());
                 return params;
             }
+
             @Override
             protected Map<String, DataPart> getByteData() throws AuthFailureError {
                 Map<String, DataPart> params = new HashMap<>();
                 long videoname = System.currentTimeMillis();
-                params.put("post_video", new DataPart(videoname + ".mp4", getFileDataFromDrawable(getActivity(),video)));
-                Log.e("Value",params.get("post_video").toString());
+                params.put("post_video", new DataPart(videoname + ".mp4", getFileDataFromDrawable(getActivity(), video)));
+                Log.e("Value", params.get("post_video").toString());
                 return params;
             }
         };
