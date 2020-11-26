@@ -78,6 +78,7 @@ public class Massage extends AppCompatActivity {
         page = 1;
         linearLayoutManager = new LinearLayoutManager(Massage.this);
         linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(true);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
 
         callApi();

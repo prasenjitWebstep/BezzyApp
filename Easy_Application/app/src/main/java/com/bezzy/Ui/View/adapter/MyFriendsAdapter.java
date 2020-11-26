@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.FriendsFriendList;
 import com.bezzy.Ui.View.activity.FriendsProfileActivity;
 import com.bezzy.Ui.View.activity.Massage;
+import com.bezzy.Ui.View.activity.MyFriendsList;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.model.FriendsHolder;
 import com.bezzy.Ui.View.utils.APIs;
@@ -96,6 +97,24 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
             holder.btn.setVisibility(View.VISIBLE);
             holder.addFriend.setVisibility(View.GONE);
             holder.chat.setVisibility(View.GONE);
+            holder.btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Utility.internet_check(context)) {
+
+                        unfriend(APIs.BASE_URL+APIs.UNFRIEND,friendsHolder.get(position).getFriendId());
+
+
+                    }
+                    else {
+
+
+                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }
+            });
         }else{
             Log.e("Screen","2");
             Log.e("GETVAL",friendsHolder.get(position).getUser_relation_status());
@@ -132,6 +151,48 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
             }
         }
 
+    }
+
+    private void unfriend(String url, final String friendId) {
+        StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response",response);
+                try {
+                    JSONObject object=new JSONObject(response);
+                    String status=object.getString("status");
+                    if (status.equals("success")){
+                        Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, MyFriendsList.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intent);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+
+                map.put("loginUserID",Utility.getUserId(context));
+                map.put("unfriendID",friendId);
+
+
+                return map;
+            }
+        };
+        RequestQueue queue= Volley.newRequestQueue(context);
+        queue.add(request);
     }
 
     private void callApiFriendRequest(String url, final String id, final int position) {

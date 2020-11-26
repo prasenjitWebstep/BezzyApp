@@ -22,7 +22,7 @@
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
             android:text="Photo"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/gradstart"
             android:textSize="17sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical" />
