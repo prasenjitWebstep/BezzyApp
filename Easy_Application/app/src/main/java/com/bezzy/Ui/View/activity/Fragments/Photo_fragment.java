@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -33,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -72,7 +72,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class Photo_fragment extends Fragment {
-    ImageView imageView,back_image;
+    ImageView imageView, back_image;
     Button button;
     String base64String;
     String filePath;
@@ -82,13 +82,13 @@ public class Photo_fragment extends Fragment {
     EditText caption;
     Bitmap bitmap;
     Uri resultUri;
-    int MY_SOCKET_TIMEOUT_MS=10000;
+    int MY_SOCKET_TIMEOUT_MS = 10000;
     LinearLayout image_part;
     ProgressDialog progressDialog;
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
+    Button uoload;
     int option;
-
 
 
     @Override
@@ -112,15 +112,16 @@ public class Photo_fragment extends Fragment {
         progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);
+        uoload = view.findViewById(R.id.upload_post);
         bitmapList = new ArrayList<>();
 
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerDisplayImg.setLayoutManager(layoutManager);
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(),Profile.class);
+                Intent i = new Intent(getActivity(), Profile.class);
                 startActivity(i);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }
@@ -136,13 +137,13 @@ public class Photo_fragment extends Fragment {
 //                }
 //            }
 //        });
-        imageView.setOnClickListener(new View.OnClickListener() {
+        uoload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},100);
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
                     return;
                 }
                 pickImageFromGallery();
@@ -155,29 +156,26 @@ public class Photo_fragment extends Fragment {
         });
 
 
-
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Utility.internet_check(getActivity())) {
+                if (Utility.internet_check(getActivity())) {
 
                     progressDialog.show();
 
-                    switch (option){
+                    switch (option) {
                         case 0:
-                            uploadCam(APIs.BASE_URL+APIs.POSTIMAGE);
+                            uploadCam(APIs.BASE_URL + APIs.POSTIMAGE);
                             break;
                         case 1000:
-                            upload(APIs.BASE_URL+APIs.POSTIMAGE);
+                            upload(APIs.BASE_URL + APIs.POSTIMAGE);
                             break;
                     }
 
-                }
-                else {
+                } else {
 
                     progressDialog.dismiss();
-                    Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -186,8 +184,8 @@ public class Photo_fragment extends Fragment {
         return view;
     }
 
-    private void pickImageFromGallery(){
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+    private void pickImageFromGallery() {
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setCancelable(false);
@@ -209,7 +207,7 @@ public class Photo_fragment extends Fragment {
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(intent,IMAGE_PICK_CODE);
+                    startActivityForResult(intent, IMAGE_PICK_CODE);
 
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -228,15 +226,15 @@ public class Photo_fragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
-            switch (requestCode){
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
                 case 0:
                     option = 0;
                     if (resultCode == RESULT_OK && data != null) {
                         bitmapList = new ArrayList<>();
                         bitmap = (Bitmap) data.getExtras().get("data");
                         bitmapList.add(bitmap);
-                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(),bitmapList));
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
                     }
 
                     break;
@@ -268,7 +266,7 @@ public class Photo_fragment extends Fragment {
                             }
                         }
 
-                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(),bitmapList));
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
                     }
                     break;
             }
@@ -281,13 +279,12 @@ public class Photo_fragment extends Fragment {
         return byteArrayOutputStream.toByteArray();
     }
 
-    public void uploadCam(String url){
+    public void uploadCam(String url) {
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
                         String response2 = new String(response.data);
-
                         Log.e("RESPONSE2", response2);
                         try {
                             JSONObject object = new JSONObject(response2);
@@ -297,7 +294,7 @@ public class Photo_fragment extends Fragment {
                                 progressDialog.dismiss();
                                 String msg = object.getString("message");
                                 Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(getActivity().getApplicationContext(),Profile.class);
+                                Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             } else {
@@ -316,7 +313,7 @@ public class Photo_fragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                        Log.e("GotError",""+error.getMessage());
+                        Log.e("GotError", "" + error.getMessage());
                     }
                 }) {
 
@@ -326,14 +323,15 @@ public class Photo_fragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 // params.put("tags", "ccccc");  add string parameters
                 params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content",caption.getText().toString());
+                params.put("post_content", caption.getText().toString());
                 return params;
             }
+
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
-                params.put("post_image[]", new DataPart(+imagename+ ".jpeg", getFileDataFromDrawable(bitmap)));
+                params.put("post_image[]", new DataPart(+imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
                 return params;
             }
 
@@ -348,19 +346,19 @@ public class Photo_fragment extends Fragment {
         rQueue.add(volleyMultipartRequest);
     }
 
-    public void upload(String url){
+    public void upload(String url) {
         VolleyMultipleMultipartRequest multipartRequest = new VolleyMultipleMultipartRequest(Request.Method.POST,
                 url, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
 
-                Log.e("Response",response.toString());
+                Log.e("Response", response.toString());
 
                 try {
                     progressDialog.dismiss();
                     Toast.makeText(getActivity().getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getActivity().getApplicationContext(),Profile.class);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
 
@@ -371,7 +369,7 @@ public class Photo_fragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("VolleyError",error.toString());
+                Log.e("VolleyError", error.toString());
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Toast.makeText(getActivity().getApplicationContext(), "Unable to upload", Toast.LENGTH_SHORT).show();
                 }
@@ -391,15 +389,15 @@ public class Photo_fragment extends Fragment {
                 Map<String, ArrayList<DataPart>> imageList = new HashMap<>();
                 ArrayList<DataPart> dataPart = new ArrayList<>();
                 long imagename = System.currentTimeMillis();
-                for (int i=0; i<bitmapList.size(); i++){
-                    VolleyMultipleMultipartRequest.DataPart dp = new VolleyMultipleMultipartRequest.DataPart(+imagename+i+".jpeg", getFileDataFromDrawable(bitmapList.get(i)));
+                for (int i = 0; i < bitmapList.size(); i++) {
+                    VolleyMultipleMultipartRequest.DataPart dp = new VolleyMultipleMultipartRequest.DataPart(+imagename + i + ".jpeg", getFileDataFromDrawable(bitmapList.get(i)));
                     dataPart.add(dp);
                     //params.put(imagename, new DataPart(imagename+i, Base64.decode(encodedImageList.get(i), Base64.DEFAULT), "image/jpeg"));
                 }
                 imageList.put("post_image[]", dataPart);
 
-                for(DataPart dataPart1 : dataPart){
-                    Log.e("Value",imageList.get("post_image[]").toString());
+                for (DataPart dataPart1 : dataPart) {
+                    Log.e("Value", imageList.get("post_image[]").toString());
                 }
 
                 return imageList;

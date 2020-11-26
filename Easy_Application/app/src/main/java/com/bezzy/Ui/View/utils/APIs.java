@@ -36,4 +36,5 @@ public class APIs {
     public static String PROFILE_FRIEND_LIST = "api/getuserprofilefriendlist";
     public static String CHAT_NOTIFICATION_READ = "api/click-on-chat-notification";
     public static String GET_USER_ACTIVE_STATUS = "api/appbasic_userative_status";
+    public static String UNFRIEND = "api/unfrienduser";
 }

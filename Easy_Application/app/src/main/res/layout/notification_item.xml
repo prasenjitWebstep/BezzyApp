@@ -83,7 +83,8 @@
                             android:id="@+id/acceptButton"
                             android:text="ACCEPT"
                             android:textSize="12sp"
-                            android:background="@color/colorPrimary"
+                            android:backgroundTint="@color/gradstart"
+                            android:background="@drawable/rounded_button2"
                             android:textColor="@color/colourwhite"
                             android:layout_marginRight="10dp"/>
                         <Button
