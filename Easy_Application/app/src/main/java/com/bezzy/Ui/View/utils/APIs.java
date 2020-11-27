@@ -38,4 +38,5 @@ public class APIs {
     public static String GET_USER_ACTIVE_STATUS = "api/appbasic_userative_status";
     public static String UNFRIEND = "api/unfrienduser";
     public static String GET_MESSAGE_SEEN = "api/chat-box-message-read-unread";
+    public static String GET_IMAGE_VIDEO_DETAILS = "api/postimagevideodetails";
 }

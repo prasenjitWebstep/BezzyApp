@@ -251,8 +251,6 @@ public class HomeFragment extends Fragment {
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 
-                        progressDialog.dismiss();
-
                         Utility.setUserName(getActivity(),object.getJSONObject("usedetails").getString("get_username"));
                         Utility.setName(getActivity(),object.getJSONObject("usedetails").getString("get_name"));
                         Utility.setEmail(getActivity(),object.getJSONObject("usedetails").getString("get_email"));
@@ -260,9 +258,10 @@ public class HomeFragment extends Fragment {
                         Utility.setGender(getActivity(),object.getJSONObject("usedetails").getString("get_gender"));
                         Utility.setBio(getActivity(),object.getJSONObject("usedetails").getString("bio"));
                         Utility.setImage(getActivity(),object.getJSONObject("usedetails").getString("profile_pic"));
-                        Utility.setFollower(getActivity(),object.getJSONObject("usedetails").getString("followers"));
-                        Utility.setFollowing(getActivity(),object.getJSONObject("usedetails").getString("following"));
-                        Utility.setLike(getActivity(),object.getJSONObject("usedetails").getString("like"));
+                        Utility.setFollower(getActivity(),object.getJSONObject("usedetails").getString("number_of_friend"));
+
+                        progressDialog.dismiss();
+
                     }else{
                         progressDialog.dismiss();
                     }

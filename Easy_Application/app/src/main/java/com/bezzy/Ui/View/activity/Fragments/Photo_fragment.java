@@ -73,7 +73,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class Photo_fragment extends Fragment {
     ImageView imageView, back_image;
-    Button button;
+    Button button,uoload;
     String base64String;
     String filePath;
     //Image request code
@@ -87,7 +87,6 @@ public class Photo_fragment extends Fragment {
     ProgressDialog progressDialog;
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
-    Button uoload;
     int option;
 
 
@@ -159,26 +158,29 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utility.internet_check(getActivity())) {
+                if(caption.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity().getApplicationContext(),"Please add any content to post",Toast.LENGTH_SHORT).show();
+                }else{
+                    if (Utility.internet_check(getActivity())) {
 
-                    progressDialog.show();
+                        progressDialog.show();
 
-                    switch (option) {
-                        case 0:
-                            uploadCam(APIs.BASE_URL + APIs.POSTIMAGE);
-                            break;
-                        case 1000:
-                            upload(APIs.BASE_URL + APIs.POSTIMAGE);
-                            break;
+                        switch (option) {
+                            case 0:
+                                uploadCam(APIs.BASE_URL + APIs.POSTIMAGE);
+                                break;
+                            case 1000:
+                                upload(APIs.BASE_URL + APIs.POSTIMAGE);
+                                break;
+                        }
+
+                    } else {
+
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
+
                     }
-
-                } else {
-
-                    progressDialog.dismiss();
-                    Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
         });
         return view;
@@ -306,13 +308,16 @@ public class Photo_fragment extends Fragment {
 //                            Toast.makeText(getContext().getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            progressDialog.dismiss();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                       /* Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();*/
+                         Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
+                         progressDialog.dismiss();
                         Log.e("GotError", "" + error.getMessage());
                     }
                 }) {
