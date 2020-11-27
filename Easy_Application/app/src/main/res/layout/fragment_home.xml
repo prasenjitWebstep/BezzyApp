@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bezzy.Ui.View.activity.Fragments.HomeFragment">
+
     <RelativeLayout
         android:id="@+id/back_bezy"
         android:layout_width="match_parent"
@@ -15,14 +17,14 @@
             android:id="@+id/go_bezzy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="18dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/gradstart"
             android:textSize="17sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="18dp"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/back_image"
@@ -30,61 +32,68 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:src="@drawable/ic_baseline_keyboard_backspace_24"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/notification"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:visibility="gone"/>
+            android:src="@drawable/notification"
+            android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/noti"
             style="?attr/actionButtonStyle"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".12"
-            android:clipToPadding="false"
+            android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="5dp"
-            android:focusable="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp"
+            android:layout_weight=".12"
+            android:clipToPadding="false"
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
-                android:src="@drawable/notification"
-                android:background="@drawable/rounded_circle"/>
+                android:src="@drawable/notification" />
 
             <TextView
                 android:id="@+id/cart_badge"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:layout_gravity="right|end|top"
-                android:layout_marginEnd="-5dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="-5dp"
                 android:background="@drawable/cart_items"
                 android:gravity="center"
                 android:padding="3dp"
                 android:textColor="@android:color/white"
                 android:textSize="9sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </FrameLayout>
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/friendsnoti_listf"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/back_bezy"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="7dp"
+        android:id="@+id/containers">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/friendsnoti_listf"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

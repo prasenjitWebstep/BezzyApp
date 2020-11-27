@@ -5,22 +5,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginStart="5dp"
         android:layout_marginBottom="5dp"
         android:layout_marginEnd="5dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp">
         <RelativeLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff">
+            android:background="#fff"
+            android:layout_gravity="center_vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_logo"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:padding="5dp"
@@ -48,20 +48,20 @@
 
                 <ImageView
                     android:id="@+id/addFriend"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_toRightOf="@+id/title_text"
                     android:src="@drawable/ic_add_friend"
-                    android:layout_marginLeft="-30dp"
+                    android:layout_marginLeft="-40dp"
                     app:tint="@color/gradstart"/>
 
 
                 <ImageView
                     android:id="@+id/chat"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_toRightOf="@+id/title_text"
-                    android:src="@drawable/ic_chat"
+                    android:src="@drawable/ic_chat_c"
                     android:layout_marginLeft="-30dp"
                     app:tint="@color/gradstart"
                     android:visibility="gone"/>

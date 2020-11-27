@@ -17,10 +17,10 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardFriends"
                 android:layout_width="match_parent"
-                android:layout_height="129dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_height="130dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginBottom="7dp"
                 app:cardCornerRadius="10dp"
                 android:elevation="5dp">
 
@@ -142,7 +142,7 @@
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginRight="10dp"
-                                android:background="@drawable/background_circle"/>
+                               />
 
                         </RelativeLayout>
 

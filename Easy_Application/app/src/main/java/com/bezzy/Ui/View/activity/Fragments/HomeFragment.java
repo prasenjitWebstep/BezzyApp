@@ -7,7 +7,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +58,8 @@ public class HomeFragment extends Fragment {
     TextView cart_badge,go_bezzy;
     ArrayList<Friendsfeed_item> friendsfeed_items;
     ImageView chatButton;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
 
 
     @Override
@@ -73,42 +77,64 @@ public class HomeFragment extends Fragment {
         cart_badge = view.findViewById(R.id.cart_badge);
         go_bezzy = view.findViewById(R.id.go_bezzy);
         chatButton = view.findViewById(R.id.chatButton);
+        mSwipeRefreshLayout = view.findViewById(R.id.containers);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.setRefreshing(false);
+                if(Utility.internet_check(getActivity())) {
+
+                    progressDialog.show();
+
+                    friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
+
+                }
+                else {
+
+                    progressDialog.dismiss();
+
+                    Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
-            cart_badge.setVisibility(View.VISIBLE);
-        }else{
-            cart_badge.setVisibility(View.GONE);
-        }
+        cart_badge.setVisibility(View.VISIBLE);
+    }else{
+        cart_badge.setVisibility(View.GONE);
+    }
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         noti.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NotificationActivity.class);
-                startActivity(intent);
-            }
-        });
-        dataholder=new ArrayList<>();
-        friendsfeed_items = new ArrayList<>();
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(), NotificationActivity.class);
+            startActivity(intent);
+        }
+    });
+    dataholder=new ArrayList<>();
+    friendsfeed_items = new ArrayList<>();
 
         if(Utility.internet_check(getActivity())) {
 
-            progressDialog.show();
+        progressDialog.show();
 
-            postRequest(APIs.BASE_URL+APIs.GETDATA);
+        postRequest(APIs.BASE_URL+APIs.GETDATA);
 
-        }
+    }
         else {
 
-            progressDialog.dismiss();
+        progressDialog.dismiss();
 
-            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+    }
 
         return view;
-    }
+}
 
     @Override
     public void onResume() {
@@ -291,4 +317,6 @@ public class HomeFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(request);
     }
+
+
 }
