@@ -32,9 +32,9 @@ import kr.pe.burt.android.lib.androidgradientimageview.AndroidGradientImageView;
 public class ImageDisplayActivity extends AppCompatActivity {
 
     ImageView back_image;
-    TextView username,servicesText;
-    ImageView imageView;
-    String id,postId,type;
+    TextView username,servicesText,following_num,following_numm;
+    ImageView imageView,chat_btn;
+    String id,postId,type,postId2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,9 @@ public class ImageDisplayActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         servicesText = findViewById(R.id.servicesText);
         imageView = findViewById(R.id.imageHolder);
+        following_num = findViewById(R.id.following_num);
+        following_numm = findViewById(R.id.following_numm);
+        chat_btn = findViewById(R.id.chat_btn);
 
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
@@ -57,6 +60,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
         if(Utility.internet_check(ImageDisplayActivity.this)) {
 
@@ -74,10 +78,10 @@ public class ImageDisplayActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.e("Response",response);
                 try {
-                    JSONObject object1 = new JSONObject(response);
+                    final JSONObject object1 = new JSONObject(response);
                     String status = object1.getString("status");
                     if(status.equals("success")){
-                        JSONObject object11 = object1.getJSONObject("post_details");
+                        final JSONObject object11 = object1.getJSONObject("post_details");
                         username.setText(object11.getString("username"));
                         if(!object11.getString("content").equals("null")){
                             servicesText.setText(object11.getString("content"));
@@ -87,6 +91,24 @@ public class ImageDisplayActivity extends AppCompatActivity {
                         Glide.with(ImageDisplayActivity.this)
                                 .load(object11.getString("url"))
                                 .into(imageView);
+                        following_num.setText(object11.getString("total_like"));
+                        following_numm.setText(object11.getString("total_comment"));
+                        chat_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(ImageDisplayActivity.this,CommentActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                try {
+                                    intent.putExtra("postId",object1.getString("post_id"));
+                                    Log.e("PostId",object1.getString("post_id"));
+                                    intent.putExtra("screen","1");
+                                    startActivity(intent);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -40,12 +42,12 @@ import java.util.Map;
 
 public class CommentActivity extends AppCompatActivity {
 
-    String id;
+    String id,screen;
     ArrayList<Comment_item> dataholder;
     RecyclerView recyclerView;
     EditText comment;
     ImageView imageView;
-
+    RelativeLayout layout_chatbox;
 
 
     @Override
@@ -55,10 +57,19 @@ public class CommentActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.reyclerview_comment_list);
         comment=findViewById(R.id.edittext_comment);
         imageView=findViewById(R.id.send_msg);
+        layout_chatbox = findViewById(R.id.layout_chatbox);
+
         id = getIntent().getExtras().getString("postId");
+        screen = getIntent().getExtras().getString("screen");
+
+        Log.e("ID",id);
 
 
-
+        if(screen.equals("1")){
+            layout_chatbox.setVisibility(View.GONE);
+        }else{
+            layout_chatbox.setVisibility(View.VISIBLE);
+        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -72,8 +83,6 @@ public class CommentActivity extends AppCompatActivity {
                 if(Utility.internet_check(CommentActivity.this)) {
 
                     //dialog.show();
-
-                    Log.e("Result","1");
 
                     commentPost(APIs.BASE_URL+APIs.COMMENT_POST);
 
@@ -91,8 +100,6 @@ public class CommentActivity extends AppCompatActivity {
         if(Utility.internet_check(CommentActivity.this)) {
 
             //dialog.show();
-
-            Log.e("Result","1");
 
             commentList(APIs.BASE_URL+APIs.COMMENT_LIST);
 
@@ -153,9 +160,8 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
-
                 map.put("post_id",id);
-
+                Log.e("Value",map.get("post_id"));
                 return map;
             }
         };

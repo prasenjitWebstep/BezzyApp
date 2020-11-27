@@ -29,8 +29,8 @@ public class VideoDisplayActivity extends AppCompatActivity {
     VideoView videoView;
     AndExoPlayerView andExoPlayerView;
     String id,postId,type;
-    ImageView back_image;
-    TextView servicesText,username;
+    ImageView back_image,chat_btn;
+    TextView servicesText,username,following_num,following_numm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,9 @@ public class VideoDisplayActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         servicesText = findViewById(R.id.servicesText);
         andExoPlayerView=findViewById(R.id.andExoPlayerView);
+        following_num = findViewById(R.id.following_num);
+        following_numm = findViewById(R.id.following_numm);
+        chat_btn =  findViewById(R.id.chat_btn);
 
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
@@ -70,7 +73,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.e("Response",response);
                 try {
-                    JSONObject object1 = new JSONObject(response);
+                    final JSONObject object1 = new JSONObject(response);
                     String status = object1.getString("status");
                     if(status.equals("success")){
                         JSONObject object11 = object1.getJSONObject("post_details");
@@ -82,6 +85,25 @@ public class VideoDisplayActivity extends AppCompatActivity {
                         }
 
                         andExoPlayerView.setSource(object11.getString("url"));
+
+                        following_num.setText(object11.getString("total_like"));
+                        following_numm.setText(object11.getString("total_comment"));
+                        chat_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(VideoDisplayActivity.this,CommentActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                try {
+                                    intent.putExtra("postId",object1.getString("post_id"));
+                                    Log.e("PostId",object1.getString("post_id"));
+                                    intent.putExtra("screen","1");
+                                    startActivity(intent);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
 
                             /*Glide.with(ImageDisplayActivity.this)
                                     .load(object11.getString("url"))

@@ -8,7 +8,6 @@
         android:id="@+id/cardAdv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="20dp"
         app:cardElevation="10dp">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -81,8 +80,8 @@
                         android:weightSum="3"
                         android:layout_margin="10dp"
                         android:padding="5dp"
-
                         android:layout_alignParentBottom="true">
+
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -93,7 +92,6 @@
                                 android:id="@+id/following_num"
                                 android:layout_width="30dp"
                                 android:layout_height="wrap_content"
-                                android:text="456"
                                 android:padding="3dp"
                                 android:textSize="12sp"
                                 android:textAlignment="center"
@@ -124,7 +122,6 @@
                                 android:id="@+id/following_numm"
                                 android:layout_width="30dp"
                                 android:layout_height="wrap_content"
-                                android:text="456"
                                 android:padding="3dp"
                                 android:textSize="12sp"
                                 android:textAlignment="center"

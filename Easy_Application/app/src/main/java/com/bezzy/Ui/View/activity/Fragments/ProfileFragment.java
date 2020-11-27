@@ -139,6 +139,15 @@ public class ProfileFragment extends Fragment {
 
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
 
+
+        return view;
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         Log.e("Called","GridCalled");
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
         postRecyclerView.setLayoutManager(layoutManager);
@@ -152,11 +161,10 @@ public class ProfileFragment extends Fragment {
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
 
-        return view;
-
     }
 
     private void postRequest(String url) {
+        postList.clear();
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
