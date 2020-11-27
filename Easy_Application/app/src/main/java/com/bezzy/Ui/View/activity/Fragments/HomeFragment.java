@@ -93,20 +93,6 @@ public class HomeFragment extends Fragment {
         dataholder=new ArrayList<>();
         friendsfeed_items = new ArrayList<>();
 
-        if(Utility.internet_check(getActivity())) {
-
-            progressDialog.show();
-
-            postRequest(APIs.BASE_URL+APIs.GETDATA);
-
-        }
-        else {
-
-            progressDialog.dismiss();
-
-            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-        }
-
         return view;
     }
 
@@ -116,6 +102,8 @@ public class HomeFragment extends Fragment {
         if(Utility.internet_check(getActivity())) {
 
             progressDialog.show();
+
+            postRequest(APIs.BASE_URL+APIs.GETDATA);
 
             friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
 
