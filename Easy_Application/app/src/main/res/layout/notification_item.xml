@@ -94,7 +94,8 @@
                             android:layout_toRightOf="@+id/acceptButton"
                             android:text="decline"
                             android:textSize="12sp"
-                            android:background="@color/lightgrey"/>
+                            android:backgroundTint="@color/lightgrey"
+                            android:background="@drawable/rounded_button2"/>
                     </RelativeLayout>
                 </LinearLayout>
 
