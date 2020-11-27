@@ -146,6 +146,7 @@ public class Massage extends AppCompatActivity {
         if(Utility.internet_check(Massage.this)) {
 
             chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id/*+"/"+String.valueOf(page)*/);
+            messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);
         }
         else {
 
@@ -154,6 +155,31 @@ public class Massage extends AppCompatActivity {
         }
 
         refresh(5000);
+    }
+
+    private void messageStatUpdate(String url) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("loguserID",Utility.getUserId(Massage.this));
+                map.put("userID",id);
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(Massage.this);
+        queue.add(request);
     }
 
     private void refresh(int i) {
@@ -254,7 +280,8 @@ public class Massage extends AppCompatActivity {
                             JSONObject object1 = array.getJSONObject(i);
                             messageModel = new ChatMessageModel(object1.getString("message_by"),
                                     object1.getString("chat_message"),
-                                    object1.getString("chat_date_time"));
+                                    object1.getString("chat_msg_time"),
+                                    object1.getString("chat_read_unread_status"));
                             modelArrayList.add(messageModel);
                         }
 

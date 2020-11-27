@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/layoutSender"
@@ -35,9 +36,35 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@+id/send_message_body"
-                android:text="11:40"
                 android:textColor="@color/white"
                 android:textSize="10sp" />
+
+            <ImageView
+                android:id="@+id/send_tick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/send_message_time"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@+id/send_message_body"
+                android:src="@drawable/ic_tick"
+                app:tint="@color/white"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/delivered_tick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/send_message_time"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@+id/send_message_body"
+                android:src="@drawable/ic_double_tick_indicator"
+                app:tint="@color/colourwhite"
+                android:visibility="invisible"/>
+
         </RelativeLayout>
 
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,18 +48,18 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
         if(mMessageList.get(position).getMessage_by().equals("self")){
             holder.layoutSender.setVisibility(View.VISIBLE);
             holder.send_message_body.setText(mMessageList.get(position).getChat_message());
-
-            String s[] = mMessageList.get(position).getChat_date_time().split(" ",2);
-            String time = s[1];
-            String time2 = time.substring(0,5);
-            holder.send_message_time.setText(time2);
+            holder.send_message_time.setText(mMessageList.get(position).getChat_date_time());
+            if(mMessageList.get(position).getChat_read_unread_status().equals("2")){
+                holder.send_tick.setVisibility(View.VISIBLE);
+                holder.delivered_tick.setVisibility(View.INVISIBLE);
+            }else{
+                holder.send_tick.setVisibility(View.INVISIBLE);
+                holder.delivered_tick.setVisibility(View.VISIBLE);
+            }
         }else{
             holder.layoutreceiver.setVisibility(View.VISIBLE);
             holder.rcv_message_body.setText(mMessageList.get(position).getChat_message());
-            String s[] = mMessageList.get(position).getChat_date_time().split(" ",2);
-            String time = s[1];
-            String time2 = time.substring(0,5);
-            holder.rcv_message_time.setText(time2);
+            holder.rcv_message_time.setText(mMessageList.get(position).getChat_date_time());
 
         }
     }
@@ -95,6 +96,7 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
         TextView rcv_message_body,rcv_message_time,send_message_body,send_message_time;
         RelativeLayout layoutreceiver;
         LinearLayout layoutSender;
+        ImageView send_tick,delivered_tick;
 
 
         public ReceiveMassageHolder(@NonNull View itemView) {
@@ -105,6 +107,8 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
             rcv_message_time = itemView.findViewById(R.id.rcv_message_time);
             send_message_body = itemView.findViewById(R.id.send_message_body);
             send_message_time = itemView.findViewById(R.id.send_message_time);
+            send_tick = itemView.findViewById(R.id.send_tick);
+            delivered_tick = itemView.findViewById(R.id.delivered_tick);
         }
 
         /*void bind(UserMessage message) {

@@ -243,6 +243,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
+                Log.e("response",response);
+
                 try {
                     JSONObject object = new JSONObject(response);
                     Log.e("REsponse",response);
