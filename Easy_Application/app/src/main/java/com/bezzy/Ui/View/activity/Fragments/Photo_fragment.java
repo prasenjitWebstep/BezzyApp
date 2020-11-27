@@ -68,6 +68,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+
 import static android.app.Activity.RESULT_OK;
 
 
@@ -76,6 +79,7 @@ public class Photo_fragment extends Fragment {
     Button button,uoload;
     String base64String;
     String filePath;
+    ImageView emojiButton;
     //Image request code
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
@@ -87,6 +91,9 @@ public class Photo_fragment extends Fragment {
     ProgressDialog progressDialog;
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
+    View rootView;
+    EmojIconActions emojIcon;
+    EmojiconEditText emojiconEditText;
     int option;
 
 
@@ -104,8 +111,11 @@ public class Photo_fragment extends Fragment {
         back_image = view.findViewById(R.id.back_image);
         imageView = view.findViewById(R.id.imageView);
         // button = view.findViewById(R.id.choose_image_button);
-        caption = view.findViewById(R.id.ed_content);
+        emojiconEditText = view.findViewById(R.id.ed_content);
         button = view.findViewById(R.id.upload);
+        emojiButton = view.findViewById(R.id.emoji_btn);
+        rootView = view.findViewById(R.id.root_view);
+        //emojIcon = new EmojIconActions(getActivity().getApplicationContext(),this.rootView,this.emojiButton,this.emojiconEditText);
         //image_part = view.findViewById(R.id.image_part);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
