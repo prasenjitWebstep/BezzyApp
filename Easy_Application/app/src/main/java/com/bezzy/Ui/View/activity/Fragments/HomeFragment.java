@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment {
     TextView cart_badge,go_bezzy;
     ArrayList<Friendsfeed_item> friendsfeed_items;
     ImageView chatButton;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     @Override
@@ -90,6 +92,29 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        mSwipeRefreshLayout = view.findViewById(R.id.containers);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.setRefreshing(false);
+                if(Utility.internet_check(getActivity())) {
+
+                    progressDialog.show();
+
+                    friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
+
+                }
+                else {
+
+                    progressDialog.dismiss();
+
+                    Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         dataholder=new ArrayList<>();
         friendsfeed_items = new ArrayList<>();
 
