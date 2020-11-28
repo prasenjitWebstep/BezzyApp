@@ -96,6 +96,8 @@ public class Photo_fragment extends Fragment {
     View rootView;
     EmojiconEditText emojiconEditText;
 
+    Uri imageuri;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -134,6 +136,7 @@ public class Photo_fragment extends Fragment {
             @Override
             public void onKeyboardOpen() {
                 Log.e("Keyboard", "open");
+
             }
             @Override
             public void onKeyboardClose() {
@@ -225,6 +228,7 @@ public class Photo_fragment extends Fragment {
 
                 if (options[item].equals("Take Photo")) {
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
                     startActivityForResult(takePicture, 0);
 
                 } else if (options[item].equals("Choose from Gallery")) {
@@ -258,9 +262,12 @@ public class Photo_fragment extends Fragment {
                 case 0:
                     option = 0;
                     if (resultCode == RESULT_OK && data != null) {
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
                         bitmapList = new ArrayList<>();
                         bitmap = (Bitmap) data.getExtras().get("data");
                         bitmapList.add(bitmap);
+                        bitmapList.add(bitmap2);
                         recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
                     }
 
