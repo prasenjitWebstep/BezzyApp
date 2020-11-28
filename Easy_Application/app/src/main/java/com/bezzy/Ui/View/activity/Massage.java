@@ -90,7 +90,7 @@ public class Massage extends AppCompatActivity {
 
 
 
-       /* nestedview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+        nestedview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
@@ -112,7 +112,7 @@ public class Massage extends AppCompatActivity {
 
                 }
             }
-        });*/
+        });
 
         send_msg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,8 +145,9 @@ public class Massage extends AppCompatActivity {
     private void callApi() {
         if(Utility.internet_check(Massage.this)) {
 
-            chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id/*+"/"+String.valueOf(page)*/);
-            messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);
+            getChatCount(APIs.BASE_URL+APIs.GET_CHAT_COUNT+"/"+Utility.getUserId(Massage.this)+"/"+id);
+
+
         }
         else {
 
@@ -155,6 +156,37 @@ public class Massage extends AppCompatActivity {
         }
 
         refresh(5000);
+    }
+
+    private void getChatCount(String url) {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("Response",response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String status = object.getString("status");
+                    if(status.equals("success")){
+                        Utility.setChatCount(Massage.this,object.getString("chat_count"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(Massage.this);
+        queue.add(request);
+
     }
 
     private void messageStatUpdate(String url) {

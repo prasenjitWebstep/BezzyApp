@@ -64,12 +64,17 @@ public class CommentActivity extends AppCompatActivity {
 
         Log.e("ID",id);
 
-
-        if(screen.equals("1")){
-            layout_chatbox.setVisibility(View.GONE);
-        }else{
-            layout_chatbox.setVisibility(View.VISIBLE);
+        try{
+            if(screen.equals("1")){
+                layout_chatbox.setVisibility(View.GONE);
+            }else{
+                layout_chatbox.setVisibility(View.VISIBLE);
+            }
+        }catch (Exception e){
+            Log.e("Exception",e.toString());
         }
+
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);

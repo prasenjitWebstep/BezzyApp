@@ -39,4 +39,6 @@ public class APIs {
     public static String UNFRIEND = "api/unfrienduser";
     public static String GET_MESSAGE_SEEN = "api/chat-box-message-read-unread";
     public static String GET_IMAGE_VIDEO_DETAILS = "api/postimagevideodetails";
+    public static String GET_CHAT_COUNT = "api/get-chat_count";
+
 }

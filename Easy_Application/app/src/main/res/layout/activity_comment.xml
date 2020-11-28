@@ -6,6 +6,7 @@
     android:windowSoftInputMode="adjustResize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colourwhite"
     tools:context="com.bezzy.Ui.View.activity.CommentActivity">
 
     <RelativeLayout
@@ -49,8 +50,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reyclerview_comment_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="60dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/back_bezy"/>
 
     <!-- A horizontal line between the chatbox and RecyclerView -->
@@ -60,15 +60,19 @@
         android:layout_height="2dp"
         android:background="#dfdfdf"
         android:layout_marginBottom="0dp"
-        android:layout_below="@id/reyclerview_comment_list"/>
+        android:layout_below="@id/reyclerview_comment_list"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/layout_chatbox"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/viewnb"
         android:background="@drawable/rounded_button"
-        android:layout_marginTop="-60dp">
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom">
 
         <LinearLayout
             android:layout_width="match_parent"
