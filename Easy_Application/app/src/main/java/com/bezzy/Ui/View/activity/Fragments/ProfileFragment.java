@@ -51,7 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
     Button button;
-    CircleImageView circularImg;
+    ImageView circularImg;
     TextView userName,following,follower,Likes,userBio,userFriends,userFriendsHeading;
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_profile, container, false);
-        circularImg = view.findViewById(R.id.circularImg);
+        circularImg = view.findViewById(R.id.square_img);
         userName = view.findViewById(R.id.userName);
         following = view.findViewById(R.id.following_num);
         follower = view.findViewById(R.id.follower_num);

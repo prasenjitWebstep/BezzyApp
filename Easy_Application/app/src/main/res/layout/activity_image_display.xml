@@ -58,8 +58,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"/>
 
-                    <TextView
-                        android:id="@+id/servicesText"
+                    <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+                        android:id="@+id/servicesText_t"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
