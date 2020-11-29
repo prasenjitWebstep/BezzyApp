@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.adapter.FriendsEnlargeImagePostAdapter;
 import com.bezzy.Ui.View.adapter.FriendsImagePostAdapter;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy.Ui.View.utils.APIs;
@@ -44,7 +45,7 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
     RecyclerView recyclerImageShow;
     ProgressDialog progressDialog;
     ArrayList<FriendsPostModelImage> postModelList = new ArrayList<>();
-    FriendsImagePostAdapter postImageObj;
+    FriendsEnlargeImagePostAdapter postImageObj;
     FriendsPostModelImage postModelObj;
 
     @Override
@@ -159,7 +160,7 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
                                 recyclerImageShow.setVisibility(View.VISIBLE);
                                 imageShow.setVisibility(View.GONE);
                                 andExoPlayerView.setVisibility(View.GONE);
-                                LinearLayoutManager layoutManager = new LinearLayoutManager(PostImageVideoViewActivity.this);
+                                LinearLayoutManager layoutManager = new LinearLayoutManager(PostImageVideoViewActivity.this,RecyclerView.HORIZONTAL,false);
                                 recyclerImageShow.setLayoutManager(layoutManager);
                                 postModelList.clear();
                                 for(int i=0;i<array.length();i++){
@@ -176,7 +177,7 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
 
                                 }
 
-                                postImageObj = new FriendsImagePostAdapter(PostImageVideoViewActivity.this,postModelList);
+                                postImageObj = new FriendsEnlargeImagePostAdapter(PostImageVideoViewActivity.this,postModelList);
                                 recyclerImageShow.setAdapter(postImageObj);
                             }
 

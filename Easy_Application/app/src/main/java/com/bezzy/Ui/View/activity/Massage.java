@@ -37,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class Massage extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     ArrayList<ChatMessageModel> modelArrayList;
     NestedScrollView nestedview;
-    int page;
+    int page,i;
     ProgressBar chatProgress;
     Chatbox_adapter adapter;
 
@@ -77,9 +78,12 @@ public class Massage extends AppCompatActivity {
         modelArrayList = new ArrayList<>();
         page = 1;
         linearLayoutManager = new LinearLayoutManager(Massage.this);
-        linearLayoutManager.setStackFromEnd(true);
         linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
+
+
+        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
 
         callApi();
         
@@ -90,7 +94,7 @@ public class Massage extends AppCompatActivity {
 
 
 
-        nestedview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+        /*nestedview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
@@ -99,11 +103,9 @@ public class Massage extends AppCompatActivity {
 
                     if(Utility.internet_check(Massage.this)) {
 
-
                         chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
                     }
                     else {
-
 
                         Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
 
@@ -112,7 +114,7 @@ public class Massage extends AppCompatActivity {
 
                 }
             }
-        });
+        });*/
 
         send_msg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +147,16 @@ public class Massage extends AppCompatActivity {
     private void callApi() {
         if(Utility.internet_check(Massage.this)) {
 
-            getChatCount(APIs.BASE_URL+APIs.GET_CHAT_COUNT+"/"+Utility.getUserId(Massage.this)+"/"+id);
+            if(Utility.internet_check(Massage.this)) {
+
+                instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id);
+                /*messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);*/
+            }
+            else {
+
+                Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+
+            }
 
 
         }
@@ -155,24 +166,44 @@ public class Massage extends AppCompatActivity {
 
         }
 
-        refresh(5000);
+        refresh(15000);
     }
 
-    private void getChatCount(String url) {
+    private void instantChat(String url) {
+
+        Log.e("URL",url);
+
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                Log.e("InstantChatResponse",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
-                    String status = object.getString("status");
-                    if(status.equals("success")){
-                        Utility.setChatCount(Massage.this,object.getString("chat_count"));
+                    String sucess = object.getString("status");
+                    if(sucess.equals("success")){
+                        /*modelArrayList.clear();*/
+                        JSONArray array = object.getJSONArray("chat_history_list");
+                        for(int i = 0;i< array.length(); i++){
+                            JSONObject object1 = array.getJSONObject(i);
+                            messageModel = new ChatMessageModel(object1.getString("message_by"),
+                                    object1.getString("chat_message"),
+                                    object1.getString("chat_msg_time"),
+                                    object1.getString("chat_read_unread_status"));
+                            modelArrayList.add(messageModel);
+                            Collections.reverse(modelArrayList);
+                        }
+
+                        linearLayoutManager.setStackFromEnd(true);
+                        reyclerview_message_list.setLayoutManager(linearLayoutManager);
+                        adapter = new Chatbox_adapter(Massage.this,modelArrayList);
+                        adapter.notifyDataSetChanged();
+                        reyclerview_message_list.setAdapter(adapter);
                     }
 
                 } catch (JSONException e) {
+                    Log.e("Exception",e.toString());
                     e.printStackTrace();
                 }
 
@@ -181,13 +212,16 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                Log.e("Error",error.toString());
             }
         });
+
 
         RequestQueue queue = Volley.newRequestQueue(Massage.this);
         queue.add(request);
 
     }
+
 
     private void messageStatUpdate(String url) {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -233,8 +267,6 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("ChatResponse",response);
-
                 try {
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
@@ -242,17 +274,7 @@ public class Massage extends AppCompatActivity {
 
                         edittext_chatbox.getText().clear();
 
-                        if(Utility.internet_check(Massage.this)) {
-
-
-                            chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id/*+"/"+String.valueOf(page)*/);
-                        }
-                        else {
-
-
-                            Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
-
-                        }
+                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
 
                         /*JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
@@ -263,6 +285,7 @@ public class Massage extends AppCompatActivity {
                             modelArrayList.add(messageModel);
                         }
                         reyclerview_message_list.setAdapter(new Chatbox_adapter(Massage.this,modelArrayList));*/
+
                     }
 
                 } catch (JSONException e) {
@@ -290,6 +313,7 @@ public class Massage extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(Massage.this);
         queue.add(request);
     }
+
     private void chatList(String url) {
 
         modelArrayList.clear();
@@ -300,7 +324,7 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("ChatResponse",response);
+                /*Log.e("ChatResponse",response);*/
 
 
                 try {
@@ -341,4 +365,5 @@ public class Massage extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(Massage.this);
         queue.add(request);
     }
+
 }
