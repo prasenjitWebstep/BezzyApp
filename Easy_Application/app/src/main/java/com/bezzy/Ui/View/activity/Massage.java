@@ -55,7 +55,6 @@ public class Massage extends AppCompatActivity {
     ChatMessageModel messageModel;
     LinearLayoutManager linearLayoutManager;
     ArrayList<ChatMessageModel> modelArrayList;
-    NestedScrollView nestedview;
     int page,i;
     Chatbox_adapter adapter;
     ProgressBar chatProgress;
@@ -74,7 +73,6 @@ public class Massage extends AppCompatActivity {
         reyclerview_message_list = findViewById(R.id.reyclerview_message_list);
         edittext_chatbox = findViewById(R.id.edittext_chatbox);
         send_msg = findViewById(R.id.send_msg);
-        nestedview = findViewById(R.id.nestedview);
         chatProgress = findViewById(R.id.chatProgress);
 
         modelArrayList = new ArrayList<>();
@@ -157,6 +155,7 @@ public class Massage extends AppCompatActivity {
 
             if(Utility.internet_check(Massage.this)) {
 
+
                 instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
                 /*messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);*/
             }
@@ -179,20 +178,20 @@ public class Massage extends AppCompatActivity {
 
     private void instantChat(String url) {
 
-        Log.e("URL",url);
+        /*Log.e("URL",url);*/
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.e("InstantChatResponse",response);
+                /*Log.e("InstantChatResponse",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
-
-                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
+                        page = 1;
+                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
                         modelArrayList.clear();
 
                         /*JSONArray array = object.getJSONArray("chat_history_list");
@@ -275,13 +274,13 @@ public class Massage extends AppCompatActivity {
 
     private void addchat(String url) {
 
-        Log.e("URL",url);
+        /*Log.e("URL",url);*/
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.e("AddChatResponse",response);
+                /*Log.e("AddChatResponse",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -363,7 +362,7 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("ChatResponse",response);
+                /*Log.e("ChatResponse",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -392,6 +391,7 @@ public class Massage extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                         reyclerview_message_list.setAdapter(adapter);
                     }else{
+                        chatProgress.setVisibility(View.GONE);
                         Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();
 
                     }

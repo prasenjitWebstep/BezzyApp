@@ -66,37 +66,32 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/rounded_button2">
-            <LinearLayout
-                android:id="@+id/content_part"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:orientation="vertical">
-                <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
-                    android:id="@+id/ed_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Write Something here....."
-                    android:minLines="3"
-                    android:layout_marginRight="10dp"
-                    android:inputType="textMultiLine"
-                    android:gravity="top"
-                    android:textSize="16sp"
-                    android:textColorHint="@color/gradstart"
-                    android:padding="5dp"
-                    android:background="@color/colourwhite"/>
 
-            </LinearLayout>
+            <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+                android:id="@+id/ed_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write Something here....."
+                android:minLines="3"
+                android:layout_marginRight="10dp"
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:textSize="16sp"
+                android:textColorHint="@color/gradstart"
+                android:padding="5dp"
+                android:background="@color/colourwhite"
+                android:layout_toRightOf="@+id/emoji_btn"
+                android:layout_marginLeft="10dp"/>
+
             <ImageView
                 android:id="@+id/emoji_btn"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_toLeftOf="@id/content_part"
-                android:layout_marginRight="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_happy"
-                android:layout_marginTop="10dp"
-
-                />
+                android:layout_marginRight="-10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"/>
 
 
             <Button
@@ -112,14 +107,14 @@
                 android:text="Upload Photo"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:layout_below="@+id/content_part"
+                android:layout_below="@+id/ed_content"
                 android:layout_toLeftOf="@+id/upload"/>
 
             <Button
                 android:id="@+id/upload"
                 android:layout_width="60dp"
                 android:layout_height="35dp"
-                android:layout_below="@+id/content_part"
+                android:layout_below="@+id/ed_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"

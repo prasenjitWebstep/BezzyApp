@@ -51,14 +51,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
     Button button;
-    CircleImageView circularImg;
-    TextView userName,following,follower,Likes,userBio,userFriends,userFriendsHeading;
+    ImageView square_img;
+    TextView userName,following,follower,Likes,userBio,edit_btn;
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
     ProgressDialog progressDialog;
     String url = "http://bezzy.websteptech.co.uk/api/logout";
-    ImageView imageView,editProfile;
+    ImageView imageView;
 
 
 
@@ -67,84 +67,61 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_new_profile, container, false);
-        circularImg = view.findViewById(R.id.circularImg);
+        square_img = view.findViewById(R.id.square_img);
         userName = view.findViewById(R.id.userName);
         following = view.findViewById(R.id.following_num);
         follower = view.findViewById(R.id.follower_num);
         Likes = view.findViewById(R.id.like_num);
         userBio = view.findViewById(R.id.userBio);
         imageView=view.findViewById(R.id.logout);
-        editProfile = view.findViewById(R.id.editProfile);
-        userFriends = view.findViewById(R.id.userFriends);
-        userFriendsHeading = view.findViewById(R.id.userFriendsHeading);
+        edit_btn = view.findViewById(R.id.edit_btn);
+        postRecyclerView = view.findViewById(R.id.postRecyclerView);
 
-        /*postList = new ArrayList<>();
+        postList = new ArrayList<>();
         imgList = new ArrayList<>();
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Logging Out Please Wait....");
-        progressDialog.setCancelable(false);*/
+        progressDialog.setCancelable(false);
 
 
 
-        //Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(circularImg);
+        Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(square_img);
 
-        //userName.setText(Utility.getName(getActivity()));
+        userName.setText(Utility.getName(getActivity()));
 
-        //following.setText(Utility.getFollowing(getActivity()));
-        //follower.setText(Utility.getFollowers(getActivity()));
-        //userFriends.setText(Utility.getFollowers(getActivity()));
+        following.setText(Utility.getFollowing(getActivity()));
+        follower.setText(Utility.getFollowers(getActivity()));
 
-        /*userFriendsHeading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), MyFriendsList.class);
-                intent.putExtra("FriendId",Utility.getUserId(getActivity()));
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-
-        userFriends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), MyFriendsList.class);
-                intent.putExtra("FriendId",Utility.getUserId(getActivity()));
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
 
         Likes.setText(Utility.getLike(getActivity()));
         if(!Utility.getBio(getActivity()).equals("null")){
             userBio.setVisibility(View.VISIBLE);
             userBio.setText(Utility.getBio(getActivity()));
-        }*/
+        }
 
 
-        /*editProfile.setOnClickListener(new View.OnClickListener() {
+        edit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(), Editprofile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
-        });*/
+        });
 
-        /*imageView.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //logout();
             }
-        });*/
-
-        postRecyclerView = view.findViewById(R.id.postRecyclerView);
+        });
 
 
         return view;
 
     }
 
-   /* @Override
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -267,5 +244,5 @@ public class ProfileFragment extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-    }*/
+    }
 }

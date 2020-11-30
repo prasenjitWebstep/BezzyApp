@@ -49,17 +49,18 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+
 import static com.bezzy.Ui.View.utils.UploadHelper.getFileDataFromDrawable;
 
 
 public class Video_fragment extends Fragment {
 
-    ImageView imageView, back_image;
-    LinearLayout postUpload;
+    ImageView  back_image;
     VideoView videoView;
     TextView bufferText;
-    EditText editText;
-    Button pickVideo, uploadVideo;
+    EmojiconEditText emojiconEditText;
+    Button upload_post, uploadVideo;
     private static final int REQUEST_PICK_VIDEO = 3;// Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
     private Uri video;
@@ -81,10 +82,9 @@ public class Video_fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video_fragment, container, false);
         videoView = view.findViewById(R.id.video_view);
-        editText = view.findViewById(R.id.ed_content);
-        postUpload = view.findViewById(R.id.postUpload);
+        emojiconEditText = view.findViewById(R.id.ed_content);
+        upload_post = view.findViewById(R.id.upload_post);
         back_image = view.findViewById(R.id.back_image);
-        imageView = view.findViewById(R.id.imageViewVideo);
 
         uploadVideo = view.findViewById(R.id.upload);
         progressDialog = new ProgressDialog(getActivity());
@@ -93,7 +93,7 @@ public class Video_fragment extends Fragment {
 
         videoView.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
 
-        postUpload.setOnClickListener(new View.OnClickListener() {
+        upload_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pickVideoFromgallery();
@@ -112,8 +112,24 @@ public class Video_fragment extends Fragment {
         uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO);
+                if(emojiconEditText.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity().getApplicationContext(),"Please add any content to post",Toast.LENGTH_SHORT).show();
+                }else{
+                    if (Utility.internet_check(getActivity())) {
+
+                        progressDialog.show();
+
+                        progressDialog.show();
+                        uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO);
+
+                    } else {
+
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+
             }
         });
         //setup the media controller widget and attach it to the video view
@@ -157,7 +173,7 @@ public class Video_fragment extends Fragment {
         // Show the "Buffering..." message while the video loads.
         //bufferText.setVisibility(VideoView.GONE);
         if (uri != null) {
-            postUpload.setVisibility(View.GONE);
+            upload_post.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
             videoView.setVideoURI(uri);
         }
@@ -280,7 +296,7 @@ public class Video_fragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 // params.put("tags", "ccccc");  add string parameters
                 params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content", editText.getText().toString());
+                params.put("post_content", emojiconEditText.getText().toString());
                 return params;
             }
 
