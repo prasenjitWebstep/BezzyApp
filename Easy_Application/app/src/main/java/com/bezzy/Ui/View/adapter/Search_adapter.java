@@ -62,6 +62,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
     public void onBindViewHolder(@NonNull searchViewHolder holder, final int position) {
         Glide.with(context).load(dataholder.get(position).getImg()).into(holder.img);
         holder.header.setText(dataholder.get(position).getHeader());
+        //holder.bio.setText(dataholder.get(position).getHeader());
 
 
         if(dataholder.get(position).getUser_relation_status().equals("1")){
@@ -150,7 +151,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
     public  class searchViewHolder extends RecyclerView.ViewHolder{
          CircleImageView img;
-         TextView header;
+         TextView header,bio;
          ImageView addFriend,chat;
 
         public searchViewHolder(@NonNull View itemView) {
@@ -159,6 +160,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
             header=itemView.findViewById(R.id.title_text);
             addFriend = itemView.findViewById(R.id.addFriend);
             chat = itemView.findViewById(R.id.chat);
+            bio=itemView.findViewById(R.id.bio_text);
         }
     }
 

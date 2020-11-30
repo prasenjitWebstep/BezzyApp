@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 import kr.pe.burt.android.lib.androidgradientimageview.AndroidGradientImageView;
 
 public class ImageDisplayActivity extends AppCompatActivity {
@@ -35,6 +36,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     TextView username,servicesText,following_num,following_numm;
     ImageView imageView,chat_btn;
     String id,postId,type,postId2;
+    EmojiconTextView servicesText_t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,8 @@ public class ImageDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_display);
         back_image = findViewById(R.id.back_image);
         username = findViewById(R.id.username);
-        servicesText = findViewById(R.id.servicesText);
+        //servicesText = findViewById(R.id.servicesText);
+        servicesText_t=findViewById(R.id.servicesText_t);
         imageView = findViewById(R.id.imageHolder);
         following_num = findViewById(R.id.following_num);
         following_numm = findViewById(R.id.following_numm);
@@ -84,9 +87,9 @@ public class ImageDisplayActivity extends AppCompatActivity {
                         final JSONObject object11 = object1.getJSONObject("post_details");
                         username.setText(object11.getString("username"));
                         if(!object11.getString("content").equals("null")){
-                            servicesText.setText(object11.getString("content"));
+                            servicesText_t.setText(object11.getString("content"));
                         }else{
-                            servicesText.setVisibility(View.GONE);
+                            servicesText_t.setVisibility(View.GONE);
                         }
                         Glide.with(ImageDisplayActivity.this)
                                 .load(object11.getString("url"))

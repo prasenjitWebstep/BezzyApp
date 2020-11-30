@@ -68,6 +68,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+
 import static android.app.Activity.RESULT_OK;
 
 
@@ -79,7 +82,7 @@ public class Photo_fragment extends Fragment {
     //Image request code
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
-    EditText caption;
+    //EditText caption;
     Bitmap bitmap;
     Uri resultUri;
     int MY_SOCKET_TIMEOUT_MS = 10000;
@@ -88,6 +91,12 @@ public class Photo_fragment extends Fragment {
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
     int option;
+    EmojIconActions emojIcon;
+    ImageView emojiButton;
+    View rootView;
+    EmojiconEditText emojiconEditText;
+
+    Uri imageuri;
 
 
     @Override
@@ -104,7 +113,7 @@ public class Photo_fragment extends Fragment {
         back_image = view.findViewById(R.id.back_image);
         imageView = view.findViewById(R.id.imageView);
         // button = view.findViewById(R.id.choose_image_button);
-        caption = view.findViewById(R.id.ed_content);
+        //caption = view.findViewById(R.id.ed_content);
         button = view.findViewById(R.id.upload);
         //image_part = view.findViewById(R.id.image_part);
         progressDialog = new ProgressDialog(getActivity());
@@ -112,10 +121,29 @@ public class Photo_fragment extends Fragment {
         progressDialog.setCancelable(false);
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);
         uoload = view.findViewById(R.id.upload_post);
+
+        rootView = view.findViewById(R.id.root_view);
+        emojiButton =view.findViewById(R.id.emoji_btn);
+        emojiconEditText =view.findViewById(R.id.ed_content);
         bitmapList = new ArrayList<>();
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerDisplayImg.setLayoutManager(layoutManager);
+
+        emojIcon = new EmojIconActions(getActivity(), rootView, emojiconEditText, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
+        emojIcon.addEmojiconEditTextList(emojiconEditText);
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +186,7 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(caption.getText().toString().isEmpty()){
+                if(emojiconEditText.getText().toString().isEmpty()){
                     Toast.makeText(getActivity().getApplicationContext(),"Please add any content to post",Toast.LENGTH_SHORT).show();
                 }else{
                     if (Utility.internet_check(getActivity())) {
@@ -200,6 +228,7 @@ public class Photo_fragment extends Fragment {
 
                 if (options[item].equals("Take Photo")) {
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
                     startActivityForResult(takePicture, 0);
 
                 } else if (options[item].equals("Choose from Gallery")) {
@@ -233,9 +262,12 @@ public class Photo_fragment extends Fragment {
                 case 0:
                     option = 0;
                     if (resultCode == RESULT_OK && data != null) {
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
                         bitmapList = new ArrayList<>();
                         bitmap = (Bitmap) data.getExtras().get("data");
                         bitmapList.add(bitmap);
+                        bitmapList.add(bitmap2);
                         recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
                     }
 
@@ -328,7 +360,7 @@ public class Photo_fragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 // params.put("tags", "ccccc");  add string parameters
                 params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content", caption.getText().toString());
+                params.put("post_content", emojiconEditText.getText().toString());
                 return params;
             }
 
@@ -384,7 +416,7 @@ public class Photo_fragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("userID", Utility.getUserId(getActivity().getApplicationContext()));
-                params.put("post_content", caption.getText().toString());
+                params.put("post_content", emojiconEditText.getText().toString());
                 return params;
             }
 

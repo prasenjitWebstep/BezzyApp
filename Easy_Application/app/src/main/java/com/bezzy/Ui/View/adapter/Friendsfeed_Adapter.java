@@ -225,7 +225,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
 
     public class FriendsfeedHolder extends RecyclerView.ViewHolder{
 
-        CircleImageView circularImg;
+        ImageView circularImg;
         TextView userName,userPost,postBadge;
         FrameLayout noti;
         ImageView video,oldPost,chatButton;
@@ -235,7 +235,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
 
         public FriendsfeedHolder(@NonNull View itemView) {
             super(itemView);
-            circularImg = itemView.findViewById(R.id.circularImg);
+            circularImg = itemView.findViewById(R.id.square_img);
             userName = itemView.findViewById(R.id.userName);
             userPost = itemView.findViewById(R.id.userPost);
             postBadge = itemView.findViewById(R.id.postBadge);

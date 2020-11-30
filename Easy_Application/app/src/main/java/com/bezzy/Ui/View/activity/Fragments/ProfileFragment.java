@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_profile, container, false);
+        View view= inflater.inflate(R.layout.fragment_new_profile, container, false);
         circularImg = view.findViewById(R.id.circularImg);
         userName = view.findViewById(R.id.userName);
         following = view.findViewById(R.id.following_num);
@@ -78,23 +78,23 @@ public class ProfileFragment extends Fragment {
         userFriends = view.findViewById(R.id.userFriends);
         userFriendsHeading = view.findViewById(R.id.userFriendsHeading);
 
-        postList = new ArrayList<>();
+        /*postList = new ArrayList<>();
         imgList = new ArrayList<>();
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Logging Out Please Wait....");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
 
 
 
-        Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(circularImg);
+        //Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(circularImg);
 
-        userName.setText(Utility.getName(getActivity()));
+        //userName.setText(Utility.getName(getActivity()));
 
-        following.setText(Utility.getFollowing(getActivity()));
-        follower.setText(Utility.getFollowers(getActivity()));
-        userFriends.setText(Utility.getFollowers(getActivity()));
+        //following.setText(Utility.getFollowing(getActivity()));
+        //follower.setText(Utility.getFollowers(getActivity()));
+        //userFriends.setText(Utility.getFollowers(getActivity()));
 
-        userFriendsHeading.setOnClickListener(new View.OnClickListener() {
+        /*userFriendsHeading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), MyFriendsList.class);
@@ -118,24 +118,24 @@ public class ProfileFragment extends Fragment {
         if(!Utility.getBio(getActivity()).equals("null")){
             userBio.setVisibility(View.VISIBLE);
             userBio.setText(Utility.getBio(getActivity()));
-        }
+        }*/
 
 
-        editProfile.setOnClickListener(new View.OnClickListener() {
+        /*editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(), Editprofile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
-        });
+        });*/
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        /*imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                //logout();
             }
-        });
+        });*/
 
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
 
@@ -144,7 +144,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
 
@@ -267,5 +267,5 @@ public class ProfileFragment extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-    }
+    }*/
 }

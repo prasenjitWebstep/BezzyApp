@@ -24,11 +24,11 @@
 
         <TextView
             android:id="@+id/rcv_message_time"
-            android:text="11:40"
-            android:layout_width="30dp"
-            android:layout_height="15dp"
+            android:text="11:40 am"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
             android:textSize="10sp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginRight="5dp"
             android:textColor="@color/black"
