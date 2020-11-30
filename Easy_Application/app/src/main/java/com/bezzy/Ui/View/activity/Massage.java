@@ -9,12 +9,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -141,6 +146,20 @@ public class Massage extends AppCompatActivity {
 
             }
         });
+       /* Display display=getWindowManager().getDefaultDisplay();
+        DisplayMetrics displayMetrics=new DisplayMetrics();
+        display.getRealMetrics(displayMetrics);
+        RelativeLayout relativeLayoutcontentwrapper=findViewById(R.id.relativecontentwrapper);
+        relativeLayoutcontentwrapper.getLayoutParams().height=displayMetrics.heightPixels;
+        ImageView imageView=findViewById(R.id.imageviewanimal);
+        imageView.getLayoutParams().height=displayMetrics.heightPixels;
+        final ScrollView scrollView=findViewById(R.id.scrollView);
+        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });*/
 
     }
 
