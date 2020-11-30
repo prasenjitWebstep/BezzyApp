@@ -1,7 +1,9 @@
 package com.bezzy.Ui.View.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchViewHolder>  {
     ArrayList<Friendsnoti_item> dataholder;
     Context context;
+    ProgressDialog progressDialog;
 
     public Search_adapter(ArrayList<Friendsnoti_item> dataholder, Context context) {
         this.dataholder = dataholder;
@@ -85,8 +88,11 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
             holder.addFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    progressDialog = new ProgressDialog(context);
+                    progressDialog.setMessage("Please Wait...");
+                    progressDialog.setCancelable(false);
+                    callApiFollow(APIs.BASE_URL+APIs.FOLLOWINGREQUEST,dataholder.get(position).getId(),position);
 
-                    callApiFriendRequest(APIs.BASE_URL+APIs.FRIENDREQUEST,dataholder.get(position).getId(),position);
 
                 }
             });
@@ -104,7 +110,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
     }
 
-    private void callApiFriendRequest(String url, final String id, final int position) {
+    private void callApiFollow(String url, final String id, final int position) {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -113,20 +119,26 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
+                        progressDialog.dismiss();
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
+                    }else{
+                        progressDialog.dismiss();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    progressDialog.dismiss();
+                    Log.e("Exception",e.toString());
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressDialog.dismiss();
+                Log.e("Exception",error.toString());
             }
         }){
             @Override

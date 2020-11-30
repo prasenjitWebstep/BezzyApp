@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -56,34 +57,13 @@
                     android:layout_height="30dp"
                     android:background="@drawable/rounded_button2"
                     android:backgroundTint="@color/gradstart"
-                    android:text="follow back"
+                    android:text="unfollow"
                     android:textColor="@color/white"
                     android:layout_alignParentRight="true"
                     android:textSize="10sp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
-                    android:visibility="gone"/>
-
-                <ImageView
-                    android:id="@+id/addFriend"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_add_friend"
-                    android:layout_marginRight="5dp"
-                    app:tint="@color/gradstart"
                     android:visibility="visible"/>
-
-
-                <ImageView
-                    android:id="@+id/chat"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_chat_c"
-                    android:layout_marginRight="5dp"
-                    app:tint="@color/gradstart"
-                    android:visibility="invisible"/>
 
 
             </RelativeLayout>
@@ -92,8 +72,4 @@
 
     </androidx.cardview.widget.CardView>
 
-
-
 </LinearLayout>
-
-

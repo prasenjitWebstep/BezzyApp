@@ -42,14 +42,14 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFriendHoler> {
+public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFriendHoler> {
 
     Context context;
     ArrayList<FriendsHolder> friendsHolder;
     String screen;
     ProgressDialog progressDialog;
 
-    public MyFriendsAdapter(Context context, ArrayList<FriendsHolder> friendsHolder,String screen) {
+    public FollowingAdapter(Context context, ArrayList<FriendsHolder> friendsHolder,String screen) {
         this.context = context;
         this.friendsHolder = friendsHolder;
         this.screen = screen;
@@ -58,7 +58,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
     @NonNull
     @Override
     public MyFriendHoler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyFriendHoler(LayoutInflater.from(parent.getContext()).inflate(R.layout.friends_layout,parent,false));
+        return new MyFriendHoler(LayoutInflater.from(parent.getContext()).inflate(R.layout.followingfriends_layout,parent,false));
 
 
     }
@@ -94,73 +94,33 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
             }
         });
 
-        if(screen.equals("1")){
-            Log.e("Screen","1");
-            holder.btn.setVisibility(View.VISIBLE);
-            holder.addFriend.setVisibility(View.GONE);
-            holder.chat.setVisibility(View.GONE);
-            holder.btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(Utility.internet_check(context)) {
+        holder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Utility.internet_check(context)) {
 
-                        progressDialog = new ProgressDialog(context);
-                        progressDialog.setMessage("Please Wait...");
-                        progressDialog.setCancelable(true);
-                        progressDialog.show();
+                    progressDialog = new ProgressDialog(context);
+                    progressDialog.setMessage("Please Wait...");
+                    progressDialog.setCancelable(true);
+                    progressDialog.show();
 
-                        followback(APIs.BASE_URL+APIs.FOLLOWBACKREQUEST,friendsHolder.get(position).getFriendId());
+                    unfollow(APIs.BASE_URL+APIs.UNFOLLOW,friendsHolder.get(position).getFriendId());
 
-
-                    }
-                    else {
-
-                        progressDialog.dismiss();
-                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
-
-                    }
 
                 }
-            });
-        }else{
-            Log.e("Screen","2");
-            Log.e("GETVAL",friendsHolder.get(position).getUser_relation_status());
-            holder.btn.setVisibility(View.GONE);
-            holder.addFriend.setVisibility(View.VISIBLE);
-            holder.chat.setVisibility(View.VISIBLE);
-            if(friendsHolder.get(position).getUser_relation_status().equals("1")){
-                Log.e("CHECK","VISIBLE OR NOT");
-                holder.chat.setVisibility(View.VISIBLE);
-                holder.addFriend.setVisibility(View.INVISIBLE);
-                holder.chat.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, Massage.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("FrndId",friendsHolder.get(position).getFriendId());
-                        intent.putExtra("userImage",friendsHolder.get(position).getImage());
-                        intent.putExtra("userName",friendsHolder.get(position).getName());
-                        context.startActivity(intent);
-                    }
-                });
-            }else{
-                Log.e("CHECK","VISIBLE OR NOT2");
-                holder.addFriend.setVisibility(View.VISIBLE);
-                holder.chat.setVisibility(View.INVISIBLE);
-                holder.addFriend.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                else {
 
-                        callApiFollowRequest(APIs.BASE_URL+APIs.FOLLOWINGREQUEST,friendsHolder.get(position).getFriendId(),position);
+                    progressDialog.dismiss();
+                    Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
 
-                    }
-                });
+                }
+
             }
-        }
+        });
 
     }
 
-    private void followback(String url, final String friendId) {
+    private void unfollow(String url, final String friendId) {
         StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override
@@ -171,12 +131,11 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
                     JSONObject object=new JSONObject(response);
                     String status=object.getString("status");
                     if (status.equals("success")){
-                        Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,object.getString("alert_msg"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, MyFriendsList.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
-                    }else{
-                        Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
+
                     }
                 } catch (JSONException e) {
                     progressDialog.dismiss();
@@ -196,8 +155,8 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
 
-                map.put("login_userID",Utility.getUserId(context));
-                map.put("userID",friendId);
+                map.put("loginUserID",Utility.getUserId(context));
+                map.put("unfriendID",friendId);
 
 
                 return map;
@@ -205,47 +164,6 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
         };
         RequestQueue queue= Volley.newRequestQueue(context);
         queue.add(request);
-    }
-
-    private void callApiFollowRequest(String url, final String id, final int position) {
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                try {
-                    JSONObject object = new JSONObject(response);
-                    String sucess = object.getString("status");
-                    if(sucess.equals("success")){
-                        Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, FriendsFriendList.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                    }else{
-                        Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("user_one_id", Utility.getUserId(context));
-                map.put("user_two_id",id);
-                return map;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(request);
-
     }
 
     @Override

@@ -16,12 +16,13 @@ public class APIs {
     public static String POSTIMAGE = "api/PostImage";
     public static String POSTVIDEO ="api/PostVideo";
     public static String REGISTERUSERLIST = "api/RegisterUserList";
-    public static String FRIENDREQUEST = "api/friendreqsend";
     public static String SEARCH = "api/searchregisteruser";
     public static String NOTIFICATION = "api/Notificationlist";
     public static String GETIMAGEDETAILS = "api/postimagevideodetails";
-    public static String ACCEPTREQUEST = "api/AcceptFriendRequest";
-    public static String REJECTREQUEST = "api/RejectFriendRequest";
+    public static String FOLLOWINGREQUEST = "api/followingreqsend";
+    public static String FOLLOWBACKREQUEST = "api/followingback";
+    public static String FOLLOWERSLIST = "api/getfollowerslist";
+    public static String FOLLOWINGLIST = "api/getuserfollowinglist";
     public static String FRIENDSBLOCKLIST = "api/friendblocklist";
     public static String FRIENDPOSTLIST = "api/friendblockdetails";
     public static String FREIND_LIST="api/getuserfriendlist";
@@ -36,7 +37,7 @@ public class APIs {
     public static String PROFILE_FRIEND_LIST = "api/getuserprofilefriendlist";
     public static String CHAT_NOTIFICATION_READ = "api/click-on-chat-notification";
     public static String GET_USER_ACTIVE_STATUS = "api/appbasic_userative_status";
-    public static String UNFRIEND = "api/unfrienduser";
+    public static String UNFOLLOW = "api/unfollowuser";
     public static String GET_MESSAGE_SEEN = "api/chat-box-message-read-unread";
     public static String INSTANT_MSG = "api/get-last-unread_msg";
 }

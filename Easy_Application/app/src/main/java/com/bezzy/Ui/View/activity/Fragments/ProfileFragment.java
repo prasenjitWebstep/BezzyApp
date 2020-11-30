@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.FollowingActivity;
 import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.MyFriendsList;
 import com.bezzy.Ui.View.adapter.PostAdapter;
@@ -59,6 +61,7 @@ public class ProfileFragment extends Fragment {
     ProgressDialog progressDialog;
     String url = "http://bezzy.websteptech.co.uk/api/logout";
     ImageView imageView;
+    RelativeLayout layoutFollowing,layoutFollower;
 
 
 
@@ -76,6 +79,8 @@ public class ProfileFragment extends Fragment {
         imageView=view.findViewById(R.id.logout);
         edit_btn = view.findViewById(R.id.edit_btn);
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
+        layoutFollowing = view.findViewById(R.id.layoutFollowing);
+        layoutFollower = view.findViewById(R.id.layoutFollower);
 
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
@@ -91,9 +96,8 @@ public class ProfileFragment extends Fragment {
 
         following.setText(Utility.getFollowing(getActivity()));
         follower.setText(Utility.getFollowers(getActivity()));
+        Likes.setText(Utility.getPosts(getActivity()));
 
-
-        Likes.setText(Utility.getLike(getActivity()));
         if(!Utility.getBio(getActivity()).equals("null")){
             userBio.setVisibility(View.VISIBLE);
             userBio.setText(Utility.getBio(getActivity()));
@@ -109,10 +113,33 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        layoutFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!Utility.getFollowing(getActivity()).equals("0")){
+                    Intent intent = new Intent(getActivity(), FollowingActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+
+            }
+        });
+
+        layoutFollower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!Utility.getFollowers(getActivity()).equals("0")){
+                    Intent intent = new Intent(getActivity(), MyFriendsList.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }
+        });
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //logout();
+                logout();
             }
         });
 

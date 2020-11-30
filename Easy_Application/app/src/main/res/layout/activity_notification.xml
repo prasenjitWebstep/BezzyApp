@@ -20,13 +20,13 @@
             android:id="@+id/go_bezzy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
             android:text="Notification"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/gradstart"
             android:textSize="17sp"
             android:textStyle="bold"
+            android:layout_centerVertical="true"
             android:layout_gravity="center_vertical" />
 
         <ImageView

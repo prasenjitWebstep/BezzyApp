@@ -198,6 +198,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void registerUserResult(String url) {
+        dataholder.clear();
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -271,7 +272,9 @@ public class HomeFragment extends Fragment {
                         Utility.setGender(getActivity(),object.getJSONObject("usedetails").getString("get_gender"));
                         Utility.setBio(getActivity(),object.getJSONObject("usedetails").getString("bio"));
                         Utility.setImage(getActivity(),object.getJSONObject("usedetails").getString("profile_pic"));
-                        Utility.setFollower(getActivity(),object.getJSONObject("usedetails").getString("number_of_friend"));
+                        Utility.setFollower(getActivity(),object.getJSONObject("usedetails").getString("followers"));
+                        Utility.setFollowing(getActivity(),object.getJSONObject("usedetails").getString("following"));
+                        Utility.setPosts(getActivity(),object.getJSONObject("usedetails").getString("number_of_post"));
 
                         progressDialog.dismiss();
 

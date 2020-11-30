@@ -5,9 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.adapter.FollowingAdapter;
 import com.bezzy.Ui.View.adapter.MyFriendsAdapter;
 import com.bezzy.Ui.View.model.FriendsHolder;
 import com.bezzy.Ui.View.utils.APIs;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyFriendsList extends AppCompatActivity {
+public class FollowingActivity extends AppCompatActivity {
 
     RecyclerView recyclerFriendsList;
     ProgressDialog progressDialog;
@@ -44,32 +45,32 @@ public class MyFriendsList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_friends_list);
+        setContentView(R.layout.activity_following);
 
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
-        progressDialog = new ProgressDialog(MyFriendsList.this);
+        progressDialog = new ProgressDialog(FollowingActivity.this);
         progressDialog.setMessage("Loading Please Wait...");
         progressDialog.setCancelable(false);
         holderList = new ArrayList<>();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(MyFriendsList.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(FollowingActivity.this);
         recyclerFriendsList.setLayoutManager(layoutManager);
 
-        if(Utility.internet_check(MyFriendsList.this)) {
+        if(Utility.internet_check(FollowingActivity.this)) {
 
             //dialog.show();
-            progressDialog.show();
+            /*progressDialog.show();*/
             Log.e("Result","1");
 
-            friendList(APIs.BASE_URL+APIs.FOLLOWERSLIST);
+            friendList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
 
         }
         else {
 
             //dialog.dismiss();
-            progressDialog.dismiss();
-            Toast.makeText(MyFriendsList.this,"No Network!",Toast.LENGTH_SHORT).show();
+            /*progressDialog.dismiss();*/
+            Toast.makeText(FollowingActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -80,22 +81,23 @@ public class MyFriendsList extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                Log.e("FollowingResponse",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
-                        progressDialog.dismiss();
+                        /*progressDialog.dismiss();*/
                         go_bezzy.setText(object.getString("login_user_name"));
-                        JSONArray array = object.getJSONArray("follower_user_list");
+                        JSONArray array = object.getJSONArray("following_user_list");
                         for(int i=0;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
                             holderObj = new FriendsHolder(object1.getString("following_user_id"),object1.getString("name"),object1.getString("image"),"");
                             holderList.add(holderObj);
                         }
-                        MyFriendsAdapter adapter = new MyFriendsAdapter(MyFriendsList.this,holderList,"1");
+                        FollowingAdapter adapter = new FollowingAdapter(FollowingActivity.this,holderList,"1");
                         recyclerFriendsList.setAdapter(adapter);
+
                     }else{
                         progressDialog.dismiss();
                     }
@@ -115,12 +117,13 @@ public class MyFriendsList extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
-                map.put("loguser_id",Utility.getUserId(MyFriendsList.this));
+                map.put("loguser_id",Utility.getUserId(FollowingActivity.this));
                 return map;
             }
         };
 
-        RequestQueue queue = Volley.newRequestQueue(MyFriendsList.this);
+        RequestQueue queue = Volley.newRequestQueue(FollowingActivity.this);
         queue.add(request);
     }
+
 }

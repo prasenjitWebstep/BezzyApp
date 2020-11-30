@@ -69,6 +69,12 @@ public class FriendsProfileActivity extends AppCompatActivity {
         progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         postRecyclerView.setLayoutManager(layoutManager);
 

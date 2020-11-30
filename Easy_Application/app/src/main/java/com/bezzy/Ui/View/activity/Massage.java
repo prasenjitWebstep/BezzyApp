@@ -80,7 +80,7 @@ public class Massage extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(Massage.this);
         linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(false);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
 
         reyclerview_message_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -282,12 +282,12 @@ public class Massage extends AppCompatActivity {
 
                 /*Log.e("AddChatResponse",response);*/
 
+                edittext_chatbox.getText().clear();
+
                 try {
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
-
-                        edittext_chatbox.getText().clear();
 
                         JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
@@ -379,20 +379,20 @@ public class Massage extends AppCompatActivity {
                             modelArrayList.add(modelArrayList.size(),messageModel);
                         }
 
-                        if(page == 1){
+                        /*if(page == 1){
                             Log.e("Called","If()");
                             linearLayoutManager = new LinearLayoutManager(Massage.this);
                             linearLayoutManager.setReverseLayout(true);
                             linearLayoutManager.setStackFromEnd(true);
                             linearLayoutManager.setSmoothScrollbarEnabled(true);
                             reyclerview_message_list.setLayoutManager(linearLayoutManager);
-                        }
+                        }*/
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);
                         adapter.notifyDataSetChanged();
                         reyclerview_message_list.setAdapter(adapter);
                     }else{
                         chatProgress.setVisibility(View.GONE);
-                        Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();
+                        /*Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();*/
 
                     }
 

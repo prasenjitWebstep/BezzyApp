@@ -20,7 +20,7 @@
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
             android:text="Profile"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/gradstart"
             android:textSize="17sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
@@ -114,6 +114,7 @@
                 android:padding="5dp">
 
                 <RelativeLayout
+                    android:id="@+id/layoutFollowing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -149,6 +150,7 @@
 
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/layoutFollower"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -203,7 +205,7 @@
                         android:id="@+id/like"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Post"
+                        android:text="Posts"
                         android:padding="1dp"
                         android:textSize="15sp"
                         android:textAlignment="center"

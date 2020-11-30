@@ -69,117 +69,6 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
         progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
 
-        if(dataholder.get(position).getType().equals("1") && dataholder.get(position).getFriendrequestStatus().equals("3")){
-            holder.relativeShow.setVisibility(View.VISIBLE);
-            holder.acceptButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if(Utility.internet_check(context)){
-                        progressDialog.show();
-                        callApiAccept(APIs.BASE_URL+APIs.ACCEPTREQUEST+"/"+dataholder.get(position).getFromId()+"/"+ Utility.getUserId(context),holder.relativeShow);
-                    }
-                    else {
-                        progressDialog.dismiss();
-                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
-
-            holder.rejectButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if(Utility.internet_check(context)){
-                        progressDialog.show();
-                        callApiReject(APIs.BASE_URL+APIs.REJECTREQUEST+"/"+dataholder.get(position).getFromId()+"/"+ Utility.getUserId(context),holder.relativeShow);
-                    }
-                    else {
-                        progressDialog.dismiss();
-                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
-                    }
-
-
-
-                }
-            });
-        }else{
-            holder.relativeShow.setVisibility(View.GONE);
-        }
-
-    }
-
-    private void callApiReject(String url, final RelativeLayout relativeShow) {
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                try {
-                    JSONObject object1 = new JSONObject(response);
-                    String status = object1.getString("status");
-                    if(status.equals("success")){
-                        progressDialog.dismiss();
-                        Toast.makeText(context,object1.getString("message"),Toast.LENGTH_SHORT).show();
-                        if(object1.getString("friend_request_status").equals("2")){
-                            relativeShow.setVisibility(View.GONE);
-                        }
-                    }else{
-                        progressDialog.dismiss();
-                    }
-                } catch (JSONException e) {
-                    progressDialog.dismiss();
-                    e.printStackTrace();
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-            }
-        });
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(request);
-    }
-
-    private void callApiAccept(String url, final RelativeLayout relativeShow) {
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                Log.e("Resposne",response);
-
-                try {
-                    JSONObject object1 = new JSONObject(response);
-                    String status = object1.getString("status");
-                    if(status.equals("success")){
-                        progressDialog.dismiss();
-                        Toast.makeText(context,object1.getString("message"),Toast.LENGTH_SHORT).show();
-                        if(object1.getString("friend_request_status").equals("1")){
-                            relativeShow.setVisibility(View.GONE);
-                        }
-                    }else{
-                        progressDialog.dismiss();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    progressDialog.dismiss();
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-            }
-        });
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(request);
     }
 
     @Override
@@ -198,9 +87,6 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
             super(itemView);
             descrip = itemView.findViewById(R.id.title_text);
             img_logo = itemView.findViewById(R.id.img_logo);
-            relativeShow = itemView.findViewById(R.id.relativeAcceptRejectShow);
-            acceptButton = itemView.findViewById(R.id.acceptButton);
-            rejectButton = itemView.findViewById(R.id.rejectButton);
         }
     }
 }

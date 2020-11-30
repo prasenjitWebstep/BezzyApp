@@ -214,6 +214,7 @@ public class SearchFragment extends Fragment {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
+                        dataholder.clear();
                         JSONArray array = object.getJSONArray("search_result");
                         for(int i = 0;i<array.length();i++){
 
@@ -226,6 +227,21 @@ public class SearchFragment extends Fragment {
 
                     }else{
                         Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
+                        if(Utility.internet_check(getActivity())) {
+
+                            progressDialog.show();
+
+                            Log.e("Result","1");
+
+                            registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
+
+                        }
+                        else {
+
+                            progressDialog.dismiss();
+
+                            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } catch (JSONException e) {
                     Log.e("Exception",e.toString());

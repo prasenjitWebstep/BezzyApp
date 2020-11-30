@@ -147,16 +147,16 @@ public class Utility {
         return memIdPreferences.getString("follower", "");
     }
 
-    public static void setLike(Context mContext, String type) {
+    public static void setPosts(Context mContext, String type) {
         SharedPreferences preferences = mContext.getSharedPreferences("Bezzy", 0);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("likes", type);
+        editor.putString("posts", type);
         editor.apply();
     }
 
-    public static String getLike(Context mContext) {
+    public static String getPosts(Context mContext) {
         SharedPreferences memIdPreferences = mContext.getSharedPreferences("Bezzy", 0); // 0 - for private mode
-        return memIdPreferences.getString("likes", "");
+        return memIdPreferences.getString("posts", "");
     }
 
     public static void setFollowing(Context mContext, String type) {
@@ -171,17 +171,6 @@ public class Utility {
         return memIdPreferences.getString("following", "");
     }
 
-    public static void setChatCount(Context mContext, String count) {
-        SharedPreferences preferences = mContext.getSharedPreferences("Bezzy", 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("chat_count", count);
-        editor.apply();
-    }
-
-    public static String getChatCount(Context mContext) {
-        SharedPreferences memIdPreferences = mContext.getSharedPreferences("Bezzy", 0); // 0 - for private mode
-        return memIdPreferences.getString("chat_count", "");
-    }
 
     public static void setNotificationStatus(Context mContext, String type) {
         SharedPreferences preferences = mContext.getSharedPreferences("Bezzy", 0);
