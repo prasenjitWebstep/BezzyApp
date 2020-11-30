@@ -68,36 +68,26 @@
     </LinearLayout>
 
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedview"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/back_bezy"
-        android:fillViewport="true"
-        android:layout_marginBottom="60dp">
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <ProgressBar
+            android:id="@+id/chatProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reyclerview_message_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_below="@id/chatProgress"
+            android:layout_margin="5dp"/>
 
-            <ProgressBar
-                android:id="@+id/chatProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:visibility="gone" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/reyclerview_message_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/chatProgress"
-                android:layout_margin="5dp"/>
-
-        </RelativeLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
 
         <!-- A horizontal line between the chatbox and RecyclerView -->
         <View

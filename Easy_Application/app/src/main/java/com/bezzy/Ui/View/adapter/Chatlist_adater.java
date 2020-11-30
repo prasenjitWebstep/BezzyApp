@@ -77,6 +77,8 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
             @Override
             public void onClick(View v) {
 
+                Log.e("Clicked","1");
+
                 if(Utility.internet_check(context)) {
 
 
@@ -95,8 +97,9 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
 
     }
 
-    private void readChatNoti(String s, final String userID, final String image, final String url) {
-        StringRequest request = new StringRequest(Request.Method.GET, s, new Response.Listener<String>() {
+    private void readChatNoti(final String url, final String userID, final String image, final String name) {
+        Log.e("URL",url);
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -110,7 +113,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("FrndId",userID);
                         intent.putExtra("userImage",image);
-                        intent.putExtra("userName",url);
+                        intent.putExtra("userName",name);
                         context.startActivity(intent);
                     }
                 } catch (JSONException e) {

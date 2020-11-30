@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -56,8 +57,8 @@ public class Massage extends AppCompatActivity {
     ArrayList<ChatMessageModel> modelArrayList;
     NestedScrollView nestedview;
     int page,i;
-    ProgressBar chatProgress;
     Chatbox_adapter adapter;
+    ProgressBar chatProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -75,12 +76,41 @@ public class Massage extends AppCompatActivity {
         send_msg = findViewById(R.id.send_msg);
         nestedview = findViewById(R.id.nestedview);
         chatProgress = findViewById(R.id.chatProgress);
+
         modelArrayList = new ArrayList<>();
         page = 1;
+
         linearLayoutManager = new LinearLayoutManager(Massage.this);
         linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setStackFromEnd(false);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
+
+        reyclerview_message_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(-1)) {
+
+                    if(Utility.internet_check(Massage.this)){
+
+                        page++;
+
+                        chatProgress.setVisibility(View.VISIBLE);
+
+                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
+
+
+                    }
+                    else {
+                        chatProgress.setVisibility(View.GONE);
+                        Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+            }
+        });
 
 
         chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
@@ -93,28 +123,6 @@ public class Massage extends AppCompatActivity {
                 .into(img_logo);
 
 
-
-        /*nestedview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if(scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
-
-                    page++;
-
-                    if(Utility.internet_check(Massage.this)) {
-
-                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
-                    }
-                    else {
-
-                        Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
-
-                    }
-
-
-                }
-            }
-        });*/
 
         send_msg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +157,7 @@ public class Massage extends AppCompatActivity {
 
             if(Utility.internet_check(Massage.this)) {
 
-                instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id);
+                instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
                 /*messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);*/
             }
             else {
@@ -166,7 +174,7 @@ public class Massage extends AppCompatActivity {
 
         }
 
-        refresh(15000);
+        refresh(2000);
     }
 
     private void instantChat(String url) {
@@ -183,23 +191,27 @@ public class Massage extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
-                        /*modelArrayList.clear();*/
-                        JSONArray array = object.getJSONArray("chat_history_list");
+
+                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
+                        modelArrayList.clear();
+
+                        /*JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
                             JSONObject object1 = array.getJSONObject(i);
                             messageModel = new ChatMessageModel(object1.getString("message_by"),
                                     object1.getString("chat_message"),
                                     object1.getString("chat_msg_time"),
                                     object1.getString("chat_read_unread_status"));
-                            modelArrayList.add(messageModel);
-                            Collections.reverse(modelArrayList);
+                            modelArrayList.add(0,messageModel);
                         }
-
+                        linearLayoutManager.setReverseLayout(true);
                         linearLayoutManager.setStackFromEnd(true);
                         reyclerview_message_list.setLayoutManager(linearLayoutManager);
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);
+                        adapter.notifyItemInserted(0);
+                        adapter.notifyItemChanged(0);
                         adapter.notifyDataSetChanged();
-                        reyclerview_message_list.setAdapter(adapter);
+                        reyclerview_message_list.setAdapter(adapter);*/
                     }
 
                 } catch (JSONException e) {
@@ -263,9 +275,13 @@ public class Massage extends AppCompatActivity {
 
     private void addchat(String url) {
 
+        Log.e("URL",url);
+
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
+                Log.e("AddChatResponse",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -274,7 +290,24 @@ public class Massage extends AppCompatActivity {
 
                         edittext_chatbox.getText().clear();
 
-                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
+                        JSONArray array = object.getJSONArray("chat_history_list");
+                        for(int i = 0;i< array.length(); i++){
+                            JSONObject object1 = array.getJSONObject(i);
+                            messageModel = new ChatMessageModel(object1.getString("message_by"),
+                                    object1.getString("chat_message"),
+                                    object1.getString("chat_msg_time"),
+                                    object1.getString("chat_read_unread_status"));
+                            modelArrayList.add(0,messageModel);
+                        }
+                        linearLayoutManager = new LinearLayoutManager(Massage.this);
+                        linearLayoutManager.setReverseLayout(true);
+                        linearLayoutManager.setSmoothScrollbarEnabled(true);
+                        reyclerview_message_list.setLayoutManager(linearLayoutManager);
+                        adapter = new Chatbox_adapter(Massage.this,modelArrayList);
+                        adapter.notifyItemInserted(0);
+                        adapter.notifyItemChanged(0);
+                        adapter.notifyDataSetChanged();
+                        reyclerview_message_list.setAdapter(adapter);
 
                         /*JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
@@ -284,7 +317,15 @@ public class Massage extends AppCompatActivity {
                                     object1.getString("chat_date_time"));
                             modelArrayList.add(messageModel);
                         }
-                        reyclerview_message_list.setAdapter(new Chatbox_adapter(Massage.this,modelArrayList));*/
+                        reyclerview_message_list.setAdapter(new Chatbox_adapter(Massage.this,modelArrayList));*//*
+
+                        linearLayoutManager.setReverseLayout(true);
+                        linearLayoutManager.setStackFromEnd(true);
+                        reyclerview_message_list.setLayoutManager(linearLayoutManager);
+                        adapter = new Chatbox_adapter(Massage.this,modelArrayList);
+                        adapter.notifyItemInserted(0);
+                        adapter.notifyDataSetChanged();
+                        reyclerview_message_list.setAdapter(adapter);*/
 
                     }
 
@@ -316,21 +357,19 @@ public class Massage extends AppCompatActivity {
 
     private void chatList(String url) {
 
-        modelArrayList.clear();
-
         Log.e("URL",url);
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                /*Log.e("ChatResponse",response);*/
-
+                Log.e("ChatResponse",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
+                        chatProgress.setVisibility(View.GONE);
                         JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
                             JSONObject object1 = array.getJSONObject(i);
@@ -338,12 +377,23 @@ public class Massage extends AppCompatActivity {
                                     object1.getString("chat_message"),
                                     object1.getString("chat_msg_time"),
                                     object1.getString("chat_read_unread_status"));
-                            modelArrayList.add(messageModel);
+                            modelArrayList.add(modelArrayList.size(),messageModel);
                         }
 
+                        if(page == 1){
+                            Log.e("Called","If()");
+                            linearLayoutManager = new LinearLayoutManager(Massage.this);
+                            linearLayoutManager.setReverseLayout(true);
+                            linearLayoutManager.setStackFromEnd(true);
+                            linearLayoutManager.setSmoothScrollbarEnabled(true);
+                            reyclerview_message_list.setLayoutManager(linearLayoutManager);
+                        }
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);
                         adapter.notifyDataSetChanged();
                         reyclerview_message_list.setAdapter(adapter);
+                    }else{
+                        Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();
+
                     }
 
                 } catch (JSONException e) {
@@ -359,8 +409,6 @@ public class Massage extends AppCompatActivity {
                 Log.e("Error",error.toString());
             }
         });
-
-
 
         RequestQueue queue = Volley.newRequestQueue(Massage.this);
         queue.add(request);
