@@ -88,7 +88,7 @@ public class Massage extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (!recyclerView.canScrollVertically(-1)) {
+                if (recyclerView.canScrollVertically(-1)) {
 
                     if(Utility.internet_check(Massage.this)){
 
@@ -106,6 +106,8 @@ public class Massage extends AppCompatActivity {
                     }
 
 
+                }else{
+                    Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -362,7 +364,7 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                /*Log.e("ChatResponse",response);*/
+                Log.e("ChatResponse",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -399,6 +401,7 @@ public class Massage extends AppCompatActivity {
                 } catch (JSONException e) {
                     Log.e("Exception",e.toString());
                     e.printStackTrace();
+                    chatProgress.setVisibility(View.GONE);
                 }
 
             }
@@ -407,6 +410,7 @@ public class Massage extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 Log.e("Error",error.toString());
+                chatProgress.setVisibility(View.GONE);
             }
         });
 

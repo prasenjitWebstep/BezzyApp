@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,12 +43,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FriendsProfileActivity extends AppCompatActivity {
 
-    String friendsId,screen;
-    ProgressDialog progressDialog;
-    TextView userName,userFriends,userBioHeading,userBio,userFriendsHeading;
-    CircleImageView circularImg;
-    RecyclerView postRecyclerView;
+    Button button;
+    ImageView square_img;
+    TextView userName,following,follower,Likes,userBio,edit_btn;
     ArrayList<PostModel> postList;
+    ArrayList<String> imgList;
+    RecyclerView postRecyclerView;
+    ProgressDialog progressDialog;
+    String friendsId;
+    ImageView imageView;
+    RelativeLayout layoutFollowing,layoutFollower;
 
 
 
@@ -54,20 +61,50 @@ public class FriendsProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_profile);
 
-        friendsId = getIntent().getExtras().getString("friendId");
-        screen = getIntent().getExtras().getString("screen");
+        square_img = findViewById(R.id.square_img);
         userName = findViewById(R.id.userName);
-        userFriends = findViewById(R.id.userFriends);
-        userBioHeading = findViewById(R.id.userBioHeading);
+        following = findViewById(R.id.following_num);
+        follower = findViewById(R.id.follower_num);
+        Likes = findViewById(R.id.like_num);
         userBio = findViewById(R.id.userBio);
-        circularImg = findViewById(R.id.circularImg);
-        userFriendsHeading = findViewById(R.id.userFriendsHeading);
+        imageView= findViewById(R.id.logout);
+        edit_btn = findViewById(R.id.edit_btn);
         postRecyclerView = findViewById(R.id.postRecyclerView);
-        postList = new ArrayList<>();
+        layoutFollowing = findViewById(R.id.layoutFollowing);
+        layoutFollower = findViewById(R.id.layoutFollower);
 
+        postList = new ArrayList<>();
+        imgList = new ArrayList<>();
         progressDialog = new ProgressDialog(FriendsProfileActivity.this);
-        progressDialog.setMessage("Please Wait...");
+        progressDialog.setMessage("Logging Out Please Wait....");
         progressDialog.setCancelable(false);
+
+        friendsId = getIntent().getExtras().getString("friendId");
+
+
+        layoutFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*if(!Utility.getFollowing(FriendsProfileActivity.this).equals("0")){
+                    Intent intent = new Intent(getActivity(), FollowingActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }*/
+
+            }
+        });
+
+        layoutFollower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*if(!Utility.getFollowers(FriendsProfileActivity.this).equals("0")){
+                    Intent intent = new Intent(getActivity(), MyFriendsList.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }*/
+            }
+        });
+
 
     }
 
@@ -94,6 +131,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
     }
 
     private void postRequest(String url) {
+        postList.clear();
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -108,36 +146,19 @@ public class FriendsProfileActivity extends AppCompatActivity {
                         progressDialog.dismiss();
 
                         userName.setText(object.getJSONObject("usedetails").getString("get_name"));
-                        userFriends.setText(object.getJSONObject("usedetails").getString("number_of_friend"));
+                        following.setText(object.getJSONObject("usedetails").getString("following"));
+                        follower.setText(object.getJSONObject("usedetails").getString("followers"));
 
-                        userFriends.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(FriendsProfileActivity.this, FriendsFriendList.class);
-                                intent.putExtra("FriendId",friendsId);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                            }
-                        });
+                        Likes.setText(object.getJSONObject("usedetails").getString("number_of_post"));
 
-                        userFriendsHeading.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(FriendsProfileActivity.this, FriendsFriendList.class);
-                                intent.putExtra("FriendId",friendsId);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                            }
-                        });
-
-                        Glide.with(FriendsProfileActivity.this).load(object.getJSONObject("usedetails").getString("profile_pic")).into(circularImg);
+                        Glide.with(FriendsProfileActivity.this).load(object.getJSONObject("usedetails").getString("profile_pic")).into(square_img);
 
                         String bio = object.getJSONObject("usedetails").getString("bio");
 
                         if(!bio.equals("null")){
                             userBio.setText(object.getJSONObject("usedetails").getString("bio"));
                         }else{
-                            userBioHeading.setVisibility(View.GONE);
+
                             userBio.setVisibility(View.GONE);
                         }
 
