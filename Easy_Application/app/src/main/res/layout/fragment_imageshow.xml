@@ -19,7 +19,6 @@
 
             <kr.pe.burt.android.lib.androidgradientimageview.AndroidGradientImageView
                 android:id="@+id/imageView"
-                android:src="@drawable/dfg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
