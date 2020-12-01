@@ -113,7 +113,7 @@ public class Editprofile extends AppCompatActivity {
         });
 
 
-        ed_dob.setOnClickListener(new View.OnClickListener() {
+        /*ed_dob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
@@ -132,7 +132,7 @@ public class Editprofile extends AppCompatActivity {
                 datePickerDialog.show();
 
             }
-        });
+        });*/
 
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override

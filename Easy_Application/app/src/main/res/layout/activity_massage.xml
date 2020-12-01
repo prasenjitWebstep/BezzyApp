@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/root_view"
     tools:context="com.bezzy.Ui.View.activity.Massage">
 
     <LinearLayout
@@ -120,10 +121,10 @@
                 android:minHeight="48dp"
                 android:layout_margin="5dp"
                 android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/gallery"
+                android:layout_toRightOf="@id/emoji_btn"
                 android:background="@drawable/comment_backgr">
 
-                <EditText
+                <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
                     android:id="@+id/edittext_chatbox"
                     android:hint="Enter message"
                     android:background="@android:color/transparent"
@@ -137,28 +138,28 @@
 
                 <ImageView
                     android:id="@+id/send_msg"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/right_arrow"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="5dp"
                     android:padding="5dp"
                     app:tint="#A8A4A4"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_gravity="center_vertical"/>
 
             </LinearLayout>
             <ImageView
-                android:id="@+id/gallery"
+                android:id="@+id/emoji_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/landscape"
-                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_happy"
+                android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:padding="5dp"
-                app:tint="#A8A4A4"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="5dp"
-                android:visibility="gone"/>
+                />
 
         </RelativeLayout>
 

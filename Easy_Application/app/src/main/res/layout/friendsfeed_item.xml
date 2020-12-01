@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_below="@id/user_part">
-            <TextView
+            <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
                 android:id="@+id/post_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_heart"
-                        />
+                        app:tint="@color/gradstart" />
 
                     <ImageView
                         android:id="@+id/favBtnfilled"
@@ -209,6 +209,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        app:tint="@color/gradstart"
                         />
 
                 </RelativeLayout>

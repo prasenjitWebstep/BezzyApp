@@ -6,6 +6,7 @@
     android:windowSoftInputMode="adjustResize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root_view"
     android:background="@color/colourwhite"
     tools:context="com.bezzy.Ui.View.activity.CommentActivity">
 
@@ -82,10 +83,10 @@
             android:minHeight="48dp"
             android:layout_margin="5dp"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/gallery"
+            android:layout_toRightOf="@id/emoji_btn"
             android:background="@drawable/comment_backgr">
 
-            <EditText
+            <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
                 android:id="@+id/edittext_comment"
                 android:hint="Enter message"
                 android:background="@android:color/transparent"
@@ -111,16 +112,17 @@
 
         </LinearLayout>
         <ImageView
-            android:id="@+id/gallery"
+            android:id="@+id/emoji_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/landscape"
+            android:src="@drawable/ic_happy"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="5dp"
             android:padding="5dp"
-            app:tint="#A8A4A4"
             android:layout_marginTop="5dp"
-            android:visibility="gone"/>
+
+
+            android:visibility="visible"/>
 
     </RelativeLayout>
 

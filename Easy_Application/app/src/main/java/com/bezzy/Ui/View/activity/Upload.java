@@ -61,9 +61,9 @@ public class Upload extends AppCompatActivity {
                 case R.id.video:
                     fragment = new Video_fragment();
                     break;
-                case R.id.live:
+               /* case R.id.live:
                     fragment = new Live_ragment();
-                    break;
+                    break;*/
             }
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout_upload, fragment).commit();
