@@ -77,7 +77,6 @@
                     android:maxLines="2"
                     android:textColor="#fff"
                     android:layout_above="@id/user_descrecyl"
-                    android:text="This is bio"
                     android:textSize="18sp"
                     android:padding="5dp"
                     android:fontFamily="sans-serif-thin"
@@ -120,6 +119,7 @@
                             android:layout_width="30dp"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
+                            app:tint="@color/gradstart"
                             android:layout_marginRight="10dp"
                             />
 
@@ -150,6 +150,7 @@
                             android:layout_width="30dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+                            app:tint="@color/gradstart"
                             android:layout_centerVertical="true"
                             />
 

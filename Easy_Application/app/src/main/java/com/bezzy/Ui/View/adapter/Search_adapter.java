@@ -65,7 +65,13 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
     public void onBindViewHolder(@NonNull searchViewHolder holder, final int position) {
         Glide.with(context).load(dataholder.get(position).getImg()).into(holder.img);
         holder.header.setText(dataholder.get(position).getHeader());
-        //holder.bio.setText(dataholder.get(position).getHeader());
+        if(!dataholder.get(position).getDesc().equalsIgnoreCase("NULL") || !dataholder.get(position).getDesc().equals(null)){
+            holder.bio.setVisibility(View.VISIBLE);
+            holder.bio.setText(dataholder.get(position).getDesc());
+        }else{
+            holder.bio.setVisibility(View.INVISIBLE);
+        }
+
 
 
         if(dataholder.get(position).getUser_relation_status().equals("1")){

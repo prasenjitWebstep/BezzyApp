@@ -43,6 +43,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class Massage extends AppCompatActivity {
 
@@ -50,7 +52,7 @@ public class Massage extends AppCompatActivity {
     TextView title_text,timeshow;
     CircleImageView img_logo;
     RecyclerView reyclerview_message_list;
-    EditText edittext_chatbox;
+    //EditText edittext_chatbox;
     ImageView send_msg;
     ChatMessageModel messageModel;
     LinearLayoutManager linearLayoutManager;
@@ -58,6 +60,10 @@ public class Massage extends AppCompatActivity {
     int page,i;
     Chatbox_adapter adapter;
     ProgressBar chatProgress;
+    EmojIconActions emojIcon;
+    View rootView;
+    EmojiconEditText edittext_chatbox;
+    ImageView emojiButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -74,6 +80,23 @@ public class Massage extends AppCompatActivity {
         edittext_chatbox = findViewById(R.id.edittext_chatbox);
         send_msg = findViewById(R.id.send_msg);
         chatProgress = findViewById(R.id.chatProgress);
+        rootView = findViewById(R.id.root_view);
+        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
+        //emojiconEditText=findViewById(R.id.edittext_chatbox);
+        //ImageView imageView=findViewById(R.id.imageviewanimal);
+        emojIcon = new EmojIconActions(this, rootView, edittext_chatbox, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
+        emojIcon.addEmojiconEditTextList(edittext_chatbox);
 
         modelArrayList = new ArrayList<>();
         page = 1;

@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_baseline_camera_alt_24"/>
     <item android:title="VIDEO" android:id="@+id/video"
         android:icon="@drawable/ic_outline_videocam_24"/>
-    <item android:title="LIVE" android:id="@+id/live"
-        android:icon="@drawable/ic_baseline_live_tv_24"/>
+    <!--<item android:title="LIVE" android:id="@+id/live"
+        android:icon="@drawable/ic_baseline_live_tv_24"/>-->
 
 </menu>
