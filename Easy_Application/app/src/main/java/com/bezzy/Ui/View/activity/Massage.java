@@ -10,12 +10,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +48,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class Massage extends AppCompatActivity {
 
@@ -58,6 +65,10 @@ public class Massage extends AppCompatActivity {
     int page,i;
     Chatbox_adapter adapter;
     ProgressBar chatProgress;
+    EmojIconActions emojIcon;
+    View rootView;
+    EmojiconEditText emojiconEditText;
+    ImageView emojiButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -80,7 +91,7 @@ public class Massage extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(Massage.this);
         linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(false);
+        linearLayoutManager.setStackFromEnd(true);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
 
         reyclerview_message_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -145,6 +156,36 @@ public class Massage extends AppCompatActivity {
 
                 }
 
+            }
+        });
+        Display display=getWindowManager().getDefaultDisplay();
+        DisplayMetrics displayMetrics=new DisplayMetrics();
+        display.getRealMetrics(displayMetrics);
+        RelativeLayout relativeLayoutcontentwrapper=findViewById(R.id.relativecontentwrapper);
+        relativeLayoutcontentwrapper.getLayoutParams().height=displayMetrics.heightPixels;
+        RecyclerView imageView=findViewById(R.id.reyclerview_message_list);
+        rootView = findViewById(R.id.root_view);
+        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
+        emojiconEditText=findViewById(R.id.edittext_chatbox);
+        //ImageView imageView=findViewById(R.id.imageviewanimal);
+      /*  emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });*/
+        imageView.getLayoutParams().height=displayMetrics.heightPixels;
+        final ScrollView scrollView=findViewById(R.id.scrollView);
+        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
             }
         });
 

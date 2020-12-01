@@ -66,92 +66,104 @@
             android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
-
-
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/back_bezy">
-
-        <ProgressBar
-            android:id="@+id/chatProgress"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/reyclerview_message_list"
+        android:layout_below="@id/back_bezy"
+        android:fillViewport="true">
+        <RelativeLayout
+            android:id="@+id/relativecontentwrapper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/chatProgress"
-            android:layout_marginBottom="60dp"/>
+            android:layout_below="@+id/back_bezy">
 
-        <View
-            android:id="@+id/viewnb"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#dfdfdf"
-            android:layout_marginTop="-60dp"
-            android:layout_below="@+id/reyclerview_message_list" />
+            <ProgressBar
+                android:id="@+id/chatProgress"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone" />
 
-        <RelativeLayout
-            android:id="@+id/layout_chatbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
-            android:layout_below="@+id/viewnb">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reyclerview_message_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/chatProgress"
+                android:layout_marginBottom="60dp"/>
 
-            <LinearLayout
+            <View
+                android:id="@+id/viewnb"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#dfdfdf"
+                android:layout_marginTop="-60dp"
+                android:layout_below="@+id/reyclerview_message_list" />
 
+            <RelativeLayout
+                android:id="@+id/layout_chatbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:minHeight="48dp"
-                android:layout_margin="5dp"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/gallery"
-                android:background="@drawable/comment_backgr">
+                android:background="@drawable/rounded_button"
+                android:layout_below="@+id/viewnb">
 
-                <EditText
-                    android:id="@+id/edittext_chatbox"
-                    android:hint="Enter message"
-                    android:background="@android:color/transparent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                <LinearLayout
+
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="6"/>
+                    android:orientation="horizontal"
+                    android:minHeight="48dp"
+                    android:layout_margin="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/gallery"
+                    android:background="@drawable/comment_backgr">
 
+                    <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+                        android:id="@+id/edittext_chatbox"
+                        android:hint="Enter message"
+                        android:background="@android:color/transparent"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:maxLines="6"/>
+
+                    <ImageView
+                        android:id="@+id/send_msg"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/right_arrow"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="5dp"
+                        android:padding="5dp"
+                        app:tint="#A8A4A4"
+                        android:layout_marginTop="5dp"/>
+
+                </LinearLayout>
                 <ImageView
-                    android:id="@+id/send_msg"
+                    android:id="@+id/gallery"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/right_arrow"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/ic_happy"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:padding="5dp"
-                    app:tint="#A8A4A4"
-                    android:layout_marginTop="5dp"/>
+                   android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    />
 
-            </LinearLayout>
-            <ImageView
-                android:id="@+id/gallery"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/landscape"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="5dp"
-                android:padding="5dp"
-                app:tint="#A8A4A4"
-                android:layout_marginTop="5dp"
-                android:visibility="gone"/>
+            </RelativeLayout>
 
         </RelativeLayout>
 
-    </RelativeLayout>
+    </ScrollView>
+
+
+
 
 </RelativeLayout>
+
+

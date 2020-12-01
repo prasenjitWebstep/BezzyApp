@@ -40,14 +40,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
+
 public class CommentActivity extends AppCompatActivity {
 
     String id,screen;
     ArrayList<Comment_item> dataholder;
     RecyclerView recyclerView;
-    EditText comment;
+    EmojiconTextView comment;
     ImageView imageView;
     RelativeLayout layout_chatbox;
+    EmojIconActions emojIcon;
+    View rootView;
+    EmojiconEditText emojiconEditText;
+    ImageView emojiButton;
 
 
     @Override
@@ -55,7 +63,7 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         recyclerView=findViewById(R.id.reyclerview_comment_list);
-        comment=findViewById(R.id.edittext_comment);
+        emojiconEditText=findViewById(R.id.edittext_chatbox);
         imageView=findViewById(R.id.send_msg);
         layout_chatbox = findViewById(R.id.layout_chatbox);
 
@@ -115,6 +123,22 @@ public class CommentActivity extends AppCompatActivity {
 
             Toast.makeText(CommentActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
+        rootView = findViewById(R.id.root_view);
+        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
+        emojiconEditText=findViewById(R.id.edittext_chatbox);
+        //ImageView imageView=findViewById(R.id.imageviewanimal);
+        emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
 
     }
     private void commentList(String url) {
@@ -201,7 +225,7 @@ public class CommentActivity extends AppCompatActivity {
 
                             Toast.makeText(CommentActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
                         }
-                        comment.getText().clear();
+                        //comment.getText().clear();
                         JSONObject object1=object.getJSONObject("comment_user");
                         String name=object1.getString("name");
                         String photo=object1.getString("profilePicture");

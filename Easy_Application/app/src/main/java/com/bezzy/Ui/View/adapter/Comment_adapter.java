@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 
 public class Comment_adapter extends RecyclerView.Adapter<Comment_adapter.CommentHolder> {
     Context context;
@@ -54,8 +55,9 @@ public class Comment_adapter extends RecyclerView.Adapter<Comment_adapter.Commen
     }
 
     public class CommentHolder extends RecyclerView.ViewHolder{
-        TextView username,time,user_comment;
+        TextView username,time;
         CircleImageView imageView;
+        EmojiconTextView user_comment;
 
         public CommentHolder(@NonNull View itemView) {
 

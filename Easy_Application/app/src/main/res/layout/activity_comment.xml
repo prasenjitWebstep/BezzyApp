@@ -6,6 +6,7 @@
     android:windowSoftInputMode="adjustResize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root_view"
     android:background="@color/colourwhite"
     tools:context="com.bezzy.Ui.View.activity.CommentActivity">
 
@@ -64,64 +65,67 @@
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
         android:visibility="gone"/>
-
     <RelativeLayout
         android:id="@+id/layout_chatbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewnb"
-        android:background="@drawable/rounded_button"
         android:layout_alignParentBottom="true"
-        android:gravity="bottom">
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/rounded_button">
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:minHeight="48dp"
-            android:layout_margin="5dp"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/gallery"
-            android:background="@drawable/comment_backgr">
+            android:layout_margin="5dp"
+            android:layout_toRightOf="@id/emoji_btn"
+            android:background="@drawable/comment_backgr"
+            android:minHeight="48dp"
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/edittext_comment"
-                android:hint="Enter message"
-                android:background="@android:color/transparent"
+            <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+                android:id="@+id/edittext_chatbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:maxLines="6"/>
+                android:background="@android:color/transparent"
+                android:hint="Enter message"
+
+                android:maxLines="6" />
 
             <ImageView
                 android:id="@+id/send_msg"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/right_arrow"
                 android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="5dp"
                 android:padding="5dp"
-                app:tint="#A8A4A4"
-                android:layout_marginTop="10dp"/>
+                android:src="@drawable/right_arrow"
+                app:tint="#A8A4A4" />
 
         </LinearLayout>
+
         <ImageView
-            android:id="@+id/gallery"
+            android:id="@+id/emoji_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/landscape"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="5dp"
-            android:padding="5dp"
-            app:tint="#A8A4A4"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:visibility="gone"/>
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_happy"
+            android:visibility="visible" />
 
     </RelativeLayout>
+
+
 
 
 

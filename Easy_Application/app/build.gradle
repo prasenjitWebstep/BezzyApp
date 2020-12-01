@@ -47,7 +47,9 @@ dependencies {
     implementation 'com.github.HamidrezaAmz:MagicalExoPlayer:1.0.16'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
     implementation 'com.github.markushi:circlebutton:1.1'
+    implementation 'com.github.edsilfer:emoji-keyboard:1.0.0'
     implementation 'com.github.hani-momanii:SuperNova-Emoji:1.1'
+    implementation 'com.android.support:support-emoji:30.0.0'
 
 
 

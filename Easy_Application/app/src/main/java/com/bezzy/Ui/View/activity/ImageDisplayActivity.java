@@ -2,6 +2,7 @@ package com.bezzy.Ui.View.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -38,6 +39,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     String id,postId,type,postId2;
     EmojiconTextView servicesText_t;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

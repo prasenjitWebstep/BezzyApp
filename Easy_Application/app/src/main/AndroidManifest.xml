@@ -20,7 +20,9 @@
         <activity android:name="com.bezzy.Ui.View.activity.MyFriendsList" />
         <activity android:name="com.bezzy.Ui.View.activity.Editprofile" />
         <activity android:name="com.bezzy.Ui.View.activity.PostImageVideoViewActivity" />
-        <activity android:name="com.bezzy.Ui.View.activity.Massage" />
+        <activity android:name="com.bezzy.Ui.View.activity.Massage"
+
+            android:theme="@style/MessageTheme"/>
         <activity
             android:name="com.bezzy.Ui.View.activity.CommentActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
