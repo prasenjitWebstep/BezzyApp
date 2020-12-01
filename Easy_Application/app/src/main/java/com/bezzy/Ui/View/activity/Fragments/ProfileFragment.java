@@ -32,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.FollowingActivity;
 import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.MyFriendsList;
+import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.PostAdapter;
 import com.bezzy.Ui.View.activity.Editprofile;
 import com.bezzy.Ui.View.model.PostModel;
@@ -234,6 +235,7 @@ public class ProfileFragment extends Fragment {
                             if(resp.equals("success")){
                                 progressDialog.dismiss();
                                 Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_SHORT).show();
+                                callApi(APIs.BASE_URL+APIs.GET_USER_ACTIVE_STATUS,"false");
                                 Intent intent = new Intent(getActivity(),LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
@@ -271,5 +273,30 @@ public class ProfileFragment extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
+    }
+
+    private void callApi(String url, final String online) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response",response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("userID",Utility.getUserId(getActivity().getApplicationContext()));
+                map.put("user_active_status",online);
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        queue.add(request);
     }
 }

@@ -46,12 +46,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Massage extends AppCompatActivity {
 
-    String name,image,id;
+    String name,image,id,online;
     TextView title_text,timeshow;
     CircleImageView img_logo;
     RecyclerView reyclerview_message_list;
     EditText edittext_chatbox;
-    ImageView send_msg;
+    ImageView send_msg,imgActive;
     ChatMessageModel messageModel;
     LinearLayoutManager linearLayoutManager;
     ArrayList<ChatMessageModel> modelArrayList;
@@ -67,6 +67,15 @@ public class Massage extends AppCompatActivity {
         name = getIntent().getExtras().getString("userName");
         image = getIntent().getExtras().getString("userImage");
         id = getIntent().getExtras().getString("FrndId");
+        try{
+            online = getIntent().getExtras().getString("online");
+            if(online.equals("true")){
+                imgActive.setVisibility(View.VISIBLE);
+            }
+        }catch (Exception e){
+            Log.e("Exception",e.toString());
+        }
+
         title_text = findViewById(R.id.title_text);
         timeshow = findViewById(R.id.timeshow);
         img_logo = findViewById(R.id.img_logo);
@@ -74,6 +83,8 @@ public class Massage extends AppCompatActivity {
         edittext_chatbox = findViewById(R.id.edittext_chatbox);
         send_msg = findViewById(R.id.send_msg);
         chatProgress = findViewById(R.id.chatProgress);
+        imgActive = findViewById(R.id.imgActive);
+
 
         modelArrayList = new ArrayList<>();
         page = 1;
@@ -88,7 +99,7 @@ public class Massage extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (recyclerView.canScrollVertically(-1)) {
+                if (recyclerView.canScrollVertically(-1) && !recyclerView.canScrollVertically(0)) {
 
                     if(Utility.internet_check(Massage.this)){
 
@@ -282,7 +293,7 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                /*Log.e("AddChatResponse",response);*/
+                Log.e("AddChatResponse",response);
 
                 edittext_chatbox.getText().clear();
 

@@ -82,7 +82,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
                 if(Utility.internet_check(context)) {
 
 
-                    readChatNoti(APIs.BASE_URL+APIs.CHAT_NOTIFICATION_READ+"/"+Utility.getUserId(context)+"/"+chatlistItem.getUserID(),chatlistItem.getUserID(),chatlistItem.getImage(),chatlistItem.getUserName());
+                    readChatNoti(APIs.BASE_URL+APIs.CHAT_NOTIFICATION_READ+"/"+Utility.getUserId(context)+"/"+chatlistItem.getUserID(),chatlistItem.getUserID(),chatlistItem.getImage(),chatlistItem.getUserName(),chatlistItem.getActiveStatus());
 
                 }
                 else {
@@ -97,7 +97,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
 
     }
 
-    private void readChatNoti(final String url, final String userID, final String image, final String name) {
+    private void readChatNoti(final String url, final String userID, final String image, final String name, final String activeStatus) {
         Log.e("URL",url);
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -114,6 +114,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
                         intent.putExtra("FrndId",userID);
                         intent.putExtra("userImage",image);
                         intent.putExtra("userName",name);
+                        intent.putExtra("online",activeStatus);
                         context.startActivity(intent);
                     }
                 } catch (JSONException e) {

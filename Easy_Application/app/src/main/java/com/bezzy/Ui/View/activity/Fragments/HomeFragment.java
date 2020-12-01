@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.activity.NotificationActivity;
+import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.Friendsfeed_Adapter;
 import com.bezzy.Ui.View.adapter.Friendsnoti_adapter;
 import com.bezzy.Ui.View.adapter.Search_adapter;
@@ -98,7 +100,9 @@ public class HomeFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 mSwipeRefreshLayout.setRefreshing(false);
+
                 if(Utility.internet_check(getActivity())) {
 
                     progressDialog.show();
@@ -124,6 +128,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        callApi();
+
         if(Utility.internet_check(getActivity())) {
 
             progressDialog.show();
@@ -139,6 +145,35 @@ public class HomeFragment extends Fragment {
 
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void callApi() {
+
+        try{
+            if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
+                cart_badge.setVisibility(View.VISIBLE);
+            }else{
+                cart_badge.setVisibility(View.GONE);
+            }
+        }catch (Exception e){
+            Log.e("Exception",e.toString());
+        }
+
+
+
+        refresh(20000);
+    }
+
+    private void refresh(int i) {
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                callApi();
+            }
+        };
+
+        handler.postDelayed(runnable,i);
     }
 
     private void friendsBlockList(String url) {

@@ -76,7 +76,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class Photo_fragment extends Fragment {
     ImageView imageView, back_image;
-    Button button,uoload;
+    TextView button,uoload;
     String base64String;
     String filePath;
     //Image request code

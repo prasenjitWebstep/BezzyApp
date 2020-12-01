@@ -66,7 +66,7 @@ public class NotificationActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        Utility.setNotificationStatus(this,"0");
+        Utility.setNotificationStatus(NotificationActivity.this,"0");
 
         dataholder=new ArrayList<>();
 

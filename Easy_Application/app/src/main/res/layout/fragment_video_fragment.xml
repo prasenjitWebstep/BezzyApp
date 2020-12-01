@@ -48,7 +48,7 @@
             android:id="@+id/ed_commnets"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".6"
+            android:layout_weight=".52"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
@@ -82,7 +82,7 @@
                 android:paddingTop="5dp"/>
 
 
-            <Button
+            <TextView
                 android:id="@+id/upload_post"
                 android:layout_width="120dp"
                 android:layout_height="35dp"
@@ -93,14 +93,15 @@
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/login_button_background"
                 android:text="Upload Video"
+                android:textAllCaps="true"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 android:layout_below="@+id/ed_content"
                 android:layout_toLeftOf="@+id/upload"/>
 
-            <Button
+            <TextView
                 android:id="@+id/upload"
-                android:layout_width="60dp"
+                android:layout_width="70dp"
                 android:layout_height="35dp"
                 android:layout_below="@+id/ed_content"
                 android:layout_alignParentRight="true"
@@ -109,6 +110,7 @@
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/login_button_background"
                 android:text="POST"
+                android:gravity="center"
                 android:textColor="@color/colourwhite"
                 android:textSize="12sp" />
 

@@ -50,8 +50,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reyclerview_comment_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/back_bezy"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/back_bezy"
+        android:layout_marginBottom="60dp"/>
 
     <!-- A horizontal line between the chatbox and RecyclerView -->
     <View
@@ -70,8 +71,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/viewnb"
+        android:layout_marginTop="-60dp"
         android:background="@drawable/rounded_button"
-        android:layout_alignParentBottom="true"
         android:gravity="bottom">
 
         <LinearLayout

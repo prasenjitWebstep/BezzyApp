@@ -52,6 +52,16 @@
             android:layout_toRightOf="@id/back_image"
             android:layout_gravity="center_vertical"/>
 
+        <ImageView
+            android:id="@+id/imgActive"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:src="@drawable/cart_items"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="-15dp"
+            app:tint="@color/green"
+            android:visibility="gone"/>
+
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"

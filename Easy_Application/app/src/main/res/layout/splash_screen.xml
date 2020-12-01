@@ -9,14 +9,13 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="220dp"
-        android:gravity="center"
+        android:layout_centerInParent="true"
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:layout_gravity="center"
             android:layout_margin="2dp"
             android:rotation="2"
             app:cardCornerRadius="20dp">
@@ -25,8 +24,6 @@
                 android:id="@+id/logo_bezzy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:src="@drawable/logo"/>
 
         </androidx.cardview.widget.CardView>

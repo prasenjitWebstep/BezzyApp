@@ -181,7 +181,7 @@ public class Utility {
 
     public static String getNotificationStatus(Context mContext) {
         SharedPreferences memIdPreferences = mContext.getSharedPreferences("Bezzy", 0); // 0 - for private mode
-        return memIdPreferences.getString("status", "");
+        return memIdPreferences.getString("status", "0");
     }
 
 

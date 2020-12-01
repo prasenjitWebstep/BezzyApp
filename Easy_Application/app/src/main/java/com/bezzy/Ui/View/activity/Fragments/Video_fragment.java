@@ -60,7 +60,7 @@ public class Video_fragment extends Fragment {
     VideoView videoView;
     TextView bufferText;
     EmojiconEditText emojiconEditText;
-    Button upload_post, uploadVideo;
+    TextView upload_post, uploadVideo;
     private static final int REQUEST_PICK_VIDEO = 3;// Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
     private Uri video;

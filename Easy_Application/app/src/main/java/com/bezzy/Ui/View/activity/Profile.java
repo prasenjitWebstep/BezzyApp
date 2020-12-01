@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,11 +58,7 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_scrns);
 
-        if (!isApplicationBroughtToBackground()) {
-            Log.e("Check","APP in foreground");
-        }else{
-            Log.e("Check","APP in background");
-        }
+
 
 
         //SessionManager.getInstance(getApplicationContext()).userLogout();
@@ -90,18 +87,21 @@ public class Profile extends AppCompatActivity {
 
     }
 
-    private boolean isApplicationBroughtToBackground() {
-        ActivityManager am = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
-        if (!tasks.isEmpty()) {
-            ComponentName topActivity = tasks.get(0).topActivity;
-            if (!topActivity.getPackageName().equals(this.getPackageName())) {
-                return true;
-            }
-        }
-        return false;
-    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(Utility.internet_check(Profile.this)) {
 
+
+            callApi(APIs.BASE_URL+APIs.GET_USER_ACTIVE_STATUS,"true");
+            /*messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);*/
+        }
+        else {
+
+            Toast.makeText(Profile.this,"No Network!",Toast.LENGTH_SHORT).show();
+
+        }
+    }
     private void callApi(String url, final String online) {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
