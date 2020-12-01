@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:id="@+id/layoutreceiver"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:background="@drawable/recived_msg_bgr"
         android:layout_marginTop="5dp"
@@ -32,7 +32,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginRight="5dp"
             android:textColor="@color/black"
-            android:layout_toRightOf="@+id/rcv_message_body"
+            android:layout_alignParentLeft="true"
             android:layout_below="@id/rcv_message_body"
             />
 

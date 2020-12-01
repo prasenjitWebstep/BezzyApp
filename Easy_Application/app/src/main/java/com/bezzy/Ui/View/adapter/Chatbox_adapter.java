@@ -94,8 +94,7 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
 
     public class ReceiveMassageHolder extends RecyclerView.ViewHolder{
         TextView rcv_message_body,rcv_message_time,send_message_body,send_message_time;
-        RelativeLayout layoutreceiver;
-        LinearLayout layoutSender;
+        RelativeLayout layoutreceiver,layoutSender;
         ImageView send_tick,delivered_tick;
 
 

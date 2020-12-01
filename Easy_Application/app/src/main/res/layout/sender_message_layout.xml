@@ -4,67 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layoutSender"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/send_msg_backgr"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/send_msg_backgr">
 
-        <LinearLayout
-            android:id="@+id/msg_part"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/send_message_body"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1.8"
-            android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:text="hi man, how are you?"
+            android:textColor="@color/white" />
 
-
-            >
-
-            <TextView
-                android:id="@+id/send_message_body"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:maxLines="5"
-                android:text="hi man, how are you?"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/tick_part"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_below="@id/msg_part"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/send_message_body"
             android:layout_gravity="bottom"
             android:layout_marginBottom="3dp"
-            android:layout_toRightOf="@id/msg_part"
-            android:layout_weight="0.5"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_alignParentRight="true">
 
             <TextView
                 android:id="@+id/send_message_time"
-                android:layout_width="50dp"
-                android:layout_height="20dp"
-                android:layout_below="@id/msg_part"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="2dp"
-                android:layout_toRightOf="@+id/msg_part"
-                android:layout_weight="0.3"
+                android:padding="5dp"
                 android:text="11:40 PM"
                 android:textColor="@color/white"
+                android:layout_alignParentRight="true"
                 android:textSize="10sp" />
 
             <ImageView
@@ -72,29 +49,26 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginRight="5dp"
-
-                android:layout_weight="0.3"
+                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_double_tick_indicator"
                 android:visibility="visible"
-
-                app:tint="@color/colourwhite" />
+                app:tint="@color/colourwhite"
+                android:layout_below="@+id/send_message_time"/>
 
             <ImageView
                 android:id="@+id/send_tick"
-                android:layout_width="8dp"
-                android:layout_height="9dp"
-
-                android:layout_marginRight="8dp"
-
-
-                android:layout_weight="0.2"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_tick"
                 android:visibility="invisible"
-                app:tint="@color/white" />
-        </LinearLayout>
+                app:tint="@color/colourwhite"
+                android:layout_below="@+id/send_message_time"/>
+        </RelativeLayout>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <!--<LinearLayout
         android:id="@+id/layoutSender"

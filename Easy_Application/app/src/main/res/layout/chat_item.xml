@@ -12,12 +12,12 @@
         android:src="@drawable/assess_profile1"/>
     <ImageView
         android:id="@+id/imgActive"
-        android:layout_width="7dp"
-        android:layout_height="7dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:src="@drawable/cart_items"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="-5dp"
-        app:tint="@color/green"/>
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="-7dp"
+        app:tint="@color/green" />
     <RelativeLayout
         android:id="@+id/relativeHolder"
         android:layout_width="match_parent"

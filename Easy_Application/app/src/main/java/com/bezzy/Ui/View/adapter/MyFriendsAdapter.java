@@ -257,7 +257,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
 
         CircleImageView circularImg;
         TextView userName;
-        Button btn;
+        TextView btn;
         ImageView addFriend,chat;
 
         public MyFriendHoler(@NonNull View itemView) {

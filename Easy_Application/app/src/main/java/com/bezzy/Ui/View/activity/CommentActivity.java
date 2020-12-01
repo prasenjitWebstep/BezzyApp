@@ -71,7 +71,7 @@ public class CommentActivity extends AppCompatActivity {
 
         Log.e("ID",id);
 
-        /*try{
+        try{
             if(screen.equals("1")){
                 layout_chatbox.setVisibility(View.GONE);
             }else{
@@ -80,7 +80,7 @@ public class CommentActivity extends AppCompatActivity {
         }catch (Exception e){
             Log.e("Exception",e.toString());
 
-        }*/
+        }
         rootView = findViewById(R.id.root_view);
         emojiButton = (ImageView) findViewById(R.id.emoji_btn);
         comment=findViewById(R.id.edittext_comment);
@@ -109,6 +109,14 @@ public class CommentActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+
                 if(Utility.internet_check(CommentActivity.this)) {
 
                     //dialog.show();
@@ -210,6 +218,7 @@ public class CommentActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String status=object.getString("status");
                     if(status.equals("success")){
+                        comment.getText().clear();
                         if(Utility.internet_check(CommentActivity.this)) {
 
                             //dialog.show();
@@ -225,7 +234,6 @@ public class CommentActivity extends AppCompatActivity {
 
                             Toast.makeText(CommentActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
                         }
-                        comment.getText().clear();
                         JSONObject object1=object.getJSONObject("comment_user");
                         String name=object1.getString("name");
                         String photo=object1.getString("profilePicture");

@@ -42,6 +42,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 
 public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.FriendsPostHolder> {
 

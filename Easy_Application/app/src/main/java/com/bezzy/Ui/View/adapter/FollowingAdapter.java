@@ -175,7 +175,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
 
         CircleImageView circularImg;
         TextView userName;
-        Button btn;
+        TextView btn;
         ImageView addFriend,chat;
 
         public MyFriendHoler(@NonNull View itemView) {

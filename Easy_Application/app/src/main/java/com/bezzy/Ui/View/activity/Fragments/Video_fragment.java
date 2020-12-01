@@ -49,6 +49,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 import static com.bezzy.Ui.View.utils.UploadHelper.getFileDataFromDrawable;
@@ -70,6 +71,10 @@ public class Video_fragment extends Fragment {
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
     int MY_SOCKET_TIMEOUT_MS = 150000;
+    EmojIconActions emojIcon;
+    View rootView;
+    //EmojiconEditText emojiconEditText;
+    ImageView emojiButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,11 +90,26 @@ public class Video_fragment extends Fragment {
         emojiconEditText = view.findViewById(R.id.ed_content);
         upload_post = view.findViewById(R.id.upload_post);
         back_image = view.findViewById(R.id.back_image);
+        emojiButton=view.findViewById(R.id.emoji_btn);
+        rootView=view.findViewById(R.id.root_view);
 
         uploadVideo = view.findViewById(R.id.upload);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
+        emojIcon = new EmojIconActions(getActivity(), rootView, emojiconEditText, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
+        emojIcon.addEmojiconEditTextList(emojiconEditText);
 
         videoView.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
 
@@ -286,6 +306,7 @@ public class Video_fragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one video to Post", Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
                 Log.e("VolleyError", error.toString());
             }

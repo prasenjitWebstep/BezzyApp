@@ -20,9 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -43,6 +45,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class Massage extends AppCompatActivity {
 
@@ -50,7 +54,7 @@ public class Massage extends AppCompatActivity {
     TextView title_text,timeshow;
     CircleImageView img_logo;
     RecyclerView reyclerview_message_list;
-    EditText edittext_chatbox;
+    //EditText edittext_chatbox;
     ImageView send_msg,imgActive;
     ChatMessageModel messageModel;
     LinearLayoutManager linearLayoutManager;
@@ -58,6 +62,10 @@ public class Massage extends AppCompatActivity {
     int page,i;
     Chatbox_adapter adapter;
     ProgressBar chatProgress;
+    EmojIconActions emojIcon;
+    View rootView;
+    EmojiconEditText edittext_chatbox;
+    ImageView emojiButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -84,6 +92,8 @@ public class Massage extends AppCompatActivity {
         send_msg = findViewById(R.id.send_msg);
         chatProgress = findViewById(R.id.chatProgress);
         imgActive = findViewById(R.id.imgActive);
+        emojiButton=findViewById(R.id.emoji_btn);
+        rootView=findViewById(R.id.root_view);
 
 
         modelArrayList = new ArrayList<>();
@@ -93,13 +103,26 @@ public class Massage extends AppCompatActivity {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
+        emojIcon = new EmojIconActions(this, rootView, edittext_chatbox, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
+        emojIcon.addEmojiconEditTextList(edittext_chatbox);
 
         reyclerview_message_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (recyclerView.canScrollVertically(-1) && !recyclerView.canScrollVertically(0)) {
+                if (!recyclerView.canScrollVertically(-1) && recyclerView.canScrollVertically(1)) {
 
                     if(Utility.internet_check(Massage.this)){
 
@@ -240,7 +263,9 @@ public class Massage extends AppCompatActivity {
             }
         });
 
-
+        int socketTimeout = 500000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         RequestQueue queue = Volley.newRequestQueue(Massage.this);
         queue.add(request);
 

@@ -42,7 +42,8 @@
                     android:text="User Name"
                     android:padding="3dp"
                     android:textSize="12sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentLeft="true"
                     android:textColor="@color/colourblack"
                     android:textStyle="normal"
                     android:layout_marginRight="10dp"
@@ -50,19 +51,22 @@
                     android:fontFamily="sans-serif-medium"/>
 
 
-                <Button
+                <TextView
                     android:id="@+id/btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:background="@drawable/rounded_button2"
-                    android:backgroundTint="@color/gradstart"
+                    android:layout_height="35dp"
+                    android:background="@drawable/login_button_background"
                     android:text="follow back"
+                    android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:layout_alignParentRight="true"
                     android:textSize="10sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:gravity="center"
                     android:layout_marginRight="15dp"
-                    android:visibility="gone"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/addFriend"
