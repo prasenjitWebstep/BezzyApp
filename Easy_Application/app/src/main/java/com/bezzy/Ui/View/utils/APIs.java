@@ -3,7 +3,6 @@ package com.bezzy.Ui.View.utils;
 public class APIs {
 
     public static String BASE_URL = "http://bezzy.websteptech.co.uk/";
-    public static String PROFILE_IMAGE_BASE_URL = "http://bezzy.websteptech.co.uk/public/profile/";
     public static String LOGIN_URL = "api/login";
     public static String REGISTRATION = "api/registration";
     public static String OTPVERIFICATION = "api/verifyotp";
@@ -33,7 +32,6 @@ public class APIs {
     public static String CHAT_LIST = "api/chat-list";
     public static String COMMENT_POST = "api/comment-post";
     public static String COMMENT_LIST = "api/comment-list";
-    public static String FRIEND_LIST = "api/getuserfriendlist";
     public static String PROFILE_FRIEND_LIST = "api/getuserprofilefriendlist";
     public static String CHAT_NOTIFICATION_READ = "api/click-on-chat-notification";
     public static String GET_USER_ACTIVE_STATUS = "api/appbasic_userative_status";
