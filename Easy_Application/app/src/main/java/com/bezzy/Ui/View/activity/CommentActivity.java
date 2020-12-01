@@ -40,14 +40,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+
 public class CommentActivity extends AppCompatActivity {
 
     String id,screen;
     ArrayList<Comment_item> dataholder;
     RecyclerView recyclerView;
-    EditText comment;
+    //EditText comment;
     ImageView imageView;
     RelativeLayout layout_chatbox;
+    EmojIconActions emojIcon;
+    View rootView;
+    EmojiconEditText comment;
+    ImageView emojiButton;
 
 
     @Override
@@ -64,7 +71,7 @@ public class CommentActivity extends AppCompatActivity {
 
         Log.e("ID",id);
 
-        try{
+        /*try{
             if(screen.equals("1")){
                 layout_chatbox.setVisibility(View.GONE);
             }else{
@@ -72,7 +79,24 @@ public class CommentActivity extends AppCompatActivity {
             }
         }catch (Exception e){
             Log.e("Exception",e.toString());
-        }
+
+        }*/
+        rootView = findViewById(R.id.root_view);
+        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
+        comment=findViewById(R.id.edittext_comment);
+        emojIcon = new EmojIconActions(this, rootView, comment, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
+        emojIcon.addEmojiconEditTextList(comment);
 
 
 
