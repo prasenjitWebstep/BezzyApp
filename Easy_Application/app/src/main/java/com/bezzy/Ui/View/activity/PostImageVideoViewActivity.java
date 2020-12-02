@@ -68,7 +68,7 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
         comment_btn=findViewById(R.id.chat_btn);
         servicesText = findViewById(R.id.servicesText);
         progressDialog =new SpotsDialog(PostImageVideoViewActivity.this);
-        progressDialog.setMessage("Please Wait...");
+        //progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
 
         if(Utility.internet_check(PostImageVideoViewActivity.this)) {

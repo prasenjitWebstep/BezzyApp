@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         progressDialog = new SpotsDialog(getActivity(),R.style.Custom);
-        progressDialog.setMessage("Please wait....");
+
         progressDialog.setCancelable(false);
         // Inflate the layout for this fragment
 

@@ -50,7 +50,7 @@ public class OTPActivity extends AppCompatActivity {
         btnVerify = findViewById(R.id.btnVerify);
         otp_view = findViewById(R.id.otp_view);
         progressDialog = new SpotsDialog(OTPActivity.this);
-        progressDialog.setMessage("Verifying Please Wait...");
+        //progressDialog.setMessage("Verifying Please Wait...");
         progressDialog.setCancelable(false);
 
 

@@ -54,7 +54,7 @@ public class Friendsfeed extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         progressDialog = new SpotsDialog(Friendsfeed.this);
-        progressDialog.setMessage("Please wait....");
+        //progressDialog.setMessage("Please wait....");
         progressDialog.setCancelable(false);
 
         if(Utility.internet_check(Friendsfeed.this)) {

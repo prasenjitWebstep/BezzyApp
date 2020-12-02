@@ -113,7 +113,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
                     if(Utility.internet_check(context)) {
 
                         progressDialog = new SpotsDialog(context);
-                        progressDialog.setMessage("Loading Please Wait...");
+                        //progressDialog.setMessage("Loading Please Wait...");
                         progressDialog.setCancelable(false);
                         progressDialog.show();
 

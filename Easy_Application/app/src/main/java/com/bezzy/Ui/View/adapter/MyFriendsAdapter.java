@@ -106,7 +106,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
                     if(Utility.internet_check(context)) {
 
                         progressDialog = new SpotsDialog(context);
-                        progressDialog.setMessage("Please Wait...");
+                        //progressDialog.setMessage("Please Wait...");
                         progressDialog.setCancelable(true);
                         progressDialog.show();
 

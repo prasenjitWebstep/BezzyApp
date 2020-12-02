@@ -121,7 +121,7 @@ public class Photo_fragment extends Fragment {
         button = view.findViewById(R.id.upload);
         //image_part = view.findViewById(R.id.image_part);
         progressDialog = new SpotsDialog(getActivity());
-        progressDialog.setMessage("Posting Please wait....");
+        //progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);
         uoload = view.findViewById(R.id.upload_post);

@@ -78,7 +78,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         imageView=findViewById(R.id.back_image);
         progressDialog = new SpotsDialog(Registration.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please Wait..");
+        //progressDialog.setMessage("Loading Please Wait..");
         str_gender = "null";
 
         ed_gender = findViewById(R.id.gender);

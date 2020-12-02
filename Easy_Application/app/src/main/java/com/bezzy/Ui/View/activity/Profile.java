@@ -77,7 +77,7 @@ public class Profile extends AppCompatActivity {
        /* Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
         progressDialog = new SpotsDialog(Profile.this);
-        progressDialog.setMessage("Logging Out Please Wait...");
+        //progressDialog.setMessage("Logging Out Please Wait...");
         progressDialog.setCancelable(false);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

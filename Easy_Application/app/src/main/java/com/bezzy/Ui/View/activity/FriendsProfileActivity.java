@@ -77,7 +77,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
         progressDialog = new SpotsDialog(FriendsProfileActivity.this);
-        progressDialog.setMessage("Logging Out Please Wait....");
+        //progressDialog.setMessage("Logging Out Please Wait....");
         progressDialog.setCancelable(false);
 
         friendsId = getIntent().getExtras().getString("friendId");

@@ -53,7 +53,7 @@ public class NotificationActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.noti_listf);
         back_image = findViewById(R.id.back_image);
         dialog = new SpotsDialog(NotificationActivity.this);
-        dialog.setMessage("Loading Please Wait...");
+        //dialog.setMessage("Loading Please Wait...");
         dialog.setCancelable(false);
 
         back_image.setOnClickListener(new View.OnClickListener() {

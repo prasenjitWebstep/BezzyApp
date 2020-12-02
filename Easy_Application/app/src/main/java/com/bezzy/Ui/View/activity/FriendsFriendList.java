@@ -50,7 +50,7 @@ public class FriendsFriendList extends AppCompatActivity {
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
         progressDialog = new SpotsDialog(FriendsFriendList.this);
-        progressDialog.setMessage("Loading Please Wait...");
+        //progressDialog.setMessage("Loading Please Wait...");
         progressDialog.setCancelable(false);
         holderList = new ArrayList<>();
         friendId = getIntent().getExtras().getString("FriendId");

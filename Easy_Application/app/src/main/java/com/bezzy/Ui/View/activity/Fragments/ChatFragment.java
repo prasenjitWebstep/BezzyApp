@@ -32,10 +32,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
+
 
 public class ChatFragment extends Fragment {
     RecyclerView chatlist;
     ArrayList<Chatlist_item> dataholder;
+    SpotsDialog progressDialog;
 
 
 
@@ -49,6 +52,8 @@ public class ChatFragment extends Fragment {
         chatlist.setLayoutManager(linearLayoutManager);
 
         dataholder=new ArrayList<>();
+        progressDialog = new SpotsDialog(getActivity());
+        progressDialog.setCancelable(false);
         /*if(Utility.internet_check(getActivity())) {
 
 
@@ -71,11 +76,13 @@ public class ChatFragment extends Fragment {
         super.onResume();
         dataholder=new ArrayList<>();
         if(Utility.internet_check(getActivity())) {
+            progressDialog.show();
 
             chatNotiList(APIs.BASE_URL+APIs.CHAT_NOTI_LIST+"/"+Utility.getUserId(getActivity()));
 
         }
         else {
+            progressDialog.dismiss();
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
     }
@@ -90,6 +97,7 @@ public class ChatFragment extends Fragment {
                     JSONObject object=new JSONObject(response);
                     String status=object.getString("status");
                     if (status.equals("success")){
+                        progressDialog.dismiss();
                         JSONArray array=object.getJSONArray("chat_notification_list");
                         for (int i=0;i<array.length();i++){
                             JSONObject object11=array.getJSONObject(i);
@@ -110,6 +118,7 @@ public class ChatFragment extends Fragment {
 
                     }
                 } catch (JSONException e) {
+                    progressDialog.dismiss();
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
                 }

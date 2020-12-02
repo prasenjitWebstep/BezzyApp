@@ -79,7 +79,7 @@ public class SearchFragment extends Fragment {
 
         progressDialog = new SpotsDialog(getActivity());
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Please wait....");
+        //progressDialog.setMessage("Please wait....");
 
         imgSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -47,7 +47,7 @@ public class Changepassword extends AppCompatActivity {
         change = findViewById(R.id.change);
         progressDialog = new SpotsDialog(Changepassword.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please Wait..");
+        //progressDialog.setMessage("Loading Please Wait..");
         userId = getIntent().getExtras().getString("USERID");
 
         change.setOnClickListener(new View.OnClickListener() {

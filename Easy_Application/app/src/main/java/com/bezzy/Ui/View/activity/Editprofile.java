@@ -95,7 +95,7 @@ public class Editprofile extends AppCompatActivity {
 
         progressDialog = new SpotsDialog(Editprofile.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please Wait..");
+        //progressDialog.setMessage("Loading Please Wait..");
 
 
         textInputEmail = findViewById(R.id.text_input_email);

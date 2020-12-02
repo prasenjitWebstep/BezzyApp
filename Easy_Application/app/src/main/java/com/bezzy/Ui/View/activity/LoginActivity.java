@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         openregister();
         progressDialog = new SpotsDialog(LoginActivity.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please wait...");
+        //progressDialog.setMessage("Loading Please wait...");
        /* tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

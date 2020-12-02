@@ -95,7 +95,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
                 @Override
                 public void onClick(View v) {
                     progressDialog = new ProgressDialog(context);
-                    progressDialog.setMessage("Please Wait...");
+                    //progressDialog.setMessage("Please Wait...");
                     progressDialog.setCancelable(false);
                     callApiFollow(APIs.BASE_URL+APIs.FOLLOWINGREQUEST,dataholder.get(position).getId(),position);
 

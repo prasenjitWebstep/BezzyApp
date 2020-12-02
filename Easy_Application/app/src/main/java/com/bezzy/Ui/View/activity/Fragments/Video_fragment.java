@@ -96,7 +96,7 @@ public class Video_fragment extends Fragment {
 
         uploadVideo = view.findViewById(R.id.upload);
         progressDialog = new SpotsDialog(getActivity());
-        progressDialog.setMessage("Posting Please wait....");
+        //progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
         emojIcon = new EmojIconActions(getActivity(), rootView, emojiconEditText, emojiButton);
         emojIcon.ShowEmojIcon();

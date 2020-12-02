@@ -87,7 +87,7 @@ public class ProfileFragment extends Fragment {
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
         progressDialog = new SpotsDialog(getActivity());
-        progressDialog.setMessage("Logging Out Please Wait....");
+        //progressDialog.setMessage("Logging Out Please Wait....");
         progressDialog.setCancelable(false);
 
 

@@ -161,7 +161,7 @@ public class Massage extends AppCompatActivity {
             }
         });
 
-        //ImageView imageView=findViewById(R.id.imageviewanimal);
+
       /*  emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiButton);
         emojIcon.ShowEmojIcon();
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {

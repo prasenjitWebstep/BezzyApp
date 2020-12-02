@@ -30,11 +30,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class Forgot_pas extends AppCompatActivity {
     ImageView back_image;
     TextInputEditText email_send;
     Button button;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +61,9 @@ public class Forgot_pas extends AppCompatActivity {
 
             }
         });
-        progressDialog = new ProgressDialog(Forgot_pas.this);
+        progressDialog = new SpotsDialog(Forgot_pas.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please Wait..");
+        //progressDialog.setMessage("Loading Please Wait..");
     }
     public void Emailsend(){
         if(Utility.internet_check(Forgot_pas.this)) {

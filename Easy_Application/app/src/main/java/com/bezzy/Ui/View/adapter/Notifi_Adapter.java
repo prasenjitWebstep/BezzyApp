@@ -67,7 +67,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
                 .load(dataholder.get(position).getImg())
                 .into(holder.img_logo);
 
-        progressDialog.setMessage("Please Wait...");
+        //progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
 
     }
