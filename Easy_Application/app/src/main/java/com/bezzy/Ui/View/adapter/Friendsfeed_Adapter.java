@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapter.FriendsfeedHolder> {
 
@@ -52,7 +53,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
     ArrayList<Friendsfeed_item> friendList;
     ArrayList<FriendsPostModel> postModelList = new ArrayList<>();
     FriendsPostAdapter adapterPost;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
 
     public Friendsfeed_Adapter(Context context, ArrayList<Friendsfeed_item> friendList) {
         this.context = context;
@@ -111,7 +112,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
                     holder.friendsPostCards.setVisibility(View.VISIBLE);
                     if(Utility.internet_check(context)) {
 
-                        progressDialog = new ProgressDialog(context);
+                        progressDialog = new SpotsDialog(context);
                         progressDialog.setMessage("Loading Please Wait...");
                         progressDialog.setCancelable(false);
                         progressDialog.show();

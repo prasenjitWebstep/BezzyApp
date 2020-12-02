@@ -35,13 +35,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import dmax.dialog.SpotsDialog;
+
 public class NotificationActivity extends AppCompatActivity {
 
     ArrayList<Notification_item> dataholder;
     RecyclerView recyclerView;
     Notification_item ob;
     ImageView back_image;
-    ProgressDialog dialog;
+    SpotsDialog dialog;
 
 
     @Override
@@ -50,7 +52,7 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
         recyclerView=findViewById(R.id.noti_listf);
         back_image = findViewById(R.id.back_image);
-        dialog = new ProgressDialog(NotificationActivity.this);
+        dialog = new SpotsDialog(NotificationActivity.this);
         dialog.setMessage("Loading Please Wait...");
         dialog.setCancelable(false);
 

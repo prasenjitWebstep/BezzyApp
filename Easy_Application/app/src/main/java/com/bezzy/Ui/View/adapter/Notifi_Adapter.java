@@ -36,13 +36,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.NoyificationViewHolder> {
     Context context;
     ArrayList<Notification_item> dataholder;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
 
-    public Notifi_Adapter(Context context, ArrayList<Notification_item> dataholder, ProgressDialog progressDialog) {
+    public Notifi_Adapter(Context context, ArrayList<Notification_item> dataholder, SpotsDialog progressDialog) {
         this.context = context;
         this.dataholder = dataholder;
         this.progressDialog = progressDialog;

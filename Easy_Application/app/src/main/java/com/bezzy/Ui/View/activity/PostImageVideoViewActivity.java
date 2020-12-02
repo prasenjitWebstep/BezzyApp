@@ -36,6 +36,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import dmax.dialog.SpotsDialog;
+
 public class PostImageVideoViewActivity extends AppCompatActivity {
 
     String postId;
@@ -43,7 +45,7 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
     TextView following_num,following_numm,servicesText;
     AndExoPlayerView andExoPlayerView;
     RecyclerView recyclerImageShow;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     ArrayList<FriendsPostModelImage> postModelList = new ArrayList<>();
     FriendsEnlargeImagePostAdapter postImageObj;
     FriendsPostModelImage postModelObj;
@@ -65,7 +67,7 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
         recyclerImageShow = findViewById(R.id.recyclerImageShow);
         comment_btn=findViewById(R.id.chat_btn);
         servicesText = findViewById(R.id.servicesText);
-        progressDialog =new ProgressDialog(PostImageVideoViewActivity.this);
+        progressDialog =new SpotsDialog(PostImageVideoViewActivity.this);
         progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
 
