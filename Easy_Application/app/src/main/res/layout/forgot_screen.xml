@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#eae8fe">
+    android:background="@color/colorAccent">
     <RelativeLayout
         android:id="@+id/back_bezy"
         android:layout_width="match_parent"
@@ -17,8 +17,8 @@
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
             android:text="Forget Password"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical" />
 
@@ -28,6 +28,7 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:clickable="true"
+            app:tint="@color/colourwhite"
             android:src="@drawable/ic_baseline_keyboard_backspace_24" />
     </RelativeLayout>
     <RelativeLayout
@@ -40,7 +41,7 @@
             android:layout_width="350dp"
             android:layout_height="40dp"
             android:text="Enter your registered Email Id"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="150dp"
             android:textColor="#031C30"/>
@@ -67,14 +68,15 @@
 
         <Button
             android:id="@+id/btn_logedin"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Next"
+            android:textAllCaps="false"
             android:layout_below="@id/otp_textlayout"
             android:layout_centerHorizontal="true"
             android:background="@drawable/login_button_background"
             android:layout_margin="10dp"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:fontFamily="sans-serif-light"
             android:textColor="#FFF"/>
     </RelativeLayout>

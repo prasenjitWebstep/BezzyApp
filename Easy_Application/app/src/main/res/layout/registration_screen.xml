@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eae8fe">
+    android:background="@color/colorAccent">
 
     <RelativeLayout
         android:id="@+id/back_bezy"
@@ -19,8 +19,8 @@
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
             android:text="Go Login"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
+            android:textColor="@color/colourwhite"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical" />
 
@@ -31,6 +31,7 @@
             android:layout_margin="10dp"
             android:clickable="true"
             android:src="@drawable/ic_baseline_keyboard_backspace_24"
+            app:tint="@color/colourwhite"
             />
     </RelativeLayout>
 

@@ -4,38 +4,55 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/layoutreceiver"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/recived_msg_bgr"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_alignParentLeft="true">
-        <TextView
-            android:id="@+id/rcv_message_body"
-            android:text="hi man, how are you?"
-            android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/layoutreceiver"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/black"/>
+            android:layout_weight="1"
+            android:background="@drawable/recived_msg_bgr"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true">
+            <TextView
+                android:id="@+id/rcv_message_body"
+                android:text="hi man, how are you?"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/rcv_message_time"
+                android:text="11:40 am"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:textSize="10sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/black"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/rcv_message_body"
+                />
+
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/rcv_message_time"
-            android:text="11:40 am"
-            android:layout_width="50dp"
-            android:layout_height="20dp"
-            android:textSize="10sp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
-            android:textColor="@color/black"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/rcv_message_body"
-            />
+            android:id="@+id/falseTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
-    </RelativeLayout>
+
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

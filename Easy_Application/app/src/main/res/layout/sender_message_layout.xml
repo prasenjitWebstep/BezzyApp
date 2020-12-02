@@ -4,71 +4,88 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/layoutSender"
-        android:layout_width="250dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/send_msg_backgr">
+        android:gravity="right"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/send_message_body"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="hi man, how are you?"
-            android:textColor="@color/white" />
+            android:layout_weight="1"/>
 
         <RelativeLayout
-            android:id="@+id/tick_part"
-            android:layout_width="wrap_content"
+            android:id="@+id/layoutSender"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/send_message_body"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="3dp"
-            android:layout_alignParentRight="true">
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/send_msg_backgr">
 
             <TextView
-                android:id="@+id/send_message_time"
+                android:id="@+id/send_message_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="2dp"
-                android:padding="5dp"
-                android:text="11:40 PM"
-                android:textColor="@color/white"
-                android:layout_alignParentRight="true"
-                android:textSize="10sp" />
+                android:layout_margin="5dp"
+                android:text="hi man, how are you?"
+                android:textColor="@color/white" />
 
-            <ImageView
-                android:id="@+id/delivered_tick"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginRight="5dp"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_double_tick_indicator"
-                android:visibility="visible"
-                app:tint="@color/colourwhite"
-                android:layout_below="@+id/send_message_time"/>
+            <RelativeLayout
+                android:id="@+id/tick_part"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/send_message_body"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="3dp"
+                android:layout_alignParentRight="true">
 
-            <ImageView
-                android:id="@+id/send_tick"
-                android:layout_width="13dp"
-                android:layout_height="13dp"
-                android:layout_marginRight="5dp"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_tick"
-                android:visibility="invisible"
-                app:tint="@color/colourwhite"
-                android:layout_below="@+id/send_message_time"/>
+                <TextView
+                    android:id="@+id/send_message_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="2dp"
+                    android:padding="5dp"
+                    android:text="11:40 PM"
+                    android:textColor="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:textSize="10sp" />
+
+                <ImageView
+                    android:id="@+id/delivered_tick"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_double_tick_indicator"
+                    android:visibility="visible"
+                    app:tint="@color/colourwhite"
+                    android:layout_below="@+id/send_message_time"/>
+
+                <ImageView
+                    android:id="@+id/send_tick"
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_tick"
+                    android:visibility="invisible"
+                    app:tint="@color/colourwhite"
+                    android:layout_below="@+id/send_message_time"/>
+            </RelativeLayout>
+
+
         </RelativeLayout>
 
+    </LinearLayout>
 
-    </RelativeLayout>
+
 
     <!--<LinearLayout
         android:id="@+id/layoutSender"

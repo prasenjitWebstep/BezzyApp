@@ -57,7 +57,7 @@ public class Massage extends AppCompatActivity {
     TextView title_text,timeshow;
     CircleImageView img_logo;
     RecyclerView reyclerview_message_list;
-    EditText edittext_chatbox;
+    /*EditText edittext_chatbox;*/
     ImageView send_msg;
     ChatMessageModel messageModel;
     LinearLayoutManager linearLayoutManager;
@@ -67,7 +67,7 @@ public class Massage extends AppCompatActivity {
     ProgressBar chatProgress;
     EmojIconActions emojIcon;
     View rootView;
-    EmojiconEditText emojiconEditText;
+    EmojiconEditText edittext_chatbox;
     ImageView emojiButton;
 
     @Override
@@ -85,12 +85,14 @@ public class Massage extends AppCompatActivity {
         edittext_chatbox = findViewById(R.id.edittext_chatbox);
         send_msg = findViewById(R.id.send_msg);
         chatProgress = findViewById(R.id.chatProgress);
+        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
+        /*emojiconEditText=findViewById(R.id.edittext_chatbox);*/
 
         modelArrayList = new ArrayList<>();
         page = 1;
 
         linearLayoutManager = new LinearLayoutManager(Massage.this);
-        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setReverseLayout(false);
         linearLayoutManager.setStackFromEnd(true);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
 
@@ -158,13 +160,7 @@ public class Massage extends AppCompatActivity {
 
             }
         });
-        Display display=getWindowManager().getDefaultDisplay();
-        DisplayMetrics displayMetrics=new DisplayMetrics();
-        display.getRealMetrics(displayMetrics);
-        RecyclerView imageView=findViewById(R.id.reyclerview_message_list);
-        rootView = findViewById(R.id.root_view);
-        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
-        emojiconEditText=findViewById(R.id.edittext_chatbox);
+
         //ImageView imageView=findViewById(R.id.imageviewanimal);
       /*  emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiButton);
         emojIcon.ShowEmojIcon();
@@ -178,14 +174,6 @@ public class Massage extends AppCompatActivity {
                 Log.e("Keyboard", "close");
             }
         });*/
-        imageView.getLayoutParams().height=displayMetrics.heightPixels;
-        final ScrollView scrollView=findViewById(R.id.scrollView);
-        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                scrollView.fullScroll(View.FOCUS_DOWN);
-            }
-        });
 
     }
 
@@ -272,31 +260,6 @@ public class Massage extends AppCompatActivity {
 
     }
 
-
-    private void messageStatUpdate(String url) {
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("loguserID",Utility.getUserId(Massage.this));
-                map.put("userID",id);
-                return map;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(Massage.this);
-        queue.add(request);
-    }
 
     private void refresh(int i) {
         final Handler handler = new Handler();
@@ -418,14 +381,14 @@ public class Massage extends AppCompatActivity {
                             modelArrayList.add(modelArrayList.size(),messageModel);
                         }
 
-                        if(page == 1){
+                        /*if(page == 1){
                             Log.e("Called","If()");
                             linearLayoutManager = new LinearLayoutManager(Massage.this);
                             linearLayoutManager.setReverseLayout(true);
                             linearLayoutManager.setStackFromEnd(true);
                             linearLayoutManager.setSmoothScrollbarEnabled(true);
                             reyclerview_message_list.setLayoutManager(linearLayoutManager);
-                        }
+                        }*/
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);
                         adapter.notifyDataSetChanged();
                         reyclerview_message_list.setAdapter(adapter);

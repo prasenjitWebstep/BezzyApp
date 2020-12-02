@@ -11,14 +11,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 
 public class Splash extends AppCompatActivity {
     private View decorView;
-    Button button;
-    private static int splashtimeout=2000;
+    TextView button;
+    private static int splashtimeout=3000;
     private ImageView logo;
 
     @Override
@@ -58,17 +59,16 @@ public class Splash extends AppCompatActivity {
                 Animation mysin= AnimationUtils.loadAnimation(this,R.anim.animation);
                 logo.startAnimation(mysin);
             }else{
-                new Handler().postDelayed(new Runnable() {
+                button.setVisibility(View.VISIBLE);
+                button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        Intent intent = new Intent(Splash.this, LoginActivity.class);
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Splash.this,LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                        finish();
 
                     }
-                },splashtimeout);
-                Animation mysin= AnimationUtils.loadAnimation(this,R.anim.animation);
-                logo.startAnimation(mysin);
+                });
             }
 
         }
