@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 public class Editprofile extends AppCompatActivity {
     TextInputEditText ed_name, ed_username, ed_email,ed_dob,ed_bio,ed_gender;
@@ -59,7 +60,7 @@ public class Editprofile extends AppCompatActivity {
     private TextInputLayout textInputEmail;
     private TextInputLayout textInputUsername;
     private TextInputLayout textInputPassword;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     CircleImageView profile_image;
     int MY_SOCKET_TIMEOUT_MS = 10000;
     Uri resultUri;
@@ -92,7 +93,7 @@ public class Editprofile extends AppCompatActivity {
         //str_gender.equals(Utility.getGender(Editprofile.this));
 
 
-        progressDialog = new ProgressDialog(Editprofile.this);
+        progressDialog = new SpotsDialog(Editprofile.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Please Wait..");
 

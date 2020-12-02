@@ -70,6 +70,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
@@ -89,7 +90,7 @@ public class Photo_fragment extends Fragment {
     Uri resultUri;
     int MY_SOCKET_TIMEOUT_MS = 10000;
     LinearLayout image_part;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
     int option;
@@ -119,7 +120,7 @@ public class Photo_fragment extends Fragment {
         //caption = view.findViewById(R.id.ed_content);
         button = view.findViewById(R.id.upload);
         //image_part = view.findViewById(R.id.image_part);
-        progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
         progressDialog.setCancelable(false);
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);

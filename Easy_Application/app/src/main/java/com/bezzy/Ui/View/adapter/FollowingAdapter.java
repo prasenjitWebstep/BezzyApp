@@ -41,13 +41,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFriendHoler> {
 
     Context context;
     ArrayList<FriendsHolder> friendsHolder;
     String screen;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
 
     public FollowingAdapter(Context context, ArrayList<FriendsHolder> friendsHolder,String screen) {
         this.context = context;
@@ -99,7 +100,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
             public void onClick(View v) {
                 if(Utility.internet_check(context)) {
 
-                    progressDialog = new ProgressDialog(context);
+                    progressDialog = new SpotsDialog(context);
                     progressDialog.setMessage("Please Wait...");
                     progressDialog.setCancelable(true);
                     progressDialog.show();

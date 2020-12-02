@@ -28,11 +28,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class Changepassword extends AppCompatActivity {
 
     TextInputEditText password,cnf_password;
     Button change;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     String userId;
 
     @Override
@@ -43,7 +45,7 @@ public class Changepassword extends AppCompatActivity {
         password = findViewById(R.id.password);
         cnf_password = findViewById(R.id.cnf_password);
         change = findViewById(R.id.change);
-        progressDialog = new ProgressDialog(Changepassword.this);
+        progressDialog = new SpotsDialog(Changepassword.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Please Wait..");
         userId = getIntent().getExtras().getString("USERID");

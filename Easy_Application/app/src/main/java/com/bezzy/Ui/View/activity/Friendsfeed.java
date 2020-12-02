@@ -29,11 +29,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import dmax.dialog.SpotsDialog;
+
 public class Friendsfeed extends AppCompatActivity {
     ArrayList<FriendsPostModel> postModelList;
     RecyclerView recyclerView;
     String id,name,photo;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     FriendsPostAdapter adapterPost;
 
     @Override
@@ -51,7 +53,7 @@ public class Friendsfeed extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Friendsfeed.this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        progressDialog = new ProgressDialog(Friendsfeed.this);
+        progressDialog = new SpotsDialog(Friendsfeed.this);
         progressDialog.setMessage("Please wait....");
         progressDialog.setCancelable(false);
 

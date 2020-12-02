@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 public class FriendsProfileActivity extends AppCompatActivity {
 
@@ -49,7 +50,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     String friendsId;
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
@@ -75,7 +76,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
 
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
-        progressDialog = new ProgressDialog(FriendsProfileActivity.this);
+        progressDialog = new SpotsDialog(FriendsProfileActivity.this);
         progressDialog.setMessage("Logging Out Please Wait....");
         progressDialog.setCancelable(false);
 

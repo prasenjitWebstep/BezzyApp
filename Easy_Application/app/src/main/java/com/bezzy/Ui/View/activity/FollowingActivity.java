@@ -33,10 +33,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class FollowingActivity extends AppCompatActivity {
 
     RecyclerView recyclerFriendsList;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     FriendsHolder holderObj;
     ArrayList<FriendsHolder> holderList;
     TextView go_bezzy;
@@ -49,7 +51,7 @@ public class FollowingActivity extends AppCompatActivity {
 
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
-        progressDialog = new ProgressDialog(FollowingActivity.this);
+        progressDialog = new SpotsDialog(FollowingActivity.this);
         progressDialog.setMessage("Loading Please Wait...");
         progressDialog.setCancelable(false);
         holderList = new ArrayList<>();

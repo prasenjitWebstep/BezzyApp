@@ -47,9 +47,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class Profile extends AppCompatActivity {
 
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     FloatingActionButton floatingActionButton;
     Boolean isInBackground;
 
@@ -74,7 +76,7 @@ public class Profile extends AppCompatActivity {
         navigateToFragment(new HomeFragment());*/
        /* Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
-        progressDialog = new ProgressDialog(Profile.this);
+        progressDialog = new SpotsDialog(Profile.this);
         progressDialog.setMessage("Logging Out Please Wait...");
         progressDialog.setCancelable(false);
 

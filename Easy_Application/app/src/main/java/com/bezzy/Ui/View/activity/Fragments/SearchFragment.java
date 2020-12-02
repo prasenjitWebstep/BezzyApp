@@ -51,6 +51,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 
 public class SearchFragment extends Fragment {
 
@@ -60,7 +62,7 @@ public class SearchFragment extends Fragment {
     RecyclerView recyclerViewSearchResult;
     Friendsnoti_item ob1;
     String search;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     TextInputEditText searchName;
     CardView cardSearch;
 
@@ -75,7 +77,7 @@ public class SearchFragment extends Fragment {
         searchName = view.findViewById(R.id.searchName);
         search = "null";
 
-        progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new SpotsDialog(getActivity());
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Please wait....");
 

@@ -44,6 +44,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     TextInputEditText ed_name, ed_username, ed_email, ed_password, ed_cnfpasswd,ed_dob;
     TextView ed_gender;
@@ -55,7 +57,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     private TextInputLayout textInputEmail;
     private TextInputLayout textInputUsername;
     private TextInputLayout textInputPassword;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
 
 
 
@@ -74,7 +76,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         textInputPassword = findViewById(R.id.text_input_password);
         spinner = findViewById(R.id.spinner);
         imageView=findViewById(R.id.back_image);
-        progressDialog = new ProgressDialog(Registration.this);
+        progressDialog = new SpotsDialog(Registration.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Please Wait..");
         str_gender = "null";

@@ -29,11 +29,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class OTPActivity extends AppCompatActivity {
 
     Button btnVerify;
     OtpView otp_view;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class OTPActivity extends AppCompatActivity {
 
         btnVerify = findViewById(R.id.btnVerify);
         otp_view = findViewById(R.id.otp_view);
-        progressDialog = new ProgressDialog(OTPActivity.this);
+        progressDialog = new SpotsDialog(OTPActivity.this);
         progressDialog.setMessage("Verifying Please Wait...");
         progressDialog.setCancelable(false);
 

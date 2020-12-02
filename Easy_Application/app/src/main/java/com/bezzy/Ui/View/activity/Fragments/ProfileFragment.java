@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 
 public class ProfileFragment extends Fragment {
@@ -59,7 +60,7 @@ public class ProfileFragment extends Fragment {
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     String url = "http://bezzy.websteptech.co.uk/api/logout";
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
@@ -85,7 +86,7 @@ public class ProfileFragment extends Fragment {
 
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
-        progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Logging Out Please Wait....");
         progressDialog.setCancelable(false);
 
