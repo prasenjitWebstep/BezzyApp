@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -61,6 +62,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,7 +98,8 @@ public class Photo_fragment extends Fragment {
     View rootView;
     EmojiconEditText emojiconEditText;
 
-    Uri imageuri;
+    Uri mUri;
+
 
 
     @Override
@@ -227,9 +230,15 @@ public class Photo_fragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Take Photo")) {
-                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
-                    startActivityForResult(takePicture, 0);
+//                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
+//                    startActivityForResult(takePicture, 0);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+// Declare mUri as globel varibale in class
+                    mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "pic_"+ String.valueOf(System.currentTimeMillis()) + ".jpg"));
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+                    startActivityForResult(intent, 0);
+
 
                 } else if (options[item].equals("Choose from Gallery")) {
 //                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -262,13 +271,15 @@ public class Photo_fragment extends Fragment {
                 case 0:
                     option = 0;
                     if (resultCode == RESULT_OK && data != null) {
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
-                        bitmapList = new ArrayList<>();
-                        bitmap = (Bitmap) data.getExtras().get("data");
-                        bitmapList.add(bitmap);
-                        bitmapList.add(bitmap2);
-                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
+//                        BitmapFactory.Options options = new BitmapFactory.Options();
+//                        Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
+//                        bitmapList = new ArrayList<>();
+//                        bitmap = (Bitmap) data.getExtras().get("data");
+//                        bitmapList.add(bitmap);
+//                        bitmapList.add(bitmap2);
+//                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
+                        Uri uri = data.getData();
+                        
                     }
 
                     break;

@@ -10,21 +10,24 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -50,12 +53,12 @@ import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class Massage extends AppCompatActivity {
 
-    String name,image,id,online;
+    String name,image,id;
     TextView title_text,timeshow;
     CircleImageView img_logo;
     RecyclerView reyclerview_message_list;
-    //EditText edittext_chatbox;
-    ImageView send_msg,imgActive;
+    EditText edittext_chatbox;
+    ImageView send_msg;
     ChatMessageModel messageModel;
     LinearLayoutManager linearLayoutManager;
     ArrayList<ChatMessageModel> modelArrayList;
@@ -64,7 +67,7 @@ public class Massage extends AppCompatActivity {
     ProgressBar chatProgress;
     EmojIconActions emojIcon;
     View rootView;
-    EmojiconEditText edittext_chatbox;
+    EmojiconEditText emojiconEditText;
     ImageView emojiButton;
 
     @Override
@@ -75,15 +78,6 @@ public class Massage extends AppCompatActivity {
         name = getIntent().getExtras().getString("userName");
         image = getIntent().getExtras().getString("userImage");
         id = getIntent().getExtras().getString("FrndId");
-        try{
-            online = getIntent().getExtras().getString("online");
-            if(online.equals("true")){
-                imgActive.setVisibility(View.VISIBLE);
-            }
-        }catch (Exception e){
-            Log.e("Exception",e.toString());
-        }
-
         title_text = findViewById(R.id.title_text);
         timeshow = findViewById(R.id.timeshow);
         img_logo = findViewById(R.id.img_logo);
@@ -91,31 +85,14 @@ public class Massage extends AppCompatActivity {
         edittext_chatbox = findViewById(R.id.edittext_chatbox);
         send_msg = findViewById(R.id.send_msg);
         chatProgress = findViewById(R.id.chatProgress);
-        imgActive = findViewById(R.id.imgActive);
-        emojiButton=findViewById(R.id.emoji_btn);
-        rootView=findViewById(R.id.root_view);
-
 
         modelArrayList = new ArrayList<>();
         page = 1;
 
         linearLayoutManager = new LinearLayoutManager(Massage.this);
         linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        linearLayoutManager.setStackFromEnd(true);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
-        emojIcon = new EmojIconActions(this, rootView, edittext_chatbox, emojiButton);
-        emojIcon.ShowEmojIcon();
-        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
-            @Override
-            public void onKeyboardOpen() {
-                Log.e("Keyboard", "open");
-            }
-            @Override
-            public void onKeyboardClose() {
-                Log.e("Keyboard", "close");
-            }
-        });
-        emojIcon.addEmojiconEditTextList(edittext_chatbox);
 
         reyclerview_message_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -140,8 +117,6 @@ public class Massage extends AppCompatActivity {
                     }
 
 
-                }else{
-                    Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -183,13 +158,53 @@ public class Massage extends AppCompatActivity {
 
             }
         });
+        Display display=getWindowManager().getDefaultDisplay();
+        DisplayMetrics displayMetrics=new DisplayMetrics();
+        display.getRealMetrics(displayMetrics);
+        RecyclerView imageView=findViewById(R.id.reyclerview_message_list);
+        rootView = findViewById(R.id.root_view);
+        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
+        emojiconEditText=findViewById(R.id.edittext_chatbox);
+        //ImageView imageView=findViewById(R.id.imageviewanimal);
+      /*  emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });*/
+        imageView.getLayoutParams().height=displayMetrics.heightPixels;
+        final ScrollView scrollView=findViewById(R.id.scrollView);
+        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
 
     }
 
     private void callApi() {
         if(Utility.internet_check(Massage.this)) {
 
-            instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
+            if(Utility.internet_check(Massage.this)) {
+
+
+                instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
+                /*messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);*/
+            }
+            else {
+
+                Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+
+            }
+
+
         }
         else {
 
@@ -251,12 +266,36 @@ public class Massage extends AppCompatActivity {
             }
         });
 
-        int socketTimeout = 500000;//30 seconds - change to what you want
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
+
         RequestQueue queue = Volley.newRequestQueue(Massage.this);
         queue.add(request);
 
+    }
+
+
+    private void messageStatUpdate(String url) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("loguserID",Utility.getUserId(Massage.this));
+                map.put("userID",id);
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(Massage.this);
+        queue.add(request);
     }
 
     private void refresh(int i) {
@@ -280,14 +319,14 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("AddChatResponse",response);
-
-                edittext_chatbox.getText().clear();
+                /*Log.e("AddChatResponse",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
+
+                        edittext_chatbox.getText().clear();
 
                         JSONArray array = object.getJSONArray("chat_history_list");
                         for(int i = 0;i< array.length(); i++){
@@ -362,7 +401,7 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("ChatResponse",response);
+                /*Log.e("ChatResponse",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -379,28 +418,26 @@ public class Massage extends AppCompatActivity {
                             modelArrayList.add(modelArrayList.size(),messageModel);
                         }
 
-                        /*if(page == 1){
+                        if(page == 1){
                             Log.e("Called","If()");
                             linearLayoutManager = new LinearLayoutManager(Massage.this);
                             linearLayoutManager.setReverseLayout(true);
                             linearLayoutManager.setStackFromEnd(true);
                             linearLayoutManager.setSmoothScrollbarEnabled(true);
                             reyclerview_message_list.setLayoutManager(linearLayoutManager);
-                        }*/
-
+                        }
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);
                         adapter.notifyDataSetChanged();
                         reyclerview_message_list.setAdapter(adapter);
                     }else{
                         chatProgress.setVisibility(View.GONE);
-                        
-                        /*Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();*/
+                        Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();
+
                     }
 
                 } catch (JSONException e) {
                     Log.e("Exception",e.toString());
                     e.printStackTrace();
-                    chatProgress.setVisibility(View.GONE);
                 }
 
             }
@@ -409,7 +446,6 @@ public class Massage extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 Log.e("Error",error.toString());
-                chatProgress.setVisibility(View.GONE);
             }
         });
 

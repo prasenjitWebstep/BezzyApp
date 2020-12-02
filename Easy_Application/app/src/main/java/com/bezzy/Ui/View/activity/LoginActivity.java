@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this,Profile.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }else{
                         progressDialog.dismiss();
