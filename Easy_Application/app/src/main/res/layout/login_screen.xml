@@ -160,7 +160,8 @@
                         android:layout_marginLeft="7dp"
                         android:layout_marginTop="7dp"
                         android:layout_marginBottom="7dp"
-                        android:src="@drawable/login_facebook" />
+                        android:src="@drawable/login_facebook"
+                        android:visibility="gone"/>
 
                     <ImageView
                         android:layout_width="40dp"

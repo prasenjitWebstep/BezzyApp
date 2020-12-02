@@ -122,7 +122,7 @@ public class Massage extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (!recyclerView.canScrollVertically(-1) && recyclerView.canScrollVertically(1)) {
+                if (!recyclerView.canScrollVertically(-1)) {
 
                     if(Utility.internet_check(Massage.this)){
 
@@ -189,19 +189,7 @@ public class Massage extends AppCompatActivity {
     private void callApi() {
         if(Utility.internet_check(Massage.this)) {
 
-            if(Utility.internet_check(Massage.this)) {
-
-
-                instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
-                /*messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);*/
-            }
-            else {
-
-                Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
-
-            }
-
-
+            instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
         }
         else {
 
@@ -269,32 +257,6 @@ public class Massage extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(Massage.this);
         queue.add(request);
 
-    }
-
-
-    private void messageStatUpdate(String url) {
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("loguserID",Utility.getUserId(Massage.this));
-                map.put("userID",id);
-                return map;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(Massage.this);
-        queue.add(request);
     }
 
     private void refresh(int i) {
@@ -425,13 +387,14 @@ public class Massage extends AppCompatActivity {
                             linearLayoutManager.setSmoothScrollbarEnabled(true);
                             reyclerview_message_list.setLayoutManager(linearLayoutManager);
                         }*/
+
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);
                         adapter.notifyDataSetChanged();
                         reyclerview_message_list.setAdapter(adapter);
                     }else{
                         chatProgress.setVisibility(View.GONE);
+                        
                         /*Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();*/
-
                     }
 
                 } catch (JSONException e) {
