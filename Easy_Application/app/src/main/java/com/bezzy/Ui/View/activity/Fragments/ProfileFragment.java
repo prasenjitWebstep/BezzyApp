@@ -237,9 +237,9 @@ public class ProfileFragment extends Fragment {
                                 progressDialog.dismiss();
                                 Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_SHORT).show();
                                 callApi(APIs.BASE_URL+APIs.GET_USER_ACTIVE_STATUS,"false");
-                                Intent intent = new Intent(getActivity(),LoginActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                Intent i = new Intent(getActivity(), LoginActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                getActivity().startActivity(i);
                                 Utility.setLogin(getActivity(),"0");
                             }
                         } catch (JSONException e) {

@@ -47,10 +47,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 
 public class HomeFragment extends Fragment {
 
-    ProgressDialog progressDialog;
+    SpotsDialog progressDialog;
     ArrayList<Friendsnoti_item> dataholder;
     RecyclerView recyclerView;
     Friendsnoti_item ob1;
@@ -67,7 +69,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new SpotsDialog(getActivity(),R.style.Custom);
         progressDialog.setMessage("Please wait....");
         progressDialog.setCancelable(false);
         // Inflate the layout for this fragment
