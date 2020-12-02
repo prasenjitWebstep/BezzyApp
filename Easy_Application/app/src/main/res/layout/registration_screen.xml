@@ -69,7 +69,8 @@
                     android:enabled="true"
                     app:errorEnabled="true"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/username"
@@ -237,10 +238,10 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/login_button_background"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="sans-serif-light"
                     android:text="Register"
                     android:textColor="#FFFFFF"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:textAllCaps="false"/>
 
             </LinearLayout>

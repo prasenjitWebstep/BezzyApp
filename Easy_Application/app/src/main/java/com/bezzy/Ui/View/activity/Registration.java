@@ -193,7 +193,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
-                map.put("username",ed_username.getText().toString());
+                map.put("username",ed_email.getText().toString());
                 map.put("fullname",ed_name.getText().toString());
                 map.put("email",ed_email.getText().toString());
                 map.put("password",ed_password.getText().toString());

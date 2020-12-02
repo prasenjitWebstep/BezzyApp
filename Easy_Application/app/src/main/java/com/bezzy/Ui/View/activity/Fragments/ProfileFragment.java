@@ -155,6 +155,7 @@ public class ProfileFragment extends Fragment {
 
         Log.e("Called","GridCalled");
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
+        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         postRecyclerView.setLayoutManager(layoutManager);
 
         if(Utility.internet_check(getActivity())) {

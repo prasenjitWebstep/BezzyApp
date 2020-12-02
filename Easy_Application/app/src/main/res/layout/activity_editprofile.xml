@@ -79,11 +79,11 @@
                     android:id="@+id/text_input_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
                     android:enabled="true"
                     app:errorEnabled="true"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/username"
@@ -99,6 +99,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
                     android:enabled="true"
                     app:errorEnabled="true"
                     android:paddingLeft="10dp"
@@ -204,6 +205,7 @@
                     android:background="@drawable/login_button_background"
                     android:fontFamily="sans-serif-light"
                     android:text="Update"
+                    android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"/>
 
