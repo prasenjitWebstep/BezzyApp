@@ -40,15 +40,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import dmax.dialog.SpotsDialog;
-
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword;
     private View decorView;
     TextView tvRegister;
     Button btnLogin;
     TextView tv_forpas;
-    SpotsDialog progressDialog;
+    ProgressDialog progressDialog;
     ImageView google_btn;
 
     int RC_SIGN_IN = 0;
@@ -80,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         google_btn=findViewById(R.id.google_btn);
         openForpas();
         openregister();
-        progressDialog = new SpotsDialog(LoginActivity.this,R.style.Custom);
+        progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Please wait...");
        /* tvRegister.setOnClickListener(new View.OnClickListener() {
@@ -140,9 +138,9 @@ public class LoginActivity extends AppCompatActivity {
                         Utility.setLogin(LoginActivity.this,"1");
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(LoginActivity.this, Profile.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
+                        Intent intent = new Intent(LoginActivity.this,Profile.class);
+                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     }else{
                         progressDialog.dismiss();
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
