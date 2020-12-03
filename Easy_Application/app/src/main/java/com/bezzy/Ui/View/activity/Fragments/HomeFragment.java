@@ -133,9 +133,9 @@ public class HomeFragment extends Fragment {
 
             progressDialog.show();
 
-            if(!Utility.getSocial(getActivity().getApplicationContext()).equals("1")){
-                postRequest(APIs.BASE_URL+APIs.GETDATA);
-            }
+            postRequest(APIs.BASE_URL+APIs.GETDATA);
+
+
 
 
             friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
@@ -297,11 +297,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
-                Log.e("response",response);
+                Log.e("UserDataResponse",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
-                    Log.e("REsponse",response);
+
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 

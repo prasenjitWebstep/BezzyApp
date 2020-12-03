@@ -1,13 +1,17 @@
 package com.bezzy.Ui.View.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +36,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 
 import org.json.JSONException;
@@ -48,9 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvRegister;
     Button btnLogin;
     TextView tv_forpas;
-    SpotsDialog progressDialog;
     ImageView google_btn;
-    String socialLogin;
 
     int RC_SIGN_IN = 0;
     SignInButton signInButton;
@@ -81,8 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         google_btn=findViewById(R.id.google_btn);
         openForpas();
         openregister();
-        progressDialog = new SpotsDialog(LoginActivity.this);
-        progressDialog.setCancelable(false);
+
+
+
        /* tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,17 +100,26 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                /* final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();*/
-                if(Utility.internet_check(LoginActivity.this)) {
 
-                    progressDialog.show();
-                    postRequest(APIs.BASE_URL+APIs.LOGIN_URL);
 
+                if(etUsername.getText().toString().isEmpty()|| etPassword.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this,"Fields should not be left empty",Toast.LENGTH_SHORT).show();
+                }else{
+                    if(Utility.internet_check(LoginActivity.this)) {
+
+                        Utility.displayLoader(LoginActivity.this);
+
+
+                        postRequest(APIs.BASE_URL+APIs.LOGIN_URL);
+
+                    }
+                    else {
+
+                        Utility.hideLoader(LoginActivity.this);
+
+                        Toast.makeText(LoginActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
-                }
-
 
             }
         });
@@ -136,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
-                        progressDialog.dismiss();
+                        Utility.hideLoader(LoginActivity.this);
                         Utility.setLogin(LoginActivity.this,"1");
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
@@ -144,19 +157,19 @@ public class LoginActivity extends AppCompatActivity {
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
                     }else{
-                        progressDialog.dismiss();
+                        Utility.hideLoader(LoginActivity.this);
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    Utility.hideLoader(LoginActivity.this);
                     Log.e("Exception",e.toString());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                Utility.hideLoader(LoginActivity.this);
                 Log.e("Error",error.toString());
             }
         }){
@@ -253,8 +266,8 @@ public class LoginActivity extends AppCompatActivity {
                 String personEmail = acct.getEmail();
                 Uri profileImage = acct.getPhotoUrl();
 
-                Utility.setSocial(LoginActivity.this,"1");
-                callApiSocialLogin(APIs.BASE_URL+APIs.SOCIALLOGINURL+"/"+personEmail+"/"+personName,personEmail,personName,profileImage);
+                Utility.displayLoader(LoginActivity.this);
+                callApiSocialLogin(APIs.BASE_URL+APIs.SOCIALLOGINURL,personName,personEmail,profileImage);
 
 
             }
@@ -267,7 +280,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void callApiSocialLogin(String url, final String personEmail, final String personName, final Uri profileImage) {
+    private void callApiSocialLogin(String url, final String personName, final String personEmail, final Uri profileImage) {
+        Log.e("URL",url);
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -276,20 +290,21 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
-
+                        Utility.hideLoader(LoginActivity.this);
                         Utility.setLogin(LoginActivity.this,"1");
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
-                        Utility.setName(LoginActivity.this,personName);
-                        Utility.setEmail(LoginActivity.this,personEmail);
-                        Utility.setImage(LoginActivity.this,String.valueOf(profileImage));
+                        Utility.setSocial(LoginActivity.this,"1");
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(LoginActivity.this, Profile.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
 
+                    }else{
+                        Utility.hideLoader(LoginActivity.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utility.hideLoader(LoginActivity.this);
                 }
 
             }
@@ -297,23 +312,24 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                Utility.hideLoader(LoginActivity.this);
+
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("username",personName);
+                map.put("emaiID",personEmail);
+                map.put("image",profileImage.toString());
+                map.put("device_token",FirebaseInstanceId.getInstance().getToken());
+                return super.getParams();
+            }
+        };
         RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
         queue.add(request);
 
     }
-
-    /*@Override
-    protected void onStart() {
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account != null) {
-            startActivity(new Intent(LoginActivity.this, showprofile.class));
-        }
-        super.onStart();
-    }*/
 
 
 }

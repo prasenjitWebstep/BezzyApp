@@ -373,6 +373,7 @@ public class Photo_fragment extends Fragment {
                 // params.put("tags", "ccccc");  add string parameters
                 params.put("userID", Utility.getUserId(getActivity()));
                 params.put("post_content", emojiconEditText.getText().toString());
+
                 return params;
             }
 
@@ -429,6 +430,7 @@ public class Photo_fragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 params.put("userID", Utility.getUserId(getActivity().getApplicationContext()));
                 params.put("post_content", emojiconEditText.getText().toString());
+                Log.e("POST",params.get("post_content"));
                 return params;
             }
 

@@ -352,6 +352,7 @@ public class Massage extends AppCompatActivity {
                 map.put("from_userID",Utility.getUserId(Massage.this));
                 map.put("to_userID",id);
                 map.put("chat_message",edittext_chatbox.getText().toString());
+                Log.e("CHAT",map.get("chat_message"));
                 return map;
             }
         };

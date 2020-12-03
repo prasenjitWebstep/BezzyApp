@@ -104,14 +104,18 @@ public class Editprofile extends AppCompatActivity {
 
         imageView=findViewById(R.id.back_image);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Editprofile.this,Profile.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
+        if(!Utility.getSocial(Editprofile.this).equals("1")){
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Editprofile.this,Profile.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            });
+        }
+
+
 
 
         /*ed_dob.setOnClickListener(new View.OnClickListener() {
