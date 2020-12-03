@@ -190,6 +190,9 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String textTest = emojiconEditText.getText().toString();
+                Toast.makeText(getContext(),textTest,Toast.LENGTH_SHORT).show();
+                Log.e("QWERTY",textTest);
                 if(emojiconEditText.getText().toString().isEmpty()){
                     Toast.makeText(getActivity().getApplicationContext(),"Please add any content to post",Toast.LENGTH_SHORT).show();
                 }else{
@@ -215,6 +218,9 @@ public class Photo_fragment extends Fragment {
                 }
             }
         });
+
+
+
         return view;
     }
 

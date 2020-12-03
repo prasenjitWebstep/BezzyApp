@@ -162,6 +162,8 @@ public class Massage extends AppCompatActivity {
         });
 
 
+
+
       /*  emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiButton);
         emojIcon.ShowEmojIcon();
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
@@ -281,7 +283,8 @@ public class Massage extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                String testText = edittext_chatbox.getText().toString();
+                Log.e("eeeeeeeeeeeeeeeeee",testText);
                 /*Log.e("AddChatResponse",response);*/
 
                 try {

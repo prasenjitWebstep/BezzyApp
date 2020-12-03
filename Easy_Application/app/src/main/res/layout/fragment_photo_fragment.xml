@@ -129,6 +129,7 @@
 
 
 
+
         <!--<TextView
             android:id="@+id/upload_post"
             android:layout_width="match_parent"
@@ -174,6 +175,7 @@
 
 
     </RelativeLayout>
+
 
 
 

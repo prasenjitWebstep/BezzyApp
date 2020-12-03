@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:text="Verification"
                 android:textColor="@color/colourblack"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="normal"
                 android:paddingRight="10dp"
                 android:paddingLeft="10dp"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="Enter the 4 digit OTP"
                 android:textColor="@color/colourblack"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:gravity="center"
                 android:fontFamily="sans-serif-thin"
                 android:paddingRight="10dp"
@@ -99,7 +99,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
