@@ -37,4 +37,6 @@ public class APIs {
     public static String UNFOLLOW = "api/unfollowuser";
     public static String GET_MESSAGE_SEEN = "api/chat-box-message-read-unread";
     public static String INSTANT_MSG = "api/get-last-unread_msg";
+    public static String CONTENT_POST = "api/PostOnlyContentForImage";
+    public static String CONTENT_VIDEO = "api/PostOnlyContentForVideo";
 }

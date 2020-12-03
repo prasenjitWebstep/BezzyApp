@@ -35,6 +35,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.utils.APIs;
@@ -286,13 +287,10 @@ public class Video_fragment extends Fragment {
                     String status = object.getString("resp");
                     if (status.equals("success")) {
 
-                        progressDialog.dismiss();
-                        //
-                        String msg = object.getString("message");
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        String postId = object.getString("post_id");
+                        Log.e("postId",postId);
+                        callApi(APIs.BASE_URL+APIs.CONTENT_VIDEO,postId);
+
                     } else {
                         progressDialog.dismiss();
                         String message = object.getString("message");
@@ -318,7 +316,7 @@ public class Video_fragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 // params.put("tags", "ccccc");  add string parameters
                 params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content", emojiconEditText.getText().toString());
+                params.put("post_content", "");
                 return params;
             }
 
@@ -337,6 +335,54 @@ public class Video_fragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue rQueue = Volley.newRequestQueue(getActivity());
         rQueue.add(volleyMultipartRequest);
+    }
+
+    private void callApi(String s, final String postId) {
+        StringRequest request = new StringRequest(Request.Method.POST, s, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("PhotoResponse",response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    String resp = object.getString("resp");
+
+                    if(resp.equals("success"));
+                    {
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("post_id",postId);
+                map.put("post_content",emojiconEditText.getText().toString());
+                Log.e("POSTCONTENT",map.get("post_content"));
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        queue.add(request);
     }
 
     private void releasePlayer() {

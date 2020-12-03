@@ -266,8 +266,9 @@ public class LoginActivity extends AppCompatActivity {
                 String personEmail = acct.getEmail();
                 Uri profileImage = acct.getPhotoUrl();
 
-                Utility.displayLoader(LoginActivity.this);
+
                 callApiSocialLogin(APIs.BASE_URL+APIs.SOCIALLOGINURL,personName,personEmail,profileImage);
+                Utility.displayLoader(LoginActivity.this);
 
 
             }
@@ -282,10 +283,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void callApiSocialLogin(String url, final String personName, final String personEmail, final Uri profileImage) {
         Log.e("URL",url);
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+                Log.e("SocialResponse",response);
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
@@ -322,8 +323,9 @@ public class LoginActivity extends AppCompatActivity {
                 map.put("username",personName);
                 map.put("emaiID",personEmail);
                 map.put("image",profileImage.toString());
+                Log.e("IMAGE",map.get("image"));
                 map.put("device_token",FirebaseInstanceId.getInstance().getToken());
-                return super.getParams();
+                return map;
             }
         };
         RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);

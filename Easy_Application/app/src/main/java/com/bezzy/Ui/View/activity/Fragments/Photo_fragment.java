@@ -337,14 +337,11 @@ public class Photo_fragment extends Fragment {
                             String status = object.getString("resp");
                             if (status.equals("success")) {
                                 //
-                                progressDialog.dismiss();
-                                String msg = object.getString("message");
-                                Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                String postId = object.getString("post_id");
+                                Log.e("postId",postId);
+                                callApi(APIs.BASE_URL+APIs.CONTENT_POST,postId);
                             } else {
-                                //progressDialog.dismiss();
+                                progressDialog.dismiss();
                                 String message = object.getString("message");
                                 Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                             }
@@ -372,7 +369,7 @@ public class Photo_fragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 // params.put("tags", "ccccc");  add string parameters
                 params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content", emojiconEditText.getText().toString());
+                params.put("post_content", "");
 
                 return params;
             }
@@ -406,11 +403,12 @@ public class Photo_fragment extends Fragment {
                 Log.e("Response", response.toString());
 
                 try {
-                    progressDialog.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+
+
+                    String postId = response.getString("post_id");
+                    Log.e("postId",postId);
+                    callApi(APIs.BASE_URL+APIs.CONTENT_POST,postId);
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -430,7 +428,7 @@ public class Photo_fragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("userID", Utility.getUserId(getActivity().getApplicationContext()));
-                params.put("post_content", emojiconEditText.getText().toString());
+                params.put("post_content", "");
                 Log.e("POST",params.get("post_content"));
                 return params;
             }
@@ -460,5 +458,53 @@ public class Photo_fragment extends Fragment {
         multipartRequest.setRetryPolicy(policy);
         RequestQueue rQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         rQueue.add(multipartRequest);
+    }
+
+    private void callApi(String s, final String postId) {
+        StringRequest request = new StringRequest(Request.Method.POST, s, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("PhotoResponse",response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    String resp = object.getString("resp");
+
+                    if(resp.equals("success"));
+                    {
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("post_id",postId);
+                map.put("post_content",emojiconEditText.getText().toString());
+                Log.e("POSTCONTENT",map.get("post_content"));
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        queue.add(request);
     }
 }

@@ -105,6 +105,25 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
             });
         }*/
 
+        holder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Utility.internet_check(context)) {
+
+
+                    Log.e("Result","1");
+
+                    callApiFollow(APIs.BASE_URL+APIs.FOLLOWINGREQUEST,dataholder.get(position).getId());
+
+                }
+                else {
+
+
+                    Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         holder.square_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +136,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
     }
 
-    private void callApiFollow(String url, final String id, final int position) {
+    private void callApiFollow(String url, final String id) {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -126,17 +145,17 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
-                        progressDialog.dismiss();
+
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }else{
-                        progressDialog.dismiss();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+
                     Log.e("Exception",e.toString());
                 }
 
@@ -144,7 +163,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+
                 Log.e("Exception",error.toString());
             }
         }){
@@ -170,13 +189,14 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
     public  class searchViewHolder extends RecyclerView.ViewHolder{
          ImageView square_img;
-         TextView header,bio;
+         TextView header,bio,btn;
 
         public searchViewHolder(@NonNull View itemView) {
             super(itemView);
             square_img=itemView.findViewById(R.id.imageDisp);
             header=itemView.findViewById(R.id.title_text);
             bio=itemView.findViewById(R.id.bio_text);
+            btn = itemView.findViewById(R.id.btn);
         }
     }
 
