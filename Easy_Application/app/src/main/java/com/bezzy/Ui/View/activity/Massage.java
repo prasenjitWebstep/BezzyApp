@@ -305,7 +305,7 @@ public class Massage extends AppCompatActivity {
                         }
                         linearLayoutManager = new LinearLayoutManager(Massage.this);
                         linearLayoutManager.setReverseLayout(true);
-                        linearLayoutManager.setStackFromEnd(true);
+                        linearLayoutManager.setStackFromEnd(false);
                         linearLayoutManager.setSmoothScrollbarEnabled(true);
                         reyclerview_message_list.setLayoutManager(linearLayoutManager);
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);

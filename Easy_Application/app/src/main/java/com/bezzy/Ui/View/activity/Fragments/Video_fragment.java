@@ -139,14 +139,12 @@ public class Video_fragment extends Fragment {
                 }else{
                     if (Utility.internet_check(getActivity())) {
 
-                        progressDialog.show();
-
-                        progressDialog.show();
+                        Utility.displayLoader(getActivity());
                         uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO);
 
                     } else {
 
-                        progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
 
                     }
@@ -282,6 +280,7 @@ public class Video_fragment extends Fragment {
 
                 Log.e("RESPONSE2", response2);
 
+
                 try {
                     JSONObject object = new JSONObject(response2);
                     String status = object.getString("resp");
@@ -292,13 +291,13 @@ public class Video_fragment extends Fragment {
                         callApi(APIs.BASE_URL+APIs.CONTENT_VIDEO,postId);
 
                     } else {
-                        progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         String message = object.getString("message");
                         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    Utility.hideLoader(getActivity());
                     Log.e("ImageUploadException", e.toString());
                 }
             }
@@ -306,7 +305,7 @@ public class Video_fragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one video to Post", Toast.LENGTH_LONG).show();
-                progressDialog.dismiss();
+                Utility.hideLoader(getActivity());
                 Log.e("VolleyError", error.toString());
             }
         }
@@ -351,7 +350,7 @@ public class Video_fragment extends Fragment {
 
                     if(resp.equals("success"));
                     {
-                        progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -360,6 +359,8 @@ public class Video_fragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utility.hideLoader(getActivity());
+
                 }
 
 
@@ -368,6 +369,7 @@ public class Video_fragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Utility.hideLoader(getActivity());
 
             }
         }){

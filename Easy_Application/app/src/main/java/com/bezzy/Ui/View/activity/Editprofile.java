@@ -301,13 +301,14 @@ public class Editprofile extends AppCompatActivity {
                 resultUri = result.getUri();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(Editprofile.this.getContentResolver(), resultUri);
-                    if(!progressDialog.isShowing()){
-                       /* progressDialog.setMessage("Uploading Image Please Wait.....");
+                    /*if(!progressDialog.isShowing()){
+                       *//* progressDialog.setMessage("Uploading Image Please Wait.....");
                         progressDialog.setCancelable(false);
-                        progressDialog.show();*/
-                        Utility.displayLoader(Editprofile.this);
-                        uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);
-                    }
+                        progressDialog.show();*//*
+
+                    }*/
+                    Utility.displayLoader(Editprofile.this);
+                    uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);
                     profile_image.setImageBitmap(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();

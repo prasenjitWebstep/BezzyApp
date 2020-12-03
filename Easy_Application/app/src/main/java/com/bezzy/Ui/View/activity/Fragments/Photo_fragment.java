@@ -199,9 +199,11 @@ public class Photo_fragment extends Fragment {
 
                         switch (option) {
                             case 0:
+                                Utility.displayLoader(getActivity());
                                 uploadCam(APIs.BASE_URL + APIs.POSTIMAGE);
                                 break;
                             case 1000:
+                                Utility.displayLoader(getActivity());
                                 upload(APIs.BASE_URL + APIs.POSTIMAGE);
                                 break;
                         }
@@ -341,7 +343,7 @@ public class Photo_fragment extends Fragment {
                                 Log.e("postId",postId);
                                 callApi(APIs.BASE_URL+APIs.CONTENT_POST,postId);
                             } else {
-                                progressDialog.dismiss();
+                                Utility.hideLoader(getActivity());
                                 String message = object.getString("message");
                                 Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                             }
@@ -349,7 +351,7 @@ public class Photo_fragment extends Fragment {
 //                            Toast.makeText(getContext().getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            progressDialog.dismiss();
+                            Utility.hideLoader(getActivity());
                         }
                     }
                 },
@@ -358,7 +360,7 @@ public class Photo_fragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                        /* Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();*/
                          Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
-                         progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         Log.e("GotError", "" + error.getMessage());
                     }
                 }) {
@@ -412,6 +414,7 @@ public class Photo_fragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utility.hideLoader(getActivity());
                     Log.e("exception",e.toString());
                 }
             }
@@ -419,6 +422,7 @@ public class Photo_fragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("VolleyError", error.toString());
+                Utility.hideLoader(getActivity());
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Toast.makeText(getActivity().getApplicationContext(), "Unable to upload", Toast.LENGTH_SHORT).show();
                 }
@@ -467,12 +471,14 @@ public class Photo_fragment extends Fragment {
 
                 Log.e("PhotoResponse",response);
 
+                Utility.hideLoader(getActivity());
+
                 try {
                     JSONObject object = new JSONObject(response);
 
                     String resp = object.getString("resp");
 
-                    if(resp.equals("success"));
+                    if(resp.equals("success"))
                     {
                         progressDialog.dismiss();
                         Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
@@ -480,9 +486,13 @@ public class Photo_fragment extends Fragment {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
+                    else{
+                        Utility.hideLoader(getActivity());
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utility.hideLoader(getActivity());
                 }
 
 
@@ -491,7 +501,7 @@ public class Photo_fragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Utility.hideLoader(getActivity());
             }
         }){
             @Override

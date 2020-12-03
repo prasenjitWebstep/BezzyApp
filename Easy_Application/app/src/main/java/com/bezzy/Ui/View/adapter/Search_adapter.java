@@ -112,13 +112,13 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
 
                     Log.e("Result","1");
-
+                    Utility.displayLoader(context);
                     callApiFollow(APIs.BASE_URL+APIs.FOLLOWINGREQUEST,dataholder.get(position).getId());
 
                 }
                 else {
 
-
+                    Utility.hideLoader(context);
                     Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
                 }
             }
@@ -146,16 +146,18 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
 
+                        Utility.hideLoader(context);
+
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }else{
-
+                        Utility.hideLoader(context);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-
+                    Utility.hideLoader(context);
                     Log.e("Exception",e.toString());
                 }
 
@@ -163,7 +165,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Utility.hideLoader(context);
                 Log.e("Exception",error.toString());
             }
         }){

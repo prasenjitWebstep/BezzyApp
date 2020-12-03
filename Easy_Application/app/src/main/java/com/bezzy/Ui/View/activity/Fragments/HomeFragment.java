@@ -208,6 +208,7 @@ public class HomeFragment extends Fragment {
                         recyclerView.setLayoutManager(linearLayoutManager);
                         recyclerView.setAdapter(new Friendsfeed_Adapter(getActivity(),friendsfeed_items));
                     }else{
+                        Utility.hideLoader(getActivity());
                         go_bezzy.setText("Add Friends");
                         if(Utility.internet_check(getActivity().getApplicationContext())) {
 
@@ -229,12 +230,13 @@ public class HomeFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utility.hideLoader(getActivity());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Utility.hideLoader(getActivity());
             }
         });
 
@@ -250,12 +252,13 @@ public class HomeFragment extends Fragment {
 
                 Log.e("Response",response);
                // progressDialog.dismiss();
-                Utility.hideLoader(getActivity());
+
 
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
+                        Utility.hideLoader(getActivity());
                         JSONArray array = object.getJSONArray("all_user_list");
                         for(int i = 0 ;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
@@ -265,9 +268,10 @@ public class HomeFragment extends Fragment {
                             dataholder.add(ob1);
 
                         }
-                        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),3);
+
+                        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(),3);
                         recyclerView.setLayoutManager(linearLayoutManager);
-                        adapter = new Search_adapter(dataholder,getActivity().getApplicationContext());
+                        adapter = new Search_adapter(dataholder,getActivity());
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
 
@@ -275,6 +279,7 @@ public class HomeFragment extends Fragment {
                 } catch (JSONException e) {
                     Log.e("Exception",e.toString());
                     e.printStackTrace();
+                    Utility.hideLoader(getActivity());
                 }
 
             }
