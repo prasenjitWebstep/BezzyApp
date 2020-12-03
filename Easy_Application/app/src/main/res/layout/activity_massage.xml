@@ -96,28 +96,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/chatProgress"
-            android:layout_marginBottom="60dp"/>
+            android:layout_marginBottom="50dp"/>
 
         <View
             android:id="@+id/viewnb"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="#dfdfdf"
-            android:layout_marginTop="-60dp"
+            android:layout_marginTop="-50dp"
             android:layout_below="@+id/reyclerview_message_list" />
 
         <RelativeLayout
             android:id="@+id/layout_chatbox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/rounded_button"
             android:layout_below="@+id/viewnb">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:orientation="horizontal"
-                android:minHeight="48dp"
                 android:layout_margin="5dp"
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@id/emoji_btn"
@@ -143,23 +142,21 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="5dp"
+                    app:tint="@color/gradstart"
                     android:padding="5dp"
-                    app:tint="#A8A4A4"
                     android:layout_gravity="center_vertical"/>
 
             </LinearLayout>
             <ImageView
                 android:id="@+id/emoji_btn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/ic_happy"
+                app:tint="@color/gradstart"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:padding="5dp"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginTop="5dp"
                 />
 
         </RelativeLayout>

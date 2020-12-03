@@ -31,6 +31,18 @@ public class Utility {
         return memIdPreferences.getString("login", "");
     }
 
+    public static void setSocial(Context mContext, String type) {
+        SharedPreferences preferences = mContext.getSharedPreferences("Bezzy", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("google", type);
+        editor.apply();
+    }
+
+    public static String getSocial(Context mContext) {
+        SharedPreferences memIdPreferences = mContext.getSharedPreferences("Bezzy", 0); // 0 - for private mode
+        return memIdPreferences.getString("google", "");
+    }
+
     public static void setOtpScreen(Context mContext, String type) {
         SharedPreferences preferences = mContext.getSharedPreferences("Bezzy", 0);
         SharedPreferences.Editor editor = preferences.edit();

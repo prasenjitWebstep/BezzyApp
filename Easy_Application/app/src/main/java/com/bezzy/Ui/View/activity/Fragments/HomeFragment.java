@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -70,7 +71,6 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         progressDialog = new SpotsDialog(getActivity(),R.style.Custom);
-        progressDialog.setMessage("Please wait....");
         progressDialog.setCancelable(false);
         // Inflate the layout for this fragment
 
@@ -85,9 +85,6 @@ public class HomeFragment extends Fragment {
         }else{
             cart_badge.setVisibility(View.GONE);
         }
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
 
         noti.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +133,10 @@ public class HomeFragment extends Fragment {
 
             progressDialog.show();
 
-            postRequest(APIs.BASE_URL+APIs.GETDATA);
+            if(!Utility.getSocial(getActivity().getApplicationContext()).equals("1")){
+                postRequest(APIs.BASE_URL+APIs.GETDATA);
+            }
+
 
             friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
 
@@ -200,6 +200,8 @@ public class HomeFragment extends Fragment {
                                     object11.getString("today_post"));
                             friendsfeed_items.add(item);
                         }
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                        recyclerView.setLayoutManager(linearLayoutManager);
                         recyclerView.setAdapter(new Friendsfeed_Adapter(getActivity(),friendsfeed_items));
                     }else{
                         go_bezzy.setText("Add Friends");
@@ -256,7 +258,8 @@ public class HomeFragment extends Fragment {
                             dataholder.add(ob1);
 
                         }
-
+                        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),3);
+                        recyclerView.setLayoutManager(linearLayoutManager);
                         adapter = new Search_adapter(dataholder,getActivity().getApplicationContext());
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();

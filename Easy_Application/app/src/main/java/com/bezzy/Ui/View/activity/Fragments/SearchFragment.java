@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -173,7 +174,7 @@ public class SearchFragment extends Fragment {
 
                         }
 
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),3);
                         recyclerViewSearchResult.setLayoutManager(linearLayoutManager);
 
                         recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));

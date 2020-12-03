@@ -1,87 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginBottom="5dp"
         android:layout_marginEnd="5dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"
-            android:layout_gravity="center_vertical">
+            android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_logo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:padding="5dp"
-                app:civ_border_width="0.5dp"
-                app:civ_border_color="#5ADDED"
-                android:layout_alignParentLeft="true"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardAdv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardBackgroundColor="@color/lightgrey"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imageDisp"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:src="@drawable/dsz"
+                        android:scaleType="centerCrop"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <RelativeLayout
                 android:id="@+id/text_part"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/img_logo"
-                android:orientation="vertical"
-                android:layout_centerInParent="true">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
                 <TextView
                     android:id="@+id/title_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="User Name"
                     android:singleLine="true"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="15sp"
-                    android:textColor="#000"
-                    android:layout_marginRight="30dp"/>
+                    android:text="User Name"
+                    android:textColor="@color/colourblack"
+                    android:textSize="10sp"
+                    android:layout_marginLeft="5dp"
+                    android:padding="5dp"
+                    android:fontFamily="sans-serif-medium"/>
+
                 <TextView
                     android:id="@+id/bio_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_marginLeft="10dp"
-                    android:textSize="12sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="#000"
-                    android:layout_marginRight="30dp"
                     android:layout_below="@id/title_text"
-                    android:visibility="invisible"/>
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="30dp"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/addFriend"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_toRightOf="@+id/title_text"
-                    android:src="@drawable/ic_add_friend"
-                    android:layout_marginLeft="-40dp"
-                    app:tint="@color/gradstart"/>
-
-
-                <ImageView
-                    android:id="@+id/chat"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_toRightOf="@+id/title_text"
-                    android:src="@drawable/ic_chat_c"
-                    android:layout_marginLeft="-40dp"
-                    app:tint="@color/gradstart"
-                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/title_text"
+                    android:background="@drawable/login_button_background"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="follow"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:visibility="visible"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    />
 
             </RelativeLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-</RelativeLayout>
+</LinearLayout>

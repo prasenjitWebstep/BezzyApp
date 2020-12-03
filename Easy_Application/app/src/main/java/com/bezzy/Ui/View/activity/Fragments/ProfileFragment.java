@@ -242,6 +242,9 @@ public class ProfileFragment extends Fragment {
                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 getActivity().startActivity(i);
                                 Utility.setLogin(getActivity(),"0");
+                                if(Utility.getSocial(getActivity()).equals("1")){
+                                    Utility.setSocial(getActivity(),"0");
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

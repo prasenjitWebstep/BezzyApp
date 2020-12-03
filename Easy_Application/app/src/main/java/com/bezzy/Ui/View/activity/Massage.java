@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -86,14 +87,15 @@ public class Massage extends AppCompatActivity {
         send_msg = findViewById(R.id.send_msg);
         chatProgress = findViewById(R.id.chatProgress);
         emojiButton = (ImageView) findViewById(R.id.emoji_btn);
+        rootView = findViewById(R.id.root_view);
         /*emojiconEditText=findViewById(R.id.edittext_chatbox);*/
 
         modelArrayList = new ArrayList<>();
         page = 1;
 
         linearLayoutManager = new LinearLayoutManager(Massage.this);
-        linearLayoutManager.setReverseLayout(false);
-        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(false);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
 
         reyclerview_message_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -161,19 +163,20 @@ public class Massage extends AppCompatActivity {
             }
         });
 
-        //ImageView imageView=findViewById(R.id.imageviewanimal);
-      /*  emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiButton);
+        emojIcon = new EmojIconActions(this, rootView, edittext_chatbox, emojiButton);
         emojIcon.ShowEmojIcon();
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
             @Override
             public void onKeyboardOpen() {
                 Log.e("Keyboard", "open");
+
             }
             @Override
             public void onKeyboardClose() {
                 Log.e("Keyboard", "close");
             }
-        });*/
+        });
+        emojIcon.addEmojiconEditTextList(edittext_chatbox);
 
     }
 
@@ -302,6 +305,7 @@ public class Massage extends AppCompatActivity {
                         }
                         linearLayoutManager = new LinearLayoutManager(Massage.this);
                         linearLayoutManager.setReverseLayout(true);
+                        linearLayoutManager.setStackFromEnd(true);
                         linearLayoutManager.setSmoothScrollbarEnabled(true);
                         reyclerview_message_list.setLayoutManager(linearLayoutManager);
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);
@@ -394,7 +398,7 @@ public class Massage extends AppCompatActivity {
                         reyclerview_message_list.setAdapter(adapter);
                     }else{
                         chatProgress.setVisibility(View.GONE);
-                        Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();
+                        /*Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();*/
 
                     }
 

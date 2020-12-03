@@ -63,18 +63,19 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
     @Override
     public void onBindViewHolder(@NonNull searchViewHolder holder, final int position) {
-        Glide.with(context).load(dataholder.get(position).getImg()).into(holder.img);
+        Glide.with(context).load(dataholder.get(position).getImg()).into(holder.square_img);
         holder.header.setText(dataholder.get(position).getHeader());
-        if(!dataholder.get(position).getDesc().equalsIgnoreCase("NULL") || !dataholder.get(position).getDesc().equals(null)){
+       /* if(dataholder.get(position).getDesc().equals("NULL") || dataholder.get(position).getDesc().equals(null)){
+            holder.bio.setVisibility(View.INVISIBLE);
+        }else{
             holder.bio.setVisibility(View.VISIBLE);
             holder.bio.setText(dataholder.get(position).getDesc());
-        }else{
-            holder.bio.setVisibility(View.INVISIBLE);
-        }
+
+        }*/
 
 
 
-        if(dataholder.get(position).getUser_relation_status().equals("1")){
+        /*if(dataholder.get(position).getUser_relation_status().equals("1")){
             holder.chat.setVisibility(View.VISIBLE);
             holder.addFriend.setVisibility(View.INVISIBLE);
             holder.chat.setOnClickListener(new View.OnClickListener() {
@@ -102,13 +103,13 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
                 }
             });
-        }
+        }*/
 
-        holder.img.setOnClickListener(new View.OnClickListener() {
+        holder.square_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, FriendsProfileActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("friendId",dataholder.get(position).getId());
                 context.startActivity(intent);
             }
@@ -168,16 +169,13 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
     }
 
     public  class searchViewHolder extends RecyclerView.ViewHolder{
-         CircleImageView img;
+         ImageView square_img;
          TextView header,bio;
-         ImageView addFriend,chat;
 
         public searchViewHolder(@NonNull View itemView) {
             super(itemView);
-            img=itemView.findViewById(R.id.img_logo);
+            square_img=itemView.findViewById(R.id.imageDisp);
             header=itemView.findViewById(R.id.title_text);
-            addFriend = itemView.findViewById(R.id.addFriend);
-            chat = itemView.findViewById(R.id.chat);
             bio=itemView.findViewById(R.id.bio_text);
         }
     }

@@ -11,7 +11,10 @@ android:shape="rectangle" >
     </stroke>
 
 <corners
-    android:radius="30dp">
+    android:bottomLeftRadius="10dp"
+    android:bottomRightRadius="10dp"
+    android:topRightRadius="10dp"
+    android:topLeftRadius="10dp">
 
 </corners>
 </shape>

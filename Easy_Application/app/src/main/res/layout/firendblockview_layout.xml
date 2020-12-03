@@ -43,7 +43,8 @@
                             android:id="@+id/square_img"
                             android:layout_width="75dp"
                             android:layout_height="75dp"
-                            android:src="@drawable/back_login" />
+                            android:src="@drawable/assess_profile1"
+                            android:scaleType="centerCrop"/>
 
                     </androidx.cardview.widget.CardView>
 

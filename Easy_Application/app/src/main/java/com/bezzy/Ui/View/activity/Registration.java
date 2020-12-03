@@ -58,6 +58,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     private TextInputLayout textInputUsername;
     private TextInputLayout textInputPassword;
     SpotsDialog progressDialog;
+    int day,month,year;
 
 
 
@@ -76,9 +77,10 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         textInputPassword = findViewById(R.id.text_input_password);
         spinner = findViewById(R.id.spinner);
         imageView=findViewById(R.id.back_image);
+
         progressDialog = new SpotsDialog(Registration.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please Wait..");
+
         str_gender = "null";
 
         ed_gender = findViewById(R.id.gender);
@@ -109,29 +111,36 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         ed_dob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                final int year = calendar.get(Calendar.YEAR);
-                final int month = calendar.get(Calendar.MONTH);
-                final int day = calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog=new DatePickerDialog(Registration.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        month = month + 1;
-                        String date = month + " - " + dayOfMonth + " - " + year;
-                        ed_dob.setText(date);
+                Calendar cal = Calendar.getInstance();
+                day = cal.get(Calendar.DAY_OF_MONTH);
+                month = cal.get(Calendar.MONTH);
+                year = cal.get(Calendar.YEAR);
 
-                    }
-                },month,day,year);
-                datePickerDialog.show();
+                set();
 
             }
         });
 
     }
+
+    public void set(){
+        DatePickerDialog datePickerDialog=new DatePickerDialog(Registration.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                ed_dob.setText(i2+"-"+(i1+1)+"-"+i);
+            }
+        },year,month,day);
+
+        Calendar cal = Calendar.getInstance();
+
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+        cal.add(Calendar.DATE, 0);
+
+        datePickerDialog.show();
+    }
+
     public void Register() {
-        if(ed_username.getText().toString().isEmpty()){
-            ed_username.setError("enter name");
-        }else if(ed_email.getText().toString().isEmpty()){
+        if(ed_email.getText().toString().isEmpty()){
             ed_email.setError("enter email");
         }else if(!Patterns.EMAIL_ADDRESS.matcher(ed_email.getText().toString()).matches()){
             ed_email.setError("enter valid email");

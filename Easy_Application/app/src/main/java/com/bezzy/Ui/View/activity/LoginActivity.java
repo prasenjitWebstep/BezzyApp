@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView tv_forpas;
     SpotsDialog progressDialog;
     ImageView google_btn;
+    String socialLogin;
 
     int RC_SIGN_IN = 0;
     SignInButton signInButton;
@@ -82,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         openregister();
         progressDialog = new SpotsDialog(LoginActivity.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please wait...");
        /* tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -251,8 +251,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 String personName = acct.getDisplayName();
                 String personEmail = acct.getEmail();
+                Uri profileImage = acct.getPhotoUrl();
 
-                callApiSocialLogin(APIs.BASE_URL+APIs.SOCIALLOGINURL+"/"+personEmail+"/"+personName);
+                Utility.setSocial(LoginActivity.this,"1");
+                callApiSocialLogin(APIs.BASE_URL+APIs.SOCIALLOGINURL+"/"+personEmail+"/"+personName,personEmail,personName,profileImage);
+
 
             }
 
@@ -264,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void callApiSocialLogin(String url) {
+    private void callApiSocialLogin(String url, final String personEmail, final String personName, final Uri profileImage) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -276,10 +279,13 @@ public class LoginActivity extends AppCompatActivity {
 
                         Utility.setLogin(LoginActivity.this,"1");
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
+                        Utility.setName(LoginActivity.this,personName);
+                        Utility.setEmail(LoginActivity.this,personEmail);
+                        Utility.setImage(LoginActivity.this,String.valueOf(profileImage));
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this,Profile.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        Intent i = new Intent(LoginActivity.this, Profile.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
 
                     }
                 } catch (JSONException e) {
