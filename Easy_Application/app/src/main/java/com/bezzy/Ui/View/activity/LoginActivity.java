@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvRegister;
     Button btnLogin;
     TextView tv_forpas;
-    SpotsDialog progressDialog;
+    //SpotsDialog progressDialog;
     ImageView google_btn;
 
     int RC_SIGN_IN = 0;
@@ -78,10 +80,12 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister = findViewById(R.id.tv_register);
         tv_forpas = findViewById(R.id.tv_forpas);
         google_btn=findViewById(R.id.google_btn);
+        final LoadingDialog loadingDialog=new LoadingDialog(LoginActivity.this);
+
         openForpas();
         openregister();
-        progressDialog = new SpotsDialog(LoginActivity.this);
-        progressDialog.setCancelable(false);
+        //progressDialog = new SpotsDialog(LoginActivity.this);
+        //progressDialog.setCancelable(false);
         //progressDialog.setMessage("Loading Please wait...");
        /* tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,13 +101,16 @@ public class LoginActivity extends AppCompatActivity {
                /* final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();*/
                 if(Utility.internet_check(LoginActivity.this)) {
+                    loadingDialog.startLoadingDialog();
 
-                    progressDialog.show();
+                    //progressDialog.show();
                     postRequest(APIs.BASE_URL+APIs.LOGIN_URL);
 
                 }
                 else {
-                    progressDialog.dismiss();
+                    loadingDialog.dismissDialog();
+                    //progressDialog.dismiss();
+                    loadingDialog.dismissDialog();
                     Toast.makeText(LoginActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
                 }
 
@@ -136,7 +143,8 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+
                         Utility.setLogin(LoginActivity.this,"1");
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
@@ -144,19 +152,19 @@ public class LoginActivity extends AppCompatActivity {
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
                     }else{
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
                     Log.e("Exception",e.toString());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
                 Log.e("Error",error.toString());
             }
         }){
