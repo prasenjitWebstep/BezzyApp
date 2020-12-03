@@ -414,6 +414,7 @@ public class Photo_fragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e("exception",e.toString());
                 }
             }
         }, new Response.ErrorListener() {
