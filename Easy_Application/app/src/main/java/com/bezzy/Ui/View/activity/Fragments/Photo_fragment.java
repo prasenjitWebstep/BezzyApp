@@ -48,6 +48,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.ImageViewAdapter;
 import com.bezzy.Ui.View.utils.APIs;
@@ -120,9 +121,9 @@ public class Photo_fragment extends Fragment {
         //caption = view.findViewById(R.id.ed_content);
         button = view.findViewById(R.id.upload);
         //image_part = view.findViewById(R.id.image_part);
-        progressDialog = new SpotsDialog(getActivity());
+        /*progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);
         uoload = view.findViewById(R.id.upload_post);
 
@@ -195,7 +196,8 @@ public class Photo_fragment extends Fragment {
                 }else{
                     if (Utility.internet_check(getActivity())) {
 
-                        progressDialog.show();
+                        //progressDialog.show();
+                        Utility.displayLoader(getActivity());
 
                         switch (option) {
                             case 0:
@@ -208,7 +210,9 @@ public class Photo_fragment extends Fragment {
 
                     } else {
 
-                        progressDialog.dismiss();
+
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
 
                     }
@@ -251,7 +255,8 @@ public class Photo_fragment extends Fragment {
                     startActivityForResult(intent, IMAGE_PICK_CODE);
 
                 } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
+                    //dialog.dismiss();
+                    Utility.hideLoader(getActivity());
                 }
             }
         });
@@ -337,7 +342,8 @@ public class Photo_fragment extends Fragment {
                             String status = object.getString("resp");
                             if (status.equals("success")) {
                                 //
-                                progressDialog.dismiss();
+                                //progressDialog.dismiss();
+                                Utility.hideLoader(getActivity());
                                 String msg = object.getString("message");
                                 Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
@@ -345,6 +351,7 @@ public class Photo_fragment extends Fragment {
                                 startActivity(intent);
                             } else {
                                 //progressDialog.dismiss();
+                                Utility.hideLoader(getActivity());
                                 String message = object.getString("message");
                                 Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                             }
@@ -352,7 +359,8 @@ public class Photo_fragment extends Fragment {
 //                            Toast.makeText(getContext().getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            progressDialog.dismiss();
+                            //progressDialog.dismiss();
+                            Utility.hideLoader(getActivity());
                         }
                     }
                 },
@@ -361,7 +369,8 @@ public class Photo_fragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                        /* Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();*/
                          Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
-                         progressDialog.dismiss();
+                         //progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         Log.e("GotError", "" + error.getMessage());
                     }
                 }) {
@@ -406,7 +415,9 @@ public class Photo_fragment extends Fragment {
                 Log.e("Response", response.toString());
 
                 try {
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(getActivity());
+
                     Toast.makeText(getActivity().getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

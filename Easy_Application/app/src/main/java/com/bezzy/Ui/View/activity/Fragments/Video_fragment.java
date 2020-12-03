@@ -36,6 +36,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.UploadHelper;
@@ -95,9 +96,9 @@ public class Video_fragment extends Fragment {
         rootView=view.findViewById(R.id.root_view);
 
         uploadVideo = view.findViewById(R.id.upload);
-        progressDialog = new SpotsDialog(getActivity());
+       /* progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
         emojIcon = new EmojIconActions(getActivity(), rootView, emojiconEditText, emojiButton);
         emojIcon.ShowEmojIcon();
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
@@ -138,14 +139,16 @@ public class Video_fragment extends Fragment {
                 }else{
                     if (Utility.internet_check(getActivity())) {
 
-                        progressDialog.show();
+                        //progressDialog.show();
 
-                        progressDialog.show();
+                        //progressDialog.show();
+                        Utility.displayLoader(getActivity());
                         uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO);
 
                     } else {
 
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
 
                     }
@@ -286,21 +289,23 @@ public class Video_fragment extends Fragment {
                     String status = object.getString("resp");
                     if (status.equals("success")) {
 
-                        progressDialog.dismiss();
-                        //
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         String msg = object.getString("message");
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     } else {
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         String message = object.getString("message");
                         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(getActivity());
                     Log.e("ImageUploadException", e.toString());
                 }
             }
@@ -308,7 +313,8 @@ public class Video_fragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one video to Post", Toast.LENGTH_LONG).show();
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(getActivity());
                 Log.e("VolleyError", error.toString());
             }
         }

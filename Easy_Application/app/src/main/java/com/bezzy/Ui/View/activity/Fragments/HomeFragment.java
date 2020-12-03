@@ -28,7 +28,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
-import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.activity.NotificationActivity;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.Friendsfeed_Adapter;
@@ -70,8 +69,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        progressDialog = new SpotsDialog(getActivity(),R.style.Custom);
-        progressDialog.setCancelable(false);
+       /* progressDialog = new SpotsDialog(getActivity(),R.style.Custom);
+        progressDialog.setCancelable(false);*/
         // Inflate the layout for this fragment
 
         recyclerView=view.findViewById(R.id.friendsnoti_listf);
@@ -104,14 +103,16 @@ public class HomeFragment extends Fragment {
 
                 if(Utility.internet_check(getActivity())) {
 
-                    progressDialog.show();
+                    //progressDialog.show();
+                    Utility.displayLoader(getActivity());
 
                     friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
 
                 }
                 else {
 
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(getActivity());
 
                     Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
                 }
@@ -131,7 +132,8 @@ public class HomeFragment extends Fragment {
 
         if(Utility.internet_check(getActivity())) {
 
-            progressDialog.show();
+            //progressDialog.show();
+            Utility.displayLoader(getActivity());
 
             postRequest(APIs.BASE_URL+APIs.GETDATA);
 
@@ -143,7 +145,8 @@ public class HomeFragment extends Fragment {
         }
         else {
 
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
+            Utility.hideLoader(getActivity());
 
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
@@ -188,7 +191,8 @@ public class HomeFragment extends Fragment {
                     JSONObject object1 = new JSONObject(response);
                     String status = object1.getString("status");
                     if(status.equals("success")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         go_bezzy.setText("Friend's List");
                         JSONArray array = object1.getJSONObject("total_feed_response").getJSONArray("friend_list");
                         for(int i = 0;i<array.length();i++){
@@ -207,7 +211,8 @@ public class HomeFragment extends Fragment {
                         go_bezzy.setText("Add Friends");
                         if(Utility.internet_check(getActivity().getApplicationContext())) {
 
-                            progressDialog.show();
+                            //progressDialog.show();
+                            Utility.displayLoader(getActivity());
 
                             Log.e("Result","1");
 
@@ -216,7 +221,8 @@ public class HomeFragment extends Fragment {
                         }
                         else {
 
-                            progressDialog.dismiss();
+                            //progressDialog.dismiss();
+                            Utility.hideLoader(getActivity());
 
                             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
                         }
@@ -243,7 +249,8 @@ public class HomeFragment extends Fragment {
             public void onResponse(String response) {
 
                 Log.e("Response",response);
-                progressDialog.dismiss();
+               // progressDialog.dismiss();
+                Utility.hideLoader(getActivity());
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -276,7 +283,8 @@ public class HomeFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
 
                 Log.e("Exception",error.toString());
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(getActivity());
 
             }
         }){
@@ -316,15 +324,18 @@ public class HomeFragment extends Fragment {
                         Utility.setFollowing(getActivity(),object.getJSONObject("usedetails").getString("following"));
                         Utility.setPosts(getActivity(),object.getJSONObject("usedetails").getString("number_of_post"));
 
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
 
                     }else{
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(getActivity());
                 }
 
             }
@@ -333,7 +344,8 @@ public class HomeFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
 
                 Log.e("Exception",error.toString());
-                progressDialog.dismiss();
+               // progressDialog.dismiss();
+                Utility.hideLoader(getActivity());
 
             }
         }){

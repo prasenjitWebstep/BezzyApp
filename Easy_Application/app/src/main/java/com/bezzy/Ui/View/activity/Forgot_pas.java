@@ -59,17 +59,19 @@ public class Forgot_pas extends AppCompatActivity {
 
             }
         });
-        progressDialog = new ProgressDialog(Forgot_pas.this);
+        /*progressDialog = new ProgressDialog(Forgot_pas.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please Wait..");
+        progressDialog.setMessage("Loading Please Wait..");*/
     }
     public void Emailsend(){
         if(Utility.internet_check(Forgot_pas.this)) {
-            progressDialog.show();
+            //progressDialog.show();
+            Utility.displayLoader(Forgot_pas.this);
             callAPIEmailSend(APIs.BASE_URL+APIs.FORGETPASSWORDSEND);
         }
         else {
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
+            Utility.hideLoader(Forgot_pas.this);
             Toast.makeText(Forgot_pas.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -83,7 +85,8 @@ public class Forgot_pas extends AppCompatActivity {
                 try {
                     JSONObject jsonObject=new JSONObject(response);
                     if(jsonObject.getString("resp").equals("true")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Forgot_pas.this);
                         Toast.makeText(Forgot_pas.this,jsonObject.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Forgot_pas.this,COTPActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -93,7 +96,8 @@ public class Forgot_pas extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else {
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Forgot_pas.this);
                         Toast.makeText(Forgot_pas.this,jsonObject.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -104,7 +108,8 @@ public class Forgot_pas extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(Forgot_pas.this);
                 Log.e("Error",error.toString());
 
             }

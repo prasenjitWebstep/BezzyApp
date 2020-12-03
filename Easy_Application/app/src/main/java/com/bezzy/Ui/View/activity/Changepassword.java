@@ -45,9 +45,9 @@ public class Changepassword extends AppCompatActivity {
         password = findViewById(R.id.password);
         cnf_password = findViewById(R.id.cnf_password);
         change = findViewById(R.id.change);
-        progressDialog = new SpotsDialog(Changepassword.this);
+        /*progressDialog = new SpotsDialog(Changepassword.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please Wait..");
+        progressDialog.setMessage("Loading Please Wait..");*/
         userId = getIntent().getExtras().getString("USERID");
 
         change.setOnClickListener(new View.OnClickListener() {
@@ -63,11 +63,13 @@ public class Changepassword extends AppCompatActivity {
                 }else{
                     Log.e("Called","1");
                     if(Utility.internet_check(Changepassword.this)) {
-                        progressDialog.show();
+                        //progressDialog.show();
+                        Utility.displayLoader(Changepassword.this);
                         callAPIChangePassword(APIs.BASE_URL+APIs.CHANGEPASSWORD);
                     }
                     else {
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Changepassword.this);
                         Toast.makeText(Changepassword.this,"No Network!",Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -88,19 +90,22 @@ public class Changepassword extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Changepassword.this);
                         Toast.makeText(Changepassword.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Changepassword.this,LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }else{
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Changepassword.this);
                         Toast.makeText(Changepassword.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(Changepassword.this);
                     Log.e("Exception",e.toString());
                 }
 
@@ -109,7 +114,8 @@ public class Changepassword extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(Changepassword.this);
                 Log.e("Error",error.toString());
             }
         }){

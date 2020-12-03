@@ -126,17 +126,20 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
                     JSONObject object = new JSONObject(response);
                     String sucess = object.getString("status");
                     if(sucess.equals("success")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(context);
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }else{
-                        progressDialog.dismiss();
+                       // progressDialog.dismiss();
+                        Utility.hideLoader(context);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(context);
                     Log.e("Exception",e.toString());
                 }
 
@@ -144,7 +147,8 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(context);
                 Log.e("Exception",error.toString());
             }
         }){

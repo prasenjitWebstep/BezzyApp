@@ -43,10 +43,10 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
     ArrayList<Notification_item> dataholder;
     SpotsDialog progressDialog;
 
-    public Notifi_Adapter(Context context, ArrayList<Notification_item> dataholder, SpotsDialog progressDialog) {
+    public Notifi_Adapter(Context context, ArrayList<Notification_item> dataholder) {
         this.context = context;
         this.dataholder = dataholder;
-        this.progressDialog = progressDialog;
+        //this.progressDialog = progressDialog;
     }
 
     @NonNull
@@ -67,8 +67,8 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
                 .load(dataholder.get(position).getImg())
                 .into(holder.img_logo);
 
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.setCancelable(false);
+       /* progressDialog.setMessage("Please Wait...");
+        progressDialog.setCancelable(false);*/
 
     }
 

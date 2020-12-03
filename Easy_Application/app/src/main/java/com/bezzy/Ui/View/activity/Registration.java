@@ -78,8 +78,8 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         spinner = findViewById(R.id.spinner);
         imageView=findViewById(R.id.back_image);
 
-        progressDialog = new SpotsDialog(Registration.this);
-        progressDialog.setCancelable(false);
+       /* progressDialog = new SpotsDialog(Registration.this);
+        progressDialog.setCancelable(false);*/
 
         str_gender = "null";
 
@@ -158,11 +158,13 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             Toast.makeText(Registration.this, "Please select your gender", Toast.LENGTH_SHORT).show();
         }else{
             if(Utility.internet_check(Registration.this)){
-                progressDialog.show();
+               // progressDialog.show();
+                Utility.displayLoader(Registration.this);
                 callApiRegistration(APIs.BASE_URL+APIs.REGISTRATION);
             }
             else {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(Registration.this);
                 Toast.makeText(Registration.this,"No Network!",Toast.LENGTH_SHORT).show();
             }
         }
@@ -176,7 +178,8 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                 try {
                     JSONObject object = new JSONObject(response);
                     if(object.getString("resp").equals("true")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Registration.this);
                         Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Registration.this, OTPActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -184,12 +187,14 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                         Utility.setOtpScreen(Registration.this,"1");
                         Utility.setUserId(Registration.this,object.getString("log_userID"));
                     }else{
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Registration.this);
                         Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(Registration.this);
                     Log.e("Exception",e.toString());
                 }
 
@@ -197,7 +202,8 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(Registration.this);
                 Log.e("Error",error.toString());
             }
         }){
