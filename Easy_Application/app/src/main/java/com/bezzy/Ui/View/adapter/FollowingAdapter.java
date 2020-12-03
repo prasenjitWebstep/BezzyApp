@@ -27,6 +27,7 @@ import com.bezzy.Ui.View.activity.FriendsProfileActivity;
 import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.activity.MyFriendsList;
 import com.bezzy.Ui.View.activity.Profile;
+import com.bezzy.Ui.View.activity.Registration;
 import com.bezzy.Ui.View.model.FriendsHolder;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
@@ -100,10 +101,11 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
             public void onClick(View v) {
                 if(Utility.internet_check(context)) {
 
-                    progressDialog = new SpotsDialog(context);
+                   /* progressDialog = new SpotsDialog(context);
                     progressDialog.setMessage("Please Wait...");
                     progressDialog.setCancelable(true);
-                    progressDialog.show();
+                    progressDialog.show();*/
+                    Utility.displayLoader(context);
 
                     unfollow(APIs.BASE_URL+APIs.UNFOLLOW,friendsHolder.get(position).getFriendId());
 
@@ -111,7 +113,8 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
                 }
                 else {
 
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(context);
                     Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
 
                 }
@@ -127,7 +130,8 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
             @Override
             public void onResponse(String response) {
                 Log.e("Response",response);
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(context);
                 try {
                     JSONObject object=new JSONObject(response);
                     String status=object.getString("status");
@@ -139,7 +143,8 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
 
                     }
                 } catch (JSONException e) {
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(context);
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
                 }
@@ -148,7 +153,8 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(context);
                 Log.e("Exception",error.toString());
             }
         }){

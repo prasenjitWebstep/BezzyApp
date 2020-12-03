@@ -53,20 +53,22 @@ public class Friendsfeed extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Friendsfeed.this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        progressDialog = new SpotsDialog(Friendsfeed.this);
+       /* progressDialog = new SpotsDialog(Friendsfeed.this);
         progressDialog.setMessage("Please wait....");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
 
         if(Utility.internet_check(Friendsfeed.this)) {
 
-            progressDialog.show();
+            //progressDialog.show();
+            Utility.displayLoader(Friendsfeed.this);
 
             friendsPostList(APIs.BASE_URL+APIs.FRIENDPOSTLIST+"/"+id+"/"+Utility.getUserId(Friendsfeed.this));
 
         }
         else {
 
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
+            Utility.hideLoader(Friendsfeed.this);
 
             Toast.makeText(Friendsfeed.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
@@ -84,7 +86,8 @@ public class Friendsfeed extends AppCompatActivity {
                     JSONObject object1 = new JSONObject(response);
                     String status = object1.getString("status");
                     if(status.equals("success")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Friendsfeed.this);
                         JSONArray array = object1.getJSONArray("post_details");
                         for(int i=0;i<array.length();i++){
 
@@ -102,11 +105,13 @@ public class Friendsfeed extends AppCompatActivity {
                         adapterPost = new FriendsPostAdapter(Friendsfeed.this,postModelList);
                         recyclerView.setAdapter(adapterPost);
                     }else{
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Friendsfeed.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(Friendsfeed.this);
                     Log.e("Exception",e.toString());
                 }
 
@@ -114,7 +119,8 @@ public class Friendsfeed extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(Friendsfeed.this);
                 Log.e("Error",error.toString());
             }
         });

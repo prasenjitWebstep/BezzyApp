@@ -48,9 +48,9 @@ public class MyFriendsList extends AppCompatActivity {
 
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
-        progressDialog = new ProgressDialog(MyFriendsList.this);
+       /* progressDialog = new ProgressDialog(MyFriendsList.this);
         progressDialog.setMessage("Loading Please Wait...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
         holderList = new ArrayList<>();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(MyFriendsList.this);
@@ -59,7 +59,8 @@ public class MyFriendsList extends AppCompatActivity {
         if(Utility.internet_check(MyFriendsList.this)) {
 
             //dialog.show();
-            progressDialog.show();
+           // progressDialog.show();
+            Utility.displayLoader(MyFriendsList.this);
             Log.e("Result","1");
 
             friendList(APIs.BASE_URL+APIs.FOLLOWERSLIST);
@@ -68,7 +69,8 @@ public class MyFriendsList extends AppCompatActivity {
         else {
 
             //dialog.dismiss();
-            progressDialog.dismiss();
+           // progressDialog.dismiss();
+            Utility.hideLoader(MyFriendsList.this);
             Toast.makeText(MyFriendsList.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -86,7 +88,8 @@ public class MyFriendsList extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(MyFriendsList.this);
                         go_bezzy.setText(object.getString("login_user_name"));
                         JSONArray array = object.getJSONArray("follower_user_list");
                         for(int i=0;i<array.length();i++){
@@ -97,7 +100,8 @@ public class MyFriendsList extends AppCompatActivity {
                         MyFriendsAdapter adapter = new MyFriendsAdapter(MyFriendsList.this,holderList,"1");
                         recyclerFriendsList.setAdapter(adapter);
                     }else{
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(MyFriendsList.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -108,7 +112,8 @@ public class MyFriendsList extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(MyFriendsList.this);
                 Log.e("Exception",error.toString());
             }
         }){

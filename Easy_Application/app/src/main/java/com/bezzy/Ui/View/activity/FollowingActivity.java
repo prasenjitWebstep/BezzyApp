@@ -51,9 +51,9 @@ public class FollowingActivity extends AppCompatActivity {
 
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
-        progressDialog = new SpotsDialog(FollowingActivity.this);
+        /*progressDialog = new SpotsDialog(FollowingActivity.this);
         progressDialog.setMessage("Loading Please Wait...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
         holderList = new ArrayList<>();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(FollowingActivity.this);
@@ -63,6 +63,7 @@ public class FollowingActivity extends AppCompatActivity {
 
             //dialog.show();
             /*progressDialog.show();*/
+            Utility.displayLoader(FollowingActivity.this);
             Log.e("Result","1");
 
             friendList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
@@ -72,6 +73,7 @@ public class FollowingActivity extends AppCompatActivity {
 
             //dialog.dismiss();
             /*progressDialog.dismiss();*/
+            Utility.hideLoader(FollowingActivity.this);
             Toast.makeText(FollowingActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -90,6 +92,7 @@ public class FollowingActivity extends AppCompatActivity {
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
                         /*progressDialog.dismiss();*/
+                        Utility.hideLoader(FollowingActivity.this);
                         go_bezzy.setText(object.getString("login_user_name"));
                         JSONArray array = object.getJSONArray("following_user_list");
                         for(int i=0;i<array.length();i++){
@@ -101,7 +104,8 @@ public class FollowingActivity extends AppCompatActivity {
                         recyclerFriendsList.setAdapter(adapter);
 
                     }else{
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(FollowingActivity.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -112,7 +116,8 @@ public class FollowingActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(FollowingActivity.this);
                 Log.e("Exception",error.toString());
             }
         }){

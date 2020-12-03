@@ -52,9 +52,9 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
         recyclerView=findViewById(R.id.noti_listf);
         back_image = findViewById(R.id.back_image);
-        dialog = new SpotsDialog(NotificationActivity.this);
+        /*dialog = new SpotsDialog(NotificationActivity.this);
         dialog.setMessage("Loading Please Wait...");
-        dialog.setCancelable(false);
+        dialog.setCancelable(false);*/
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +74,8 @@ public class NotificationActivity extends AppCompatActivity {
 
         if(Utility.internet_check(NotificationActivity.this)) {
 
-            dialog.show();
+            //dialog.show();
+            Utility.displayLoader(NotificationActivity.this);
 
             Log.e("Result","1");
 
@@ -83,7 +84,8 @@ public class NotificationActivity extends AppCompatActivity {
         }
         else {
 
-            dialog.dismiss();
+           // dialog.dismiss();
+            Utility.hideLoader(NotificationActivity.this);
 
             Toast.makeText(NotificationActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
@@ -100,7 +102,8 @@ public class NotificationActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String status = object.getString("status");
                     if(status.equals("success")){
-                        dialog.dismiss();
+                        //dialog.dismiss();
+                        Utility.hideLoader(NotificationActivity.this);
                         JSONArray array = object.getJSONArray("notification_list");
 
                         for(int i=0;i<array.length();i++){
@@ -136,12 +139,14 @@ public class NotificationActivity extends AppCompatActivity {
                             //check using if else one hour*/
                         }
 
-                        recyclerView.setAdapter(new Notifi_Adapter(getApplicationContext(),dataholder,dialog));
+                        recyclerView.setAdapter(new Notifi_Adapter(getApplicationContext(),dataholder));
                     }else{
-                        dialog.dismiss();
+                        //dialog.dismiss();
+                        Utility.hideLoader(NotificationActivity.this);
                     }
                 } catch (JSONException e) {
-                    dialog.dismiss();
+                    //dialog.dismiss();
+                    Utility.hideLoader(NotificationActivity.this);
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
                 }
@@ -149,7 +154,8 @@ public class NotificationActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                dialog.dismiss();
+                //dialog.dismiss();
+                Utility.hideLoader(NotificationActivity.this);
                 Log.e("Error",error.toString());
             }
         });

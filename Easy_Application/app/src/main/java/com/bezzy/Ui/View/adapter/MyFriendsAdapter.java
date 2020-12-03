@@ -105,10 +105,11 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
                 public void onClick(View v) {
                     if(Utility.internet_check(context)) {
 
-                        progressDialog = new SpotsDialog(context);
+                       /* progressDialog = new SpotsDialog(context);
                         progressDialog.setMessage("Please Wait...");
                         progressDialog.setCancelable(true);
-                        progressDialog.show();
+                        progressDialog.show();*/
+                        Utility.displayLoader(context);
 
                         followback(APIs.BASE_URL+APIs.FOLLOWBACKREQUEST,friendsHolder.get(position).getFriendId());
 
@@ -116,7 +117,8 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
                     }
                     else {
 
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(context);
                         Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
 
                     }
@@ -167,7 +169,8 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
             @Override
             public void onResponse(String response) {
                 Log.e("Response",response);
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(context);
                 try {
                     JSONObject object=new JSONObject(response);
                     String status=object.getString("status");
@@ -180,7 +183,8 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(context);
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
                 }
@@ -189,7 +193,8 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(context);
                 Log.e("Exception",error.toString());
             }
         }){

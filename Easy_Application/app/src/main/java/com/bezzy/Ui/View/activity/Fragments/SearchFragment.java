@@ -78,9 +78,9 @@ public class SearchFragment extends Fragment {
         searchName = view.findViewById(R.id.searchName);
         search = "null";
 
-        progressDialog = new SpotsDialog(getActivity());
+        /*progressDialog = new SpotsDialog(getActivity());
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Please wait....");
+        progressDialog.setMessage("Please wait....");*/
 
         imgSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +103,9 @@ public class SearchFragment extends Fragment {
 
         if(Utility.internet_check(getActivity())) {
 
-            progressDialog.show();
+           // progressDialog.show();
+            
+            Utility.displayLoader(getActivity());
 
             Log.e("Result","1");
 
@@ -112,7 +114,8 @@ public class SearchFragment extends Fragment {
         }
         else {
 
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
+            Utility.hideLoader(getActivity());
 
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
@@ -158,7 +161,8 @@ public class SearchFragment extends Fragment {
             public void onResponse(String response) {
 
                 Log.e("REsponse",response);
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(getActivity());
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -191,7 +195,8 @@ public class SearchFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
 
                 Log.e("Exception",error.toString());
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(getActivity());
 
             }
         }){
@@ -232,7 +237,8 @@ public class SearchFragment extends Fragment {
                         Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
                         if(Utility.internet_check(getActivity())) {
 
-                            progressDialog.show();
+                            //progressDialog.show();
+                            Utility.displayLoader(getActivity());
 
                             Log.e("Result","1");
 
@@ -241,7 +247,8 @@ public class SearchFragment extends Fragment {
                         }
                         else {
 
-                            progressDialog.dismiss();
+                            //progressDialog.dismiss();
+                            Utility.hideLoader(getActivity());
 
                             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
                         }

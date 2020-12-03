@@ -76,9 +76,9 @@ public class FriendsProfileActivity extends AppCompatActivity {
 
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
-        progressDialog = new SpotsDialog(FriendsProfileActivity.this);
+        /*progressDialog = new SpotsDialog(FriendsProfileActivity.this);
         progressDialog.setMessage("Logging Out Please Wait....");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
 
         friendsId = getIntent().getExtras().getString("friendId");
 
@@ -119,13 +119,15 @@ public class FriendsProfileActivity extends AppCompatActivity {
 
         if(Utility.internet_check(FriendsProfileActivity.this)) {
 
-            progressDialog.show();
+           // progressDialog.show();
+            Utility.displayLoader(FriendsProfileActivity.this);
 
             postRequest(APIs.BASE_URL+APIs.GETDATA);
         }
         else {
 
-            progressDialog.show();
+            //progressDialog.show();
+            Utility.displayLoader(FriendsProfileActivity.this);
             Toast.makeText(FriendsProfileActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -144,7 +146,8 @@ public class FriendsProfileActivity extends AppCompatActivity {
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(FriendsProfileActivity.this);
 
                         userName.setText(object.getJSONObject("usedetails").getString("get_name"));
                         following.setText(object.getJSONObject("usedetails").getString("following"));
@@ -185,7 +188,8 @@ public class FriendsProfileActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 Log.e("Exception",error.toString());
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(FriendsProfileActivity.this);
 
             }
         }){

@@ -93,9 +93,9 @@ public class Editprofile extends AppCompatActivity {
         //str_gender.equals(Utility.getGender(Editprofile.this));
 
 
-        progressDialog = new SpotsDialog(Editprofile.this);
+       /* progressDialog = new SpotsDialog(Editprofile.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please Wait..");
+        progressDialog.setMessage("Loading Please Wait..");*/
 
 
         textInputEmail = findViewById(R.id.text_input_email);
@@ -177,7 +177,8 @@ public class Editprofile extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Editprofile.this);
                         Toast.makeText(Editprofile.this,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Editprofile.this, Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -185,12 +186,14 @@ public class Editprofile extends AppCompatActivity {
 
 
                     }else{
-                        progressDialog.dismiss();
+                        Utility.hideLoader(Editprofile.this);
+                        //progressDialog.dismiss();
                         //Toast.makeText(Editprofile.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                   // progressDialog.dismiss();
+                    Utility.hideLoader(Editprofile.this);
                     Log.e("Exception",e.toString());
                 }
 
@@ -198,7 +201,8 @@ public class Editprofile extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(Editprofile.this);
                 Log.e("Error",error.toString());
             }
         }){
@@ -233,25 +237,29 @@ public class Editprofile extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Editprofile.this);
 
                         Toast.makeText(Editprofile.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Editprofile.this,Profile.class));
 
                     }else{
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Editprofile.this);
 
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(Editprofile.this);
                     Log.e("Exception",e.toString());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(Editprofile.this);
                 Log.e("Error",error.toString());
             }
         }){
@@ -294,9 +302,10 @@ public class Editprofile extends AppCompatActivity {
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(Editprofile.this.getContentResolver(), resultUri);
                     if(!progressDialog.isShowing()){
-                        progressDialog.setMessage("Uploading Image Please Wait.....");
+                       /* progressDialog.setMessage("Uploading Image Please Wait.....");
                         progressDialog.setCancelable(false);
-                        progressDialog.show();
+                        progressDialog.show();*/
+                        Utility.displayLoader(Editprofile.this);
                         uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);
                     }
                     profile_image.setImageBitmap(bitmap);
@@ -313,11 +322,13 @@ public class Editprofile extends AppCompatActivity {
 
     public void Updateprofile(){
         if(Utility.internet_check(Editprofile.this)) {
-            progressDialog.show();
+            //progressDialog.show();
+            Utility.displayLoader(Editprofile.this);
             callApiUpdateProfile(APIs.BASE_URL+APIs.UPDATEPROFILE);
         }
         else {
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
+            Utility.hideLoader(Editprofile.this);
             Toast.makeText(Editprofile.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 

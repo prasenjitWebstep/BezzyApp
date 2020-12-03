@@ -67,19 +67,21 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
         recyclerImageShow = findViewById(R.id.recyclerImageShow);
         comment_btn=findViewById(R.id.chat_btn);
         servicesText = findViewById(R.id.servicesText);
-        progressDialog =new SpotsDialog(PostImageVideoViewActivity.this);
+       /* progressDialog =new SpotsDialog(PostImageVideoViewActivity.this);
         progressDialog.setMessage("Please Wait...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
 
         if(Utility.internet_check(PostImageVideoViewActivity.this)) {
 
-            progressDialog.show();
+            //progressDialog.show();
+            Utility.displayLoader(PostImageVideoViewActivity.this);
             friendsPostLargeView(APIs.BASE_URL+APIs.FRIENDSBLOCKDETAILS+"/"+postId+"/"+Utility.getUserId(PostImageVideoViewActivity.this));
 
         }
         else {
 
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
+            Utility.hideLoader(PostImageVideoViewActivity.this);
 
             Toast.makeText(PostImageVideoViewActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
@@ -104,7 +106,8 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String status = object.getString("status");
                     if(status.equals("success")){
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(PostImageVideoViewActivity.this);
                         JSONObject object1 = object.getJSONObject("post_details");
                         if(object1.getString("log_user_like_status").equals("Yes")){
                             favBtnfilled.setVisibility(View.VISIBLE);
@@ -188,14 +191,16 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(PostImageVideoViewActivity.this);
                     Log.e("Exception",e.toString());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(PostImageVideoViewActivity.this);
                 Log.e("Error",error.toString());
             }
         });

@@ -49,9 +49,9 @@ public class OTPActivity extends AppCompatActivity {
 
         btnVerify = findViewById(R.id.btnVerify);
         otp_view = findViewById(R.id.otp_view);
-        progressDialog = new SpotsDialog(OTPActivity.this);
+       /* progressDialog = new SpotsDialog(OTPActivity.this);
         progressDialog.setMessage("Verifying Please Wait...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
 
 
         btnVerify.setOnClickListener(new View.OnClickListener() {
@@ -60,12 +60,14 @@ public class OTPActivity extends AppCompatActivity {
 
                 if(Utility.internet_check(OTPActivity.this)) {
 
-                    progressDialog.show();
+                    //progressDialog.show();
+                    Utility.displayLoader(OTPActivity.this);
                     callApiVerifyOtp(APIs.BASE_URL+APIs.OTPVERIFICATION);
 
                 }
                 else {
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(OTPActivity.this);
                     Toast.makeText(OTPActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
                 }
 
@@ -89,7 +91,8 @@ public class OTPActivity extends AppCompatActivity {
 
                     if(status.equals("true")){
 
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(OTPActivity.this);
 
                         String message = object.getString("message");
 
@@ -102,20 +105,23 @@ public class OTPActivity extends AppCompatActivity {
 
                     }else{
                         String message = object.getString("message");
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(OTPActivity.this);
                         Toast.makeText(OTPActivity.this,message,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(OTPActivity.this);
                     Log.e("Exception",e.toString());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
+                Utility.hideLoader(OTPActivity.this);
                 Log.e("Error",error.toString());
             }
         }){

@@ -86,9 +86,9 @@ public class ProfileFragment extends Fragment {
 
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
-        progressDialog = new SpotsDialog(getActivity());
+       /* progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Logging Out Please Wait....");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
 
 
 
@@ -227,7 +227,8 @@ public class ProfileFragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                progressDialog.show();
+                //progressDialog.show();
+                Utility.displayLoader(getActivity());
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -235,7 +236,9 @@ public class ProfileFragment extends Fragment {
                             JSONObject object = new JSONObject(response);
                             String resp = object.getString("resp");
                             if(resp.equals("success")){
-                                progressDialog.dismiss();
+
+                                //progressDialog.dismiss();
+                                Utility.hideLoader(getActivity());
                                 Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_SHORT).show();
                                 callApi(APIs.BASE_URL+APIs.GET_USER_ACTIVE_STATUS,"false");
                                 Intent i = new Intent(getActivity(), LoginActivity.class);
