@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,6 +37,7 @@ public class OTPActivity extends AppCompatActivity {
     Button btnVerify;
     OtpView otp_view;
     SpotsDialog progressDialog;
+    TextView resend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class OTPActivity extends AppCompatActivity {
 
         btnVerify = findViewById(R.id.btnVerify);
         otp_view = findViewById(R.id.otp_view);
+        resend = findViewById(R.id.resend);
        /* progressDialog = new SpotsDialog(OTPActivity.this);
         progressDialog.setMessage("Verifying Please Wait...");
         progressDialog.setCancelable(false);*/
@@ -63,6 +66,26 @@ public class OTPActivity extends AppCompatActivity {
                     //progressDialog.show();
                     Utility.displayLoader(OTPActivity.this);
                     callApiVerifyOtp(APIs.BASE_URL+APIs.OTPVERIFICATION);
+
+                }
+                else {
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(OTPActivity.this);
+                    Toast.makeText(OTPActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(Utility.internet_check(OTPActivity.this)) {
+
+                    //progressDialog.show();
+                    Utility.displayLoader(OTPActivity.this);
+                    resendotp(APIs.BASE_URL+APIs.RESENOTP);
 
                 }
                 else {
@@ -136,6 +159,53 @@ public class OTPActivity extends AppCompatActivity {
         };
 
         RequestQueue queue = Volley.newRequestQueue(OTPActivity.this);
+        queue.add(request);
+
+    }
+
+    private void resendotp(String url){
+        StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response",response);
+                try {
+                    JSONObject object=new JSONObject(response);
+                    String resp=object.getString("resp");
+                    if (resp.equals("true")){
+
+                        Utility.hideLoader(OTPActivity.this);
+                        Toast.makeText(OTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
+
+                    }
+                    else{
+                        Utility.hideLoader(OTPActivity.this);
+                        Toast.makeText(OTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Utility.hideLoader(OTPActivity.this);
+                    Log.e("Exception",e.toString());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Utility.hideLoader(OTPActivity.this);
+                Log.e("Error",error.toString());
+
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map=new HashMap<>();
+                map.put("userID",Utility.getUserId(OTPActivity.this));
+
+                return map;
+            }
+        };
+        RequestQueue queue= Volley.newRequestQueue(OTPActivity.this);
         queue.add(request);
 
     }

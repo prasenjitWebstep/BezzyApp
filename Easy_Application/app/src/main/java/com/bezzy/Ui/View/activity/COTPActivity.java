@@ -65,8 +65,13 @@ public class COTPActivity extends AppCompatActivity {
 
         btnVerify = findViewById(R.id.btnVerifyy);
         otp_view = findViewById(R.id.otp_vieww);
-        otpValue = getIntent().getExtras().getString("OTPVALUE");
-        userId = getIntent().getExtras().getString("USERID");
+        try{
+            otpValue = getIntent().getExtras().getString("OTPVALUE");
+            userId = getIntent().getExtras().getString("USERID");
+        }catch (Exception e){
+            Log.e("Exception",e.toString());
+        }
+
 
 
         btnVerify.setOnClickListener(new View.OnClickListener() {
@@ -91,19 +96,21 @@ public class COTPActivity extends AppCompatActivity {
         StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.e("Response",response);
                 try {
                     JSONObject object=new JSONObject(response);
                     String resp=object.getString("resp");
                     if (resp.equals("true")){
 
                         Utility.hideLoader(COTPActivity.this);
-                        Toast.makeText(COTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_LONG);
-                        Intent intent=new Intent(COTPActivity.this,OTPActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        Toast.makeText(COTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
+                        otpValue = object.getString("OTPcode");
+                        userId = object.getString("log_userID");
+
                     }
                     else{
-
+                        Utility.hideLoader(COTPActivity.this);
+                        Toast.makeText(COTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
