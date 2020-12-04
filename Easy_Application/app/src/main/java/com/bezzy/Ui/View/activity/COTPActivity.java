@@ -8,31 +8,58 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.utils.APIs;
+import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 
 import com.mukesh.OtpView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class COTPActivity extends AppCompatActivity {
     Button btnVerify;
     OtpView otp_view;
     ProgressDialog progressDialog;
     String otpValue,userId;
+    TextView resendotp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_o_t_p);
+        resendotp=findViewById(R.id.resend_otp);
         initViews();
-        /*imageView.setOnClickListener(new View.OnClickListener() {
+
+        resendotp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                finish();
+                if(Utility.internet_check(COTPActivity.this)) {
+                    //progressDialog.show();
+                    Utility.displayLoader(COTPActivity.this);
+                    resendotp(APIs.BASE_URL+APIs.RESENOTP);
+                }
+                else {
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(COTPActivity.this);
+                    Toast.makeText(COTPActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                }
 
             }
-        });*/
+        });
     }
     private void initViews() {
 
@@ -58,6 +85,52 @@ public class COTPActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+    private void resendotp(String url){
+        StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object=new JSONObject(response);
+                    String resp=object.getString("resp");
+                    if (resp.equals("true")){
+
+                        Utility.hideLoader(COTPActivity.this);
+                        Toast.makeText(COTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_LONG);
+                        Intent intent=new Intent(COTPActivity.this,OTPActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                    else{
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Utility.hideLoader(COTPActivity.this);
+                    Log.e("Exception",e.toString());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Utility.hideLoader(COTPActivity.this);
+                Log.e("Error",error.toString());
+
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map=new HashMap<>();
+                map.put("userID",userId);
+
+                return map;
+            }
+        };
+        RequestQueue queue= Volley.newRequestQueue(COTPActivity.this);
+        queue.add(request);
 
     }
 
