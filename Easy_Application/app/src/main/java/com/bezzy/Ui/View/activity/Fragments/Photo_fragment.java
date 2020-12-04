@@ -99,7 +99,7 @@ public class Photo_fragment extends Fragment {
     View rootView;
     EmojiconEditText emojiconEditText;
 
-    Uri mUri;
+    Uri imageuri;
 
 
 
@@ -120,9 +120,9 @@ public class Photo_fragment extends Fragment {
         //caption = view.findViewById(R.id.ed_content);
         button = view.findViewById(R.id.upload);
         //image_part = view.findViewById(R.id.image_part);
-        progressDialog = new SpotsDialog(getActivity());
+       /* progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Posting Please wait....");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);
         uoload = view.findViewById(R.id.upload_post);
 
@@ -195,7 +195,8 @@ public class Photo_fragment extends Fragment {
                 }else{
                     if (Utility.internet_check(getActivity())) {
 
-                        progressDialog.show();
+                        //progressDialog.show();
+                        Utility.displayLoader(getActivity());
 
                         switch (option) {
                             case 0:
@@ -210,7 +211,8 @@ public class Photo_fragment extends Fragment {
 
                     } else {
 
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(getActivity());
                         Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
 
                     }
@@ -233,13 +235,13 @@ public class Photo_fragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Take Photo")) {
-//                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
-//                    startActivityForResult(takePicture, 0);
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
+                    startActivityForResult(takePicture, 0);
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 // Declare mUri as globel varibale in class
-                    mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "pic_"+ String.valueOf(System.currentTimeMillis()) + ".jpg"));
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+//                    imageuri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "pic_"+ String.valueOf(System.currentTimeMillis()) + ".jpg"));
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageuri);
                     startActivityForResult(intent, 0);
 
 

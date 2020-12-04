@@ -7,6 +7,7 @@ public class APIs {
     public static String REGISTRATION = "api/registration";
     public static String OTPVERIFICATION = "api/verifyotp";
     public static String FORGETPASSWORDSEND = "api/forgotpassotpsend";
+    public static String RESENOTP ="api/resendotp";
     public static String CHANGEPASSWORD = "api/setforgotpassword";
     public static String UPDATEPROFILE = "api/UpdateProfileData";
     public static String GETDATA = "api/geteditprofiledata";
