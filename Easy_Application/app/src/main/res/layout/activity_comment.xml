@@ -53,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/back_bezy"
-        android:layout_marginBottom="60dp"/>
+        android:layout_marginBottom="45dp"/>
 
     <!-- A horizontal line between the chatbox and RecyclerView -->
     <View
@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/viewnb"
-        android:layout_marginTop="-60dp"
+        android:layout_marginTop="-45dp"
         android:background="@drawable/rounded_button"
         android:gravity="bottom">
 
@@ -106,24 +106,21 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="5dp"
                 android:padding="5dp"
-                app:tint="#A8A4A4"
-                android:layout_marginTop="10dp"/>
+                app:tint="@color/gradstart"
+                android:layout_gravity="center_vertical"/>
 
         </LinearLayout>
         <ImageView
             android:id="@+id/emoji_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/ic_happy"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="5dp"
-            android:padding="5dp"
-            android:layout_centerHorizontal="true"
+            app:tint="@color/gradstart"
+            android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:layout_alignParentLeft="true"
-
-
-            android:visibility="visible"/>
+            />
 
     </RelativeLayout>
 

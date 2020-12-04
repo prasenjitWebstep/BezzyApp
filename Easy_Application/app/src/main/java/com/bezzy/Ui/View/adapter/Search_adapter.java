@@ -22,9 +22,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.FollowingActivity;
 import com.bezzy.Ui.View.activity.Fragments.HomeFragment;
 import com.bezzy.Ui.View.activity.FriendsProfileActivity;
 import com.bezzy.Ui.View.activity.Massage;
+import com.bezzy.Ui.View.activity.MyFriendsList;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.model.Friendsnoti_item;
 import com.bezzy.Ui.View.model.Searchnoti_item;
@@ -105,24 +107,47 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
             });
         }*/
 
-        holder.btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Utility.internet_check(context)) {
+        if(dataholder.get(position).getUser_relation_status().equals("No")){
+            holder.btn.setText("FOLLOW");
+            holder.btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Utility.internet_check(context)) {
 
 
-                    Log.e("Result","1");
-                    Utility.displayLoader(context);
-                    callApiFollow(APIs.BASE_URL+APIs.FOLLOWINGREQUEST,dataholder.get(position).getId());
+                        Log.e("Result","1");
+                        Utility.displayLoader(context);
+                        callApiFollow(APIs.BASE_URL+APIs.FOLLOWINGREQUEST,dataholder.get(position).getId());
 
+                    }
+                    else {
+
+                        Utility.hideLoader(context);
+                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
+            });
+        }else if(dataholder.get(position).getUser_relation_status().equals("Yes")){
+            holder.btn.setText("FOLLOW BACK");
+            holder.btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Utility.internet_check(context)) {
 
-                    Utility.hideLoader(context);
-                    Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+
+                        Log.e("Result","1");
+                        Utility.displayLoader(context);
+                        followback(APIs.BASE_URL+APIs.FOLLOWBACKREQUEST,dataholder.get(position).getId());
+
+                    }
+                    else {
+
+                        Utility.hideLoader(context);
+                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
 
         holder.square_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +159,59 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
             }
         });
 
+    }
+
+    private void followback(String url, final String friendId) {
+        StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response",response);
+                //progressDialog.dismiss();
+                Utility.hideLoader(context);
+                try {
+                    JSONObject object=new JSONObject(response);
+                    String status=object.getString("status");
+                    if (status.equals("success")){
+                        Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, MyFriendsList.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intent);
+                    }else{
+                        Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, MyFriendsList.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intent);
+                    }
+                } catch (JSONException e) {
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(context);
+                    e.printStackTrace();
+                    Log.e("Exception",e.toString());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //progressDialog.dismiss();
+                Utility.hideLoader(context);
+                Log.e("Exception",error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+
+                map.put("login_userID",Utility.getUserId(context));
+                map.put("userID",friendId);
+
+
+                return map;
+            }
+        };
+        RequestQueue queue= Volley.newRequestQueue(context);
+        queue.add(request);
     }
 
     private void callApiFollow(String url, final String id) {
@@ -149,7 +227,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
                         Utility.hideLoader(context);
 
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, Profile.class);
+                        Intent intent = new Intent(context, FollowingActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }else{

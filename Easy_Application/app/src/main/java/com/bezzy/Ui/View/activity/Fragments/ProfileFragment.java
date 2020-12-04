@@ -189,6 +189,15 @@ public class ProfileFragment extends Fragment {
                         Utility.setFollowing(getActivity(),object.getJSONObject("usedetails").getString("following"));
                         Utility.setPosts(getActivity(),object.getJSONObject("usedetails").getString("number_of_post"));
 
+                        Utility.hideLoader(getActivity());
+                        Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(square_img);
+
+                        userName.setText(Utility.getName(getActivity()));
+
+                        following.setText(Utility.getFollowing(getActivity()));
+                        follower.setText(Utility.getFollowers(getActivity()));
+                        Likes.setText(Utility.getPosts(getActivity()));
+
 
                         JSONArray array = object.getJSONArray("user_all_posts");
                         JSONArray array1 = array.getJSONArray(array.length()-1);
@@ -200,14 +209,7 @@ public class ProfileFragment extends Fragment {
 
                         Log.e("Called","Adapter Called");
                         postRecyclerView.setAdapter((new PostAdapter(postList,getActivity())));
-                        Utility.hideLoader(getActivity());
-                        Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(square_img);
 
-                        userName.setText(Utility.getName(getActivity()));
-
-                        following.setText(Utility.getFollowing(getActivity()));
-                        follower.setText(Utility.getFollowers(getActivity()));
-                        Likes.setText(Utility.getPosts(getActivity()));
                     }else{
                         Utility.hideLoader(getActivity());
                     }

@@ -72,10 +72,12 @@ public class ChatFragment extends Fragment {
         dataholder=new ArrayList<>();
         if(Utility.internet_check(getActivity())) {
 
+            Utility.displayLoader(getActivity());
             chatNotiList(APIs.BASE_URL+APIs.CHAT_NOTI_LIST+"/"+Utility.getUserId(getActivity()));
 
         }
         else {
+            Utility.hideLoader(getActivity());
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
     }
@@ -90,6 +92,7 @@ public class ChatFragment extends Fragment {
                     JSONObject object=new JSONObject(response);
                     String status=object.getString("status");
                     if (status.equals("success")){
+                        Utility.hideLoader(getActivity());
                         JSONArray array=object.getJSONArray("chat_notification_list");
                         for (int i=0;i<array.length();i++){
                             JSONObject object11=array.getJSONObject(i);
@@ -111,6 +114,7 @@ public class ChatFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utility.hideLoader(getActivity());
                     Log.e("Exception",e.toString());
                 }
 
@@ -119,6 +123,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Exception",error.toString());
+                Utility.hideLoader(getActivity());
 
             }
         });

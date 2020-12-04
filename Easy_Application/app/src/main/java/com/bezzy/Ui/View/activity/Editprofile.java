@@ -12,9 +12,12 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,7 +54,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 
-public class Editprofile extends AppCompatActivity {
+public class Editprofile extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     TextInputEditText ed_name, ed_username, ed_email,ed_dob,ed_bio,ed_gender;
     Spinner spinner;
     Button btn_update;
@@ -65,6 +68,10 @@ public class Editprofile extends AppCompatActivity {
     int MY_SOCKET_TIMEOUT_MS = 10000;
     Uri resultUri;
     Bitmap bitmap;
+    int day,month,year;
+    String str_gender;
+    LinearLayout spinnerLayut;
+    TextInputLayout textGenderLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +86,9 @@ public class Editprofile extends AppCompatActivity {
         ed_name = findViewById(R.id.fullname);
         ed_username = findViewById(R.id.username);
         ed_bio = findViewById(R.id.bio);
+        spinner = findViewById(R.id.spinner);
+        spinnerLayut = findViewById(R.id.spinnerLayut);
+        textGenderLayout = findViewById(R.id.textGenderLayout);
 
         Glide.with(Editprofile.this).load(Utility.getImage(Editprofile.this)).into(profile_image);
 
@@ -97,6 +107,32 @@ public class Editprofile extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Please Wait..");*/
 
+        if(Utility.getGender(Editprofile.this).equalsIgnoreCase("null") || Utility.getdob(Editprofile.this).equals("")){
+            ed_dob.setFocusable(true);
+            ed_dob.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar cal = Calendar.getInstance();
+                    day = cal.get(Calendar.DAY_OF_MONTH);
+                    month = cal.get(Calendar.MONTH);
+                    year = cal.get(Calendar.YEAR);
+
+                    set();
+                }
+            });
+        }
+
+        if(Utility.getGender(Editprofile.this).equalsIgnoreCase("null") || Utility.getGender(Editprofile.this).equals("")){
+            textGenderLayout.setVisibility(View.GONE);
+            spinnerLayut.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.gender, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(this);
+        }
+
+
 
         textInputEmail = findViewById(R.id.text_input_email);
         textInputUsername = findViewById(R.id.text_input_username);
@@ -104,53 +140,36 @@ public class Editprofile extends AppCompatActivity {
 
         imageView=findViewById(R.id.back_image);
 
-        if(!Utility.getSocial(Editprofile.this).equals("1")){
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Editprofile.this,Profile.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            });
-        }
-
-
-
-
-        /*ed_dob.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                final int year = calendar.get(Calendar.YEAR);
-                final int month = calendar.get(Calendar.MONTH);
-                final int day = calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog=new DatePickerDialog(Editprofile.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        month = month + 1;
-                        String date = month + " - " + dayOfMonth + " - " + year;
-                        ed_dob.setText(date);
-
-                    }
-                },month,day,year);
-                datePickerDialog.show();
-
-            }
-        });*/
-
-        profile_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                CropImage.activity()
-                        .setAspectRatio(1,1)
-                        .setCropShape(CropImageView.CropShape.OVAL)
-                        .setOutputCompressQuality(25)
-                        .start(Editprofile.this);
-
+                Intent intent = new Intent(Editprofile.this,Profile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
+
+
+
+
+
+        if(!Utility.getSocial(Editprofile.this).equals("1")){
+
+            profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    CropImage.activity()
+                            .setAspectRatio(1,1)
+                            .setCropShape(CropImageView.CropShape.OVAL)
+                            .setOutputCompressQuality(25)
+                            .start(Editprofile.this);
+
+                }
+            });
+
+        }
+
 
        /* Spinner spinner = (Spinner) findViewById(R.id.spinnerr);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -168,10 +187,29 @@ public class Editprofile extends AppCompatActivity {
         });
 
     }
+
+    public void set(){
+        DatePickerDialog datePickerDialog=new DatePickerDialog(Editprofile.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                ed_dob.setText(i2+"-"+(i1+1)+"-"+i);
+            }
+        },year,month,day);
+
+        Calendar cal = Calendar.getInstance();
+
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+        cal.add(Calendar.DATE, 0);
+
+        datePickerDialog.show();
+    }
+
     private void callApiUpdateProfile(String url) {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
+                Log.e("Response",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -214,7 +252,11 @@ public class Editprofile extends AppCompatActivity {
                 map.put("fullname",ed_name.getText().toString());
                 map.put("email",ed_email.getText().toString());
                 map.put("dob",ed_dob.getText().toString());
-                map.put("gender",ed_gender.getText().toString());
+                if(Utility.getGender(Editprofile.this).equals("null")){
+                    map.put("gender",str_gender);
+                }else{
+                    map.put("gender",ed_gender.getText().toString());
+                }
                 map.put("user_bio",ed_bio.getText().toString());
 
                 return map;
@@ -337,4 +379,14 @@ public class Editprofile extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        str_gender = parent.getItemAtPosition(position).toString();
+        Log.e("Gender",str_gender);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

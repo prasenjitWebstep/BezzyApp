@@ -12,7 +12,7 @@
     <LinearLayout
         android:id="@+id/back_bezy"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
         android:background="@drawable/rounded_button">
@@ -76,13 +76,22 @@
             android:layout_toRightOf="@+id/img_logo"
             android:layout_gravity="center_vertical"/>
 
+
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/topdivider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:orientation="vertical"
+        android:background="@color/lightgrey"
+        android:layout_below="@id/back_bezy"/>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/back_bezy">
+        android:layout_below="@+id/topdivider">
 
         <ProgressBar
             android:id="@+id/chatProgress"

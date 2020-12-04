@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#eae8fe"
+    android:background="@color/colorAccent"
     tools:context="com.bezzy.Ui.View.activity.COTPActivity">
     <RelativeLayout
         android:id="@+id/back_bezy"
@@ -19,9 +19,9 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:text="OTP Verification"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
             android:layout_margin="10dp"/>
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:text="Verification"
                 android:textColor="@color/colourblack"
-                android:textSize="25sp"
+                android:textSize="17sp"
                 android:textStyle="normal"
                 android:paddingRight="10dp"
                 android:paddingLeft="10dp"

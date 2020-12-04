@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#eae8fe"
+    android:background="@color/colorAccent"
     tools:context="com.bezzy.Ui.View.activity.OTPActivity">
 
     <RelativeLayout
@@ -32,7 +32,7 @@
             android:layout_margin="10dp"
             android:clickable="true"
             android:src="@drawable/ic_baseline_keyboard_backspace_24"
-            app:tint="@color/colorPrimaryDark"/>
+            app:tint="@color/white"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="Verification"
                 android:textColor="@color/colourblack"
-                android:textSize="25sp"
+                android:textSize="17sp"
                 android:textStyle="normal"
                 android:paddingRight="10dp"
                 android:paddingLeft="10dp"
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:text="Enter the 4 digit OTP"
                 android:textColor="@color/colourblack"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:gravity="center"
                 android:paddingRight="10dp"
                 android:fontFamily="sans-serif-thin"

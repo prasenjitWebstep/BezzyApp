@@ -90,7 +90,6 @@ public class Photo_fragment extends Fragment {
     Uri resultUri;
     int MY_SOCKET_TIMEOUT_MS = 10000;
     LinearLayout image_part;
-    SpotsDialog progressDialog;
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
     int option;
@@ -120,9 +119,7 @@ public class Photo_fragment extends Fragment {
         //caption = view.findViewById(R.id.ed_content);
         button = view.findViewById(R.id.upload);
         //image_part = view.findViewById(R.id.image_part);
-        progressDialog = new SpotsDialog(getActivity());
-        progressDialog.setMessage("Posting Please wait....");
-        progressDialog.setCancelable(false);
+
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);
         uoload = view.findViewById(R.id.upload_post);
 
@@ -195,8 +192,6 @@ public class Photo_fragment extends Fragment {
                 }else{
                     if (Utility.internet_check(getActivity())) {
 
-                        progressDialog.show();
-
                         switch (option) {
                             case 0:
                                 Utility.displayLoader(getActivity());
@@ -210,7 +205,6 @@ public class Photo_fragment extends Fragment {
 
                     } else {
 
-                        progressDialog.dismiss();
                         Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
 
                     }
@@ -480,7 +474,6 @@ public class Photo_fragment extends Fragment {
 
                     if(resp.equals("success"))
                     {
-                        progressDialog.dismiss();
                         Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

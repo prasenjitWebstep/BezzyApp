@@ -68,7 +68,6 @@ public class Video_fragment extends Fragment {
     private static final String PLAYBACK_TIME = "play_time";
     private Uri video;
     private String videoPath;
-    SpotsDialog progressDialog;
 
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
@@ -96,9 +95,7 @@ public class Video_fragment extends Fragment {
         rootView=view.findViewById(R.id.root_view);
 
         uploadVideo = view.findViewById(R.id.upload);
-        progressDialog = new SpotsDialog(getActivity());
-        progressDialog.setMessage("Posting Please wait....");
-        progressDialog.setCancelable(false);
+
         emojIcon = new EmojIconActions(getActivity(), rootView, emojiconEditText, emojiButton);
         emojIcon.ShowEmojIcon();
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
