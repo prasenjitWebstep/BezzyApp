@@ -236,6 +236,7 @@ public class Utility {
         builder.setCancelable(false);
         topupDialog=builder.create();
         topupDialog.show();
+        topupDialog.getWindow().setLayout(200, 200);
     }
 
     public static void customProgressDialog2(Context context){

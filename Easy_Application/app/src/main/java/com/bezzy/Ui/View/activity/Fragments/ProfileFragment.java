@@ -92,13 +92,6 @@ public class ProfileFragment extends Fragment {
 
 
 
-        Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(square_img);
-
-        userName.setText(Utility.getName(getActivity()));
-
-        following.setText(Utility.getFollowing(getActivity()));
-        follower.setText(Utility.getFollowers(getActivity()));
-        Likes.setText(Utility.getPosts(getActivity()));
 
         if(!Utility.getBio(getActivity()).equals("null")){
             userBio.setVisibility(View.VISIBLE);
@@ -161,6 +154,8 @@ public class ProfileFragment extends Fragment {
 
         if(Utility.internet_check(getActivity())) {
 
+            Utility.displayLoader(getActivity());
+
             postRequest(APIs.BASE_URL+APIs.GETDATA);
         }
         else {
@@ -183,6 +178,17 @@ public class ProfileFragment extends Fragment {
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 
+                        Utility.setUserName(getActivity(),object.getJSONObject("usedetails").getString("get_username"));
+                        Utility.setName(getActivity(),object.getJSONObject("usedetails").getString("get_name"));
+                        Utility.setEmail(getActivity(),object.getJSONObject("usedetails").getString("get_email"));
+                        Utility.setdob(getActivity(),object.getJSONObject("usedetails").getString("get_dateofbirth"));
+                        Utility.setGender(getActivity(),object.getJSONObject("usedetails").getString("get_gender"));
+                        Utility.setBio(getActivity(),object.getJSONObject("usedetails").getString("bio"));
+                        Utility.setImage(getActivity(),object.getJSONObject("usedetails").getString("profile_pic"));
+                        Utility.setFollower(getActivity(),object.getJSONObject("usedetails").getString("followers"));
+                        Utility.setFollowing(getActivity(),object.getJSONObject("usedetails").getString("following"));
+                        Utility.setPosts(getActivity(),object.getJSONObject("usedetails").getString("number_of_post"));
+
 
                         JSONArray array = object.getJSONArray("user_all_posts");
                         JSONArray array1 = array.getJSONArray(array.length()-1);
@@ -194,9 +200,20 @@ public class ProfileFragment extends Fragment {
 
                         Log.e("Called","Adapter Called");
                         postRecyclerView.setAdapter((new PostAdapter(postList,getActivity())));
+                        Utility.hideLoader(getActivity());
+                        Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(square_img);
+
+                        userName.setText(Utility.getName(getActivity()));
+
+                        following.setText(Utility.getFollowing(getActivity()));
+                        follower.setText(Utility.getFollowers(getActivity()));
+                        Likes.setText(Utility.getPosts(getActivity()));
+                    }else{
+                        Utility.hideLoader(getActivity());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utility.hideLoader(getActivity());
                     Log.e("Exception",e.toString());
                 }
 
@@ -204,8 +221,8 @@ public class ProfileFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
-                Log.e("Exception",error.toString());
+                Utility.hideLoader(getActivity());
+                Log.e("VolleyError",error.toString());
 
             }
         }){
@@ -220,6 +237,8 @@ public class ProfileFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(request);
     }
+
+
     public void logout(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Log out");

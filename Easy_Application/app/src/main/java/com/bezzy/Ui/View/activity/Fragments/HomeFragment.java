@@ -128,17 +128,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        callApi();
+
+        callCheckNotificationBadge();
 
         if(Utility.internet_check(getActivity())) {
 
             //progressDialog.show();
             Utility.displayLoader(getActivity());
-
-            postRequest(APIs.BASE_URL+APIs.GETDATA);
-
-
-
 
             friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
 
@@ -152,7 +148,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void callApi() {
+    private void callCheckNotificationBadge() {
 
         try{
             if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
@@ -164,8 +160,6 @@ public class HomeFragment extends Fragment {
             Log.e("Exception",e.toString());
         }
 
-
-
         refresh(20000);
     }
 
@@ -174,7 +168,7 @@ public class HomeFragment extends Fragment {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                callApi();
+                callCheckNotificationBadge();
             }
         };
 
@@ -305,64 +299,4 @@ public class HomeFragment extends Fragment {
         queue.add(request);
     }
 
-    private void postRequest(String url) {
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                Log.e("UserDataResponse",response);
-
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    String resp = object.getString("resp");
-                    if(resp.equals("true")){
-
-                        Utility.setUserName(getActivity(),object.getJSONObject("usedetails").getString("get_username"));
-                        Utility.setName(getActivity(),object.getJSONObject("usedetails").getString("get_name"));
-                        Utility.setEmail(getActivity(),object.getJSONObject("usedetails").getString("get_email"));
-                        Utility.setdob(getActivity(),object.getJSONObject("usedetails").getString("get_dateofbirth"));
-                        Utility.setGender(getActivity(),object.getJSONObject("usedetails").getString("get_gender"));
-                        Utility.setBio(getActivity(),object.getJSONObject("usedetails").getString("bio"));
-                        Utility.setImage(getActivity(),object.getJSONObject("usedetails").getString("profile_pic"));
-                        Utility.setFollower(getActivity(),object.getJSONObject("usedetails").getString("followers"));
-                        Utility.setFollowing(getActivity(),object.getJSONObject("usedetails").getString("following"));
-                        Utility.setPosts(getActivity(),object.getJSONObject("usedetails").getString("number_of_post"));
-
-                        //progressDialog.dismiss();
-                        Utility.hideLoader(getActivity());
-
-                    }else{
-                        //progressDialog.dismiss();
-                        Utility.hideLoader(getActivity());
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("Exception",e.toString());
-                    //progressDialog.dismiss();
-                    Utility.hideLoader(getActivity());
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.e("Exception",error.toString());
-               // progressDialog.dismiss();
-                Utility.hideLoader(getActivity());
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("profile_id", Utility.getUserId(getActivity()));
-                return map;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        queue.add(request);
-    }
 }
