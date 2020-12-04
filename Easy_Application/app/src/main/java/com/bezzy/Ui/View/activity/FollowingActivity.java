@@ -59,6 +59,13 @@ public class FollowingActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(FollowingActivity.this);
         recyclerFriendsList.setLayoutManager(layoutManager);
 
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if(Utility.internet_check(FollowingActivity.this)) {
 
             //dialog.show();

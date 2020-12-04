@@ -81,11 +81,14 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
 
                 if(Utility.internet_check(context)) {
 
+                    Utility.displayLoader(context);
 
                     readChatNoti(APIs.BASE_URL+APIs.CHAT_NOTIFICATION_READ+"/"+Utility.getUserId(context)+"/"+chatlistItem.getUserID(),chatlistItem.getUserID(),chatlistItem.getImage(),chatlistItem.getUserName(),chatlistItem.getActiveStatus());
 
                 }
                 else {
+
+                    Utility.hideLoader(context);
 
                     Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
                 }
@@ -109,6 +112,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
                     JSONObject object = new JSONObject(response);
                     String status = object.getString("status");
                     if(status.equals("success")){
+                        Utility.hideLoader(context);
                         Intent intent = new Intent(context, Massage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("FrndId",userID);
@@ -116,9 +120,14 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
                         intent.putExtra("userName",name);
                         intent.putExtra("online",activeStatus);
                         context.startActivity(intent);
+
+                    }else{
+                        Utility.hideLoader(context);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utility.hideLoader(context);
+                    Log.e("Exception",e.toString());
                 }
 
 
@@ -126,6 +135,9 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                Utility.hideLoader(context);
+                Log.e("Error",error.toString());
 
             }
         });

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/root_view"
-    android:background="@color/colourwhite"
+    android:background="@color/lightgrey"
     tools:context="com.bezzy.Ui.View.activity.CommentActivity">
 
     <RelativeLayout

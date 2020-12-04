@@ -174,12 +174,12 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
                     String status=object.getString("status");
                     if (status.equals("success")){
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, MyFriendsList.class);
+                        Intent intent = new Intent(context, FollowingActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }else{
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, MyFriendsList.class);
+                        Intent intent = new Intent(context, FollowingActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }

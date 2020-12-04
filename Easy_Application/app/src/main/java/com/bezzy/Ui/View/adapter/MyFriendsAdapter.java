@@ -177,7 +177,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
                     if (status.equals("success")){
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, MyFriendsList.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         context.startActivity(intent);
                     }else{
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();

@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.FollowingActivity;
 import com.bezzy.Ui.View.activity.FriendsFriendList;
 import com.bezzy.Ui.View.activity.FriendsProfileActivity;
 import com.bezzy.Ui.View.activity.Massage;
@@ -137,8 +138,8 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
                     String status=object.getString("status");
                     if (status.equals("success")){
                         Toast.makeText(context,object.getString("alert_msg"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context, MyFriendsList.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Intent intent = new Intent(context, FollowingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         context.startActivity(intent);
 
                     }

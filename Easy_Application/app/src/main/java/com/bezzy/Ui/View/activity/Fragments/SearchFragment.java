@@ -76,6 +76,7 @@ public class SearchFragment extends Fragment {
         imgSearchBtn = view.findViewById(R.id.imgSearchBtn);
         cardSearch = view.findViewById(R.id.cardSearch);
         searchName = view.findViewById(R.id.searchName);
+        recyclerViewSearchResult = view.findViewById(R.id.recyclerViewSearchResult);
         search = "null";
 
         /*progressDialog = new SpotsDialog(getActivity());
@@ -98,13 +99,19 @@ public class SearchFragment extends Fragment {
 
 
 
-        recyclerViewSearchResult = view.findViewById(R.id.recyclerViewSearchResult);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         dataholder = new ArrayList<>();
 
         if(Utility.internet_check(getActivity())) {
 
-           // progressDialog.show();
-            
+            // progressDialog.show();
+
             Utility.displayLoader(getActivity());
 
             Log.e("Result","1");
@@ -152,7 +159,6 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        return view;
     }
 
     private void registerUserResult(String url) {
