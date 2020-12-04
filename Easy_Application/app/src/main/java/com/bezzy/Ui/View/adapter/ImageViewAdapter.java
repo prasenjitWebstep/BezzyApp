@@ -39,6 +39,7 @@ public class ImageViewAdapter extends RecyclerView.Adapter<ImageViewAdapter.Imag
                 .load(bitList.get(position))
                 .into(holder.imageDisp);
 
+
     }
 
     @Override

@@ -61,7 +61,6 @@ public class ProfileFragment extends Fragment {
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
     SpotsDialog progressDialog;
-    String url = "http://bezzy.websteptech.co.uk/api/logout";
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
 
@@ -250,7 +249,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 //progressDialog.show();
                 Utility.displayLoader(getActivity());
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, APIs.BASE_URL+APIs.LOGOUT, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {

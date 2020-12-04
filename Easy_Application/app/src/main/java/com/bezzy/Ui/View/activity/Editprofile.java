@@ -108,6 +108,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
         progressDialog.setMessage("Loading Please Wait..");*/
 
         if(Utility.getGender(Editprofile.this).equalsIgnoreCase("null") || Utility.getdob(Editprofile.this).equals("")){
+            ed_dob.getText().clear();
             ed_dob.setFocusable(true);
             ed_dob.setOnClickListener(new View.OnClickListener() {
                 @Override

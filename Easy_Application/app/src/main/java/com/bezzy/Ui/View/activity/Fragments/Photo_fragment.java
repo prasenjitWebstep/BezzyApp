@@ -48,6 +48,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.Editprofile;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.ImageViewAdapter;
 import com.bezzy.Ui.View.utils.APIs;
@@ -56,6 +57,8 @@ import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
 import com.bezzy.Ui.View.utils.VolleyMultipleMultipartRequest;
 import com.bezzy_application.R;
 import com.google.android.material.textfield.TextInputLayout;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 
 import org.json.JSONException;
@@ -83,7 +86,8 @@ public class Photo_fragment extends Fragment {
     String base64String;
     String filePath;
     //Image request code
-    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int IMAGE_PICK_CODE = 1001;
+    private static final int CAMERA_PICK = 101;
     private static final int PERMISSION_CODE = 1001;
     //EditText caption;
     Bitmap bitmap;
@@ -193,11 +197,11 @@ public class Photo_fragment extends Fragment {
                     if (Utility.internet_check(getActivity())) {
 
                         switch (option) {
-                            case 0:
+                            case 101:
                                 Utility.displayLoader(getActivity());
                                 uploadCam(APIs.BASE_URL + APIs.POSTIMAGE);
                                 break;
-                            case 1000:
+                            case 1001:
                                 Utility.displayLoader(getActivity());
                                 upload(APIs.BASE_URL + APIs.POSTIMAGE);
                                 break;
@@ -230,11 +234,18 @@ public class Photo_fragment extends Fragment {
 //                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 //                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
 //                    startActivityForResult(takePicture, 0);
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-// Declare mUri as globel varibale in class
-                    mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "pic_"+ String.valueOf(System.currentTimeMillis()) + ".jpg"));
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-                    startActivityForResult(intent, 0);
+                    Intent intent = CropImage.activity().
+                            setAspectRatio(1,1).
+                            setCropShape(CropImageView.CropShape.RECTANGLE).
+                            setOutputCompressQuality(80)
+                            .getIntent(getContext());
+                    startActivityForResult(intent, CAMERA_PICK);
+
+                            /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Declare mUri as globel varibale in class
+                            mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "pic_"+ String.valueOf(System.currentTimeMillis()) + ".jpg"));
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+                            startActivityForResult(intent, 0);*/
 
 
                 } else if (options[item].equals("Choose from Gallery")) {
@@ -260,14 +271,17 @@ public class Photo_fragment extends Fragment {
 //        startActivityForResult(intent,IMAGE_PICK_CODE);
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case 0:
-                    option = 0;
-                    if (resultCode == RESULT_OK && data != null) {
+                case CAMERA_PICK:
+                    option = 101;
+
+                    /*if (resultCode == RESULT_OK && data != null) {
 //                        BitmapFactory.Options options = new BitmapFactory.Options();
 //                        Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
 //                        bitmapList = new ArrayList<>();
@@ -277,11 +291,34 @@ public class Photo_fragment extends Fragment {
 //                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
                         Uri uri = data.getData();
                         
+                    }*/
+
+                    if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                        CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                        if (resultCode == RESULT_OK ) {
+                            resultUri = result.getUri();
+                            Log.e("ResultURI",resultUri.toString());
+                            try {
+                                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), resultUri);
+                                Log.e("Bitmap",bitmap.toString());
+                                bitmapList = new ArrayList<>();
+                                /*bitmap = (Bitmap) data.getExtras().get("data");*/
+                                bitmapList.add(0,bitmap);
+                                recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
+                                /*uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);*/
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Log.e("Exception",e.toString());
+                            }
+                        } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                            Exception error = result.getError();
+                            Log.e("ExceptionError",error.toString());
+                        }
                     }
 
                     break;
-                case 1000:
-                    option = 1000;
+                case IMAGE_PICK_CODE:
+                    option = 1001;
                     if (resultCode == RESULT_OK && data != null) {
 
                         bitmapList = new ArrayList<>();

@@ -14,6 +14,7 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
@@ -70,6 +71,8 @@ public class Massage extends AppCompatActivity {
     View rootView;
     EmojiconEditText edittext_chatbox;
     ImageView emojiButton;
+    String date;
+    boolean isScrolling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -88,6 +91,7 @@ public class Massage extends AppCompatActivity {
         chatProgress = findViewById(R.id.chatProgress);
         emojiButton = (ImageView) findViewById(R.id.emoji_btn);
         rootView = findViewById(R.id.root_view);
+        isScrolling = true;
         /*emojiconEditText=findViewById(R.id.edittext_chatbox);*/
 
         modelArrayList = new ArrayList<>();
@@ -98,30 +102,37 @@ public class Massage extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(false);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
 
+
         reyclerview_message_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (!recyclerView.canScrollVertically(-1)) {
+                if(isScrolling == true){
 
-                    if(Utility.internet_check(Massage.this)){
+                    if (!recyclerView.canScrollVertically(-1)) {
 
-                        page++;
+                        if(Utility.internet_check(Massage.this)){
 
-                        chatProgress.setVisibility(View.VISIBLE);
+                            page++;
 
-                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
+                            chatProgress.setVisibility(View.VISIBLE);
+
+                            chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
+
+
+                        }
+                        else {
+
+                            chatProgress.setVisibility(View.GONE);
+                            Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
+                        }
 
 
                     }
-                    else {
-                        chatProgress.setVisibility(View.GONE);
-                        Toast.makeText(Massage.this,"No Network!",Toast.LENGTH_SHORT).show();
-                    }
-
 
                 }
+
             }
         });
 
@@ -300,7 +311,8 @@ public class Massage extends AppCompatActivity {
                             messageModel = new ChatMessageModel(object1.getString("message_by"),
                                     object1.getString("chat_message"),
                                     object1.getString("chat_msg_time"),
-                                    object1.getString("chat_read_unread_status"));
+                                    object1.getString("chat_read_unread_status"),
+                                    object1.getString("chat_date_time"));
                             modelArrayList.add(0,messageModel);
                         }
                         linearLayoutManager = new LinearLayoutManager(Massage.this);
@@ -369,7 +381,7 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                /*Log.e("ChatResponse",response);*/
+                Log.e("ChatResponse",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -382,22 +394,32 @@ public class Massage extends AppCompatActivity {
                             messageModel = new ChatMessageModel(object1.getString("message_by"),
                                     object1.getString("chat_message"),
                                     object1.getString("chat_msg_time"),
-                                    object1.getString("chat_read_unread_status"));
+                                    object1.getString("chat_read_unread_status"),
+                                    object1.getString("chat_date_time"));
+
+                            /*date = object1.getString("chat_date_time");*/
+
                             modelArrayList.add(modelArrayList.size(),messageModel);
                         }
 
-                        /*if(page == 1){
+                        if(page != 1){
                             Log.e("Called","If()");
                             linearLayoutManager = new LinearLayoutManager(Massage.this);
                             linearLayoutManager.setReverseLayout(true);
                             linearLayoutManager.setStackFromEnd(true);
                             linearLayoutManager.setSmoothScrollbarEnabled(true);
                             reyclerview_message_list.setLayoutManager(linearLayoutManager);
-                        }*/
+                        }else{
+                            linearLayoutManager = new LinearLayoutManager(Massage.this);
+                            linearLayoutManager.setReverseLayout(true);
+                            linearLayoutManager.setStackFromEnd(false);
+                            reyclerview_message_list.setLayoutManager(linearLayoutManager);
+                        }
                         adapter = new Chatbox_adapter(Massage.this,modelArrayList);
                         adapter.notifyDataSetChanged();
                         reyclerview_message_list.setAdapter(adapter);
                     }else{
+                        isScrolling = false;
                         chatProgress.setVisibility(View.GONE);
                         /*Toast.makeText(Massage.this,"End of List",Toast.LENGTH_SHORT).show();*/
 

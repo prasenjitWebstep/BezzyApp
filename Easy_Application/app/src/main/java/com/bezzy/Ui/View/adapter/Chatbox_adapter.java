@@ -1,6 +1,7 @@
 package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,6 +64,13 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
             holder.rcv_message_time.setText(mMessageList.get(position).getChat_date_time());
 
         }
+
+        String date[] = mMessageList.get(position).getDate().split(" ");
+
+        Toast toast= Toast.makeText(mContext,
+                ""+date[0], Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, 150);
+        toast.show();
     }
 
     /*@Override
