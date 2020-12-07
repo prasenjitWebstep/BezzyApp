@@ -87,17 +87,22 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
         holder.userName.setText(friendList.get(position).getFriendName());
 
         if(!friendList.get(position).getFriendPostDays().equals("")){
-            holder.oldPost.setVisibility(View.INVISIBLE);
+            holder.oldPost.setVisibility(View.VISIBLE);
             holder.userPost.setVisibility(View.VISIBLE);
             holder.userPost.setText("Posted "+friendList.get(position).getFriendPostDays()+" days ago");
             holder.userPost.setTextColor(Color.parseColor("#f1b45c"));
         }
 
-        if(!friendList.get(position).getTodayPost().equals("")){
-            holder.noti.setVisibility(View.INVISIBLE);
-            holder.postBadge.setText(friendList.get(position).getTodayPost());
+        if(!friendList.get(position).getUnreadPostNumber().equals("") || !friendList.get(position).getTodayPost().equals("")){
+            holder.noti.setVisibility(View.VISIBLE);
+            if(!friendList.get(position).getUnreadPostNumber().equals("")){
+                holder.postBadge.setVisibility(View.VISIBLE);
+                holder.postBadge.setText(friendList.get(position).getUnreadPostNumber());
+            }else{
+                holder.postBadge.setVisibility(View.INVISIBLE);
+            }
             holder.userPost.setVisibility(View.VISIBLE);
-            holder.userPost.setText("Last Posted Today");
+            holder.userPost.setText(friendList.get(position).getTodayPost()+" New Posts");
             holder.userPost.setTextColor(Color.parseColor("#f93f07"));
         }
 

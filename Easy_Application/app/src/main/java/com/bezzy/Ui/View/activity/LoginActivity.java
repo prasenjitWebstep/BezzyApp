@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -54,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     TextView tv_forpas;
     ImageView google_btn;
+    String android_id;
 
     int RC_SIGN_IN = 0;
     SignInButton signInButton;
@@ -86,6 +88,11 @@ public class LoginActivity extends AppCompatActivity {
         openregister();
 
 
+
+        android_id  = Settings.Secure.getString(LoginActivity.this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+        Log.e("ANDROID ID",android_id);
 
        /* tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override

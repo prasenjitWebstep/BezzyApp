@@ -195,7 +195,8 @@ public class HomeFragment extends Fragment {
                                     object11.getString("friend_name"),
                                     object11.getString("friend_photo"),
                                     object11.getString("past_post_days"),
-                                    object11.getString("today_post"));
+                                    object11.getString("today_post"),
+                                    object11.getString("unread_post_number"));
                             friendsfeed_items.add(item);
                         }
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());

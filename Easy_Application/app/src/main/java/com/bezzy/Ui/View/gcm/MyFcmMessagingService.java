@@ -69,7 +69,19 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
         Log.e("TYPE",type);
 
-        sendNotification(message, title,type);
+        if(type.equals("chat_box_msg")){
+            Log.e("Chat","true");
+            String username = remoteMessage.getData().get("from_usernam");
+            String userimage = remoteMessage.getData().get("from_userimage");
+            String userid = remoteMessage.getData().get("from_userid");
+
+            sendNotification(message, title,type,username,userimage,userid);
+
+        }else{
+            sendNotification(message, title);
+        }
+
+
 
 
         /*//imageUri will contain URL of the image to be displayed with Notification
@@ -98,21 +110,21 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
         int notificationId = new Random().nextInt(60000);
 
-        Intent intent = new Intent(this, NotificationActivity.class);
+        /*Intent intent = new Intent(this, NotificationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,PendingIntent.FLAG_ONE_SHOT);
+        pendingIntent = PendingIntent.getActivity(this, 0 *//* Request code *//*, intent,PendingIntent.FLAG_ONE_SHOT);*/
 
-        /*if(Utility.getLogin(this).equals("1")){
+        if(Utility.getLogin(this).equals("1")){
             Intent intent = new Intent(this, NotificationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            pendingIntent = PendingIntent.getActivity(this, 0 *//* Request code *//*, intent,
+            pendingIntent = PendingIntent.getActivity(this, 0  , intent,
                     PendingIntent.FLAG_ONE_SHOT);
         }else{
             Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            pendingIntent = PendingIntent.getActivity(this, 0 *//* Request code *//*, intent,
+            pendingIntent = PendingIntent.getActivity(this, 0 , intent,
                     PendingIntent.FLAG_ONE_SHOT);
-        }*/
+        }
 
 
 
@@ -143,16 +155,21 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
     }
 
 
-    private void sendNotification(String messageBody, String title, String type) {
+    private void sendNotification(String messageBody, String title, String type, String username, String userimage, String userid) {
 
         int notificationId = new Random().nextInt(60000);
 
         if(!type.equals("chat_box_msg")){
+            Log.e("called","1");
             Utility.setNotificationStatus(this,"1");
         }
 
         if(Utility.getLogin(this).equals("1") && type.equals("chat_box_msg")){
-            Intent intent = new Intent(this, ChatFragment.class);
+            Log.e("called","2");
+            Intent intent = new Intent(this, Massage.class);
+            intent.putExtra("FrndId",userid);
+            intent.putExtra("userName",username);
+            intent.putExtra("userImage",userimage);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
