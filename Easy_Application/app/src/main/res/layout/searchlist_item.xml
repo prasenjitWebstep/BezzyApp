@@ -6,9 +6,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="3dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp">
         <LinearLayout
@@ -31,7 +31,7 @@
                     <ImageView
                         android:id="@+id/imageDisp"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="123dp"
                         android:src="@drawable/dsz"
                         android:scaleType="centerCrop"/>
 
