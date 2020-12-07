@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 
 import androidx.appcompat.app.AlertDialog;
@@ -110,12 +111,11 @@ public class Utility {
 
     public static void customProgressDialog(Context context){
 
-        ImageView imageView;
+        ProgressBar imageView;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View v= LayoutInflater.from(context).inflate(R.layout.popup_dialog,null);
         imageView = v.findViewById(R.id.logo_bezzy);
-        Animation mysin= AnimationUtils.loadAnimation(context, R.anim.animation);
-        imageView.startAnimation(mysin);
+
         builder.setView(v);
         builder.setCancelable(false);
         topupDialog=builder.create();

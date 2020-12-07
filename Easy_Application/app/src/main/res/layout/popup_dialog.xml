@@ -5,10 +5,10 @@
     android:layout_gravity="center"
     style="@style/NewDialog">
 
-    <ImageView
+    <ProgressBar
         android:id="@+id/logo_bezzy"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:src="@drawable/logo"
         android:layout_centerInParent="true"/>
 
