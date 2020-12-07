@@ -90,15 +90,15 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
         spinnerLayut = findViewById(R.id.spinnerLayut);
         textGenderLayout = findViewById(R.id.textGenderLayout);
 
-        Glide.with(Editprofile.this).load(Utility.getImage(Editprofile.this)).into(profile_image);
+        Glide.with(Editprofile.this).load(getIntent().getExtras().getString("image")).into(profile_image);
 
-        ed_username.setText(Utility.getUserName(Editprofile.this));
-        ed_name.setText(Utility.getName(Editprofile.this));
-        ed_email.setText(Utility.getEmail(Editprofile.this));
-        ed_dob.setText(Utility.getdob(Editprofile.this));
-        ed_gender.setText(Utility.getGender(Editprofile.this));
-        if(!Utility.getBio(Editprofile.this).equals("null")){
-            ed_bio.setText(Utility.getBio(Editprofile.this));
+        ed_username.setText(getIntent().getExtras().getString("username"));
+        ed_name.setText(getIntent().getExtras().getString("name"));
+        ed_email.setText(getIntent().getExtras().getString("email"));
+        ed_dob.setText(getIntent().getExtras().getString("dob"));
+        ed_gender.setText(getIntent().getExtras().getString("gender"));
+        if(!getIntent().getExtras().getString("bio").equals("null")){
+            ed_bio.setText(getIntent().getExtras().getString("bio"));
         }
         //str_gender.equals(Utility.getGender(Editprofile.this));
 
@@ -107,7 +107,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Please Wait..");*/
 
-        if(Utility.getGender(Editprofile.this).equalsIgnoreCase("null") || Utility.getdob(Editprofile.this).equals("")){
+        if(getIntent().getExtras().getString("dob").equalsIgnoreCase("null") || getIntent().getExtras().getString("dob").equals("")){
             ed_dob.getText().clear();
             ed_dob.setFocusable(true);
             ed_dob.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +123,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             });
         }
 
-        if(Utility.getGender(Editprofile.this).equalsIgnoreCase("null") || Utility.getGender(Editprofile.this).equals("")){
+        if(getIntent().getExtras().getString("gender").equalsIgnoreCase("null") || getIntent().getExtras().getString("gender").equals("")){
             textGenderLayout.setVisibility(View.GONE);
             spinnerLayut.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -253,7 +253,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
                 map.put("fullname",ed_name.getText().toString());
                 map.put("email",ed_email.getText().toString());
                 map.put("dob",ed_dob.getText().toString());
-                if(Utility.getGender(Editprofile.this).equals("null")){
+                if(getIntent().getExtras().getString("gender").equals("null")){
                     map.put("gender",str_gender);
                 }else{
                     map.put("gender",ed_gender.getText().toString());

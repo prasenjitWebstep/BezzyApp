@@ -92,44 +92,6 @@ public class ProfileFragment extends Fragment {
 
 
 
-        if(!Utility.getBio(getActivity()).equals("null")){
-            userBio.setVisibility(View.VISIBLE);
-            userBio.setText(Utility.getBio(getActivity()));
-        }
-
-
-        edit_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), Editprofile.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-
-        layoutFollowing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!Utility.getFollowing(getActivity()).equals("0")){
-                    Intent intent = new Intent(getActivity(), FollowingActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-
-            }
-        });
-
-        layoutFollower.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!Utility.getFollowers(getActivity()).equals("0")){
-                    Intent intent = new Intent(getActivity(), MyFriendsList.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            }
-        });
-
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,30 +134,78 @@ public class ProfileFragment extends Fragment {
 
                 try {
 
-                    JSONObject object = new JSONObject(response);
+                    final JSONObject object = new JSONObject(response);
                     Log.e("Response",response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 
-                        Utility.setUserName(getActivity(),object.getJSONObject("usedetails").getString("get_username"));
-                        Utility.setName(getActivity(),object.getJSONObject("usedetails").getString("get_name"));
-                        Utility.setEmail(getActivity(),object.getJSONObject("usedetails").getString("get_email"));
-                        Utility.setdob(getActivity(),object.getJSONObject("usedetails").getString("get_dateofbirth"));
-                        Utility.setGender(getActivity(),object.getJSONObject("usedetails").getString("get_gender"));
-                        Utility.setBio(getActivity(),object.getJSONObject("usedetails").getString("bio"));
-                        Utility.setImage(getActivity(),object.getJSONObject("usedetails").getString("profile_pic"));
-                        Utility.setFollower(getActivity(),object.getJSONObject("usedetails").getString("followers"));
-                        Utility.setFollowing(getActivity(),object.getJSONObject("usedetails").getString("following"));
-                        Utility.setPosts(getActivity(),object.getJSONObject("usedetails").getString("number_of_post"));
+                        Glide.with(ProfileFragment.this).load(object.getJSONObject("usedetails").getString("profile_pic")).into(square_img);
+
+                        userName.setText(object.getJSONObject("usedetails").getString("get_name"));
+
+                        following.setText(object.getJSONObject("usedetails").getString("following"));
+                        follower.setText(object.getJSONObject("usedetails").getString("followers"));
+                        Likes.setText(object.getJSONObject("usedetails").getString("number_of_post"));
+
+                        String bio = object.getJSONObject("usedetails").getString("bio");
+                        if(!bio.equals("null")){
+                            userBio.setVisibility(View.VISIBLE);
+                            userBio.setText(bio);
+                        }
+
+                        layoutFollowing.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    if(!object.getJSONObject("usedetails").getString("following").equals("0")){
+                                        Intent intent = new Intent(getActivity(), FollowingActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+
+                        layoutFollower.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    if(!object.getJSONObject("usedetails").getString("followers").equals("0")){
+                                        Intent intent = new Intent(getActivity(), MyFriendsList.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
 
                         Utility.hideLoader(getActivity());
-                        Glide.with(ProfileFragment.this).load(Utility.getImage(getActivity())).into(square_img);
 
-                        userName.setText(Utility.getName(getActivity()));
+                        edit_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent=new Intent(getActivity(), Editprofile.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                try {
+                                    intent.putExtra("username",object.getJSONObject("usedetails").getString("get_username"));
+                                    intent.putExtra("name",object.getJSONObject("usedetails").getString("get_name"));
+                                    intent.putExtra("image",object.getJSONObject("usedetails").getString("profile_pic"));
+                                    intent.putExtra("email",object.getJSONObject("usedetails").getString("get_email"));
+                                    intent.putExtra("gender",object.getJSONObject("usedetails").getString("get_gender"));
+                                    intent.putExtra("dob",object.getJSONObject("usedetails").getString("get_dateofbirth"));
+                                    intent.putExtra("bio",object.getJSONObject("usedetails").getString("bio"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                startActivity(intent);
+                            }
+                        });
 
-                        following.setText(Utility.getFollowing(getActivity()));
-                        follower.setText(Utility.getFollowers(getActivity()));
-                        Likes.setText(Utility.getPosts(getActivity()));
 
 
                         JSONArray array = object.getJSONArray("user_all_posts");
