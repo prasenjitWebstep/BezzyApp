@@ -101,6 +101,7 @@ public class Photo_fragment extends Fragment {
     ImageView emojiButton;
     View rootView;
     EmojiconEditText emojiconEditText;
+    Uri imageuri;
 
     Uri mUri;
 
@@ -231,15 +232,19 @@ public class Photo_fragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Take Photo")) {
+
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
+                    startActivityForResult(takePicture, CAMERA_PICK);
 //                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 //                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
 //                    startActivityForResult(takePicture, 0);
-                    Intent intent = CropImage.activity().
-                            setAspectRatio(1,1).
-                            setCropShape(CropImageView.CropShape.RECTANGLE).
-                            setOutputCompressQuality(80)
-                            .getIntent(getContext());
-                    startActivityForResult(intent, CAMERA_PICK);
+//                    Intent intent = CropImage.activity().
+//                            setAspectRatio(1,1).
+//                            setCropShape(CropImageView.CropShape.RECTANGLE).
+//                            setOutputCompressQuality(80)
+//                            .getIntent(getContext());
+//                    startActivityForResult(intent, CAMERA_PICK);
 
                             /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Declare mUri as globel varibale in class
@@ -281,6 +286,16 @@ public class Photo_fragment extends Fragment {
                 case CAMERA_PICK:
                     option = 101;
 
+                    if (resultCode == RESULT_OK && data != null) {
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
+                        bitmapList = new ArrayList<>();
+                        bitmap = (Bitmap) data.getExtras().get("data");
+                        bitmapList.add(bitmap);
+                        bitmapList.add(bitmap2);
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
+                    }
+
                     /*if (resultCode == RESULT_OK && data != null) {
 //                        BitmapFactory.Options options = new BitmapFactory.Options();
 //                        Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
@@ -293,28 +308,7 @@ public class Photo_fragment extends Fragment {
                         
                     }*/
 
-                    if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-                        CropImage.ActivityResult result = CropImage.getActivityResult(data);
-                        if (resultCode == RESULT_OK ) {
-                            resultUri = result.getUri();
-                            Log.e("ResultURI",resultUri.toString());
-                            try {
-                                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), resultUri);
-                                Log.e("Bitmap",bitmap.toString());
-                                bitmapList = new ArrayList<>();
-                                /*bitmap = (Bitmap) data.getExtras().get("data");*/
-                                bitmapList.add(0,bitmap);
-                                recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
-                                /*uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);*/
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Log.e("Exception",e.toString());
-                            }
-                        } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                            Exception error = result.getError();
-                            Log.e("ExceptionError",error.toString());
-                        }
-                    }
+
 
                     break;
                 case IMAGE_PICK_CODE:
