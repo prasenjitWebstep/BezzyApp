@@ -160,6 +160,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
                         String bio = object.getJSONObject("usedetails").getString("bio");
 
                         if(!bio.equals("null")){
+                            userBio.setVisibility(View.VISIBLE);
                             userBio.setText(object.getJSONObject("usedetails").getString("bio"));
                         }else{
 

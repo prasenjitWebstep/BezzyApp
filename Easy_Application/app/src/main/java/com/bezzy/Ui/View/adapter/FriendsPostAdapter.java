@@ -2,6 +2,7 @@ package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +85,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         if(!friendsModelList.get(position).getContents().equals("") || !friendsModelList.get(position).getContents().equals("null") || !friendsModelList.get(position).getContents().equals(null)){
             holder.post_status.setVisibility(View.VISIBLE);
-            holder.post_status.setText(friendsModelList.get(position).getContents());
+            holder.post_status.setText(Html.fromHtml(friendsModelList.get(position).getContents(), Html.FROM_HTML_MODE_COMPACT));
         }else{
             holder.post_status.setVisibility(View.GONE);
         }
