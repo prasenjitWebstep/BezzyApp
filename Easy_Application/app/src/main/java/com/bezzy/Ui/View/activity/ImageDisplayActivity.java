@@ -2,8 +2,10 @@ package com.bezzy.Ui.View.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,7 +36,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
     ImageView back_image;
     TextView username,servicesText,following_num,following_numm;
-    ImageView imageView,chat_btn;
+    ImageView imageView,chat_btn,delete_btn;
     String id,postId,type,postId2;
     EmojiconTextView servicesText_t;
 
@@ -50,6 +52,8 @@ public class ImageDisplayActivity extends AppCompatActivity {
         following_num = findViewById(R.id.following_num);
         following_numm = findViewById(R.id.following_numm);
         chat_btn = findViewById(R.id.chat_btn);
+        delete_btn=findViewById(R.id.delete_image);
+
 
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
@@ -61,6 +65,13 @@ public class ImageDisplayActivity extends AppCompatActivity {
                 Intent intent = new Intent(ImageDisplayActivity.this,Profile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+            }
+        });
+        delete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+
             }
         });
 
@@ -127,5 +138,39 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(ImageDisplayActivity.this);
         queue.add(request);
+    }
+    public void logout(){
+        final String url;
+        AlertDialog.Builder builder=new AlertDialog.Builder(ImageDisplayActivity.this);
+        builder.setTitle("Delete");
+        builder.setMessage("Are you sure to delete this image ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+                RequestQueue queue=Volley.newRequestQueue(ImageDisplayActivity.this);
+                queue.add(request);
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+            }
+        });
+        AlertDialog alertDialog=builder.create();
+        alertDialog.show();
     }
 }

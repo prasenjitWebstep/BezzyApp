@@ -142,7 +142,6 @@ public class ProfileFragment extends Fragment {
                         Glide.with(ProfileFragment.this).load(object.getJSONObject("usedetails").getString("profile_pic")).into(square_img);
 
                         userName.setText(object.getJSONObject("usedetails").getString("get_name"));
-
                         following.setText(object.getJSONObject("usedetails").getString("following"));
                         follower.setText(object.getJSONObject("usedetails").getString("followers"));
                         Likes.setText(object.getJSONObject("usedetails").getString("number_of_post"));
@@ -272,7 +271,7 @@ public class ProfileFragment extends Fragment {
                                 Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_SHORT).show();
                                 callApi(APIs.BASE_URL+APIs.GET_USER_ACTIVE_STATUS,"false");
                                 Intent i = new Intent(getActivity(), LoginActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 getActivity().startActivity(i);
                                 Utility.setLogin(getActivity(),"0");
                                 if(Utility.getSocial(getActivity()).equals("1")){
