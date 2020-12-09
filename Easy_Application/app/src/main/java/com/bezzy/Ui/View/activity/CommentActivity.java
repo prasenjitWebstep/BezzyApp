@@ -103,7 +103,6 @@ public class CommentActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        Utility.setNotificationStatus(this,"0");
 
         dataholder=new ArrayList<>();
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +133,13 @@ public class CommentActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         if(Utility.internet_check(CommentActivity.this)) {
 
             //dialog.show();
@@ -149,6 +155,7 @@ public class CommentActivity extends AppCompatActivity {
         }
 
     }
+
     private void commentList(String url) {
 
         dataholder.clear();
