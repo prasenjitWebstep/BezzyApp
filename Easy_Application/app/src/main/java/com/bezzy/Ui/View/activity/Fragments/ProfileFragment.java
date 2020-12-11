@@ -205,8 +205,6 @@ public class ProfileFragment extends Fragment {
                             }
                         });
 
-
-
                         JSONArray array = object.getJSONArray("user_all_posts");
                         JSONArray array1 = array.getJSONArray(array.length()-1);
                         Log.e("Array",array1.toString());
@@ -291,7 +289,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         HashMap<String,String> map = new HashMap<>();
-                        map.put("profile_id", Utility.getUserId(getActivity()));
+                        map.put("profile_id",Utility.getUserId(getActivity()));
                         return map;
                     }
                 };
