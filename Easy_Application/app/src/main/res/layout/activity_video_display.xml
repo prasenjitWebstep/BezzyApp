@@ -166,6 +166,7 @@
                             android:src="@drawable/ic_cancel"
                             app:tint="@color/white"
                             android:layout_marginRight="10dp"
+                            android:visibility="invisible"
                             />
 
 

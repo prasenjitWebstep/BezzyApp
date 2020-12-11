@@ -303,18 +303,6 @@ public class Photo_fragment extends Fragment {
                         recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
                     }
 
-                    /*if (resultCode == RESULT_OK && data != null) {
-//                        BitmapFactory.Options options = new BitmapFactory.Options();
-//                        Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
-//                        bitmapList = new ArrayList<>();
-//                        bitmap = (Bitmap) data.getExtras().get("data");
-//                        bitmapList.add(bitmap);
-//                        bitmapList.add(bitmap2);
-//                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
-                        Uri uri = data.getData();
-                        
-                    }*/
-
 
 
                     break;

@@ -23,10 +23,9 @@ public class ImageViewAdapter extends RecyclerView.Adapter<ImageViewAdapter.Imag
     ArrayList<Bitmap> bitList;
     ArrayList<File> fileList;
 
-    public ImageViewAdapter(Context context, ArrayList<Bitmap> bitList,ArrayList<File> fileList) {
+    public ImageViewAdapter(Context context, ArrayList<Bitmap> bitList) {
         this.context = context;
         this.bitList = bitList;
-        this.fileList = fileList;
     }
 
 

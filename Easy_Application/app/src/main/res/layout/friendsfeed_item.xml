@@ -123,22 +123,30 @@
             </RelativeLayout>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardImage"
-                android:layout_width="200dp"
-                android:layout_height="170dp"
+                android:id="@+id/cardHolder"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
                 app:cardCornerRadius="8dp"
                 android:layout_margin="5dp"
                 android:elevation="10dp"
                 android:layout_gravity="center"
                 android:visibility="gone">
 
-                <ImageView
-                    android:id="@+id/imageShow"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/dsz"
-                    android:background="@color/white"
-                    />
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imageShow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/dsz"
+                        android:background="@color/white"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"/>
+
+                </RelativeLayout>
+
             </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView

@@ -116,15 +116,15 @@
                             android:layout_centerVertical="true"
                             android:fontFamily="sans-serif-medium"
                             android:layout_toRightOf="@id/fav_btn"/>
+
                         <ImageView
                             android:id="@+id/fav_btn"
-                            android:src="@drawable/lovve"
                             android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            app:tint="@color/gradstart"
                             android:layout_marginRight="5dp"
-                            />
+                            android:src="@drawable/lovve"
+                            app:tint="@color/white" />
 
                     </RelativeLayout>
                     <RelativeLayout
@@ -156,7 +156,7 @@
                             android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
-                            app:tint="@color/gradstart"
+                            app:tint="@color/white"
                             android:layout_centerVertical="true"
                             />
 

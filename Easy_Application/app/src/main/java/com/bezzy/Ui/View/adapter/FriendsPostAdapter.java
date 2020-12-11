@@ -36,6 +36,7 @@ import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
 import com.potyvideo.library.AndExoPlayerView;
+import com.rishabhharit.roundedimageview.RoundedImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,7 +107,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                     context.startActivity(intent);
                 }
             });
-            holder.cardImage.setVisibility(View.GONE);
+            holder.imageShow.setVisibility(View.GONE);
             holder.recyclerImageShow.setVisibility(View.GONE);
             JSONArray array = friendsModelList.get(position).getPost_image_video();
             for(int i=0; i<array.length(); i++){
@@ -124,7 +125,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             JSONArray array = friendsModelList.get(position).getPost_image_video();
             int size = array.length();
             if(size<2){
-                holder.cardImage.setVisibility(View.VISIBLE);
+                holder.cardHolder.setVisibility(View.VISIBLE);
                 holder.imageShow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -153,7 +154,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
             }else{
                 holder.recyclerImageShow.setVisibility(View.VISIBLE);
-                holder.cardImage.setVisibility(View.GONE);
+                holder.imageShow.setVisibility(View.GONE);
                 holder.videoDisp.setVisibility(View.GONE);
                 StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
                 layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -266,10 +267,10 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         CircleImageView img_logo;
         TextView title_text,post_status,following_num,following_numm,descrip;
-        ImageView favBtn,favBtnfilled,chat_btn,imageShow,imageDisp;
+        ImageView favBtn,favBtnfilled,chat_btn,imageDisp,imageShow;
         RecyclerView recyclerImageShow;
         RelativeLayout videoDisp;
-        CardView cardImage;
+        CardView cardHolder;
 
         public FriendsPostHolder(@NonNull View itemView) {
             super(itemView);
@@ -286,8 +287,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             descrip = itemView.findViewById(R.id.descrip);
             imageDisp = itemView.findViewById(R.id.imageDisp);
             videoDisp = itemView.findViewById(R.id.videoDisp);
-            cardImage = itemView.findViewById(R.id.cardImage);
-
+            cardHolder = itemView.findViewById(R.id.cardHolder);
         }
     }
 }
