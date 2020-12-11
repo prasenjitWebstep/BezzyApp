@@ -240,6 +240,7 @@ public class SearchFragment extends Fragment {
                         recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));
 
                     }else{
+                        Utility.hideLoader(getActivity());
                         Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
                         if(Utility.internet_check(getActivity())) {
 

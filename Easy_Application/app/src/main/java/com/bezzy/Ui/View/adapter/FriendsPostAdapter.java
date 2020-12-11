@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -105,7 +106,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                     context.startActivity(intent);
                 }
             });
-            holder.imageShow.setVisibility(View.GONE);
+            holder.cardImage.setVisibility(View.GONE);
             holder.recyclerImageShow.setVisibility(View.GONE);
             JSONArray array = friendsModelList.get(position).getPost_image_video();
             for(int i=0; i<array.length(); i++){
@@ -123,7 +124,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             JSONArray array = friendsModelList.get(position).getPost_image_video();
             int size = array.length();
             if(size<2){
-                holder.imageShow.setVisibility(View.VISIBLE);
+                holder.cardImage.setVisibility(View.VISIBLE);
                 holder.imageShow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -152,7 +153,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
             }else{
                 holder.recyclerImageShow.setVisibility(View.VISIBLE);
-                holder.imageShow.setVisibility(View.GONE);
+                holder.cardImage.setVisibility(View.GONE);
                 holder.videoDisp.setVisibility(View.GONE);
                 StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
                 layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -268,6 +269,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
         ImageView favBtn,favBtnfilled,chat_btn,imageShow,imageDisp;
         RecyclerView recyclerImageShow;
         RelativeLayout videoDisp;
+        CardView cardImage;
 
         public FriendsPostHolder(@NonNull View itemView) {
             super(itemView);
@@ -284,6 +286,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             descrip = itemView.findViewById(R.id.descrip);
             imageDisp = itemView.findViewById(R.id.imageDisp);
             videoDisp = itemView.findViewById(R.id.videoDisp);
+            cardImage = itemView.findViewById(R.id.cardImage);
 
         }
     }

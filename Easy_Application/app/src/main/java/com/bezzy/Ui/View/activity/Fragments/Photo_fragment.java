@@ -243,7 +243,14 @@ public class Photo_fragment extends Fragment {
 //                            setAspectRatio(1,1).
 //                            setCropShape(CropImageView.CropShape.RECTANGLE).
 //                            setOutputCompressQuality(80)
-//                            .getIntent(getContext());
+//                            .getIntent(getContext());values = new ContentValues();
+//            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+//            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+//            imageUri = getContentResolver().insert(
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//            startActivityForResult(intent, PICTURE_RESULT);
 //                    startActivityForResult(intent, CAMERA_PICK);
 
                             /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -348,7 +355,7 @@ public class Photo_fragment extends Fragment {
 
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 

@@ -7,9 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,8 +29,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.adapter.Comment_adapter;
 import com.bezzy.Ui.View.adapter.Notifi_Adapter;
+import com.bezzy.Ui.View.adapter.Search_adapter;
 import com.bezzy.Ui.View.model.Comment_item;
 import com.bezzy.Ui.View.model.FriendsPostModel;
+import com.bezzy.Ui.View.model.Friendsnoti_item;
 import com.bezzy.Ui.View.model.Notification_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
@@ -42,11 +48,13 @@ import java.util.Map;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconMultiAutoCompleteTextView;
 
 public class CommentActivity extends AppCompatActivity {
 
     String id,screen;
     ArrayList<Comment_item> dataholder;
+    ArrayList<String> dataholder2;
     RecyclerView recyclerView;
     //EditText comment;
     ImageView imageView;
@@ -54,7 +62,9 @@ public class CommentActivity extends AppCompatActivity {
     EmojIconActions emojIcon;
     View rootView;
     EmojiconEditText comment;
+    String mention;
     ImageView emojiButton;
+    Friendsnoti_item ob1;
 
 
     @Override
@@ -67,20 +77,21 @@ public class CommentActivity extends AppCompatActivity {
         layout_chatbox = findViewById(R.id.layout_chatbox);
 
         id = getIntent().getExtras().getString("postId");
-        screen = getIntent().getExtras().getString("screen");
-
-        Log.e("ID",id);
 
         try{
-            if(screen.equals("1")){
+            screen = getIntent().getExtras().getString("screen");
+            if (screen.equals("1")){
                 layout_chatbox.setVisibility(View.GONE);
             }else{
                 layout_chatbox.setVisibility(View.VISIBLE);
             }
         }catch (Exception e){
-            Log.e("Exception",e.toString());
-
+            Log.e("ScreenException",e.toString());
         }
+
+        Log.e("ID",id);
+
+
         rootView = findViewById(R.id.root_view);
         emojiButton = (ImageView) findViewById(R.id.emoji_btn);
         comment=findViewById(R.id.edittext_comment);
@@ -99,12 +110,13 @@ public class CommentActivity extends AppCompatActivity {
         emojIcon.addEmojiconEditTextList(comment);
 
 
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
 
-        dataholder=new ArrayList<>();
+        dataholder = new ArrayList<>();
+        dataholder2 = new ArrayList<>();
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +144,6 @@ public class CommentActivity extends AppCompatActivity {
 
             }
         });
-
 
     }
 

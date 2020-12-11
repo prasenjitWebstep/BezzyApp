@@ -114,8 +114,8 @@ public class ImageDisplayActivity extends AppCompatActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 try {
                                     intent.putExtra("postId",object1.getString("post_id"));
-                                    Log.e("PostId",object1.getString("post_id"));
                                     intent.putExtra("screen","1");
+                                    Log.e("PostId",object1.getString("post_id"));
                                     startActivity(intent);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -140,7 +140,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         queue.add(request);
     }
     public void logout(){
-        final String url;
+        final String url = null;
         AlertDialog.Builder builder=new AlertDialog.Builder(ImageDisplayActivity.this);
         builder.setTitle("Delete");
         builder.setMessage("Are you sure to delete this image ?");
