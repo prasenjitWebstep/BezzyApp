@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -96,6 +97,7 @@ public class Photo_fragment extends Fragment {
     LinearLayout image_part;
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
+    ArrayList<File> fileList;
     int option;
     EmojIconActions emojIcon;
     ImageView emojiButton;
@@ -234,7 +236,8 @@ public class Photo_fragment extends Fragment {
                 if (options[item].equals("Take Photo")) {
 
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
+                    //File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+//                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
                     startActivityForResult(takePicture, CAMERA_PICK);
 //                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 //                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
@@ -242,7 +245,7 @@ public class Photo_fragment extends Fragment {
 //                    Intent intent = CropImage.activity().
 //                            setAspectRatio(1,1).
 //                            setCropShape(CropImageView.CropShape.RECTANGLE).
-//                            setOutputCompressQuality(80)
+//                            setOutputCompressQuality(100)
 //                            .getIntent(getContext());
 //                    startActivityForResult(intent, CAMERA_PICK);
 
@@ -291,9 +294,16 @@ public class Photo_fragment extends Fragment {
                         Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
                         bitmapList = new ArrayList<>();
                         bitmap = (Bitmap) data.getExtras().get("data");
+
+                        //method to get uri from bitmap
+                        Uri test = getImageUri(getContext(),bitmap);
+
+                        // CALL THIS METHOD TO GET THE ACTUAL PATH
+                        File finalFile = new File(getRealPathFromURI(test));
                         bitmapList.add(bitmap);
+                        fileList.add(finalFile);
                         bitmapList.add(bitmap2);
-                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), null,fileList));
                     }
 
                     /*if (resultCode == RESULT_OK && data != null) {
@@ -339,13 +349,35 @@ public class Photo_fragment extends Fragment {
                             }
                         }
 
-                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList,null));
                     }
                     break;
             }
         }
     }
 
+
+    public Uri getImageUri(Context inContext, Bitmap inImage){
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+
+    public String getRealPathFromURI(Uri uri){
+        String path= "";
+        if(getContext().getContentResolver()!=null){
+            Cursor cursor = getContext().getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                path = cursor.getString(idx);
+                cursor.close();
+            }
+        }
+        return path;
+    }
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);

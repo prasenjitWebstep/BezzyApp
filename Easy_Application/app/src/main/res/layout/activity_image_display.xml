@@ -122,7 +122,7 @@
                             android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            app:tint="@color/gradstart"
+                            app:tint="@color/white"
                             android:layout_marginRight="5dp"
                             />
 
@@ -156,7 +156,7 @@
                             android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
-                            app:tint="@color/gradstart"
+                            app:tint="@color/white"
                             android:layout_centerVertical="true"
                             />
 
@@ -168,7 +168,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_cancel"
-                        app:tint="@color/gradstart"
+                        app:tint="@color/white"
                         android:layout_marginRight="10dp"
                         />
 

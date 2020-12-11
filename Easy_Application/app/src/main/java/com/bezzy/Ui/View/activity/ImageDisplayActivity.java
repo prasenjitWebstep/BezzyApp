@@ -147,19 +147,19 @@ public class ImageDisplayActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-                RequestQueue queue=Volley.newRequestQueue(ImageDisplayActivity.this);
-                queue.add(request);
+//                StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                    }
+//                });
+//                RequestQueue queue=Volley.newRequestQueue(ImageDisplayActivity.this);
+//                queue.add(request);
 
             }
         });
