@@ -104,7 +104,8 @@ public class FollowingActivity extends AppCompatActivity {
                         JSONArray array = object.getJSONArray("following_user_list");
                         for(int i=0;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
-                            holderObj = new FriendsHolder(object1.getString("following_user_id"),object1.getString("name"),object1.getString("image"),"");
+                            holderObj = new FriendsHolder(object1.getString("following_user_id"),
+                                    object1.getString("name"),object1.getString("image"),"");
                             holderList.add(holderObj);
                         }
                         FollowingAdapter adapter = new FollowingAdapter(FollowingActivity.this,holderList,"1");

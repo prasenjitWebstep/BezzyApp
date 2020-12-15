@@ -28,15 +28,17 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.CommentActivity;
 import com.bezzy.Ui.View.activity.Friendsfeed;
+import com.bezzy.Ui.View.activity.Likeslist;
 import com.bezzy.Ui.View.activity.PostImageVideoViewActivity;
 import com.bezzy.Ui.View.model.FriendsPostModel;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
+import com.bezzy.Ui.View.model.Likes_name;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
 import com.potyvideo.library.AndExoPlayerView;
-import com.rishabhharit.roundedimageview.RoundedImageView;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -228,6 +230,15 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                 context.startActivity(intent);
             }
         });
+        holder.following_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, Likeslist.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",friendsModelList.get(position).getPost_id());
+                context.startActivity(intent);
+            }
+        });
 
     }
 
@@ -257,6 +268,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
     }
+
 
     @Override
     public int getItemCount() {

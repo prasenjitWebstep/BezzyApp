@@ -91,6 +91,7 @@ public class CommentActivity extends AppCompatActivity {
 
         Log.e("ID",id);
 
+        //for emoji keyboard
 
         rootView = findViewById(R.id.root_view);
         emojiButton = (ImageView) findViewById(R.id.emoji_btn);
