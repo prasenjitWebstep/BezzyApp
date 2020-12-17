@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,6 +56,9 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
     FriendsPostModelImage postModelObj;
     ArrayList<FriendsPostModelImage> postModelList = new ArrayList<>();
     FriendsImagePostAdapter postImageObj;
+    private static AlertDialog topupDialog;
+    String postId;
+
 
     public FriendsPostAdapter(Context context, ArrayList<FriendsPostModel> friendsModelList) {
         this.context = context;
@@ -101,10 +106,11 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             holder.imageDisp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, PostImageVideoViewActivity.class);
+                    Utility.fullscreenDialog(context,friendsModelList.get(position).getPost_id());
+                    /*Intent intent = new Intent(context, PostImageVideoViewActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("postId",friendsModelList.get(position).getPost_id());
-                    context.startActivity(intent);
+                    context.startActivity(intent);*/
                 }
             });
             holder.imageShow.setVisibility(View.GONE);
@@ -129,10 +135,11 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                 holder.imageShow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(context, PostImageVideoViewActivity.class);
+                        Utility.fullscreenDialog(context,friendsModelList.get(position).getPost_id());
+                        /*Intent intent = new Intent(context, PostImageVideoViewActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("postId",friendsModelList.get(position).getPost_id());
-                        context.startActivity(intent);
+                        context.startActivity(intent);*/
                     }
                 });
                 holder.recyclerImageShow.setVisibility(View.GONE);

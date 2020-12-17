@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bezzy.Ui.View.activity.PostImageVideoViewActivity;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
+import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
 
@@ -44,10 +45,11 @@ public class FriendsImagePostAdapter extends RecyclerView.Adapter<FriendsImagePo
         holder.imageDisp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PostImageVideoViewActivity.class);
+                /*Intent intent = new Intent(context, PostImageVideoViewActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("postId",postList.get(position).getPostId());
-                context.startActivity(intent);
+                context.startActivity(intent);*/
+                Utility.fullscreenDialog(context,postList.get(position).getPostId());
             }
         });
 

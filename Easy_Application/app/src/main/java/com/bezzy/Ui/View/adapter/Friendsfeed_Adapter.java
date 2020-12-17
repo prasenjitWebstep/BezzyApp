@@ -54,6 +54,10 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
     ArrayList<FriendsPostModel> postModelList = new ArrayList<>();
     FriendsPostAdapter adapterPost;
     SpotsDialog progressDialog;
+    String cardId;
+    String setClick = "0";
+    int expandedPosition = -1;
+    int i;
 
     public Friendsfeed_Adapter(Context context, ArrayList<Friendsfeed_item> friendList) {
         this.context = context;
@@ -109,13 +113,23 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
         holder.friendsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                i++;
+                cardId = friendList.get(position).getFriendId();
+                Log.e("NEWCARDPOSITION",cardId);
+                if(i==1){
+                    Utility.setOldID(context,cardId);
+                    Log.e("OLDCARDPOSITION",cardId);
+                }
+
+                if(Utility.getOldId(context).equals(cardId)){
+
+                }
+
                 if(holder.friendsPostCards.getVisibility() == View.VISIBLE){
-                    holder.friendsPostCards.startAnimation(AnimationUtils.loadAnimation(context,R.anim.slide_out_up));
                     holder.friendsPostCards.setVisibility(View.GONE);
                 }else{
-                    holder.friendsPostCards.startAnimation(AnimationUtils.loadAnimation(context,R.anim.slide_out_down2));
                     holder.friendsPostCards.setVisibility(View.VISIBLE);
-                    if(Utility.internet_check(context)) {
+                    if(Utility.internet_check(context)){
 
                        /* progressDialog = new SpotsDialog(context);
                         progressDialog.setMessage("Loading Please Wait...");
