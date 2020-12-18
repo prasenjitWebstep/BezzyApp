@@ -68,8 +68,17 @@ public class Profile extends AppCompatActivity {
         btmnav.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
         btmnav.getMenu().getItem(2).setEnabled(false);
         btmnav.setOnNavigationItemSelectedListener(navlistner);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new HomeFragment()).commit();
         floatingActionButton = findViewById(R.id.floatingActionButton);
+
+        try{
+            String from = getIntent().getExtras().getString("From");
+            if(from.equals("Image")){
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ProfileFragment()).commit();
+            }
+        }catch (Exception e){
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new HomeFragment()).commit();
+            Log.e("Exeption",e.toString());
+        }
 
        /* NavigationView navigationView = findViewById(R.id.bottomnav);
         //navigationView.setNavigationItemSelectedListener(this);

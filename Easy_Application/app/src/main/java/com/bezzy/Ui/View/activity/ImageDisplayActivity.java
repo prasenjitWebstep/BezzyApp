@@ -1,10 +1,10 @@
 package com.bezzy.Ui.View.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -179,6 +179,11 @@ public class ImageDisplayActivity extends AppCompatActivity {
                     if (resp.equals("success")) {
 
                         Toast.makeText(ImageDisplayActivity.this, object.getString("message"), Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(ImageDisplayActivity.this,Profile.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("From","Image");
+                        startActivity(intent);
 
                     }
                 } catch (JSONException e) {
