@@ -218,6 +218,8 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
             }
         }) {
+
+
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
