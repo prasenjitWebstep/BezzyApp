@@ -152,7 +152,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                //deleteimg(APIs.BASE_URL + APIs.DELETEIMGVID);
+                deleteimg(APIs.BASE_URL + APIs.DELETEIMGVID);
 
             }
         });
