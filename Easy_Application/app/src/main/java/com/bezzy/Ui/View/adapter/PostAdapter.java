@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bezzy.Ui.View.activity.Fragments.ProfileFragment;
+import com.bezzy.Ui.View.activity.ImageDisplayActivity;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.activity.VideoDisplayActivity;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
@@ -60,13 +61,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.imageDisp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if(postItems.get(position).getType().equals("image")){
-                    fullscreenDialog(postItems.get(position).getId(), postItems.get(position).getPostId(), postItems.get(position).getType(), context);
-                    *//*Intent intent = new Intent(context, ImageDisplayActivity.class);
+                if(postItems.get(position).getType().equals("image")){
+                    /*fullscreenDialog(postItems.get(position).getId(), postItems.get(position).getPostId(), postItems.get(position).getType(), context);*/
+                    Intent intent = new Intent(context, ImageDisplayActivity.class);
                     intent.putExtra("id",postItems.get(position).getId());
                     intent.putExtra("postId",postItems.get(position).getPostId());
                     intent.putExtra("type",postItems.get(position).getType());
-                    context.startActivity(intent);*//*
+                    context.startActivity(intent);
                 }
                 else  {
                     Intent intent = new Intent(context, VideoDisplayActivity.class);
@@ -75,9 +76,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     intent.putExtra("type", postItems.get(position).getType());
                     context.startActivity(intent);
 
-                }*/
+                }
 
-                fullscreenDialog(postItems.get(position).getId(),postItems.get(position).getPostId(),postItems.get(position).getType(),context);
+                /*fullscreenDialog(postItems.get(position).getId(),postItems.get(position).getPostId(),postItems.get(position).getType(),context);*/
             }
         });
 
