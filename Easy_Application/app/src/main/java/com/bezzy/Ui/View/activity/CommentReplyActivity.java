@@ -146,7 +146,7 @@ public class CommentReplyActivity extends AppCompatActivity {
 
             //dialog.show();
 
-            commentList(APIs.BASE_URL+APIs.COMMENT_LIST);
+            commentList(APIs.BASE_URL+APIs.COMMENT_REPLY_LIST);
 
         }
         else {
@@ -180,8 +180,8 @@ public class CommentReplyActivity extends AppCompatActivity {
                             Comment_item modelObj = new Comment_item(object11.getString("comment_id"),
                                     object11.getString("username"),object11.getString("userimage"),
                                     object11.getString("postcomment_time"),object11.getString("commentText"),
-                                    object11.getString("total_like_on_comment"),object11.getString("total_comment_on_comment"),
-                                    object11.getString("login_user_like_comment"),"");
+                                    "","",
+                                    "","");
 
                             dataholder.add(modelObj);
 
@@ -207,9 +207,8 @@ public class CommentReplyActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
-                map.put("post_id",id);
-                map.put("loginuserID", Utility.getUserId(CommentReplyActivity.this));
-                Log.e("Value",map.get("post_id"));
+                map.put("comment_id",id);
+                Log.e("Value",map.get("comment_id"));
                 return map;
             }
         };
@@ -236,7 +235,7 @@ public class CommentReplyActivity extends AppCompatActivity {
 
                             Log.e("Result","1");
 
-                            commentList(APIs.BASE_URL+APIs.COMMENT_LIST);
+                            commentList(APIs.BASE_URL+APIs.COMMENT_REPLY_LIST);
 
                         }
                         else {

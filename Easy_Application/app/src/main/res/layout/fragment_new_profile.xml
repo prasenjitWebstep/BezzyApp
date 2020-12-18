@@ -251,7 +251,8 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:gravity="center"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="0dp"
