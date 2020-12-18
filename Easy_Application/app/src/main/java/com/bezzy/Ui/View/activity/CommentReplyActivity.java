@@ -65,6 +65,8 @@ public class CommentReplyActivity extends AppCompatActivity {
         title_text = findViewById(R.id.title_text);
         comment_user = findViewById(R.id.comment_user);
         timeshow = findViewById(R.id.timeshow);
+        recyclerView = findViewById(R.id.reyclerview_comment_list);
+        imageView = findViewById(R.id.send_msg);
 
         Glide.with(CommentReplyActivity.this)
                 .load(getIntent().getExtras().getString("image"))
