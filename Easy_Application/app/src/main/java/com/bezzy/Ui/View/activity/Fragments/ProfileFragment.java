@@ -116,6 +116,7 @@ public class ProfileFragment extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("status");
