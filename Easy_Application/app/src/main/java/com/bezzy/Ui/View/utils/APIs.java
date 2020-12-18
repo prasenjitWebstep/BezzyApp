@@ -41,5 +41,6 @@ public class APIs {
     public static String CONTENT_POST = "api/PostOnlyContentForImage";
     public static String CONTENT_VIDEO = "api/PostOnlyContentForVideo";
     public static String DELETEIMGVID="api/deletepostimagevideo";
+    public static String COMMENTLIKEDISLIKE = "api/commentlikedislike";
     public static String LOGOUT = "api/logout";
 }

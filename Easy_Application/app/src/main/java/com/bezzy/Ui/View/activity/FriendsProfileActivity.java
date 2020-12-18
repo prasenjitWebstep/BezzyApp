@@ -176,7 +176,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
                         }
 
                         Log.e("Called","Adapter Called");
-                        postRecyclerView.setAdapter((new PostAdapter(postList,FriendsProfileActivity.this)));
+                        postRecyclerView.setAdapter((new PostAdapter(postList,FriendsProfileActivity.this,"2")));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

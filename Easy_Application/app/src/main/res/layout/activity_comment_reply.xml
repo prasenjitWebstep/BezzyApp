@@ -129,7 +129,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/mainComment"
-        android:layout_marginBottom="45dp"/>
+        android:layout_marginBottom="45dp"
+        android:layout_marginLeft="40dp"/>
 
     <!-- A horizontal line between the chatbox and RecyclerView -->
     <View
