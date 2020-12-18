@@ -1,11 +1,15 @@
 package com.bezzy.Ui.View.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -20,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,21 +39,29 @@ import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.OTPActivity;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
+import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
+import com.bezzy.Ui.View.utils.VolleyMultipleMultipartRequest;
 import com.bezzy_application.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import dmax.dialog.SpotsDialog;
+import de.hdodenhof.circleimageview.CircleImageView;
+//import dmax.dialog.SpotsDialog;
 
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     TextInputEditText ed_name, ed_username, ed_email, ed_password, ed_cnfpasswd,ed_dob;
+    CircleImageView profile_image;
     TextView ed_gender;
     Spinner spinner;
     private String str_gender;
@@ -57,8 +71,11 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     private TextInputLayout textInputEmail;
     private TextInputLayout textInputUsername;
     private TextInputLayout textInputPassword;
-    SpotsDialog progressDialog;
+    int MY_SOCKET_TIMEOUT_MS = 10000;
+   // SpotsDialog progressDialog;
     int day,month,year;
+    Uri resultUri;
+    Bitmap bitmap;
 
 
 
@@ -66,6 +83,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_screen);
+        profile_image = findViewById(R.id.profile_image);
         ed_email = findViewById(R.id.email);
         ed_password = findViewById(R.id.password);
         ed_name = findViewById(R.id.fullname);
@@ -121,6 +139,48 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+        profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity()
+                        .setAspectRatio(1,1)
+                        .setCropShape(CropImageView.CropShape.OVAL)
+                        .setOutputCompressQuality(25)
+                        .start(Registration.this);
+            }
+        });
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK ) {
+                resultUri = result.getUri();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(Registration.this.getContentResolver(), resultUri);
+                    /*if(!progressDialog.isShowing()){
+                     *//* progressDialog.setMessage("Uploading Image Please Wait.....");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();*//*
+
+                    }*/
+                    //Utility.displayLoader(Registration.this);
+                    //TO:DO
+                    //uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);
+                    profile_image.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("Exception",e.toString());
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.e("ExceptionError",error.toString());
+            }
+        }
     }
 
     public void set(){
@@ -170,58 +230,115 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
     private void callApiRegistration(String url) {
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if(object.getString("resp").equals("true")){
-                        //progressDialog.dismiss();
-                        Utility.hideLoader(Registration.this);
-                        Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Registration.this, OTPActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        Utility.setOtpScreen(Registration.this,"1");
-                        Utility.setUserId(Registration.this,object.getString("log_userID"));
-                    }else{
-                        //progressDialog.dismiss();
-                        Utility.hideLoader(Registration.this);
-                        Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        String response2 = new String(response.data);
+                        Log.e("RESPONSE2", response2);
+                        try {
+                            JSONObject object = new JSONObject(response2);
+                            String status = object.getString("resp");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //progressDialog.dismiss();
-                    Utility.hideLoader(Registration.this);
-                    Log.e("Exception",e.toString());
-                }
-
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //progressDialog.dismiss();
-                Utility.hideLoader(Registration.this);
-                Log.e("Error",error.toString());
+                Toast.makeText(getApplicationContext().getApplicationContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
+                Map<String, String> map = new HashMap<>();
+                // params.put("tags", "ccccc");  add string parameters
+//                params.put("userID", Utility.getUserId(getActivity()));
+//                params.put("post_content", "");
                 map.put("username",ed_email.getText().toString());
                 map.put("fullname",ed_name.getText().toString());
                 map.put("email",ed_email.getText().toString());
                 map.put("password",ed_password.getText().toString());
                 map.put("dob",ed_dob.getText().toString());
                 map.put("gender",str_gender);
+
                 return map;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imagename = System.currentTimeMillis();
+                params.put("user_profile_iamge", new DataPart(+imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
+                return params;
             }
         };
 
-        RequestQueue queue = Volley.newRequestQueue(Registration.this);
-        queue.add(request);
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                RequestQueue rQueue = Volley.newRequestQueue(Registration.this);
+                rQueue.add(volleyMultipartRequest);
+
+//        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//
+//                try {
+//                    JSONObject object = new JSONObject(response);
+//                    if(object.getString("resp").equals("true")){
+//                        //progressDialog.dismiss();
+//                        Utility.hideLoader(Registration.this);
+//                        Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(Registration.this, OTPActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(intent);
+//                        Utility.setOtpScreen(Registration.this,"1");
+//                        Utility.setUserId(Registration.this,object.getString("log_userID"));
+//                    }else{
+//                        //progressDialog.dismiss();
+//                        Utility.hideLoader(Registration.this);
+//                        Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    //progressDialog.dismiss();
+//                    Utility.hideLoader(Registration.this);
+//                    Log.e("Exception",e.toString());
+//                }
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                //progressDialog.dismiss();
+//                Utility.hideLoader(Registration.this);
+//                Log.e("Error",error.toString());
+//            }
+//        }){
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                HashMap<String,String> map = new HashMap<>();
+//                map.put("username",ed_email.getText().toString());
+//                map.put("fullname",ed_name.getText().toString());
+//                map.put("email",ed_email.getText().toString());
+//                map.put("password",ed_password.getText().toString());
+//                map.put("dob",ed_dob.getText().toString());
+//                map.put("gender",str_gender);
+//                return map;
+//            }
+//        };
+//
+//        RequestQueue queue = Volley.newRequestQueue(Registration.this);
+//        queue.add(request);
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
