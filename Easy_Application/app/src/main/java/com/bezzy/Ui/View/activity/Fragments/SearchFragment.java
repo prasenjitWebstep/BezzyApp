@@ -153,7 +153,7 @@ public class SearchFragment extends Fragment {
                         Toast.makeText(getActivity().getApplicationContext(),"No Network!",Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    search = "null";
+                    search = "null" ;
                 }
 
             }
