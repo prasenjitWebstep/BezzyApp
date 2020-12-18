@@ -56,7 +56,7 @@ import dmax.dialog.SpotsDialog;
 public class ProfileFragment extends Fragment {
     Button button;
     ImageView square_img;
-    TextView userName,following,follower,Likes,userBio,edit_btn;
+    TextView userName,following,follower,Likes,userBio,edit_btn,block_btn;
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
     RecyclerView postRecyclerView;
@@ -79,6 +79,7 @@ public class ProfileFragment extends Fragment {
         userBio = view.findViewById(R.id.userBio);
         imageView=view.findViewById(R.id.logout);
         edit_btn = view.findViewById(R.id.edit_btn);
+        block_btn = view.findViewById(R.id.block_btn);
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
         layoutFollowing = view.findViewById(R.id.layoutFollowing);
         layoutFollower = view.findViewById(R.id.layoutFollower);
@@ -88,6 +89,13 @@ public class ProfileFragment extends Fragment {
        /* progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Logging Out Please Wait....");
         progressDialog.setCancelable(false);*/
+        block_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"FUCK",Toast.LENGTH_LONG).show();
+                block(APIs.BASE_URL+APIs.BLOCK);
+            }
+        });
 
 
 
@@ -101,6 +109,40 @@ public class ProfileFragment extends Fragment {
 
 
         return view;
+
+    }
+
+    private void block( String url){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("status");
+                    if (resp.equals("success")) {
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError{
+                HashMap<String,String> map = new HashMap<>();
+                map.put("loginUserID",Utility.getUserId(getActivity()));
+                map.put("blockuserID","107");
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue.add(stringRequest);
 
     }
 

@@ -42,4 +42,5 @@ public class APIs {
     public static String CONTENT_VIDEO = "api/PostOnlyContentForVideo";
     public static String DELETEIMGVID="api/deletepostimagevideo";
     public static String LOGOUT = "api/logout";
+    public static String BLOCK = "api/blockuser";
 }

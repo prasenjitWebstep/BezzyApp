@@ -240,6 +240,18 @@
                     android:textSize="15sp"
                     android:gravity="center"
                     android:padding="10dp"/>
+                <TextView
+                    android:id="@+id/block_btn"
+                    android:text="Block Profile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/login_button_background"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:padding="10dp"/>
 
                 <TextView
                     android:layout_width="0dp"
