@@ -181,7 +181,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                         Toast.makeText(ImageDisplayActivity.this, object.getString("message"), Toast.LENGTH_LONG).show();
 
                         Intent intent = new Intent(ImageDisplayActivity.this,Profile.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.putExtra("From","Image");
                         startActivity(intent);
 

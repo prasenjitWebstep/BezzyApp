@@ -65,18 +65,24 @@ public class Profile extends AppCompatActivity {
 
         //SessionManager.getInstance(getApplicationContext()).userLogout();
         BottomNavigationView btmnav = findViewById(R.id.bottomnav);
-        btmnav.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
-        btmnav.getMenu().getItem(2).setEnabled(false);
-        btmnav.setOnNavigationItemSelectedListener(navlistner);
         floatingActionButton = findViewById(R.id.floatingActionButton);
 
         try{
+            Log.e("Called","TRY");
             String from = getIntent().getExtras().getString("From");
             if(from.equals("Image")){
+                Log.e("Called","TRY2");
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ProfileFragment()).commit();
+                btmnav.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
+                btmnav.getMenu().getItem(4).setEnabled(true);
+                btmnav.setOnNavigationItemSelectedListener(navlistner);
             }
         }catch (Exception e){
+            Log.e("Called","EXCEPTION");
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new HomeFragment()).commit();
+            btmnav.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
+            btmnav.getMenu().getItem(2).setEnabled(false);
+            btmnav.setOnNavigationItemSelectedListener(navlistner);
             Log.e("Exeption",e.toString());
         }
 
