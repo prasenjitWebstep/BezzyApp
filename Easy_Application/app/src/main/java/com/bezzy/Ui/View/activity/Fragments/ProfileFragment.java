@@ -259,7 +259,7 @@ public class ProfileFragment extends Fragment {
                         }
 
                         Log.e("Called","Adapter Called");
-                        postRecyclerView.setAdapter((new PostAdapter(postList,getActivity())));
+                        postRecyclerView.setAdapter((new PostAdapter(postList,getActivity(),"1")));
 
                     }else{
                         Utility.hideLoader(getActivity());

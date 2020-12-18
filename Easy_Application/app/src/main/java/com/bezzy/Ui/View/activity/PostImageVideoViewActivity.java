@@ -85,15 +85,15 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
 
             Toast.makeText(PostImageVideoViewActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
-        comment_btn.setOnClickListener(new View.OnClickListener() {
+        /*comment_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PostImageVideoViewActivity.this, CommentActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("postId",postId);
-                PostImageVideoViewActivity.this.startActivity(intent);
+                startActivity(intent);
             }
-        });
+        });*/
 
     }
 

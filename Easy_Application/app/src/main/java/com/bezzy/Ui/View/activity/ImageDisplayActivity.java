@@ -41,7 +41,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     ImageView back_image;
     TextView username,servicesText,following_num,following_numm;
     ImageView imageView,chat_btn,delete_btn;
-    String id,postId,type,postId2;
+    String id,postId,type,postId2,screen;
     EmojiconTextView servicesText_t;
 
     @Override
@@ -62,6 +62,13 @@ public class ImageDisplayActivity extends AppCompatActivity {
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
         type = getIntent().getExtras().getString("type");
+        screen = getIntent().getExtras().getString("screen");
+
+        if(screen.equals("1")){
+            delete_btn.setVisibility(View.VISIBLE);
+        }else{
+            delete_btn.setVisibility(View.INVISIBLE);
+        }
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,16 +121,19 @@ public class ImageDisplayActivity extends AppCompatActivity {
                         chat_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = new Intent(ImageDisplayActivity.this,CommentActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                try {
-                                    intent.putExtra("postId",object1.getString("post_id"));
-                                    intent.putExtra("screen","1");
-                                    Log.e("PostId",object1.getString("post_id"));
-                                    startActivity(intent);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                if(screen.equals("1")){
+                                    Intent intent = new Intent(ImageDisplayActivity.this,CommentActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    try {
+                                        intent.putExtra("postId",object1.getString("post_id"));
+                                        intent.putExtra("screen","1");
+                                        Log.e("PostId",object1.getString("post_id"));
+                                        startActivity(intent);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
+
 
                             }
                         });

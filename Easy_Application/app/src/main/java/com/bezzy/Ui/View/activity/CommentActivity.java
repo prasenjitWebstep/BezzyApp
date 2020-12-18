@@ -188,8 +188,9 @@ public class CommentActivity extends AppCompatActivity {
 
                             Comment_item modelObj = new Comment_item(object11.getString("comment_id"),
                                     object11.getString("username"),object11.getString("userimage"),
-                                    object11.getString("postcomment_time"),object11.getString("commentText")
-                                    );
+                                    object11.getString("postcomment_time"),object11.getString("commentText"),
+                                    object11.getString("total_like_on_comment"),object11.getString("total_comment_on_comment"),
+                                    object11.getString("login_user_like_comment"));
 
                             dataholder.add(modelObj);
 
@@ -216,6 +217,7 @@ public class CommentActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("post_id",id);
+                map.put("loginuserID",Utility.getUserId(CommentActivity.this));
                 Log.e("Value",map.get("post_id"));
                 return map;
             }
