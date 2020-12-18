@@ -47,12 +47,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import dmax.dialog.SpotsDialog;
+
 
 
 public class HomeFragment extends Fragment {
 
-    SpotsDialog progressDialog;
+
     ArrayList<Friendsnoti_item> dataholder;
     RecyclerView recyclerView;
     Friendsnoti_item ob1;

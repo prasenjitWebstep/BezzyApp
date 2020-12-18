@@ -45,7 +45,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import dmax.dialog.SpotsDialog;
+//import dmax.dialog.SpotsDialog;
 
 public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapter.FriendsfeedHolder> {
 
@@ -53,11 +53,14 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
     ArrayList<Friendsfeed_item> friendList;
     ArrayList<FriendsPostModel> postModelList = new ArrayList<>();
     FriendsPostAdapter adapterPost;
-    SpotsDialog progressDialog;
+    //SpotsDialog progressDialog;
     String cardId;
     String setClick = "0";
-    int expandedPosition = -1;
-    int i;
+    int mExpandedPosition = -1;
+    //int i;
+    String tempId ;
+    int flag = 0;
+
 
     public Friendsfeed_Adapter(Context context, ArrayList<Friendsfeed_item> friendList) {
         this.context = context;
@@ -72,6 +75,16 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
 
     @Override
     public void onBindViewHolder(@NonNull final FriendsfeedHolder holder, final int position) {
+
+//        String var = String.valueOf(flag);
+//        Log.e("POSITION BABY",var);
+
+//        if (position == expandedPosition) {
+//            holder.friendsPostCards.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.friendsPostCards.setVisibility(View.GONE);
+//        }
+
 
         Glide.with(context)
                 .load(friendList.get(position).getFriendPhoto())
@@ -106,48 +119,130 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
                 holder.postBadge.setVisibility(View.INVISIBLE);
             }
             holder.userPost.setVisibility(View.VISIBLE);
-            holder.userPost.setText(friendList.get(position).getTodayPost()+" Posts");
+            if(friendList.get(position).getTodayPost().equals("1")){
+                holder.userPost.setText(friendList.get(position).getTodayPost()+" New Post");
+            }else {
+                holder.userPost.setText(friendList.get(position).getTodayPost()+" New Posts");
+            }
+
             holder.userPost.setTextColor(Color.parseColor("#f93f07"));
         }
 
-        holder.friendsCard.setOnClickListener(new View.OnClickListener() {
+        final boolean isExpanded = position==mExpandedPosition;
+        holder.friendsPostCards.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.itemView.setActivated(isExpanded);
+
+
+
+        if(isExpanded){
+            Utility.displayLoader(context);
+            holder.friendsPostCards.setVisibility(View.VISIBLE);
+            friendsPostList(APIs.BASE_URL+APIs.FRIENDPOSTLIST+"/"+friendList.get(position).getFriendId()+"/"+Utility.getUserId(context),friendList.get(position).getFriendName(),friendList.get(position).getFriendPhoto(),holder.frds_feed);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            //int counter = 1;
+
             @Override
             public void onClick(View v) {
-                i++;
-                cardId = friendList.get(position).getFriendId();
-                Log.e("NEWCARDPOSITION",cardId);
-                if(i==1){
-                    Utility.setOldID(context,cardId);
-                    Log.e("OLDCARDPOSITION",cardId);
-                }
 
-                if(Utility.getOldId(context).equals(cardId)){
+                mExpandedPosition = isExpanded ? -1:position;
+                notifyDataSetChanged();
+//                holder.friendsPostCards.setVisibility(View.VISIBLE);
+//                        friendsPostList(APIs.BASE_URL+APIs.FRIENDPOSTLIST+"/"+friendList.get(position).getFriendId()+"/"+Utility.getUserId(context),friendList.get(position).getFriendName(),friendList.get(position).getFriendPhoto(),holder.frds_feed);
 
-                }
 
-                if(holder.friendsPostCards.getVisibility() == View.VISIBLE){
-                    holder.friendsPostCards.setVisibility(View.GONE);
-                }else{
-                    holder.friendsPostCards.setVisibility(View.VISIBLE);
-                    if(Utility.internet_check(context)){
+//                                    if(Utility.internet_check(context)){
+//
+//                                        holder.friendsPostCards.setVisibility(View.VISIBLE);
+//
+//                       /* progressDialog = new SpotsDialog(context);
+//                        progressDialog.setMessage("Loading Please Wait...");
+//                        progressDialog.setCancelable(false);
+//                        progressDialog.show();*/
+//                        Utility.displayLoader(context);
+//
+//                        friendsPostList(APIs.BASE_URL+APIs.FRIENDPOSTLIST+"/"+friendList.get(position).getFriendId()+"/"+Utility.getUserId(context),friendList.get(position).getFriendName(),friendList.get(position).getFriendPhoto(),holder.frds_feed);
+//
+//                        if(isExpanded == true){
+//                            mExpandedPosition=-1;
+//                            friendsPostList(APIs.BASE_URL+APIs.FRIENDPOSTLIST+"/"+friendList.get(position).getFriendId()+"/"+Utility.getUserId(context),friendList.get(position).getFriendName(),friendList.get(position).getFriendPhoto(),holder.frds_feed);
+//notifyDataSetChanged();
+//
+//                        }
 
-                       /* progressDialog = new SpotsDialog(context);
-                        progressDialog.setMessage("Loading Please Wait...");
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();*/
-                        Utility.displayLoader(context);
+//                        mExpandedPosition = isExpanded ? -1:position;
+//                        Log.e("FUCKFUCKFUCK",String.valueOf(mExpandedPosition));
+//                        friendsPostList(APIs.BASE_URL+APIs.FRIENDPOSTLIST+"/"+friendList.get(position).getFriendId()+"/"+Utility.getUserId(context),friendList.get(position).getFriendName(),friendList.get(position).getFriendPhoto(),holder.frds_feed);
+//
+//                        notifyDataSetChanged();
 
-                        friendsPostList(APIs.BASE_URL+APIs.FRIENDPOSTLIST+"/"+friendList.get(position).getFriendId()+"/"+Utility.getUserId(context),friendList.get(position).getFriendName(),friendList.get(position).getFriendPhoto(),holder.frds_feed);
+//                    }
+//                    else {
+//
+//                       // progressDialog.dismiss();
+//                        Utility.hideLoader(context);
+//                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+//
+//                    }
 
-                    }
-                    else {
+                //TransitionManager.beginDelayedTransition(recyclerView);
+                //notifyItemChanged(position);
+//                if (expandedPosition >= 0) {
+//                    int prev = expandedPosition;
+//                    notifyItemChanged(prev);
+//                }
+//                expandedPosition = holder.getPosition();
+//                notifyItemChanged(expandedPosition);
+                //counter++;
+//                cardId = friendList.get(position).getFriendId();
+//                tempId = cardId;
+//                flag++;
+//                String var = String.valueOf(flag);
+//               Log.e("WWWWWWW",var);
+//                i++;
+//                cardId = friendList.get(position).getFriendId();
+//                Log.e("NEWCARDPOSITION",cardId);
+//                if(i==1){
+//                    Utility.setOldID(context,cardId);
+//                    Log.e("OLDCARDPOSITION",cardId);
+//                }
+//                cardId = friendList.get(position).getFriendId();
 
-                       // progressDialog.dismiss();
-                        Utility.hideLoader(context);
-                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
 
-                    }
-                }
+//                if(Utility.getOldId(context).equals(cardId)){
+//
+//                }
+
+//                if(holder.friendsPostCards.getVisibility() == View.VISIBLE ){
+//                    holder.friendsPostCards.setVisibility(View.GONE);
+//                    //Log.e("TESTINGGGG","CLOSING BABY");
+//                }else{
+//                    holder.friendsPostCards.setVisibility(View.VISIBLE);
+//
+//                    if(Utility.internet_check(context)){
+//
+//
+//                       /* progressDialog = new SpotsDialog(context);
+//                        progressDialog.setMessage("Loading Please Wait...");
+//                        progressDialog.setCancelable(false);
+//                        progressDialog.show();*/
+//                        Utility.displayLoader(context);
+//
+//
+//                        mExpandedPosition = isExpanded ? -1:position;
+//                        friendsPostList(APIs.BASE_URL+APIs.FRIENDPOSTLIST+"/"+friendList.get(position).getFriendId()+"/"+Utility.getUserId(context),friendList.get(position).getFriendName(),friendList.get(position).getFriendPhoto(),holder.frds_feed);
+//
+//                        notifyDataSetChanged();
+//                    }
+//                    else {
+//
+//                       // progressDialog.dismiss();
+//                        Utility.hideLoader(context);
+//                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                }
 
             }
         });
