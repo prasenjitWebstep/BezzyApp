@@ -106,7 +106,12 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
         if(!friendList.get(position).getFriendPostDays().equals("")){
             holder.oldPost.setVisibility(View.VISIBLE);
             holder.userPost.setVisibility(View.VISIBLE);
-            holder.userPost.setText("Posted "+friendList.get(position).getFriendPostDays()+" days ago");
+            if(friendList.get(position).getFriendPostDays().equals("1")){
+                holder.userPost.setText("Posted "+friendList.get(position).getFriendPostDays()+" day ago");
+            }else{
+                holder.userPost.setText("Posted "+friendList.get(position).getFriendPostDays()+" days ago");
+            }
+
             holder.userPost.setTextColor(Color.parseColor("#f1b45c"));
         }
 
