@@ -117,18 +117,6 @@ public class Utility {
         return memIdPreferences.getString("status", "0");
     }
 
-    public static void setOldID(Context mContext, String type) {
-        SharedPreferences preferences = mContext.getSharedPreferences("Bezzy", 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("oldId", type);
-        editor.apply();
-    }
-
-    public static String getOldId(Context mContext) {
-        SharedPreferences memIdPreferences = mContext.getSharedPreferences("Bezzy", 0); // 0 - for private mode
-        return memIdPreferences.getString("oldId", "0");
-    }
-
     public static void displayLoader(Context context){
 
         customProgressDialog(context);

@@ -246,14 +246,30 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                         try {
                             JSONObject object = new JSONObject(response2);
                             String status = object.getString("resp");
+                            if(status.equals("true")){
+                                Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
+                                Utility.hideLoader(Registration.this);
+                                Utility.setOtpScreen(Registration.this,"1");
+                                Utility.setUserId(Registration.this,object.getString("log_userID"));
+                                Intent intent = new Intent(Registration.this, OTPActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }else{
+                                Utility.hideLoader(Registration.this);
+                                Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
+                            }
                         } catch (JSONException e) {
+                            Utility.hideLoader(Registration.this);
+                            Log.e("Exception",e.toString());
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext().getApplicationContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
+                Log.e("Error",error.toString());
+                Utility.hideLoader(Registration.this);
+                Toast.makeText(getApplicationContext().getApplicationContext(), "Please Upload Profile Picture", Toast.LENGTH_LONG).show();
             }
         }){
             @Override

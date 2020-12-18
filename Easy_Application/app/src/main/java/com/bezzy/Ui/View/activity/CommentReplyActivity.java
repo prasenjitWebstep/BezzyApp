@@ -135,6 +135,26 @@ public class CommentReplyActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(Utility.internet_check(CommentReplyActivity.this)) {
+
+            //dialog.show();
+
+            commentList(APIs.BASE_URL+APIs.COMMENT_LIST);
+
+        }
+        else {
+
+            //dialog.dismiss();
+
+            Toast.makeText(CommentReplyActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     private void commentList(String url) {
 
         dataholder.clear();
