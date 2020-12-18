@@ -84,6 +84,7 @@ public class Comment_adapter extends RecyclerView.Adapter<Comment_adapter.Commen
                 intent.putExtra("comment",dataholder.get(position).getCommentText());
                 intent.putExtra("time",dataholder.get(position).getPost_comment_time());
                 intent.putExtra("id",dataholder.get(position).getCommentid());
+                intent.putExtra("postId",dataholder.get(position).getPostID());
                 context.startActivity(intent);
             }
         });

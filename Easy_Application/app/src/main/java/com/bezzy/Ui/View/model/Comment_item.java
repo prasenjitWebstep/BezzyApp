@@ -1,12 +1,12 @@
 package com.bezzy.Ui.View.model;
 
 public class Comment_item {
-    String commentid,username,user_image,post_comment_time,commentText,commentLikeNo,commentReplyNo,userCommentLikeStatus;
+    String commentid,username,user_image,post_comment_time,commentText,commentLikeNo,commentReplyNo,userCommentLikeStatus,postID;
 
     public Comment_item(String commentid, String username,
                         String user_image, String post_comment_time,
                         String commentText, String commentLikeNo,
-                        String commentReplyNo, String userCommentLikeStatus) {
+                        String commentReplyNo, String userCommentLikeStatus,String postID) {
         this.commentid = commentid;
         this.username = username;
         this.user_image = user_image;
@@ -15,6 +15,7 @@ public class Comment_item {
         this.commentLikeNo = commentLikeNo;
         this.commentReplyNo = commentReplyNo;
         this.userCommentLikeStatus = userCommentLikeStatus;
+        this.postID = postID;
     }
 
     public String getCommentid() {
@@ -68,5 +69,9 @@ public class Comment_item {
 
     public String getUserCommentLikeStatus() {
         return userCommentLikeStatus;
+    }
+
+    public String getPostID() {
+        return postID;
     }
 }

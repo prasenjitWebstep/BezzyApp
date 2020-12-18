@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.adapter.Comment_adapter;
+import com.bezzy.Ui.View.adapter.ReplyAdapter;
 import com.bezzy.Ui.View.model.Comment_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
@@ -54,7 +55,7 @@ public class CommentReplyActivity extends AppCompatActivity {
     EmojiconEditText comment;
     String mention;
     ImageView emojiButton;
-    String id;
+    String id,postId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,8 @@ public class CommentReplyActivity extends AppCompatActivity {
         timeshow.setText(getIntent().getExtras().getString("time"));
 
         id = getIntent().getExtras().getString("id");
+
+        postId = getIntent().getExtras().getString("postId");
 
         rootView = findViewById(R.id.root_view);
         emojiButton = (ImageView) findViewById(R.id.emoji_btn);
@@ -178,13 +181,13 @@ public class CommentReplyActivity extends AppCompatActivity {
                                     object11.getString("username"),object11.getString("userimage"),
                                     object11.getString("postcomment_time"),object11.getString("commentText"),
                                     object11.getString("total_like_on_comment"),object11.getString("total_comment_on_comment"),
-                                    object11.getString("login_user_like_comment"));
+                                    object11.getString("login_user_like_comment"),"");
 
                             dataholder.add(modelObj);
 
                         }
 
-                        recyclerView.setAdapter(new Comment_adapter(CommentReplyActivity.this,dataholder));
+                        recyclerView.setAdapter(new ReplyAdapter(CommentReplyActivity.this,dataholder));
 
 
                     }
@@ -267,8 +270,8 @@ public class CommentReplyActivity extends AppCompatActivity {
                 HashMap<String,String> map = new HashMap<>();
 
                 map.put("userID",Utility.getUserId(CommentReplyActivity.this));
-                map.put("PostId",id);
-                map.put("commentParentId","0");
+                map.put("PostId",postId);
+                map.put("commentParentId",id);
                 map.put("commentText",comment.getText().toString());
 
                 return map;

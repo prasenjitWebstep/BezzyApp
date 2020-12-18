@@ -190,7 +190,7 @@ public class CommentActivity extends AppCompatActivity {
                                     object11.getString("username"),object11.getString("userimage"),
                                     object11.getString("postcomment_time"),object11.getString("commentText"),
                                     object11.getString("total_like_on_comment"),object11.getString("total_comment_on_comment"),
-                                    object11.getString("login_user_like_comment"));
+                                    object11.getString("login_user_like_comment"),object11.getString("post_id"));
 
                             dataholder.add(modelObj);
 
