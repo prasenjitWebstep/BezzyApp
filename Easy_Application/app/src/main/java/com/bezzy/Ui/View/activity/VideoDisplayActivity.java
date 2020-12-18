@@ -1,5 +1,7 @@
 package com.bezzy.Ui.View.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,11 +28,14 @@ import com.potyvideo.library.AndExoPlayerView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class VideoDisplayActivity extends AppCompatActivity {
     VideoView videoView;
     AndExoPlayerView andExoPlayerView;
     String id,postId,type;
-    ImageView back_image,chat_btn;
+    ImageView back_image,chat_btn,delete_btn;
     TextView servicesText,username,following_num,following_numm;
 
     @Override
@@ -43,6 +49,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
         following_num = findViewById(R.id.following_num);
         following_numm = findViewById(R.id.following_numm);
         chat_btn =  findViewById(R.id.chat_btn);
+        delete_btn=findViewById(R.id.delete_video);
 
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
@@ -56,6 +63,13 @@ public class VideoDisplayActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        /*delete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete();
+
+            }
+        });*/
 
         if(Utility.internet_check(VideoDisplayActivity.this)) {
 
@@ -123,6 +137,67 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(VideoDisplayActivity.this);
         queue.add(request);
+    }
+    public void delete() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(VideoDisplayActivity.this);
+        builder.setTitle("Delete");
+        builder.setMessage("Are you sure to delete this video ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //deletevid(APIs.BASE_URL + APIs.DELETEIMGVID);
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    private void deletevid(String url) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response", response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("status");
+                    if (resp.equals("success")) {
+
+                        Toast.makeText(VideoDisplayActivity.this, object.getString("message"), Toast.LENGTH_LONG).show();
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("Exception", e.toString());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error", error.toString());
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("imgvideoID", postId);
+                map.put("post_type",type );
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(VideoDisplayActivity.this);
+        queue.add(request);
+
+
     }
 
 }

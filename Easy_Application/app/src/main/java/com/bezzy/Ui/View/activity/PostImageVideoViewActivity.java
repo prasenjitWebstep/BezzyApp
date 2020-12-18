@@ -94,6 +94,28 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
                 PostImageVideoViewActivity.this.startActivity(intent);
             }
         });
+        fav_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(PostImageVideoViewActivity.this,Likeslist.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",postId);
+                PostImageVideoViewActivity.this.startActivity(intent);
+
+
+            }
+        });
+        following_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(PostImageVideoViewActivity.this,Likeslist.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",postId);
+                PostImageVideoViewActivity.this.startActivity(intent);
+
+
+            }
+        });
 
     }
 

@@ -15,14 +15,14 @@
             android:id="@+id/go_bezzy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/back_image"
             android:fontFamily="sans-serif-light"
             android:text="Go Login"
             android:textColor="@color/colourwhite"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical" />
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/back_image"
@@ -31,8 +31,7 @@
             android:layout_margin="10dp"
             android:clickable="true"
             android:src="@drawable/ic_baseline_keyboard_backspace_24"
-            app:tint="@color/colourwhite"
-            />
+            app:tint="@color/colourwhite" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -50,17 +49,56 @@
                 android:id="@+id/log_phase"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/rounded_button">
+                android:background="@drawable/rounded_button"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:paddingLeft="10dp"
-                    android:layout_marginTop="50dp"
                     android:text="Register"
                     android:textColor="@color/colourblack"
                     android:textSize="25sp"
                     android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/image_part"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:elevation="5dp"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:id="@+id/square_img"
+                            android:layout_width="85dp"
+                            android:layout_height="85dp"
+                            android:src="@drawable/user" />
+                    </androidx.cardview.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/imgAdd"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="right|bottom"
+                        android:layout_marginLeft="-8dp"
+                        android:layout_marginBottom="5dp"
+                        android:src="@drawable/ic_add"
+                        app:tint="@color/gradstart"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_input_username"
@@ -68,27 +106,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:enabled="true"
-                    app:errorEnabled="true"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Username"
-                        android:textSize="15sp"
-                        android:textColor="@color/colourblack"/>
+                        android:textColor="@color/colourblack"
+                        android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    app:errorEnabled="true"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/fullname"
@@ -96,8 +134,8 @@
                         android:layout_height="wrap_content"
                         android:hint="Name"
                         android:inputType="text"
-                        android:textSize="15sp"
-                        android:textColor="@color/colourblack"/>
+                        android:textColor="@color/colourblack"
+                        android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -105,9 +143,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    app:errorEnabled="true"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/email"
@@ -115,8 +153,8 @@
                         android:layout_height="wrap_content"
                         android:hint="Email Address"
                         android:inputType="textWebEmailAddress"
-                        android:textSize="15sp"
-                        android:textColor="@color/colourblack"/>
+                        android:textColor="@color/colourblack"
+                        android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -124,10 +162,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    app:errorEnabled="true"
-                    app:endIconMode="password_toggle"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    app:endIconMode="password_toggle"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
@@ -135,8 +173,8 @@
                         android:layout_height="wrap_content"
                         android:hint="Password"
                         android:inputType="textPassword"
-                        android:textSize="15sp"
-                        android:textColor="@color/colourblack"/>
+                        android:textColor="@color/colourblack"
+                        android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -144,10 +182,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    app:errorEnabled="true"
-                    app:endIconMode="password_toggle"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    app:endIconMode="password_toggle"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cnf_password"
@@ -155,26 +193,26 @@
                         android:layout_height="wrap_content"
                         android:hint="Confirm Password"
                         android:inputType="textPassword"
-                        android:textSize="15sp"
-                        android:textColor="@color/colourblack"/>
+                        android:textColor="@color/colourblack"
+                        android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    app:errorEnabled="true"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/dob"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="false"
                         android:hint="Date of Birth"
-                        android:textSize="15sp"
                         android:textColor="@color/colourblack"
-                        android:focusable="false"/>
+                        android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -184,7 +222,7 @@
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp" />
 
                 <TextView
                     android:id="@+id/gender"
@@ -192,41 +230,40 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/colourblack"
                     android:layout_marginBottom="20dp"
-                   />
-               <!-- <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="3"
-                    android:layout_margin="10dp"
-                    android:padding="5dp">
-                <RadioGroup
-                    android:id="@+id/gender_radio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <RadioButton android:id="@+id/radio_male"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/male"
+                    android:background="@color/colourblack" />
+                <!-- <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:weightSum="3"
+                     android:layout_margin="10dp"
+                     android:padding="5dp">
+                 <RadioGroup
+                     android:id="@+id/gender_radio"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     >
+                     <RadioButton android:id="@+id/radio_male"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="@string/male"
 
-                        android:layout_weight="1"/>
-                    <RadioButton android:id="@+id/radio_female"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/female"
+                         android:layout_weight="1"/>
+                     <RadioButton android:id="@+id/radio_female"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="@string/female"
 
-                        android:layout_weight="1"/>
-                    <RadioButton android:id="@+id/radio_other"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/other"
+                         android:layout_weight="1"/>
+                     <RadioButton android:id="@+id/radio_other"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="@string/other"
 
-                        android:layout_weight="1"/>
-                </RadioGroup>
-                </LinearLayout>-->
+                         android:layout_weight="1"/>
+                 </RadioGroup>
+                 </LinearLayout>-->
 
 
                 <Button
@@ -234,16 +271,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/login_button_background"
                     android:fontFamily="sans-serif-medium"
                     android:text="Register"
+                    android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="17sp"
-                    android:textAllCaps="false"/>
+                    android:textSize="17sp" />
 
             </LinearLayout>
 

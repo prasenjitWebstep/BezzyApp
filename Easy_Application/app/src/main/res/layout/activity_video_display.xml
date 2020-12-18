@@ -158,15 +158,15 @@
 
                         </RelativeLayout>
                         <ImageView
-                            android:id="@+id/delete_image"
+                            android:id="@+id/delete_video"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/ic_cancel"
+                            android:src="@drawable/ic_delete"
                             app:tint="@color/white"
                             android:layout_marginRight="10dp"
-                            android:visibility="invisible"
+                            android:visibility="visible"
                             />
 
 

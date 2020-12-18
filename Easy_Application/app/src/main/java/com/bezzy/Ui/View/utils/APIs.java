@@ -15,6 +15,7 @@ public class APIs {
     public static String SOCIALLOGINURL = "api/SocialLoginData";
     public static String POSTIMAGE = "api/PostImage";
     public static String POSTVIDEO ="api/PostVideo";
+    public static String DELETEIMGVID="api/deletepostimagevideo";
     public static String REGISTERUSERLIST = "api/RegisterUserList";
     public static String SEARCH = "api/searchregisteruser";
     public static String NOTIFICATION = "api/Notificationlist";

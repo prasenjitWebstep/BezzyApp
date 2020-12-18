@@ -168,9 +168,9 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_delete"
-                        app:tint="@color/gradstart"
+                        app:tint="@color/white"
                         android:layout_marginRight="10dp"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         />
 
 

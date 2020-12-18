@@ -40,11 +40,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, final int position) {
 
-        for(PostModel model : postItems){
+        /*for(PostModel model : postItems){
 
             Log.e("Image",model.getImage());
 
-        }
+        }*/
 
         Glide.with(context)
                 .load(postItems.get(position).getImage())
@@ -62,8 +62,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 if(postItems.get(position).getType().equals("image")){
                     Intent intent = new Intent(context, ImageDisplayActivity.class);
                     intent.putExtra("id",postItems.get(position).getId());
+                    Log.e("ID",postItems.get(position).getId());
                     intent.putExtra("postId",postItems.get(position).getPostId());
+                    Log.e("ID",postItems.get(position).getPostId());
                     intent.putExtra("type",postItems.get(position).getType());
+                    Log.e("ID",postItems.get(position).getType());
                     context.startActivity(intent);
                 }
                 else  {
