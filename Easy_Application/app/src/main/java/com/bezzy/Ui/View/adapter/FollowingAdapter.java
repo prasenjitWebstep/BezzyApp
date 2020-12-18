@@ -124,8 +124,23 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
         holder.btn_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,"Blocked",Toast.LENGTH_LONG).show();
-                block(APIs.BASE_URL+APIs.BLOCK);
+
+                if(Utility.internet_check(context)) {
+
+                    Utility.displayLoader(context);
+
+                    block(APIs.BASE_URL+APIs.BLOCK,friendsHolder.get(position).getFriendId());
+
+
+                }
+                else {
+
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(context);
+                    Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
 
@@ -179,33 +194,45 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
         RequestQueue queue= Volley.newRequestQueue(context);
         queue.add(request);
     }
-    private void block( String url){
+    private void block(String url,final String s){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
+                Log.e("Response",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("status");
                     if (resp.equals("success")) {
+                        Utility.hideLoader(context);
                         Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, FollowingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intent);
+                    }else{
+                        Utility.hideLoader(context);
                     }
                 } catch (JSONException e) {
+                    Utility.hideLoader(context);
                     e.printStackTrace();
+                    Log.e("Exception",e.toString());
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Utility.hideLoader(context);
+                Log.e("Exception",error.toString());
             }
         }){
             @Override
             protected Map<String,String> getParams() throws AuthFailureError{
                 HashMap<String,String> map = new HashMap<>();
                 map.put("loginUserID",Utility.getUserId(context));
-                map.put("blockuserID","107");
+                map.put("blockuserID",s);
+                Log.e("GETID",map.get("blockuserID"));
                 return map;
             }
         };
