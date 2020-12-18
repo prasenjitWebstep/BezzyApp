@@ -40,5 +40,6 @@ public class APIs {
     public static String INSTANT_MSG = "api/get-last-unread_msg";
     public static String CONTENT_POST = "api/PostOnlyContentForImage";
     public static String CONTENT_VIDEO = "api/PostOnlyContentForVideo";
+    public static String DELETEIMGVID="api/deletepostimagevideo";
     public static String LOGOUT = "api/logout";
 }

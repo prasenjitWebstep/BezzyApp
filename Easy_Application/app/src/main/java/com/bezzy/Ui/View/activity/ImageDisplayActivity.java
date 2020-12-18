@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,6 +29,9 @@ import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 import kr.pe.burt.android.lib.androidgradientimageview.AndroidGradientImageView;
@@ -70,7 +74,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                delete();
 
             }
         });
@@ -139,7 +143,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(ImageDisplayActivity.this);
         queue.add(request);
     }
-    public void logout(){
+    public void delete(){
         final String url = null;
         AlertDialog.Builder builder=new AlertDialog.Builder(ImageDisplayActivity.this);
         builder.setTitle("Delete");
@@ -147,19 +151,8 @@ public class ImageDisplayActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//
-//                    }
-//                });
-//                RequestQueue queue=Volley.newRequestQueue(ImageDisplayActivity.this);
-//                queue.add(request);
+
+                deleteimg(APIs.BASE_URL + APIs.DELETEIMGVID);
 
             }
         });
@@ -173,4 +166,46 @@ public class ImageDisplayActivity extends AppCompatActivity {
         AlertDialog alertDialog=builder.create();
         alertDialog.show();
     }
+
+    private void deleteimg(String url) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response", response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("status");
+                    if (resp.equals("success")) {
+
+                        Toast.makeText(ImageDisplayActivity.this, object.getString("message"), Toast.LENGTH_LONG).show();
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("Exception", e.toString());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error", error.toString());
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("imgvideoID", postId);
+                map.put("post_type",type );
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ImageDisplayActivity.this);
+        queue.add(request);
+
+
+    }
+
 }
