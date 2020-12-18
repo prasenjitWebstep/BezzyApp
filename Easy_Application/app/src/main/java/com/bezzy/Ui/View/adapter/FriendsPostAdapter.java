@@ -30,6 +30,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.CommentActivity;
 import com.bezzy.Ui.View.activity.Friendsfeed;
+import com.bezzy.Ui.View.activity.ImageDisplayActivity;
+import com.bezzy.Ui.View.activity.Likeslist;
 import com.bezzy.Ui.View.activity.PostImageVideoViewActivity;
 import com.bezzy.Ui.View.model.FriendsPostModel;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
@@ -235,6 +237,25 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                 context.startActivity(intent);
             }
         });
+
+        holder.following_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Likeslist.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",friendsModelList.get(position).getPost_id());
+                context.startActivity(intent);
+            }
+        });
+        /*holder.imageShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ImageDisplayActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",friendsModelList.get(position).getPost_id());
+                context.startActivity(intent);
+            }
+        });*/
 
     }
 

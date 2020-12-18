@@ -16,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.bezzy.Ui.View.activity.CommentReplyActivity"></activity>
+        <activity android:name="com.bezzy.Ui.View.activity.Likeslist"></activity>
+        <activity android:name="com.bezzy.Ui.View.activity.Passwordchange"></activity>
+        <activity android:name="com.bezzy.Ui.View.activity.Blocklist" />
+        <activity android:name="com.bezzy.Ui.View.activity.CommentReplyActivity" />
         <activity
             android:name="com.bezzy.Ui.View.activity.FollowingActivity"
             android:screenOrientation="portrait"

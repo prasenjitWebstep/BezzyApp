@@ -50,7 +50,6 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
     Context context;
     ArrayList<FriendsHolder> friendsHolder;
     String screen;
-    SpotsDialog progressDialog;
 
     public FollowingAdapter(Context context, ArrayList<FriendsHolder> friendsHolder,String screen) {
         this.context = context;
@@ -122,6 +121,13 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
 
             }
         });
+        holder.btn_block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,"Blocked",Toast.LENGTH_LONG).show();
+                block(APIs.BASE_URL+APIs.BLOCK);
+            }
+        });
 
     }
 
@@ -173,6 +179,41 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
         RequestQueue queue= Volley.newRequestQueue(context);
         queue.add(request);
     }
+    private void block( String url){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("status");
+                    if (resp.equals("success")) {
+                        Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError{
+                HashMap<String,String> map = new HashMap<>();
+                map.put("loginUserID",Utility.getUserId(context));
+                map.put("blockuserID","107");
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
+
+    }
+
 
     @Override
     public int getItemCount() {
@@ -183,7 +224,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
 
         CircleImageView circularImg;
         TextView userName;
-        TextView btn;
+        TextView btn,btn_block;
         ImageView addFriend,chat;
 
         public MyFriendHoler(@NonNull View itemView) {
@@ -191,6 +232,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
             circularImg = itemView.findViewById(R.id.circularImg);
             userName = itemView.findViewById(R.id.userName);
             btn = itemView.findViewById(R.id.btn);
+            btn_block=itemView.findViewById(R.id.btn_block);
             addFriend = itemView.findViewById(R.id.addFriend);
             chat = itemView.findViewById(R.id.chat);
 

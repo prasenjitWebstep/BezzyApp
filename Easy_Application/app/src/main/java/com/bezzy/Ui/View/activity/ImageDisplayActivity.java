@@ -85,6 +85,28 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
             }
         });
+        /*following_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ImageDisplayActivity.this,Profile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",postId);
+                startActivity(intent);
+
+
+            }
+        });
+        following_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ImageDisplayActivity.this,Profile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("postId",postId);
+                startActivity(intent);
+
+
+            }
+        });*/
 
 
         if(Utility.internet_check(ImageDisplayActivity.this)) {

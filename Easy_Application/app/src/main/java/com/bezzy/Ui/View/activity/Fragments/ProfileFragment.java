@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,9 +31,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.Blocklist;
 import com.bezzy.Ui.View.activity.FollowingActivity;
 import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.MyFriendsList;
+import com.bezzy.Ui.View.activity.Passwordchange;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.PostAdapter;
 import com.bezzy.Ui.View.activity.Editprofile;
@@ -79,7 +83,7 @@ public class ProfileFragment extends Fragment {
         userBio = view.findViewById(R.id.userBio);
         imageView=view.findViewById(R.id.logout);
         edit_btn = view.findViewById(R.id.edit_btn);
-        block_btn = view.findViewById(R.id.block_btn);
+
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
         layoutFollowing = view.findViewById(R.id.layoutFollowing);
         layoutFollower = view.findViewById(R.id.layoutFollower);
@@ -89,13 +93,7 @@ public class ProfileFragment extends Fragment {
        /* progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Logging Out Please Wait....");
         progressDialog.setCancelable(false);*/
-        block_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"FUCK",Toast.LENGTH_LONG).show();
-                block(APIs.BASE_URL+APIs.BLOCK);
-            }
-        });
+
 
 
 
@@ -103,7 +101,30 @@ public class ProfileFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                //logout();
+                PopupMenu popupMenu=new PopupMenu(getActivity(),imageView);
+                popupMenu.getMenuInflater().inflate(R.menu.logout_menu,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.menu_blocklist:
+                               blocklist();
+                                break;
+                            case R.id.menu_changepas:
+                               newpassword();
+                                break;
+                            case R.id.menu_logout:
+                                logout();
+                                break;
+
+
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
             }
         });
 
@@ -112,7 +133,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void block( String url){
+    /*private void block( String url){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -146,7 +167,7 @@ public class ProfileFragment extends Fragment {
         queue.add(stringRequest);
 
     }
-
+*/
     @Override
     public void onResume() {
         super.onResume();
@@ -378,5 +399,17 @@ public class ProfileFragment extends Fragment {
 
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         queue.add(request);
+    }
+    private void blocklist(){
+        Intent intent = new Intent(getActivity(), Blocklist.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+    }
+    private void newpassword(){
+        Intent intent = new Intent(getActivity(), Passwordchange.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
     }
 }

@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -50,46 +49,45 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
                     android:fontFamily="sans-serif-medium"/>
-                <LinearLayout
+
+
+                <TextView
+                    android:id="@+id/btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentRight="true">
-                    <TextView
-                        android:id="@+id/btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:background="@drawable/login_button_background"
-                        android:text="unfollow"
-                        android:textAllCaps="true"
-                        android:textColor="@color/white"
-                        android:textSize="10sp"
-                        android:layout_centerHorizontal="true"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:gravity="center"
-                        android:layout_marginRight="15dp"
-                        android:visibility="visible"/>
-                    <TextView
-                        android:id="@+id/btn_block"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:background="@drawable/login_button_background"
-                        android:text="Block"
-                        android:textAllCaps="true"
-                        android:textColor="@color/white"
-                        android:textSize="10sp"
-                        android:layout_centerHorizontal="true"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:gravity="center"
-                        android:layout_marginRight="15dp"
-                        android:visibility="visible"/>
+                    android:layout_height="35dp"
+                    android:background="@drawable/login_button_background"
+                    android:text="Unblock"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:textSize="10sp"
+                    android:layout_centerHorizontal="true"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:visibility="visible"/>
 
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/addFriend"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_add_friend"
+                    android:layout_marginRight="5dp"
+                    app:tint="@color/gradstart"
+                    android:visibility="invisible"/>
 
 
-
+                <ImageView
+                    android:id="@+id/chat"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_chat_c"
+                    android:layout_marginRight="5dp"
+                    app:tint="@color/gradstart"
+                    android:visibility="invisible"/>
 
 
             </RelativeLayout>
@@ -98,4 +96,8 @@
 
     </androidx.cardview.widget.CardView>
 
+
+
 </LinearLayout>
+
+
