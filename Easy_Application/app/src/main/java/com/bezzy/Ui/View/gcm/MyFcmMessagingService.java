@@ -18,6 +18,7 @@ import com.bezzy.Ui.View.activity.Fragments.ChatFragment;
 import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.activity.NotificationActivity;
+import com.bezzy.Ui.View.activity.PostImageVideoViewActivity;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -77,6 +78,9 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
             sendNotification(message, title,type,username,userimage,userid);
 
+        }else if(type.equals("post")){
+            String postId = remoteMessage.getData().get("respostID");
+            sendNotification(message, title,type,postId);
         }else{
             sendNotification(message, title);
         }
@@ -116,6 +120,55 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
         if(Utility.getLogin(this).equals("1")){
             Intent intent = new Intent(this, NotificationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0  , intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }else{
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0 , intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }
+
+
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(getNotificationIcon())
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            assert notificationManager != null;
+            notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        notificationManager.notify(notificationId /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void sendNotification(String messageBody, String title, String type, String postId) {
+
+        int notificationId = new Random().nextInt(60000);
+
+        /*Intent intent = new Intent(this, NotificationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        pendingIntent = PendingIntent.getActivity(this, 0 *//* Request code *//*, intent,PendingIntent.FLAG_ONE_SHOT);*/
+
+        if(Utility.getLogin(this).equals("1") && type.equals("post")){
+            Intent intent = new Intent(this, PostImageVideoViewActivity.class);
+            intent.putExtra("postId",postId);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0  , intent,
                     PendingIntent.FLAG_ONE_SHOT);

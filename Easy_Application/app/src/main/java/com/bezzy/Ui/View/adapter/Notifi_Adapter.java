@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -23,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.NotificationActivity;
+import com.bezzy.Ui.View.activity.PostImageVideoViewActivity;
 import com.bezzy.Ui.View.activity.Registration;
 import com.bezzy.Ui.View.model.Notification_item;
 import com.bezzy.Ui.View.utils.APIs;
@@ -67,6 +69,19 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
                 .load(dataholder.get(position).getImg())
                 .into(holder.img_logo);
 
+        holder.cardClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dataholder.get(position).getPostType().equals("post")){
+                    Intent intent = new Intent(context, PostImageVideoViewActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("postId",dataholder.get(position).getPostId());
+                    context.startActivity(intent);
+                }
+
+            }
+        });
+
        /* progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);*/
 
@@ -81,6 +96,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
        // ImageView img;
         TextView descrip;
         CircleImageView img_logo;
+        CardView cardClick;
         RelativeLayout relativeShow;
         Button acceptButton,rejectButton;
 
@@ -88,6 +104,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
             super(itemView);
             descrip = itemView.findViewById(R.id.title_text);
             img_logo = itemView.findViewById(R.id.img_logo);
+            cardClick = itemView.findViewById(R.id.cardClick);
         }
     }
 }

@@ -126,6 +126,8 @@ public class ProfileFragment extends Fragment {
 
     }
 
+
+
     private void postRequest(String url) {
         postList.clear();
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {

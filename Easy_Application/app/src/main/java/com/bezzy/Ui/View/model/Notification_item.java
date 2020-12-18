@@ -6,13 +6,17 @@ public class Notification_item {
     String descrip;
     String fromId;
     String friendrequestStatus;
+    String postId;
+    String postType;
 
-    public Notification_item(String img, String type, String descrip, String fromId, String friendrequestStatus) {
+    public Notification_item(String img, String type, String descrip, String fromId, String friendrequestStatus,String postId,String postType) {
         this.img = img;
         this.type = type;
         this.descrip = descrip;
         this.fromId = fromId;
         this.friendrequestStatus = friendrequestStatus;
+        this.postId = postId;
+        this.postType = postType;
     }
 
     public String getImg() {
@@ -34,4 +38,13 @@ public class Notification_item {
     public String getFriendrequestStatus() {
         return friendrequestStatus;
     }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public String getPostType() {
+        return postType;
+    }
+
 }

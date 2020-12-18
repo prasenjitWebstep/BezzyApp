@@ -121,8 +121,10 @@ public class NotificationActivity extends AppCompatActivity {
                             }
                             String description = object1.getString("activity_message");
                             String userImage = object1.getString("userimage");
+                            String postId = object1.getString("respostID");
+                            String postType = object1.getString("respost_type");
 
-                            ob = new Notification_item(userImage,type,description,fromId,friendRequestStatus);
+                            ob = new Notification_item(userImage,type,description,fromId,friendRequestStatus,postId,postType);
                             dataholder.add(ob);
 
 

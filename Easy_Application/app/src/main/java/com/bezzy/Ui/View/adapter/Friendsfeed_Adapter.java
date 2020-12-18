@@ -106,7 +106,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
                 holder.postBadge.setVisibility(View.INVISIBLE);
             }
             holder.userPost.setVisibility(View.VISIBLE);
-            holder.userPost.setText(friendList.get(position).getTodayPost()+" New Posts");
+            holder.userPost.setText(friendList.get(position).getTodayPost()+" Posts");
             holder.userPost.setTextColor(Color.parseColor("#f93f07"));
         }
 

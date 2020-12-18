@@ -42,6 +42,7 @@ import java.util.ArrayList;
 public class Utility {
 
     private static AlertDialog topupDialog,fullscreenDialog;
+    public static String globalData = "null";
 
     public static boolean internet_check(Context context){
         //Test for Connection

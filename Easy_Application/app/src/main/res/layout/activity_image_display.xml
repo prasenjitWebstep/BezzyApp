@@ -170,7 +170,6 @@
                         android:src="@drawable/ic_delete"
                         app:tint="@color/gradstart"
                         android:layout_marginRight="10dp"
-                        android:visibility="invisible"
                         />
 
 
