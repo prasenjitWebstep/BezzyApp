@@ -72,6 +72,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     private TextInputLayout textInputUsername;
     private TextInputLayout textInputPassword;
     int MY_SOCKET_TIMEOUT_MS = 10000;
+
    // SpotsDialog progressDialog;
     int day,month,year;
     Uri resultUri;
