@@ -111,16 +111,22 @@
                                 android:textColor="#fff"
                                 android:layout_centerVertical="true"
                                 android:fontFamily="sans-serif-medium"
-                                android:layout_toRightOf="@id/fav_btn"/>
+                                android:layout_toRightOf="@id/favBtn"/>
                             <ImageView
-                                android:id="@+id/fav_btn"
-                                android:src="@drawable/lovve"
-                                android:layout_width="25dp"
+                                android:id="@+id/favBtn"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                app:tint="@color/white"
-                                android:layout_marginRight="5dp"
-                                />
+                                android:src="@drawable/ic_heart"
+                                app:tint="@color/white" />
+
+                            <ImageView
+                                android:id="@+id/favBtnfilled"
+                                android:src="@drawable/ic_favorite_filled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:visibility="gone"/>
 
                         </RelativeLayout>
                         <RelativeLayout
