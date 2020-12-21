@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
@@ -72,10 +73,15 @@ public class Profile extends AppCompatActivity {
             String from = getIntent().getExtras().getString("From");
             if(from.equals("Image")){
                 Log.e("Called","TRY2");
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ProfileFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ProfileFragment()).commitNow();
+                btmnav.setSelectedItemId(R.id.menu_profile);
                 btmnav.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
                 btmnav.getMenu().getItem(4).setEnabled(true);
                 btmnav.setOnNavigationItemSelectedListener(navlistner);
+//                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.replace(R.id.frame_layout, new ProfileFragment());
+//                fragmentTransaction.commitNow();
+//                btmnav.setSelectedItemId(R.id.menu_profile);
             }
         }catch (Exception e){
             Log.e("Called","EXCEPTION");
