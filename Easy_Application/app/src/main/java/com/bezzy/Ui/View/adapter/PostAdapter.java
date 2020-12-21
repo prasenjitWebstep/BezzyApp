@@ -58,7 +58,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }else {
             holder.play.setVisibility(View.GONE);
         }
-        //holder.date_time.setText();
+        holder.date_time.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
+
+
 
         holder.imageDisp.setOnClickListener(new View.OnClickListener() {
             @Override

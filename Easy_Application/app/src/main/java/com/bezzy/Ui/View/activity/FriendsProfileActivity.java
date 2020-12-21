@@ -120,7 +120,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
 
         if(Utility.internet_check(FriendsProfileActivity.this)) {
 
-           // progressDialog.show();
+            // progressDialog.show();
             Utility.displayLoader(FriendsProfileActivity.this);
 
             postRequest(APIs.BASE_URL+APIs.GETDATA);
@@ -173,7 +173,21 @@ public class FriendsProfileActivity extends AppCompatActivity {
                         Log.e("Array",array1.toString());
                         for(int i=0;i<array1.length();i++){
                             JSONObject object1 = array1.getJSONObject(i);
-                            postList.add(new PostModel(object1.getString("post_id"),object1.getString("post_url"),object1.getString("post_type"),object1.getString("id")));
+                            postList.add(new PostModel(object1.getString("post_id"),
+                                    object1.getString("post_url"),
+                                    object1.getString("post_type"),
+                                    object1.getString("id"),
+                                    object1.getString("post_time"),
+                                    object1.getString("post_date")
+                                    ));
+
+
+
+
+                                    /*object1.getString("post_id"),
+                                    object1.getString("post_url"),
+                                    object1.getString("post_type"),
+                                    object1.getString("id")));*/
                         }
 
                         Log.e("Called","Adapter Called");

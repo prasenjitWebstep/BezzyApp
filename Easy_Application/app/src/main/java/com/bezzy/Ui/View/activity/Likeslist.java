@@ -35,85 +35,83 @@ public class Likeslist extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_likeslist);
-        recyclerView=findViewById(R.id.like_listnames);
-        post_id= getIntent().getExtras().getString("postId");
+        recyclerView = findViewById(R.id.like_listnames);
+        post_id = getIntent().getExtras().getString("postId");
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        dataholder=new ArrayList<>();
+        dataholder = new ArrayList<>();
 
 
-        if(Utility.internet_check(Likeslist.this)) {
+        if (Utility.internet_check(Likeslist.this)) {
 
             //dialog.show();
             /*progressDialog.show();*/
             Utility.displayLoader(Likeslist.this);
             //Log.e("Result","1");
 
-            Likesname(APIs.BASE_URL+APIs.LIKES_NAME+"/"+post_id);
+            Likesname(APIs.BASE_URL + APIs.LIKES_NAME + "/" + post_id);
 
-        }
-        else {
+        } else {
 
             //dialog.dismiss();
             /*progressDialog.dismiss();*/
             Utility.hideLoader(Likeslist.this);
-            Toast.makeText(Likeslist.this,"No Network!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(Likeslist.this, "No Network!", Toast.LENGTH_SHORT).show();
         }
     }
-    private void Likesname(String url){
+
+    private void Likesname(String url) {
         dataholder.clear();
-        StringRequest request=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                Log.e("Response", response);
                 try {
-                    JSONObject object=new JSONObject(response);
-                    String status=object.getString("status");
-                    if (status.equals("success")){
-                        JSONArray array=object.getJSONArray("userlist");
+                    JSONObject object = new JSONObject(response);
+                    String status = object.getString("status");
+                    if (status.equals("success")) {
+                        JSONArray array = object.getJSONArray("userlist");
                         Utility.hideLoader(Likeslist.this);
-                        for(int i=0;i<array.length();i++){
-                            JSONObject object11=array.getJSONObject(i);
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject object11 = array.getJSONObject(i);
                             Likes_name obj = new Likes_name();
-                           String id = object11.getString("id");
-                           String username=object11.getString("name");
-                           String user_image=object11.getString("profilePicture");
+                            String id = object11.getString("id");
+                            String username = object11.getString("name");
+                            String user_image = object11.getString("profilePicture");
 
 
-                           obj.setId(id);
-                           obj.setUsername(username);
+                            obj.setId(id);
+                            obj.setUsername(username);
                             obj.setUser_image(user_image);
-                           dataholder.add(obj);
+                            dataholder.add(obj);
                         }
-                        LikesName_Adapter adapter=new LikesName_Adapter(Likeslist.this,dataholder);
+                        LikesName_Adapter adapter = new LikesName_Adapter(Likeslist.this, dataholder);
                         recyclerView.setAdapter(adapter);
 
 
-                    }
-                    else {
+                    } else {
                         Utility.hideLoader(Likeslist.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.e("Exception",e.toString());
+                    Log.e("Exception", e.toString());
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Exception",error.toString());
+                Log.e("Exception", error.toString());
                 Utility.hideLoader(Likeslist.this);
 
             }
         });
-        RequestQueue queue= Volley.newRequestQueue(Likeslist.this);
+        RequestQueue queue = Volley.newRequestQueue(Likeslist.this);
         queue.add(request);
-
 
 
     }
