@@ -44,6 +44,7 @@ public class Blocklist_Adapter extends RecyclerView.Adapter<Blocklist_Adapter.Un
     ArrayList<Unblockholders> unblockHolder;
     String screen;
 
+
     public Blocklist_Adapter(Context context, ArrayList<Unblockholders> unblockHolder,String screen) {
         this.context = context;
         this.unblockHolder = unblockHolder;
