@@ -113,6 +113,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         postRecyclerView.setLayoutManager(layoutManager);
 
