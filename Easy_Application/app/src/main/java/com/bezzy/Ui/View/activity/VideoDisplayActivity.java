@@ -198,7 +198,6 @@ public class VideoDisplayActivity extends AppCompatActivity {
                                 try {
                                     intent.putExtra("postId",object1.getString("post_id"));
                                     Log.e("PostId",object1.getString("post_id"));
-                                    intent.putExtra("screen",screen);
                                     startActivity(intent);
                                 } catch (JSONException e) {
                                     e.printStackTrace();

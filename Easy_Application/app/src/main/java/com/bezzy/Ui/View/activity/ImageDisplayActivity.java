@@ -225,7 +225,6 @@ public class ImageDisplayActivity extends AppCompatActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 try {
                                     intent.putExtra("postId",object1.getString("post_id"));
-                                    intent.putExtra("screen",screen);
                                     Log.e("PostId",object1.getString("post_id"));
                                     startActivity(intent);
                                 } catch (JSONException e) {
@@ -249,6 +248,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(ImageDisplayActivity.this);
         queue.add(request);
     }
+
     public void delete(){
         final String url = null;
         AlertDialog.Builder builder=new AlertDialog.Builder(ImageDisplayActivity.this);
