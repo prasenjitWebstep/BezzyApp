@@ -114,15 +114,6 @@ public class VideoDisplayActivity extends AppCompatActivity {
             }
         });
 
-        if(Utility.internet_check(VideoDisplayActivity.this)) {
-
-            postRequest(APIs.BASE_URL+ APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type);
-        }
-        else {
-
-            Toast.makeText(VideoDisplayActivity.this,"No Network!", Toast.LENGTH_SHORT).show();
-        }
-
         delete_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +122,20 @@ public class VideoDisplayActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(Utility.internet_check(VideoDisplayActivity.this)) {
+
+            postRequest(APIs.BASE_URL+ APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type);
+        }
+        else {
+
+            Toast.makeText(VideoDisplayActivity.this,"No Network!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void friendsPostLike(String url) {

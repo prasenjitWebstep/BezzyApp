@@ -52,7 +52,6 @@ import dmax.dialog.SpotsDialog;
 
 public class Profile extends AppCompatActivity {
 
-    SpotsDialog progressDialog;
     FloatingActionButton floatingActionButton;
     Boolean isInBackground;
 
@@ -98,9 +97,6 @@ public class Profile extends AppCompatActivity {
         navigateToFragment(new HomeFragment());*/
        /* Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
-        progressDialog = new SpotsDialog(Profile.this);
-        progressDialog.setMessage("Logging Out Please Wait...");
-        progressDialog.setCancelable(false);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,72 +229,6 @@ public class Profile extends AppCompatActivity {
         return true;
     }
 
-    /*@Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.logoutt:
-                logout();
-                return  true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
 
-    }*/
-
-    /*public void logout(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(Profile.this);
-        builder.setTitle("Log out");
-        builder.setMessage("Are you sure to Log out?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                progressDialog.show();
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            String resp = object.getString("resp");
-                            if(resp.equals("success")){
-                                progressDialog.dismiss();
-                                Toast.makeText(Profile.this,object.getString("message"),Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Profile.this,LoginActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                Utility.setLogin(Profile.this,"0");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }){
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String,String> map = new HashMap<>();
-                        map.put("profile_id", Utility.getUserId(Profile.this));
-                        return map;
-                    }
-                };
-
-                RequestQueue queue = Volley.newRequestQueue(Profile.this);
-                queue.add(stringRequest);
-
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-    }*/
 }
 
