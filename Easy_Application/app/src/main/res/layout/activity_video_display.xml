@@ -72,6 +72,7 @@
                         android:maxLines="2"
                         android:textColor="#fff"
                         android:layout_above="@id/user_descrecyl"
+                        android:text="This is bio"
                         android:textSize="18sp"
                         android:padding="5dp"
                         android:fontFamily="sans-serif-thin"
@@ -110,22 +111,16 @@
                                 android:textColor="#fff"
                                 android:layout_centerVertical="true"
                                 android:fontFamily="sans-serif-medium"
-                                android:layout_toRightOf="@id/favBtn"/>
+                                android:layout_toRightOf="@id/fav_btn"/>
                             <ImageView
-                                android:id="@+id/favBtn"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/fav_btn"
+                                android:src="@drawable/lovve"
+                                android:layout_width="25dp"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/ic_heart"
-                                app:tint="@color/white" />
-
-                            <ImageView
-                                android:id="@+id/favBtnfilled"
-                                android:src="@drawable/ic_favorite_filled"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:visibility="gone"/>
+                                app:tint="@color/white"
+                                android:layout_marginRight="5dp"
+                                />
 
                         </RelativeLayout>
                         <RelativeLayout
@@ -171,7 +166,7 @@
                             android:src="@drawable/ic_delete"
                             app:tint="@color/white"
                             android:layout_marginRight="10dp"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             />
 
 
