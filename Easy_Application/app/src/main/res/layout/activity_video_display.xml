@@ -72,7 +72,6 @@
                         android:maxLines="2"
                         android:textColor="#fff"
                         android:layout_above="@id/user_descrecyl"
-                        android:text="This is bio"
                         android:textSize="18sp"
                         android:padding="5dp"
                         android:fontFamily="sans-serif-thin"
