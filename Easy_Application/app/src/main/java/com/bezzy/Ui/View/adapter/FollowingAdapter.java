@@ -117,7 +117,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
                     Utility.hideLoader(context);
                     Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
 
-                }
+                 }
 
             }
         });
