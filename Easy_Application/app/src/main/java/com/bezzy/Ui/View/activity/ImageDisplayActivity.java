@@ -42,6 +42,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     TextView username,servicesText,following_num,following_numm;
     ImageView imageView,chat_btn,delete_btn,fav_btn;
     String id,postId,type,postId2,screen;
+    String totalLikes;
     EmojiconTextView servicesText_t;
 
     @Override
@@ -89,10 +90,16 @@ public class ImageDisplayActivity extends AppCompatActivity {
         following_num.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ImageDisplayActivity.this,Likeslist.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("postId",id);
-                startActivity(intent);
+
+                if(totalLikes.equals("0")){
+                    Toast.makeText(ImageDisplayActivity.this, "NO ONE LIKED THIS POST", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(ImageDisplayActivity.this,Likeslist.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("postId",id);
+                    startActivity(intent);
+                }
+
 
 
             }
@@ -139,7 +146,8 @@ public class ImageDisplayActivity extends AppCompatActivity {
                         Glide.with(ImageDisplayActivity.this)
                                 .load(object11.getString("url"))
                                 .into(imageView);
-                        following_num.setText(object11.getString("total_like"));
+                        totalLikes = String.valueOf(object11.getString("total_like"));
+                         following_num.setText(object11.getString("total_like"));
                         following_numm.setText(object11.getString("total_comment"));
                         chat_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
