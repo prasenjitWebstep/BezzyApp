@@ -2,31 +2,52 @@ package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.Blocklist;
+import com.bezzy.Ui.View.activity.FollowingActivity;
+import com.bezzy.Ui.View.activity.Fragments.HomeFragment;
 import com.bezzy.Ui.View.activity.FriendsProfileActivity;
 import com.bezzy.Ui.View.model.FriendsHolder;
 import com.bezzy.Ui.View.model.Unblockholders;
+import com.bezzy.Ui.View.utils.APIs;
+import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Blocklist_Adapter extends RecyclerView.Adapter<Blocklist_Adapter.Unblockholder> {
     Context context;
     ArrayList<Unblockholders> unblockHolder;
+    String screen;
 
-    public Blocklist_Adapter(Context context, ArrayList<Unblockholders> unblockHolder) {
+    public Blocklist_Adapter(Context context, ArrayList<Unblockholders> unblockHolder,String screen) {
         this.context = context;
         this.unblockHolder = unblockHolder;
+        this.screen = screen;
     }
 
     @NonNull
@@ -54,6 +75,71 @@ public class Blocklist_Adapter extends RecyclerView.Adapter<Blocklist_Adapter.Un
             }
         });
 
+        holder.btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                if(Utility.internet_check(context)) {
+
+                    Utility.displayLoader(context);
+
+                    unblock(APIs.BASE_URL+APIs.UNBLOCK,unblockHolder.get(position).getFriendId());
+
+
+
+                }
+                else {
+
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(context);
+                    Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        });
+
+    }
+
+    private void unblock(String url,final String s){
+        //Toast.makeText(context,"FUCKING FUCK FUCK FUCK",Toast.LENGTH_LONG).show();
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("status");
+                    if (resp.equals("success")) {
+                        Utility.hideLoader(context);
+                        Toast.makeText(context, object.getString("message"), Toast.LENGTH_LONG).show();
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+
+                map.put("loginUserID",Utility.getUserId(context));
+                map.put("unblockuserID",s);
+
+
+                return map;
+            }
+        };
+        RequestQueue queue= Volley.newRequestQueue(context);
+        queue.add(request);
     }
 
     @Override

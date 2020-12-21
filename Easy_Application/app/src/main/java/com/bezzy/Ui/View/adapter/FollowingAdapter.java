@@ -185,7 +185,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
                 HashMap<String,String> map = new HashMap<>();
 
                 map.put("loginUserID",Utility.getUserId(context));
-                map.put("unfriendID",friendId);
+                map.put("unblockuserID",friendId);
 
 
                 return map;
