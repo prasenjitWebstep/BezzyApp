@@ -153,10 +153,12 @@ public class Profile extends AppCompatActivity {
         Log.e("STOP","CALLED");
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navlistner=new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener navlistner=new
+            BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
+            Fragment active=selectedFragment;
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     selectedFragment = new HomeFragment();
