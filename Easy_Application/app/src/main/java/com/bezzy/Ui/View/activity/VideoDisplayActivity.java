@@ -165,7 +165,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
             }
         });
         AlertDialog alertDialog=builder.create();
-        alertDialog.show();
+        alertDialog.show() ;
     }
 
     private void deleteimg(String url) {
