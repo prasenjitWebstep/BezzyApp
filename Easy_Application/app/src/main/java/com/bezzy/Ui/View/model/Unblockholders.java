@@ -7,6 +7,13 @@ public class Unblockholders {
         return friendId;
     }
 
+    public Unblockholders(String friendId, String name, String image, String user_relation_status) {
+        this.friendId = friendId;
+        this.name = name;
+        this.image = image;
+        this.user_relation_status = user_relation_status;
+    }
+
     public void setFriendId(String friendId) {
         this.friendId = friendId;
     }

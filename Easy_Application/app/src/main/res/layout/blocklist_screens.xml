@@ -58,7 +58,7 @@
                     android:background="@drawable/login_button_background"
                     android:text="Unblock"
                     android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textColor="#fff"
                     android:layout_alignParentRight="true"
                     android:textSize="10sp"
                     android:layout_centerHorizontal="true"
