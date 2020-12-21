@@ -43,6 +43,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     ImageView imageView,chat_btn,delete_btn;
     String id,postId,type,postId2,screen;
     EmojiconTextView servicesText_t;
+    String totalLikes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +153,24 @@ public class ImageDisplayActivity extends AppCompatActivity {
             }
         });*/
 
+        following_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(totalLikes.equals("0")){
+                    Toast.makeText(ImageDisplayActivity.this, "NO ONE LIKED THIS POST", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(ImageDisplayActivity.this,Likeslist.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("postId",id);
+                    startActivity(intent);
+                }
+
+
+
+            }
+        });
+
     }
 
     @Override
@@ -222,6 +241,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                         }else{
                             favBtn.setVisibility(View.VISIBLE);
                         }
+                        totalLikes = String.valueOf(object11.getString("total_like"));
                         following_num.setText(object11.getString("total_like"));
                         following_numm.setText(object11.getString("total_comment"));
                         chat_btn.setOnClickListener(new View.OnClickListener() {
