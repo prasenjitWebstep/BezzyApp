@@ -117,7 +117,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
         delete_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delete();
+                delete() ;
 
             }
         });
