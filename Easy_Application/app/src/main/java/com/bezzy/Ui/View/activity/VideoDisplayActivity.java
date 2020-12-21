@@ -35,7 +35,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
     VideoView videoView;
     AndExoPlayerView andExoPlayerView;
     String id,postId,type,screen;
-    ImageView back_image,chat_btn,delete_image,favBtn,favBtnfilled;
+    ImageView back_image,chat_btn,delete_btn;
     TextView servicesText,username,following_num,following_numm;
 
     @Override
@@ -48,62 +48,18 @@ public class VideoDisplayActivity extends AppCompatActivity {
         andExoPlayerView=findViewById(R.id.andExoPlayerView);
         following_num = findViewById(R.id.following_num);
         following_numm = findViewById(R.id.following_numm);
-        delete_image = findViewById(R.id.delete_image);
         chat_btn =  findViewById(R.id.chat_btn);
-        favBtn = findViewById(R.id.favBtn);
-        favBtnfilled = findViewById(R.id.favBtnfilled);
+        delete_btn=findViewById(R.id.delete_image);
 
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
         type = getIntent().getExtras().getString("type");
         screen = getIntent().getExtras().getString("screen");
-
         if(screen.equals("1")){
-            delete_image.setVisibility(View.VISIBLE);
+            delete_btn.setVisibility(View.VISIBLE);
         }else{
-            delete_image.setVisibility(View.INVISIBLE);
+            delete_btn.setVisibility(View.INVISIBLE);
         }
-
-        if(favBtn.getVisibility() == View.VISIBLE){
-            favBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.e("Called","1");
-                    favBtnfilled.setVisibility(View.VISIBLE);
-                    favBtn.setVisibility(View.INVISIBLE);
-                    if(Utility.internet_check(VideoDisplayActivity.this)) {
-                        Log.e("POSTID",id+" "+postId);
-
-                        friendsPostLike(APIs.BASE_URL+APIs.LIKEPOST+"/"+Utility.getUserId(VideoDisplayActivity.this)+"/"+id);
-
-                    }
-                    else {
-
-                        Toast.makeText(VideoDisplayActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-
-        favBtnfilled.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("Called","2");
-                favBtnfilled.setVisibility(View.INVISIBLE);
-                favBtn.setVisibility(View.VISIBLE);
-                if(Utility.internet_check(VideoDisplayActivity.this)) {
-
-                    Log.e("POSTID",id+" "+postId);
-
-                    friendsPostLike(APIs.BASE_URL+APIs.LIKEPOST+"/"+Utility.getUserId(VideoDisplayActivity.this)+"/"+id);
-
-                }
-                else {
-
-                    Toast.makeText(VideoDisplayActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,20 +69,13 @@ public class VideoDisplayActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        delete_image.setOnClickListener(new View.OnClickListener() {
+        delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 delete();
 
             }
         });
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         if(Utility.internet_check(VideoDisplayActivity.this)) {
 
@@ -137,37 +86,6 @@ public class VideoDisplayActivity extends AppCompatActivity {
             Toast.makeText(VideoDisplayActivity.this,"No Network!", Toast.LENGTH_SHORT).show();
         }
     }
-
-    private void friendsPostLike(String url) {
-        Log.e("URL",url);
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                Log.e("Response",response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    String status = object.getString("status");
-                    if(status.equals("success")){
-                        String number = object.getJSONObject("activity").getString("number_of_activity");
-                        following_num.setText(number);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        RequestQueue queue = Volley.newRequestQueue(VideoDisplayActivity.this);
-        queue.add(request);
-    }
-
 
     private void postRequest(String url) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -198,6 +116,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
                                 try {
                                     intent.putExtra("postId",object1.getString("post_id"));
                                     Log.e("PostId",object1.getString("post_id"));
+                                    intent.putExtra("screen","1");
                                     startActivity(intent);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -225,7 +144,6 @@ public class VideoDisplayActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(VideoDisplayActivity.this);
         queue.add(request);
     }
-
     public void delete(){
         final String url = null;
         AlertDialog.Builder builder=new AlertDialog.Builder(VideoDisplayActivity.this);
@@ -247,7 +165,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
             }
         });
         AlertDialog alertDialog=builder.create();
-        alertDialog.show() ;
+        alertDialog.show();
     }
 
     private void deleteimg(String url) {
