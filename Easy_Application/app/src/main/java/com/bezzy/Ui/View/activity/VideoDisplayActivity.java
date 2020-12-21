@@ -34,7 +34,7 @@ import java.util.Map;
 public class VideoDisplayActivity extends AppCompatActivity {
     VideoView videoView;
     AndExoPlayerView andExoPlayerView;
-    String id,postId,type;
+    String id,postId,type,screen;
     ImageView back_image,chat_btn,delete_image,favBtn,favBtnfilled;
     TextView servicesText,username,following_num,following_numm;
 
@@ -56,6 +56,54 @@ public class VideoDisplayActivity extends AppCompatActivity {
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
         type = getIntent().getExtras().getString("type");
+        screen = getIntent().getExtras().getString("screen");
+
+        if(screen.equals("1")){
+            delete_image.setVisibility(View.VISIBLE);
+        }else{
+            delete_image.setVisibility(View.INVISIBLE);
+        }
+
+        if(favBtn.getVisibility() == View.VISIBLE){
+            favBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("Called","1");
+                    favBtnfilled.setVisibility(View.VISIBLE);
+                    favBtn.setVisibility(View.INVISIBLE);
+                    if(Utility.internet_check(VideoDisplayActivity.this)) {
+                        Log.e("POSTID",id+" "+postId);
+
+                        friendsPostLike(APIs.BASE_URL+APIs.LIKEPOST+"/"+Utility.getUserId(VideoDisplayActivity.this)+"/"+id);
+
+                    }
+                    else {
+
+                        Toast.makeText(VideoDisplayActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+        favBtnfilled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Called","2");
+                favBtnfilled.setVisibility(View.INVISIBLE);
+                favBtn.setVisibility(View.VISIBLE);
+                if(Utility.internet_check(VideoDisplayActivity.this)) {
+
+                    Log.e("POSTID",id+" "+postId);
+
+                    friendsPostLike(APIs.BASE_URL+APIs.LIKEPOST+"/"+Utility.getUserId(VideoDisplayActivity.this)+"/"+id);
+
+                }
+                else {
+
+                    Toast.makeText(VideoDisplayActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +131,36 @@ public class VideoDisplayActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void friendsPostLike(String url) {
+        Log.e("URL",url);
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("Response",response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String status = object.getString("status");
+                    if(status.equals("success")){
+                        String number = object.getJSONObject("activity").getString("number_of_activity");
+                        following_num.setText(number);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(VideoDisplayActivity.this);
+        queue.add(request);
     }
 
 
@@ -115,7 +193,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
                                 try {
                                     intent.putExtra("postId",object1.getString("post_id"));
                                     Log.e("PostId",object1.getString("post_id"));
-                                    intent.putExtra("screen","1");
+                                    intent.putExtra("screen",screen);
                                     startActivity(intent);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
