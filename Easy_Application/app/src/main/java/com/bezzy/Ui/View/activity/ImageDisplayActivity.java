@@ -159,7 +159,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         super.onResume();
         if(Utility.internet_check(ImageDisplayActivity.this)) {
 
-            postRequest(APIs.BASE_URL+APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type);
+            postRequest(APIs.BASE_URL+APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type+"/"+Utility.getUserId(ImageDisplayActivity.this));
         }
         else {
 
@@ -208,7 +208,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                     if(status.equals("success")){
                         final JSONObject object11 = object1.getJSONObject("post_details");
                         username.setText(object11.getString("username"));
-                        if(!object11.getString("content").equals("null")){
+                        if(!object11.getString("content").equals("null") || !object11.getString("content").equals("")){
                             servicesText_t.setText(object11.getString("content"));
                         }else{
                             servicesText_t.setVisibility(View.GONE);
@@ -216,6 +216,12 @@ public class ImageDisplayActivity extends AppCompatActivity {
                         Glide.with(ImageDisplayActivity.this)
                                 .load(object11.getString("url"))
                                 .into(imageView);
+                        if(object11.getString("login_user_like").equals("Yes")){
+                            favBtnfilled.setVisibility(View.VISIBLE);
+                            favBtn.setVisibility(View.INVISIBLE);
+                        }else{
+                            favBtn.setVisibility(View.VISIBLE);
+                        }
                         following_num.setText(object11.getString("total_like"));
                         following_numm.setText(object11.getString("total_comment"));
                         chat_btn.setOnClickListener(new View.OnClickListener() {

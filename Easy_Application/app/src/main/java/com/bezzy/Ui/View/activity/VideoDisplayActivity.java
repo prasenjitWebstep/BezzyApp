@@ -130,7 +130,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
         if(Utility.internet_check(VideoDisplayActivity.this)) {
 
-            postRequest(APIs.BASE_URL+ APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type);
+            postRequest(APIs.BASE_URL+ APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type+"/"+Utility.getUserId(VideoDisplayActivity.this));
         }
         else {
 
@@ -180,10 +180,17 @@ public class VideoDisplayActivity extends AppCompatActivity {
                     if(status.equals("success")){
                         JSONObject object11 = object1.getJSONObject("post_details");
                         username.setText(object11.getString("username"));
-                        if(!object11.getString("content").equals("null")){
+                        if(!object11.getString("content").equals("null") || !object11.getString("content").equals("")){
                             servicesText.setText(object11.getString("content"));
                         }else{
                             servicesText.setVisibility(View.GONE);
+                        }
+
+                        if(object11.getString("login_user_like").equals("Yes")){
+                            favBtnfilled.setVisibility(View.VISIBLE);
+                            favBtn.setVisibility(View.INVISIBLE);
+                        }else{
+                            favBtn.setVisibility(View.VISIBLE);
                         }
 
                         andExoPlayerView.setSource(object11.getString("url"));
