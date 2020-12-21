@@ -146,7 +146,7 @@ public class CommentReplyActivity extends AppCompatActivity {
 
             //dialog.show();
 
-            commentList(APIs.BASE_URL+APIs.COMMENT_LIST);
+            commentList(APIs.BASE_URL+APIs.COMMENT_REPLY_LIST);
 
         }
         else {
@@ -207,9 +207,8 @@ public class CommentReplyActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
-                map.put("post_id",id);
-                map.put("loginuserID", Utility.getUserId(CommentReplyActivity.this));
-                Log.e("Value",map.get("post_id"));
+                map.put("comment_id",id);
+                Log.e("Value",map.get("comment_id"));
                 return map;
             }
         };
@@ -236,7 +235,7 @@ public class CommentReplyActivity extends AppCompatActivity {
 
                             Log.e("Result","1");
 
-                            commentList(APIs.BASE_URL+APIs.COMMENT_LIST);
+                            commentList(APIs.BASE_URL+APIs.COMMENT_REPLY_LIST);
 
                         }
                         else {
