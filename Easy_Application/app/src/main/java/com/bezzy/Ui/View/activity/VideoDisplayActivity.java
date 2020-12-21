@@ -137,6 +137,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
+
         });
 
     }
