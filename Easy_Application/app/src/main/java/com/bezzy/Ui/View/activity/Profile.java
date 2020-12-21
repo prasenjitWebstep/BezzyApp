@@ -71,6 +71,7 @@ public class Profile extends AppCompatActivity {
         try{
             Log.e("Called","TRY");
             String from = getIntent().getExtras().getString("From");
+
             if(from.equals("Image")){
                 Log.e("Called","TRY2");
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ProfileFragment()).commitNow();
