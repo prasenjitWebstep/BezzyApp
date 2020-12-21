@@ -40,7 +40,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
     ImageView back_image;
     TextView username,servicesText,following_num,following_numm;
-    ImageView imageView,chat_btn,delete_btn;
+    ImageView imageView,chat_btn,delete_btn,fav_btn;
     String id,postId,type,postId2,screen;
     EmojiconTextView servicesText_t;
 
@@ -57,6 +57,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         following_numm = findViewById(R.id.following_numm);
         chat_btn = findViewById(R.id.chat_btn);
         delete_btn=findViewById(R.id.delete_image);
+        fav_btn=findViewById(R.id.fav_btn);
 
 
         id = getIntent().getExtras().getString("id");
@@ -90,18 +91,18 @@ public class ImageDisplayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ImageDisplayActivity.this,Likeslist.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("postId",postId);
+                intent.putExtra("postId",id);
                 startActivity(intent);
 
 
             }
         });
-        following_num.setOnClickListener(new View.OnClickListener() {
+        fav_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ImageDisplayActivity.this,Likeslist.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("postId",postId);
+                intent.putExtra("postId",id);
                 startActivity(intent);
 
 

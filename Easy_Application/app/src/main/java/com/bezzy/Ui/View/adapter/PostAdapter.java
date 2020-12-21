@@ -58,6 +58,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }else {
             holder.play.setVisibility(View.GONE);
         }
+        //holder.date_time.setText();
 
         holder.imageDisp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +97,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageDisp;
-        TextView play;
+        TextView play,date_time;
 
         public PostViewHolder(@NonNull View itemView) {
 
@@ -104,6 +105,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             imageDisp = itemView.findViewById(R.id.imageDisp);
             play = itemView.findViewById(R.id.play);
+            date_time=itemView.findViewById(R.id.date_time);
 
         }
     }

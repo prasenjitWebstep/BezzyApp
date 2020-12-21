@@ -34,6 +34,18 @@
                 android:textSize="12sp"
                 android:padding="5dp"
                 android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:textColor="@color/deeporange"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_vertical"
+                android:text="12:12  12.12.20"
+                android:layout_marginLeft="10dp"
+                android:textSize="12sp"
+                android:padding="5dp"
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
