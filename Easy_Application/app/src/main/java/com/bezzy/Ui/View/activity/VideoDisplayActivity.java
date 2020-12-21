@@ -37,6 +37,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
     String id,postId,type,screen;
     ImageView back_image,chat_btn,delete_image,favBtn,favBtnfilled;
     TextView servicesText,username,following_num,following_numm;
+    String totalLikes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,21 @@ public class VideoDisplayActivity extends AppCompatActivity {
             }
         });
 
+
+        following_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(totalLikes.equals("0")){
+                    Toast.makeText(VideoDisplayActivity.this, "NO ONE LIKED THIS POST", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(VideoDisplayActivity.this,Likeslist.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("postId",id);
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -196,6 +212,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
                         andExoPlayerView.setSource(object11.getString("url"));
 
+                        totalLikes = String.valueOf(object11.getString("total_like"));
                         following_num.setText(object11.getString("total_like"));
                         following_numm.setText(object11.getString("total_comment"));
                         chat_btn.setOnClickListener(new View.OnClickListener() {
