@@ -121,6 +121,7 @@ public class Blocklist_Adapter extends RecyclerView.Adapter<Blocklist_Adapter.Un
                         Intent intent = new Intent(context, Blocklist.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
