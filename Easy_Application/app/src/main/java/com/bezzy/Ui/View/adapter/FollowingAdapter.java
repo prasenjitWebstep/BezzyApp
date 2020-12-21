@@ -208,7 +208,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
                         Utility.hideLoader(context);
                         Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, FollowingActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }else{
                         Utility.hideLoader(context);

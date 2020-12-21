@@ -86,6 +86,8 @@ public class Blocklist_Adapter extends RecyclerView.Adapter<Blocklist_Adapter.Un
 
                     Utility.displayLoader(context);
 
+
+
                     unblock(APIs.BASE_URL+APIs.UNBLOCK,unblockHolder.get(position).getFriendId());
 
 
@@ -116,7 +118,9 @@ public class Blocklist_Adapter extends RecyclerView.Adapter<Blocklist_Adapter.Un
                     if (resp.equals("success")) {
                         Utility.hideLoader(context);
                         Toast.makeText(context, object.getString("message"), Toast.LENGTH_LONG).show();
-
+                        Intent intent = new Intent(context, Blocklist.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intent);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
