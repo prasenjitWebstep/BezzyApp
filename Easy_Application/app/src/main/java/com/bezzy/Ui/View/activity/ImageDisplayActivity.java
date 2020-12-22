@@ -241,7 +241,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                         }else{
                             favBtn.setVisibility(View.VISIBLE);
                         }
-                        totalLikes = String.valueOf(object11.getString("total_like"));
+                        totalLikes =object11.getString("total_like");
                         following_num.setText(object11.getString("total_like"));
                         following_numm.setText(object11.getString("total_comment"));
                         chat_btn.setOnClickListener(new View.OnClickListener() {
