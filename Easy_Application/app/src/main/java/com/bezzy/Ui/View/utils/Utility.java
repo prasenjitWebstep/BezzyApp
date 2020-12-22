@@ -134,12 +134,14 @@ public class Utility {
 
         builder.setView(v);
         builder.setCancelable(false);
+        globalData = "1";
         topupDialog=builder.create();
         topupDialog.show();
         topupDialog.getWindow().setLayout(200, 200);
     }
 
     public static void customProgressDialog2(Context context){
+        globalData = "0";
         topupDialog.dismiss();
     }
 

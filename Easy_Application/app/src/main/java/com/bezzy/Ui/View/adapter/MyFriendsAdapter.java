@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.FollowingActivity;
 import com.bezzy.Ui.View.activity.FriendsFriendList;
 import com.bezzy.Ui.View.activity.FriendsProfileActivity;
 import com.bezzy.Ui.View.activity.Massage;
@@ -95,12 +96,35 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
             }
         });
 
+        holder.block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(Utility.internet_check(context)) {
+
+                    Utility.displayLoader(context);
+
+                    block(APIs.BASE_URL+APIs.BLOCK,friendsHolder.get(position).getFriendId());
+
+
+                }
+                else {
+
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(context);
+                    Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
         if(screen.equals("1")){
             Log.e("Screen","1");
-            holder.btn.setVisibility(View.VISIBLE);
+            holder.btn.setVisibility(View.GONE);
             holder.addFriend.setVisibility(View.GONE);
             holder.chat.setVisibility(View.GONE);
-            holder.btn.setOnClickListener(new View.OnClickListener() {
+            holder.follow_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(Utility.internet_check(context)) {
@@ -177,7 +201,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
                     if (status.equals("success")){
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, MyFriendsList.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }else{
                         Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
@@ -211,6 +235,53 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
         };
         RequestQueue queue= Volley.newRequestQueue(context);
         queue.add(request);
+    }
+
+    private void block(String url,final String friendId){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("Response",response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("status");
+                    if (resp.equals("success")) {
+                        Utility.hideLoader(context);
+                        Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, MyFriendsList.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intent);
+                    }else{
+                        Utility.hideLoader(context);
+                    }
+                } catch (JSONException e) {
+                    Utility.hideLoader(context);
+                    e.printStackTrace();
+                    Log.e("Exception",e.toString());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Utility.hideLoader(context);
+                Log.e("Exception",error.toString());
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError{
+                HashMap<String,String> map = new HashMap<>();
+                map.put("loginUserID",Utility.getUserId(context));
+                map.put("blockuserID",friendId);
+                Log.e("GETID",map.get("blockuserID"));
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
+
     }
 
     private void callApiFollowRequest(String url, final String id, final int position) {
@@ -264,7 +335,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
         CircleImageView circularImg;
         TextView userName;
         TextView btn;
-        ImageView addFriend,chat;
+        ImageView addFriend,chat,block,remove,follow_back;
 
         public MyFriendHoler(@NonNull View itemView) {
             super(itemView);
@@ -273,6 +344,10 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
             btn = itemView.findViewById(R.id.btn);
             addFriend = itemView.findViewById(R.id.addFriend);
             chat = itemView.findViewById(R.id.chat);
+            block = itemView.findViewById(R.id.block);
+            remove = itemView.findViewById(R.id.remove);
+            follow_back = itemView.findViewById(R.id.follow_back);
+
 
         }
     }

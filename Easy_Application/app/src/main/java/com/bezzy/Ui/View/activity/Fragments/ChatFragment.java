@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -36,6 +38,8 @@ import java.util.List;
 public class ChatFragment extends Fragment {
     RecyclerView chatlist;
     ArrayList<Chatlist_item> dataholder;
+    ProgressDialog progressDialog;
+    ProgressBar progressBar;
 
 
 
@@ -47,6 +51,7 @@ public class ChatFragment extends Fragment {
         chatlist=view.findViewById(R.id.chatlist);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         chatlist.setLayoutManager(linearLayoutManager);
+        progressBar = view.findViewById(R.id.progressBar);
 
         dataholder=new ArrayList<>();
         /*if(Utility.internet_check(getActivity())) {
@@ -72,12 +77,12 @@ public class ChatFragment extends Fragment {
         dataholder=new ArrayList<>();
         if(Utility.internet_check(getActivity())) {
 
-            Utility.displayLoader(getActivity());
+            progressBar.setVisibility(View.VISIBLE);
             chatNotiList(APIs.BASE_URL+APIs.CHAT_NOTI_LIST+"/"+Utility.getUserId(getActivity()));
 
         }
         else {
-            Utility.hideLoader(getActivity());
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
     }
@@ -105,18 +110,19 @@ public class ChatFragment extends Fragment {
                                     object11.getString("user_active_status")
                             );
                             dataholder.add(chatlist_item);
-                            Utility.hideLoader(getActivity());
+                            progressBar.setVisibility(View.GONE);
 
                         }
                         chatlist.setAdapter(new Chatlist_adater(dataholder, getActivity()));
 
 
                     }else{
-                        Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                    progressBar.setVisibility(View.GONE);
                     Log.e("Exception",e.toString());
                 }
 
@@ -125,7 +131,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Error",error.toString());
-                Utility.hideLoader(getActivity());
+                progressBar.setVisibility(View.GONE);
 
             }
         });

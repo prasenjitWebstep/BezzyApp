@@ -100,6 +100,8 @@ public class HomeFragment extends Fragment {
             public void onRefresh() {
 
                 mSwipeRefreshLayout.setRefreshing(false);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                recyclerView.setLayoutManager(linearLayoutManager);
 
                 if(Utility.internet_check(getActivity())) {
 
@@ -112,7 +114,8 @@ public class HomeFragment extends Fragment {
                 else {
 
                     //progressDialog.dismiss();
-                    Utility.hideLoader(getActivity());
+                    if(Utility.globalData.equals("1"))
+                        Utility.hideLoader(getActivity());
 
                     Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
                 }
@@ -129,12 +132,17 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+
         callCheckNotificationBadge();
 
         if(Utility.internet_check(getActivity())) {
 
             //progressDialog.show();
-            Utility.displayLoader(getActivity());
+            if(Utility.globalData.equals("0")){
+                Utility.displayLoader(getActivity());
+            }
 
             friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
 
@@ -199,8 +207,6 @@ public class HomeFragment extends Fragment {
                                     object11.getString("unread_post_number"));
                             friendsfeed_items.add(item);
                         }
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-                        recyclerView.setLayoutManager(linearLayoutManager);
                         recyclerView.setAdapter(new Friendsfeed_Adapter(getActivity(),friendsfeed_items));
                     }else{
                         Utility.hideLoader(getActivity());
