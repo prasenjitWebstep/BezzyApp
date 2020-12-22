@@ -1,22 +1,18 @@
 package com.bezzy.Ui.View.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bezzy.Ui.View.activity.LoginActivity;
+import com.bezzy.Ui.View.activity.CommentActivity;
 import com.bezzy.Ui.View.adapter.FriendsEnlargeImagePostAdapter;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy_application.R;
@@ -42,7 +38,7 @@ import java.util.ArrayList;
 public class Utility {
 
     private static AlertDialog topupDialog,fullscreenDialog;
-    public static String globalData = "null";
+    public static String globalData = "0";
 
     public static boolean internet_check(Context context){
         //Test for Connection
@@ -150,7 +146,7 @@ public class Utility {
     public static void fullscreenDialog(Context context, String post_id){
 
         AndExoPlayerView andExoPlayerView;
-        ImageView imageShow,fav_btn,favBtnfilled;
+        ImageView imageShow,fav_btn,favBtnfilled,chat_btn;
         RecyclerView recyclerImageShow;
         TextView servicesText,following_num,following_numm;
         ArrayList<FriendsPostModelImage> postModelList;
@@ -165,6 +161,7 @@ public class Utility {
         following_numm = v.findViewById(R.id.following_numm);
         fav_btn = v.findViewById(R.id.fav_btn);
         favBtnfilled = v.findViewById(R.id.favBtnfilled);
+        chat_btn = v.findViewById(R.id.chat_btn);
         postModelList = new ArrayList<>();
 
         if(Utility.internet_check(context)) {
@@ -175,7 +172,7 @@ public class Utility {
                     andExoPlayerView,imageShow,
                     recyclerImageShow,servicesText,
                     following_num,following_numm,
-                    fav_btn,favBtnfilled,postModelList);
+                    fav_btn,favBtnfilled,postModelList,chat_btn);
 
         }
         else {
@@ -202,7 +199,8 @@ public class Utility {
                                              final TextView following_numm,
                                              final ImageView fav_btn,
                                              final ImageView favBtnfilled,
-                                             final ArrayList<FriendsPostModelImage> postModelList) {
+                                             final ArrayList<FriendsPostModelImage> postModelList,
+                                             final ImageView chat_btn) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -213,16 +211,78 @@ public class Utility {
                     if(status.equals("success")){
                         //progressDialog.dismiss();
                         Utility.hideLoader(context);
-                        JSONObject object1 = object.getJSONObject("post_details");
+                        final JSONObject object1 = object.getJSONObject("post_details");
                         if(object1.getString("log_user_like_status").equals("Yes")){
                             favBtnfilled.setVisibility(View.VISIBLE);
                         }else{
                             fav_btn.setVisibility(View.VISIBLE);
                         }
 
+                        if(fav_btn.getVisibility() == View.VISIBLE){
+                            fav_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Log.e("Called","1");
+                                    favBtnfilled.setVisibility(View.VISIBLE);
+                                    fav_btn.setVisibility(View.INVISIBLE);
+                                    if(Utility.internet_check(context)) {
+                                        try {
+                                            Log.e("POSTID",object1.getString("post_id"));
+                                            friendsPostLike(APIs.BASE_URL+APIs.LIKEPOST+"/"+Utility.getUserId(context)+"/"+object1.getString("post_id"),following_num,context);
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                    else {
+
+                                        Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+
+                        favBtnfilled.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.e("Called","2");
+                                favBtnfilled.setVisibility(View.INVISIBLE);
+                                fav_btn.setVisibility(View.VISIBLE);
+                                if(Utility.internet_check(context)) {
+
+                                    try {
+                                        Log.e("POSTID",object1.getString("post_id"));
+                                        friendsPostLike(APIs.BASE_URL+APIs.LIKEPOST+"/"+Utility.getUserId(context)+"/"+object1.getString("post_id"),following_num, context);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                else {
+
+                                    Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
                         following_num.setText(object1.getString("number_of_like"));
 
                         following_numm.setText(object1.getString("number_of_comment"));
+
+                        chat_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(context, CommentActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                try {
+                                    intent.putExtra("postId",object1.getString("post_id"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                context.startActivity(intent);
+                            }
+                        });
 
                         servicesText.setText(object1.getString("post_content"));
 
@@ -307,6 +367,36 @@ public class Utility {
                 //progressDialog.dismiss();
                 Utility.hideLoader(context);
                 Log.e("Error",error.toString());
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+
+    private static void friendsPostLike(String url, final TextView following_num, Context context) {
+        Log.e("URL",url);
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("Response",response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String status = object.getString("status");
+                    if(status.equals("success")){
+                        String number = object.getJSONObject("activity").getString("number_of_activity");
+                        following_num.setText(number);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
             }
         });
 

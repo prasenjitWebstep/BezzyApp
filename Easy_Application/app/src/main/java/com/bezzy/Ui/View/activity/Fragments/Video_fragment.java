@@ -43,6 +43,7 @@ import com.bezzy.Ui.View.utils.UploadHelper;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
 import com.bezzy_application.R;
+import com.iceteck.silicompressorr.SiliCompressor;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -160,7 +161,7 @@ public class Video_fragment extends Fragment {
 
     private void pickVideoFromgallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("video/*");
+        intent.setType("video/mp4");
         startActivityForResult(intent, REQUEST_PICK_VIDEO);
     }
 
@@ -242,6 +243,7 @@ public class Video_fragment extends Fragment {
                 if (data != null) {
                     //Toast.makeText(getActivity(), "Video content URI: " + data.getData(),Toast.LENGTH_LONG).show();
                     video = data.getData();
+                    /*String filePath = SiliCompressor.with(getActivity()).compressVideo(data.getData(), destinationDirectory);*/
                     Log.e("FetechedVideo", video.toString());
                     /*videoPath = getPath(video);
                     Log.e("FetechedVideoPath",videoPath);*/

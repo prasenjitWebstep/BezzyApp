@@ -143,6 +143,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
             Utility.displayLoader(context);
             holder.friendsPostCards.setVisibility(View.VISIBLE);
             friendsPostList(APIs.BASE_URL+APIs.FRIENDPOSTLIST+"/"+friendList.get(position).getFriendId()+"/"+Utility.getUserId(context),friendList.get(position).getFriendName(),friendList.get(position).getFriendPhoto(),holder.frds_feed);
+
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

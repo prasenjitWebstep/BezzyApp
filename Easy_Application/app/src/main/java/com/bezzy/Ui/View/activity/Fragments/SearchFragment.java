@@ -106,6 +106,9 @@ public class SearchFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),3);
+        recyclerViewSearchResult.setLayoutManager(linearLayoutManager);
+
         dataholder = new ArrayList<>();
 
         if(Utility.internet_check(getActivity())) {
@@ -183,9 +186,6 @@ public class SearchFragment extends Fragment {
                             dataholder.add(ob1);
 
                         }
-
-                        GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),3);
-                        recyclerViewSearchResult.setLayoutManager(linearLayoutManager);
 
                         recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));
 

@@ -92,7 +92,6 @@ public class ChatFragment extends Fragment {
                     JSONObject object=new JSONObject(response);
                     String status=object.getString("status");
                     if (status.equals("success")){
-                        Utility.hideLoader(getActivity());
                         JSONArray array=object.getJSONArray("chat_notification_list");
                         for (int i=0;i<array.length();i++){
                             JSONObject object11=array.getJSONObject(i);
@@ -106,11 +105,14 @@ public class ChatFragment extends Fragment {
                                     object11.getString("user_active_status")
                             );
                             dataholder.add(chatlist_item);
+                            Utility.hideLoader(getActivity());
 
                         }
                         chatlist.setAdapter(new Chatlist_adater(dataholder, getActivity()));
 
 
+                    }else{
+                        Utility.hideLoader(getActivity());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -122,7 +124,7 @@ public class ChatFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Exception",error.toString());
+                Log.e("Error",error.toString());
                 Utility.hideLoader(getActivity());
 
             }
