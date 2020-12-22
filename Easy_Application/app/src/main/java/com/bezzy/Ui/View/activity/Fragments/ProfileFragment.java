@@ -101,6 +101,7 @@ public class ProfileFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //logout();
                 PopupMenu popupMenu=new PopupMenu(getActivity(),imageView);
                 popupMenu.getMenuInflater().inflate(R.menu.logout_menu,popupMenu.getMenu());

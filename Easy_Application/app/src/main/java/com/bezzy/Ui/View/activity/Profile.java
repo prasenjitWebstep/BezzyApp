@@ -158,7 +158,6 @@ public class Profile extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
-            Fragment active=selectedFragment;
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     selectedFragment = new HomeFragment();
