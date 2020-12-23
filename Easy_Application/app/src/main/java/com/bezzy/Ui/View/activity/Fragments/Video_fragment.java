@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -12,9 +13,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +52,7 @@ import com.iceteck.silicompressorr.SiliCompressor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,6 +74,7 @@ public class Video_fragment extends Fragment {
     private static final String PLAYBACK_TIME = "play_time";
     private Uri video;
     private String videoPath;
+    Boolean allow;
 
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
@@ -138,7 +144,7 @@ public class Video_fragment extends Fragment {
                     if (Utility.internet_check(getActivity())) {
 
                         Utility.displayLoader(getActivity());
-                        uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO);
+                        uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO,allow);
 
                     } else {
 
@@ -247,9 +253,39 @@ public class Video_fragment extends Fragment {
                     Log.e("FetechedVideo", video.toString());
                     /*videoPath = getPath(video);
                     Log.e("FetechedVideoPath",videoPath);*/
-                    initializePlayer(video);
-                    // uploadFile(video.getPath());
 
+
+                    initializePlayer(video);
+                    checkSize(video);
+//                    Cursor returnCursor = getActivity().getContentResolver().query(video, null, null, null, null);
+//                    assert returnCursor != null;
+//                    int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+//                    returnCursor.moveToFirst();
+//                    String fileSize = returnCursor.getString(sizeIndex);
+//                    int convertToInt = Integer.parseInt(fileSize);
+//                    int sizeToKb = convertToInt/1024;
+//                    Log.e("BOOM BOOM CHIKI FUCK",String.valueOf(sizeToKb));
+
+
+
+
+//                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//                    retriever.setDataSource(getContext(),data.getData());
+//                    long duration = Long.parseLong(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+//                    int width = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+//                    int height = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+//                    Log.e("BOOM BOOM CHIKI",String.valueOf(duration));
+//                    Log.e("BOOM BOOM CHIKI",String.valueOf(width));
+//                    Log.e("BOOM BOOM CHIKI",String.valueOf(height));
+//                    retriever.release();
+                    // uploadFile(video.getPath());
+                    //getPath(Uri.parse(String.valueOf(video)));
+//                    String filepath = Environment.getExternalStorageDirectory() + ".mp4";
+//                    File file = new File(filepath);
+//                    long length = file.length();
+//                    length = length/1024;
+//                    Toast.makeText(getActivity(), "Video size:"+length+"KB",
+//                            Toast.LENGTH_LONG).show();
                 }
             }
         } else if (resultCode != Activity.RESULT_CANCELED) {
@@ -257,82 +293,106 @@ public class Video_fragment extends Fragment {
         }
     }
 
-    public String getPath(Uri uri) {
-        String[] projection = {MediaStore.Video.Media.DATA};
-        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
-            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
-            int column_index = cursor
-                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } else
-            return null;
+    public void checkSize(Uri uri){
+        Cursor returnCursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+        assert returnCursor != null;
+        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+        returnCursor.moveToFirst();
+        String fileSize = returnCursor.getString(sizeIndex);
+        int convertToInt = Integer.parseInt(fileSize);
+        int sizeToKb = convertToInt/1024;
+        if(sizeToKb>35000){
+            Toast.makeText(getContext(),"Please choose a video less than 35Mb",Toast.LENGTH_LONG).show();
+            allow = false;
+        }else{
+            allow = true;
+        }
+        //Log.e("BOOM BOOM CHIKI FUCK",String.valueOf(sizeToKb));
     }
 
-    private void uploadVideo(String url) {
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
-            @Override
-            public void onResponse(NetworkResponse response) {
-                String response2 = new String(response.data);
+//    public String getPath(Uri uri) {
+//        String[] projection = {MediaStore.Video.Media.DATA};
+//        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+//        if (cursor != null) {
+//            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+//            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+//            int column_index = cursor
+//                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+//            long fileSize = cursor.getLong(column_index);
+//            Toast.makeText(getContext(),String.valueOf(fileSize),Toast.LENGTH_LONG).show();
+//            cursor.moveToFirst();
+//            return cursor.getString(column_index);
+//        } else
+//            return null;
+//    }
 
-                Log.e("RESPONSE2", response2);
+    private void uploadVideo(String url,Boolean allow) {
+        if(allow == true){
+            VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
+                @Override
+                public void onResponse(NetworkResponse response) {
+                    String response2 = new String(response.data);
+
+                    Log.e("RESPONSE2", response2);
 
 
-                try {
-                    JSONObject object = new JSONObject(response2);
-                    String status = object.getString("resp");
-                    if (status.equals("success")) {
+                    try {
+                        JSONObject object = new JSONObject(response2);
+                        String status = object.getString("resp");
+                        if (status.equals("success")) {
 
-                        String postId = object.getString("post_id");
-                        Log.e("postId",postId);
-                        callApi(APIs.BASE_URL+APIs.CONTENT_VIDEO,postId);
+                            String postId = object.getString("post_id");
+                            Log.e("postId",postId);
+                            callApi(APIs.BASE_URL+APIs.CONTENT_VIDEO,postId);
 
-                    } else {
+                        } else {
+                            Utility.hideLoader(getActivity());
+                            String message = object.getString("message");
+                            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                         Utility.hideLoader(getActivity());
-                        String message = object.getString("message");
-                        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                        Log.e("ImageUploadException", e.toString());
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one video to Post", Toast.LENGTH_LONG).show();
                     Utility.hideLoader(getActivity());
-                    Log.e("ImageUploadException", e.toString());
+                    Log.e("VolleyError", error.toString());
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one video to Post", Toast.LENGTH_LONG).show();
-                Utility.hideLoader(getActivity());
-                Log.e("VolleyError", error.toString());
-            }
-        }
-        ) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                // params.put("tags", "ccccc");  add string parameters
-                params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content", "");
-                return params;
-            }
+            ) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    // params.put("tags", "ccccc");  add string parameters
+                    params.put("userID", Utility.getUserId(getActivity()));
+                    params.put("post_content", "");
+                    return params;
+                }
 
-            @Override
-            protected Map<String, DataPart> getByteData() throws AuthFailureError {
-                Map<String, DataPart> params = new HashMap<>();
-                long videoname = System.currentTimeMillis();
-                params.put("post_video", new DataPart(videoname + ".mp4", getFileDataFromDrawable(getActivity(), video)));
-                Log.e("Value", params.get("post_video").toString());
-                return params;
-            }
-        };
-        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        RequestQueue rQueue = Volley.newRequestQueue(getActivity());
-        rQueue.add(volleyMultipartRequest);
+                @Override
+                protected Map<String, DataPart> getByteData() throws AuthFailureError {
+                    Map<String, DataPart> params = new HashMap<>();
+                    long videoname = System.currentTimeMillis();
+                    params.put("post_video", new DataPart(videoname + ".mp4", getFileDataFromDrawable(getActivity(), video)));
+                    Log.e("Value", params.get("post_video").toString());
+                    return params;
+                }
+            };
+            volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    MY_SOCKET_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            RequestQueue rQueue = Volley.newRequestQueue(getActivity());
+            rQueue.add(volleyMultipartRequest);
+        }else {
+            Toast.makeText(getContext(),"Please select a video less than 35Mb",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void callApi(String s, final String postId) {
