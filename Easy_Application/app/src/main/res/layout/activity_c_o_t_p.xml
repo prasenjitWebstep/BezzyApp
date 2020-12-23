@@ -88,18 +88,32 @@
 
 
 
-            <Button
-                android:id="@+id/btnVerifyy"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/login_button_background"
-                android:text="Verify Otp"
-                android:textAllCaps="false"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"/>
+                android:orientation="vertical">
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/btnVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/login_button_background"
+                    android:text="Verify Otp"
+                    android:textAllCaps="false"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:visibility="visible"/>
+
+            </LinearLayout>
             <TextView
                 android:id="@+id/resend_otp"
                 android:layout_width="match_parent"
@@ -113,6 +127,7 @@
 
 
         </LinearLayout>
+
 
     </RelativeLayout>
 

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
     String friendsId;
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
+    ProgressBar progressBar;
 
 
 
@@ -73,6 +75,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
         postRecyclerView = findViewById(R.id.postRecyclerView);
         layoutFollowing = findViewById(R.id.layoutFollowing);
         layoutFollower = findViewById(R.id.layoutFollower);
+        progressBar =findViewById(R.id.progressBar);
 
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
@@ -121,14 +124,16 @@ public class FriendsProfileActivity extends AppCompatActivity {
         if(Utility.internet_check(FriendsProfileActivity.this)) {
 
             // progressDialog.show();
-            Utility.displayLoader(FriendsProfileActivity.this);
+            //Utility.displayLoader(FriendsProfileActivity.this);
+            progressBar.setVisibility(View.VISIBLE);
 
             postRequest(APIs.BASE_URL+APIs.GETDATA);
         }
         else {
 
             //progressDialog.show();
-            Utility.displayLoader(FriendsProfileActivity.this);
+            //Utility.displayLoader(FriendsProfileActivity.this);
+            progressBar.setVisibility(View.VISIBLE);
             Toast.makeText(FriendsProfileActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -148,7 +153,8 @@ public class FriendsProfileActivity extends AppCompatActivity {
                     if(resp.equals("true")){
 
                         //progressDialog.dismiss();
-                        Utility.hideLoader(FriendsProfileActivity.this);
+                        //Utility.hideLoader(FriendsProfileActivity.this);
+                        progressBar.setVisibility(View.GONE);
 
                         userName.setText(object.getJSONObject("usedetails").getString("get_name"));
                         following.setText(object.getJSONObject("usedetails").getString("following"));
@@ -205,7 +211,8 @@ public class FriendsProfileActivity extends AppCompatActivity {
 
                 Log.e("Exception",error.toString());
                 //progressDialog.dismiss();
-                Utility.hideLoader(FriendsProfileActivity.this);
+                //Utility.hideLoader(FriendsProfileActivity.this);
+                progressBar.setVisibility(View.GONE);
 
             }
         }){

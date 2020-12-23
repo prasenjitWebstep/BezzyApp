@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,12 +61,14 @@ public class LoginActivity extends AppCompatActivity {
     int RC_SIGN_IN = 0;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
+    ProgressBar progressBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
+        progressBar =findViewById(R.id.progressBar);
 
         /*decorView = getWindow().peekDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -114,7 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                 }else{
                     if(Utility.internet_check(LoginActivity.this)) {
 
-                        Utility.displayLoader(LoginActivity.this);
+                        //Utility.displayLoader(LoginActivity.this);
+                        progressBar.setVisibility(View.VISIBLE);
+                        btnLogin.setVisibility(View.GONE);
 
 
                         postRequest(APIs.BASE_URL+APIs.LOGIN_URL);
@@ -122,7 +127,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else {
 
-                        Utility.hideLoader(LoginActivity.this);
+                        //Utility.hideLoader(LoginActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        btnLogin.setVisibility(View.VISIBLE);
+
 
                         Toast.makeText(LoginActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
                     }
@@ -156,7 +164,9 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
-                        Utility.hideLoader(LoginActivity.this);
+                        //Utility.hideLoader(LoginActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        btnLogin.setVisibility(View.VISIBLE);
                         Utility.setLogin(LoginActivity.this,"1");
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
@@ -164,19 +174,25 @@ public class LoginActivity extends AppCompatActivity {
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
                     }else{
-                        Utility.hideLoader(LoginActivity.this);
+                        //Utility.hideLoader(LoginActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        btnLogin.setVisibility(View.VISIBLE);
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(LoginActivity.this);
+                    //Utility.hideLoader(LoginActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    btnLogin.setVisibility(View.VISIBLE);
                     Log.e("Exception",e.toString());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utility.hideLoader(LoginActivity.this);
+                //Utility.hideLoader(LoginActivity.this);
+                progressBar.setVisibility(View.GONE);
+                btnLogin.setVisibility(View.VISIBLE);
                 Log.e("Error",error.toString());
             }
         }){
@@ -275,7 +291,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 callApiSocialLogin(APIs.BASE_URL+APIs.SOCIALLOGINURL,personName,personEmail,profileImage);
-                Utility.displayLoader(LoginActivity.this);
+                //Utility.displayLoader(LoginActivity.this);
+                progressBar.setVisibility(View.VISIBLE);
+                btnLogin.setVisibility(View.GONE);
 
 
             }
@@ -298,7 +316,9 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
-                        Utility.hideLoader(LoginActivity.this);
+                        //Utility.hideLoader(LoginActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        btnLogin.setVisibility(View.VISIBLE);
                         Utility.setLogin(LoginActivity.this,"1");
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
                         Utility.setSocial(LoginActivity.this,"1");
@@ -308,11 +328,15 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(i);
 
                     }else{
-                        Utility.hideLoader(LoginActivity.this);
+                        //Utility.hideLoader(LoginActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        btnLogin.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(LoginActivity.this);
+                    //Utility.hideLoader(LoginActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    btnLogin.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -320,7 +344,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Utility.hideLoader(LoginActivity.this);
+                //Utility.hideLoader(LoginActivity.this);
+                progressBar.setVisibility(View.GONE);
+                btnLogin.setVisibility(View.VISIBLE);
 
             }
         }){

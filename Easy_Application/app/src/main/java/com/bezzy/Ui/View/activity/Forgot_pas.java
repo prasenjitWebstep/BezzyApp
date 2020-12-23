@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -35,6 +36,7 @@ public class Forgot_pas extends AppCompatActivity {
     TextInputEditText email_send;
     Button button;
     ProgressDialog progressDialog;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class Forgot_pas extends AppCompatActivity {
         back_image=findViewById(R.id.back_image);
         email_send=findViewById(R.id.email_send);
         button=findViewById(R.id.btn_logedin);
+        progressBar =findViewById(R.id.progressBar);
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,12 +69,16 @@ public class Forgot_pas extends AppCompatActivity {
     public void Emailsend(){
         if(Utility.internet_check(Forgot_pas.this)) {
             //progressDialog.show();
-            Utility.displayLoader(Forgot_pas.this);
+            //Utility.displayLoader(Forgot_pas.this);
+            progressBar.setVisibility(View.VISIBLE);
+            button.setVisibility(View.GONE);
             callAPIEmailSend(APIs.BASE_URL+APIs.FORGETPASSWORDSEND);
         }
         else {
             //progressDialog.dismiss();
-            Utility.hideLoader(Forgot_pas.this);
+            //Utility.hideLoader(Forgot_pas.this);
+            progressBar.setVisibility(View.GONE);
+            button.setVisibility(View.VISIBLE);
             Toast.makeText(Forgot_pas.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -86,7 +93,9 @@ public class Forgot_pas extends AppCompatActivity {
                     JSONObject jsonObject=new JSONObject(response);
                     if(jsonObject.getString("resp").equals("true")){
                         //progressDialog.dismiss();
-                        Utility.hideLoader(Forgot_pas.this);
+                        //Utility.hideLoader(Forgot_pas.this);
+                        progressBar.setVisibility(View.GONE);
+                        button.setVisibility(View.VISIBLE);
                         Toast.makeText(Forgot_pas.this,jsonObject.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Forgot_pas.this,COTPActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -97,7 +106,9 @@ public class Forgot_pas extends AppCompatActivity {
                     }
                     else {
                         //progressDialog.dismiss();
-                        Utility.hideLoader(Forgot_pas.this);
+                        //Utility.hideLoader(Forgot_pas.this);
+                        progressBar.setVisibility(View.GONE);
+                        button.setVisibility(View.VISIBLE);
                         Toast.makeText(Forgot_pas.this,jsonObject.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -109,7 +120,9 @@ public class Forgot_pas extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //progressDialog.dismiss();
-                Utility.hideLoader(Forgot_pas.this);
+                //Utility.hideLoader(Forgot_pas.this);
+                progressBar.setVisibility(View.GONE);
+                button.setVisibility(View.VISIBLE);
                 Log.e("Error",error.toString());
 
             }

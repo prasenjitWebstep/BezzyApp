@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class OTPActivity extends AppCompatActivity {
     OtpView otp_view;
     SpotsDialog progressDialog;
     TextView resend;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class OTPActivity extends AppCompatActivity {
         btnVerify = findViewById(R.id.btnVerify);
         otp_view = findViewById(R.id.otp_view);
         resend = findViewById(R.id.resend);
+        progressBar =findViewById(R.id.progressBar);
        /* progressDialog = new SpotsDialog(OTPActivity.this);
         progressDialog.setMessage("Verifying Please Wait...");
         progressDialog.setCancelable(false);*/
@@ -64,13 +67,21 @@ public class OTPActivity extends AppCompatActivity {
                 if(Utility.internet_check(OTPActivity.this)) {
 
                     //progressDialog.show();
-                    Utility.displayLoader(OTPActivity.this);
+
+                    //Utility.displayLoader(OTPActivity.this);
+                    progressBar.setVisibility(View.VISIBLE);
+                    btnVerify.setVisibility(View.GONE);
+                    resend.setVisibility(View.GONE);
+
                     callApiVerifyOtp(APIs.BASE_URL+APIs.OTPVERIFICATION);
 
                 }
                 else {
                     //progressDialog.dismiss();
-                    Utility.hideLoader(OTPActivity.this);
+                   // Utility.hideLoader(OTPActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    resend.setVisibility(View.VISIBLE);
+                    btnVerify.setVisibility(View.VISIBLE);
                     Toast.makeText(OTPActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
                 }
 
@@ -84,13 +95,19 @@ public class OTPActivity extends AppCompatActivity {
                 if(Utility.internet_check(OTPActivity.this)) {
 
                     //progressDialog.show();
-                    Utility.displayLoader(OTPActivity.this);
+                   // Utility.displayLoader(OTPActivity.this);
+                    btnVerify.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    resend.setVisibility(View.VISIBLE);
                     resendotp(APIs.BASE_URL+APIs.RESENOTP);
 
                 }
                 else {
                     //progressDialog.dismiss();
-                    Utility.hideLoader(OTPActivity.this);
+                    //Utility.hideLoader(OTPActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    resend.setVisibility(View.VISIBLE);
+                    btnVerify.setVisibility(View.VISIBLE);
                     Toast.makeText(OTPActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
                 }
 
@@ -115,7 +132,10 @@ public class OTPActivity extends AppCompatActivity {
                     if(status.equals("true")){
 
                         //progressDialog.dismiss();
-                        Utility.hideLoader(OTPActivity.this);
+                        //Utility.hideLoader(OTPActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        resend.setVisibility(View.VISIBLE);
+                        btnVerify.setVisibility(View.VISIBLE);
 
                         String message = object.getString("message");
 
@@ -129,14 +149,20 @@ public class OTPActivity extends AppCompatActivity {
                     }else{
                         String message = object.getString("message");
                         //progressDialog.dismiss();
-                        Utility.hideLoader(OTPActivity.this);
+                        //Utility.hideLoader(OTPActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        resend.setVisibility(View.VISIBLE);
+                        btnVerify.setVisibility(View.VISIBLE);
                         Toast.makeText(OTPActivity.this,message,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //progressDialog.dismiss();
-                    Utility.hideLoader(OTPActivity.this);
+                    //Utility.hideLoader(OTPActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    resend.setVisibility(View.VISIBLE);
+                    btnVerify.setVisibility(View.VISIBLE);
                     Log.e("Exception",e.toString());
                 }
             }
@@ -144,7 +170,10 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //progressDialog.dismiss();
-                Utility.hideLoader(OTPActivity.this);
+                //Utility.hideLoader(OTPActivity.this);
+                progressBar.setVisibility(View.GONE);
+                resend.setVisibility(View.VISIBLE);
+                btnVerify.setVisibility(View.VISIBLE);
                 Log.e("Error",error.toString());
             }
         }){
@@ -173,17 +202,26 @@ public class OTPActivity extends AppCompatActivity {
                     String resp=object.getString("resp");
                     if (resp.equals("true")){
 
-                        Utility.hideLoader(OTPActivity.this);
+                        //Utility.hideLoader(OTPActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        resend.setVisibility(View.VISIBLE);
+                        btnVerify.setVisibility(View.VISIBLE);
                         Toast.makeText(OTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
 
                     }
                     else{
-                        Utility.hideLoader(OTPActivity.this);
+                        //Utility.hideLoader(OTPActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        resend.setVisibility(View.VISIBLE);
+                        btnVerify.setVisibility(View.VISIBLE);
                         Toast.makeText(OTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(OTPActivity.this);
+                    //Utility.hideLoader(OTPActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    resend.setVisibility(View.VISIBLE);
+                    btnVerify.setVisibility(View.VISIBLE);
                     Log.e("Exception",e.toString());
                 }
 

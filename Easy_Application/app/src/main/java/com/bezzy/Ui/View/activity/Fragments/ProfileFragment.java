@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +68,7 @@ public class ProfileFragment extends Fragment {
     SpotsDialog progressDialog;
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
+    ProgressBar progressBar;
 
 
 
@@ -87,6 +89,7 @@ public class ProfileFragment extends Fragment {
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
         layoutFollowing = view.findViewById(R.id.layoutFollowing);
         layoutFollower = view.findViewById(R.id.layoutFollower);
+        progressBar = view.findViewById(R.id.progressBar);
 
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
@@ -180,13 +183,15 @@ public class ProfileFragment extends Fragment {
 
         if(Utility.internet_check(getActivity())) {
 
-            Utility.displayLoader(getActivity());
+            //Utility.displayLoader(getActivity());
+            progressBar.setVisibility(View.VISIBLE);
 
             postRequest(APIs.BASE_URL+APIs.GETDATA);
         }
         else {
 
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
         }
 
     }
@@ -206,7 +211,12 @@ public class ProfileFragment extends Fragment {
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 
-                        Glide.with(ProfileFragment.this).load(object.getJSONObject("usedetails").getString("profile_pic")).into(square_img);
+                        try{
+                            Glide.with(getActivity()).load(object.getJSONObject("usedetails").getString("profile_pic")).into(square_img);
+                        }catch (Exception e){
+                            Log.e("exception",e.toString());
+                        }
+
 
                         userName.setText(object.getJSONObject("usedetails").getString("get_name"));
                         following.setText(object.getJSONObject("usedetails").getString("following"));
@@ -250,7 +260,8 @@ public class ProfileFragment extends Fragment {
                             }
                         });
 
-                        Utility.hideLoader(getActivity());
+                        //Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
 
                         edit_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -288,11 +299,13 @@ public class ProfileFragment extends Fragment {
                         postRecyclerView.setAdapter((new PostAdapter(postList,getActivity(),"1")));
 
                     }else{
-                        Utility.hideLoader(getActivity());
+                        //Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                    //Utility.hideLoader(getActivity());
+                    progressBar.setVisibility(View.GONE);
                     Log.e("Exception",e.toString());
                 }
 
@@ -300,7 +313,8 @@ public class ProfileFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utility.hideLoader(getActivity());
+               // Utility.hideLoader(getActivity());
+                progressBar.setVisibility(View.GONE);
                 Log.e("VolleyError",error.toString());
 
             }
@@ -327,6 +341,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 //progressDialog.show();
                 Utility.displayLoader(getActivity());
+                //progressBar.setVisibility(View.VISIBLE);
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, APIs.BASE_URL+APIs.LOGOUT, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -337,6 +352,7 @@ public class ProfileFragment extends Fragment {
 
                                 //progressDialog.dismiss();
                                 Utility.hideLoader(getActivity());
+                                //progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_SHORT).show();
                                 callApi(APIs.BASE_URL+APIs.GET_USER_ACTIVE_STATUS,"false");
                                 Intent i = new Intent(getActivity(), LoginActivity.class);

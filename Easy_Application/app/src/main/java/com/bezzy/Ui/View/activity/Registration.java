@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -77,6 +78,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     int day,month,year;
     Uri resultUri;
     Bitmap bitmap;
+    ProgressBar progressBar;
 
 
 
@@ -96,6 +98,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         textInputPassword = findViewById(R.id.text_input_password);
         spinner = findViewById(R.id.spinner);
         imageView=findViewById(R.id.back_image);
+        progressBar=findViewById(R.id.progressBar);
 
        /* progressDialog = new SpotsDialog(Registration.this);
         progressDialog.setCancelable(false);*/
@@ -220,12 +223,16 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         }else{
             if(Utility.internet_check(Registration.this)){
                // progressDialog.show();
-                Utility.displayLoader(Registration.this);
+                //Utility.displayLoader(Registration.this);
+                progressBar.setVisibility(View.VISIBLE);
+                btn_register.setVisibility(View.GONE);
                 callApiRegistration(APIs.BASE_URL+APIs.REGISTRATION);
             }
             else {
                 //progressDialog.dismiss();
-                Utility.hideLoader(Registration.this);
+                //Utility.hideLoader(Registration.this);
+                progressBar.setVisibility(View.GONE);
+                btn_register.setVisibility(View.VISIBLE);
                 Toast.makeText(Registration.this,"No Network!",Toast.LENGTH_SHORT).show();
             }
         }
@@ -249,18 +256,24 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                             String status = object.getString("resp");
                             if(status.equals("true")){
                                 Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
-                                Utility.hideLoader(Registration.this);
+                                //Utility.hideLoader(Registration.this);
+                                progressBar.setVisibility(View.GONE);
+                                btn_register.setVisibility(View.VISIBLE);
                                 Utility.setOtpScreen(Registration.this,"1");
                                 Utility.setUserId(Registration.this,object.getString("log_userID"));
                                 Intent intent = new Intent(Registration.this, OTPActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }else{
-                                Utility.hideLoader(Registration.this);
+                                //Utility.hideLoader(Registration.this);
+                                progressBar.setVisibility(View.GONE);
+                                btn_register.setVisibility(View.VISIBLE);
                                 Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
-                            Utility.hideLoader(Registration.this);
+                            //Utility.hideLoader(Registration.this);
+                            progressBar.setVisibility(View.GONE);
+                            btn_register.setVisibility(View.VISIBLE);
                             Log.e("Exception",e.toString());
                             e.printStackTrace();
                         }
@@ -269,7 +282,9 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Error",error.toString());
-                Utility.hideLoader(Registration.this);
+                //Utility.hideLoader(Registration.this);
+                progressBar.setVisibility(View.GONE);
+                btn_register.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext().getApplicationContext(), "Please Upload Profile Picture", Toast.LENGTH_LONG).show();
             }
         }){

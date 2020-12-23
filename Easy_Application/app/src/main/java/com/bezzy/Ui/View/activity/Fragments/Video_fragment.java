@@ -1,7 +1,6 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -24,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -43,7 +43,7 @@ import com.bezzy.Ui.View.utils.UploadHelper;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
 import com.bezzy_application.R;
-import com.iceteck.silicompressorr.SiliCompressor;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,6 +77,7 @@ public class Video_fragment extends Fragment {
     View rootView;
     //EmojiconEditText emojiconEditText;
     ImageView emojiButton;
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class Video_fragment extends Fragment {
         rootView=view.findViewById(R.id.root_view);
 
         uploadVideo = view.findViewById(R.id.upload);
+        progressBar = view.findViewById(R.id.progressBar);
 
         emojIcon = new EmojIconActions(getActivity(), rootView, emojiconEditText, emojiButton);
         emojIcon.ShowEmojIcon();
@@ -137,12 +139,17 @@ public class Video_fragment extends Fragment {
                 }else{
                     if (Utility.internet_check(getActivity())) {
 
-                        Utility.displayLoader(getActivity());
+                        //Utility.displayLoader(getActivity());
+                        progressBar.setVisibility(View.VISIBLE);
+
                         uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO);
 
                     } else {
 
-                        Utility.hideLoader(getActivity());
+
+                        //Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
+
                         Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
 
                     }
@@ -290,13 +297,15 @@ public class Video_fragment extends Fragment {
                         callApi(APIs.BASE_URL+APIs.CONTENT_VIDEO,postId);
 
                     } else {
-                        Utility.hideLoader(getActivity());
+                        //Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
                         String message = object.getString("message");
                         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                    //Utility.hideLoader(getActivity());
+                    progressBar.setVisibility(View.GONE);
                     Log.e("ImageUploadException", e.toString());
                 }
             }
@@ -304,7 +313,8 @@ public class Video_fragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one video to Post", Toast.LENGTH_LONG).show();
-                Utility.hideLoader(getActivity());
+                //Utility.hideLoader(getActivity());
+                progressBar.setVisibility(View.GONE);
                 Log.e("VolleyError", error.toString());
             }
         }
@@ -349,7 +359,8 @@ public class Video_fragment extends Fragment {
 
                     if(resp.equals("success"));
                     {
-                        Utility.hideLoader(getActivity());
+                        //Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -368,7 +379,8 @@ public class Video_fragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utility.hideLoader(getActivity());
+                //Utility.hideLoader(getActivity());
+                progressBar.setVisibility(View.GONE);
 
             }
         }){

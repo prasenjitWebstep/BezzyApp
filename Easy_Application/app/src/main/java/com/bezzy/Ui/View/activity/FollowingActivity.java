@@ -8,6 +8,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class FollowingActivity extends AppCompatActivity {
     ArrayList<FriendsHolder> holderList;
     TextView go_bezzy;
     String friendId;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class FollowingActivity extends AppCompatActivity {
 
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
+        progressBar =findViewById(R.id.progressBar);
         /*progressDialog = new SpotsDialog(FollowingActivity.this);
         progressDialog.setMessage("Loading Please Wait...");
         progressDialog.setCancelable(false);*/
@@ -70,7 +74,8 @@ public class FollowingActivity extends AppCompatActivity {
 
             //dialog.show();
             /*progressDialog.show();*/
-            Utility.displayLoader(FollowingActivity.this);
+            //Utility.displayLoader(FollowingActivity.this);
+            progressBar.setVisibility(View.VISIBLE);
             Log.e("Result","1");
 
             friendList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
@@ -80,7 +85,8 @@ public class FollowingActivity extends AppCompatActivity {
 
             //dialog.dismiss();
             /*progressDialog.dismiss();*/
-            Utility.hideLoader(FollowingActivity.this);
+            //Utility.hideLoader(FollowingActivity.this);
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(FollowingActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -99,7 +105,8 @@ public class FollowingActivity extends AppCompatActivity {
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
                         /*progressDialog.dismiss();*/
-                        Utility.hideLoader(FollowingActivity.this);
+                        //Utility.hideLoader(FollowingActivity.this);
+                        progressBar.setVisibility(View.GONE);
                         go_bezzy.setText(object.getString("login_user_name"));
                         JSONArray array = object.getJSONArray("following_user_list");
                         for(int i=0;i<array.length();i++){
@@ -112,7 +119,8 @@ public class FollowingActivity extends AppCompatActivity {
 
                     }else{
                         //progressDialog.dismiss();
-                        Utility.hideLoader(FollowingActivity.this);
+                        //Utility.hideLoader(FollowingActivity.this);
+                        progressBar.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -124,7 +132,8 @@ public class FollowingActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //progressDialog.dismiss();
-                Utility.hideLoader(FollowingActivity.this);
+                //Utility.hideLoader(FollowingActivity.this);
+                progressBar.setVisibility(View.GONE);
                 Log.e("Exception",error.toString());
             }
         }){

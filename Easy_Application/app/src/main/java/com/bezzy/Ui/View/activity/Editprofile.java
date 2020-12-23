@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,6 +73,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
     String str_gender;
     LinearLayout spinnerLayut;
     TextInputLayout textGenderLayout;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
         spinner = findViewById(R.id.spinner);
         spinnerLayut = findViewById(R.id.spinnerLayut);
         textGenderLayout = findViewById(R.id.textGenderLayout);
+        progressBar =findViewById(R.id.progressBar);
 
         Glide.with(Editprofile.this).load(getIntent().getExtras().getString("image")).into(profile_image);
 
@@ -217,7 +220,9 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
                         //progressDialog.dismiss();
-                        Utility.hideLoader(Editprofile.this);
+                        //Utility.hideLoader(Editprofile.this);
+                        progressBar.setVisibility(View.GONE);
+                        btn_update.setVisibility(View.VISIBLE);
                         Toast.makeText(Editprofile.this,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Editprofile.this, Profile.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -225,14 +230,18 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
 
 
                     }else{
-                        Utility.hideLoader(Editprofile.this);
+                        progressBar.setVisibility(View.GONE);
+                        btn_update.setVisibility(View.VISIBLE);
+                        //Utility.hideLoader(Editprofile.this);
                         //progressDialog.dismiss();
                         //Toast.makeText(Editprofile.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                    // progressDialog.dismiss();
-                    Utility.hideLoader(Editprofile.this);
+                   // Utility.hideLoader(Editprofile.this);
+                    progressBar.setVisibility(View.GONE);
+                    btn_update.setVisibility(View.VISIBLE);
                     Log.e("Exception",e.toString());
                 }
 
@@ -241,7 +250,9 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onErrorResponse(VolleyError error) {
                 //progressDialog.dismiss();
-                Utility.hideLoader(Editprofile.this);
+                //Utility.hideLoader(Editprofile.this);
+                progressBar.setVisibility(View.GONE);
+                btn_update.setVisibility(View.VISIBLE);
                 Log.e("Error",error.toString());
             }
         }){
@@ -281,20 +292,26 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
                         //progressDialog.dismiss();
-                        Utility.hideLoader(Editprofile.this);
+                        //Utility.hideLoader(Editprofile.this);
+                        progressBar.setVisibility(View.GONE);
+                        btn_update.setVisibility(View.VISIBLE);
 
                         Toast.makeText(Editprofile.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Editprofile.this,Profile.class));
 
                     }else{
                         //progressDialog.dismiss();
-                        Utility.hideLoader(Editprofile.this);
+                        //Utility.hideLoader(Editprofile.this);
+                        progressBar.setVisibility(View.GONE);
+                        btn_update.setVisibility(View.VISIBLE);
 
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //progressDialog.dismiss();
-                    Utility.hideLoader(Editprofile.this);
+                    //Utility.hideLoader(Editprofile.this);
+                    progressBar.setVisibility(View.GONE);
+                    btn_update.setVisibility(View.VISIBLE);
                     Log.e("Exception",e.toString());
                 }
             }
@@ -302,7 +319,9 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onErrorResponse(VolleyError error) {
                 //progressDialog.dismiss();
-                Utility.hideLoader(Editprofile.this);
+                //Utility.hideLoader(Editprofile.this);
+                progressBar.setVisibility(View.GONE);
+                btn_update.setVisibility(View.VISIBLE);
                 Log.e("Error",error.toString());
             }
         }){
@@ -350,7 +369,9 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
                         progressDialog.show();*//*
 
                     }*/
-                    Utility.displayLoader(Editprofile.this);
+                    //Utility.displayLoader(Editprofile.this);
+                    progressBar.setVisibility(View.VISIBLE);
+                    btn_update.setVisibility(View.GONE);
                     uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);
                     profile_image.setImageBitmap(bitmap);
                 } catch (IOException e) {
@@ -367,12 +388,16 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
     public void Updateprofile(){
         if(Utility.internet_check(Editprofile.this)) {
             //progressDialog.show();
-            Utility.displayLoader(Editprofile.this);
+           // Utility.displayLoader(Editprofile.this);
+            progressBar.setVisibility(View.VISIBLE);
+            btn_update.setVisibility(View.GONE);
             callApiUpdateProfile(APIs.BASE_URL+APIs.UPDATEPROFILE);
         }
         else {
             //progressDialog.dismiss();
-            Utility.hideLoader(Editprofile.this);
+            //Utility.hideLoader(Editprofile.this);
+            progressBar.setVisibility(View.GONE);
+            btn_update.setVisibility(View.VISIBLE);
             Toast.makeText(Editprofile.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 

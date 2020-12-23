@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,12 +37,15 @@ public class COTPActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     String otpValue,userId;
     TextView resendotp;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_c_o_t_p);
         resendotp=findViewById(R.id.resend_otp);
+        progressBar =findViewById(R.id.progressBar);
+        btnVerify = findViewById(R.id.btnVerify);
         initViews();
 
         resendotp.setOnClickListener(new View.OnClickListener() {
@@ -49,12 +53,19 @@ public class COTPActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(Utility.internet_check(COTPActivity.this)) {
                     //progressDialog.show();
-                    Utility.displayLoader(COTPActivity.this);
+                    //Utility.displayLoader(COTPActivity.this);
+                    progressBar.setVisibility(View.VISIBLE);
+                    btnVerify.setVisibility(View.GONE);
+                    resendotp.setVisibility(View.VISIBLE);
+
                     resendotp(APIs.BASE_URL+APIs.RESENOTP);
                 }
                 else {
                     //progressDialog.dismiss();
-                    Utility.hideLoader(COTPActivity.this);
+                    //Utility.hideLoader(COTPActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    btnVerify.setVisibility(View.VISIBLE);
+                    resendotp.setVisibility(View.VISIBLE);
                     Toast.makeText(COTPActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
                 }
 
@@ -63,7 +74,7 @@ public class COTPActivity extends AppCompatActivity {
     }
     private void initViews() {
 
-        btnVerify = findViewById(R.id.btnVerifyy);
+        btnVerify = findViewById(R.id.btnVerify);
         otp_view = findViewById(R.id.otp_vieww);
         try{
             otpValue = getIntent().getExtras().getString("OTPVALUE");
@@ -102,19 +113,28 @@ public class COTPActivity extends AppCompatActivity {
                     String resp=object.getString("resp");
                     if (resp.equals("true")){
 
-                        Utility.hideLoader(COTPActivity.this);
+                        //Utility.hideLoader(COTPActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        btnVerify.setVisibility(View.VISIBLE);
+                        resendotp.setVisibility(View.VISIBLE);
                         Toast.makeText(COTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                         otpValue = object.getString("OTPcode");
                         userId = object.getString("log_userID");
 
                     }
                     else{
-                        Utility.hideLoader(COTPActivity.this);
+                        //Utility.hideLoader(COTPActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                        btnVerify.setVisibility(View.VISIBLE);
+                        resendotp.setVisibility(View.VISIBLE);
                         Toast.makeText(COTPActivity.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(COTPActivity.this);
+                    //Utility.hideLoader(COTPActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    btnVerify.setVisibility(View.VISIBLE);
+                    resendotp.setVisibility(View.VISIBLE);
                     Log.e("Exception",e.toString());
                 }
 
@@ -122,7 +142,10 @@ public class COTPActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utility.hideLoader(COTPActivity.this);
+                //Utility.hideLoader(COTPActivity.this);
+                progressBar.setVisibility(View.GONE);
+                btnVerify.setVisibility(View.VISIBLE);
+                resendotp.setVisibility(View.VISIBLE);
                 Log.e("Error",error.toString());
 
             }

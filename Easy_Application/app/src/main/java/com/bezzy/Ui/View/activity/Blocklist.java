@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ public class Blocklist extends AppCompatActivity {
     ArrayList<Unblockholders> holderList;
     TextView go_bezzy;
     String friendId;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class Blocklist extends AppCompatActivity {
         setContentView(R.layout.activity_blocklist);
         recyclerblockList = findViewById(R.id.recyclerblockList);
         go_bezzy = findViewById(R.id.go_bezzy);
+        progressBar=findViewById(R.id.progressBar);
 
         holderList = new ArrayList<>();
 
@@ -80,7 +84,8 @@ public class Blocklist extends AppCompatActivity {
 
             //dialog.show();
             /*progressDialog.show();*/
-            Utility.displayLoader(Blocklist.this);
+            //Utility.displayLoader(Blocklist.this);
+            progressBar.setVisibility(View.VISIBLE);
             Log.e("Result","1");
 
             blockList(APIs.BASE_URL+APIs.BLOCKLIST);
@@ -90,7 +95,8 @@ public class Blocklist extends AppCompatActivity {
 
             //dialog.dismiss();
             /*progressDialog.dismiss();*/
-            Utility.hideLoader(Blocklist.this);
+            //Utility.hideLoader(Blocklist.this);
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(Blocklist.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
     }
@@ -107,7 +113,8 @@ public class Blocklist extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if (resp.equals("success")) {
-                        Utility.hideLoader(Blocklist.this);
+                        //Utility.hideLoader(Blocklist.this);
+                         progressBar.setVisibility(View.GONE);
                         //go_bezzy.setText(object.getString("login_user_name"));
                         JSONArray array = object.getJSONArray("block_user_list");
                         for (int i = 0; i < array.length(); i++) {
@@ -119,7 +126,8 @@ public class Blocklist extends AppCompatActivity {
                         recyclerblockList.setAdapter(adapter);
                     } else {
                         //progressDialog.dismiss();
-                        Utility.hideLoader(Blocklist.this);
+                        //Utility.hideLoader(Blocklist.this);
+                        progressBar.setVisibility(View.GONE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -128,7 +136,8 @@ public class Blocklist extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utility.hideLoader(Blocklist.this);
+                //Utility.hideLoader(Blocklist.this);
+                progressBar.setVisibility(View.GONE);
                 Log.e("Exception",error.toString());
             }
         }){

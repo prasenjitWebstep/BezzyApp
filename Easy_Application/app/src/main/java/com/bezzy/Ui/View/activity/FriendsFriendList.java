@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ public class FriendsFriendList extends AppCompatActivity {
     ArrayList<FriendsHolder> holderList;
     TextView go_bezzy;
     String friendId;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class FriendsFriendList extends AppCompatActivity {
 
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
+        progressBar =findViewById(R.id.progressBar);
        /* progressDialog = new SpotsDialog(FriendsFriendList.this);
         progressDialog.setMessage("Loading Please Wait...");
         progressDialog.setCancelable(false);*/
@@ -62,7 +66,8 @@ public class FriendsFriendList extends AppCompatActivity {
 
             //dialog.show();
            // progressDialog.show();
-            Utility.displayLoader(FriendsFriendList.this);
+            //Utility.displayLoader(FriendsFriendList.this);
+            progressBar.setVisibility(View.VISIBLE);
             Log.e("Result","1");
 
             friendList(APIs.BASE_URL+APIs.PROFILE_FRIEND_LIST+"/"+Utility.getUserId(FriendsFriendList.this)+"/"+friendId);
@@ -72,7 +77,8 @@ public class FriendsFriendList extends AppCompatActivity {
 
             //dialog.dismiss();
             //progressDialog.dismiss();
-            Utility.hideLoader(FriendsFriendList.this);
+            //Utility.hideLoader(FriendsFriendList.this);
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(FriendsFriendList.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -89,7 +95,8 @@ public class FriendsFriendList extends AppCompatActivity {
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
                         //progressDialog.dismiss();
-                        Utility.hideLoader(FriendsFriendList.this);
+                        //Utility.hideLoader(FriendsFriendList.this);
+                        progressBar.setVisibility(View.GONE);
                         go_bezzy.setText(object.getString("profile_user_name"));
                         JSONArray array = object.getJSONArray("friend_list");
                         for(int i=0;i<array.length();i++){
@@ -101,7 +108,8 @@ public class FriendsFriendList extends AppCompatActivity {
                         recyclerFriendsList.setAdapter(adapter);
                     }else{
                         //progressDialog.dismiss();
-                        Utility.hideLoader(FriendsFriendList.this);
+                        //Utility.hideLoader(FriendsFriendList.this);
+                        progressBar.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -113,7 +121,8 @@ public class FriendsFriendList extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //progressDialog.dismiss();
-                Utility.hideLoader(FriendsFriendList.this);
+                //Utility.hideLoader(FriendsFriendList.this);
+                progressBar.setVisibility(View.GONE);
                 Log.e("Exception",error.toString());
             }
         });

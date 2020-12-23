@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class NotificationActivity extends AppCompatActivity {
     Notification_item ob;
     ImageView back_image;
     SpotsDialog dialog;
+    ProgressBar progressBar;
 
 
     @Override
@@ -52,6 +54,7 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
         recyclerView=findViewById(R.id.noti_listf);
         back_image = findViewById(R.id.back_image);
+        progressBar =findViewById(R.id.progressBar);
         /*dialog = new SpotsDialog(NotificationActivity.this);
         dialog.setMessage("Loading Please Wait...");
         dialog.setCancelable(false);*/
@@ -75,7 +78,8 @@ public class NotificationActivity extends AppCompatActivity {
         if(Utility.internet_check(NotificationActivity.this)) {
 
             //dialog.show();
-            Utility.displayLoader(NotificationActivity.this);
+            //Utility.displayLoader(NotificationActivity.this);
+            progressBar.setVisibility(View.VISIBLE);
 
             Log.e("Result","1");
 
@@ -85,7 +89,8 @@ public class NotificationActivity extends AppCompatActivity {
         else {
 
            // dialog.dismiss();
-            Utility.hideLoader(NotificationActivity.this);
+           // Utility.hideLoader(NotificationActivity.this);
+            progressBar.setVisibility(View.GONE);
 
             Toast.makeText(NotificationActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
@@ -103,7 +108,8 @@ public class NotificationActivity extends AppCompatActivity {
                     String status = object.getString("status");
                     if(status.equals("success")){
                         //dialog.dismiss();
-                        Utility.hideLoader(NotificationActivity.this);
+                        //Utility.hideLoader(NotificationActivity.this);
+                        progressBar.setVisibility(View.GONE);
                         JSONArray array = object.getJSONArray("notification_list");
 
                         for(int i=0;i<array.length();i++){
@@ -144,11 +150,16 @@ public class NotificationActivity extends AppCompatActivity {
                         recyclerView.setAdapter(new Notifi_Adapter(getApplicationContext(),dataholder));
                     }else{
                         //dialog.dismiss();
-                        Utility.hideLoader(NotificationActivity.this);
+                        //Utility.hideLoader(NotificationActivity.this);
+                        progressBar.setVisibility(View.GONE);
+
+
+
                     }
                 } catch (JSONException e) {
                     //dialog.dismiss();
                     Utility.hideLoader(NotificationActivity.this);
+                    progressBar.setVisibility(View.GONE);
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
                 }
@@ -157,7 +168,8 @@ public class NotificationActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //dialog.dismiss();
-                Utility.hideLoader(NotificationActivity.this);
+                //Utility.hideLoader(NotificationActivity.this);
+                progressBar.setVisibility(View.GONE);
                 Log.e("Error",error.toString());
             }
         });

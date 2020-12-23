@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,7 @@ public class HomeFragment extends Fragment {
     ArrayList<Friendsfeed_item> friendsfeed_items;
     ImageView chatButton;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    ProgressBar progressBar;
 
 
     @Override
@@ -78,6 +80,7 @@ public class HomeFragment extends Fragment {
         cart_badge = view.findViewById(R.id.cart_badge);
         go_bezzy = view.findViewById(R.id.go_bezzy);
         chatButton = view.findViewById(R.id.chatButton);
+        progressBar = view.findViewById(R.id.progressBar);
 
         if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
             cart_badge.setVisibility(View.VISIBLE);
@@ -106,7 +109,8 @@ public class HomeFragment extends Fragment {
                 if(Utility.internet_check(getActivity())) {
 
                     //progressDialog.show();
-                    Utility.displayLoader(getActivity());
+                    //Utility.displayLoader(getActivity());
+                    progressBar.setVisibility(View.VISIBLE);
 
                     friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
 
@@ -115,7 +119,8 @@ public class HomeFragment extends Fragment {
 
                     //progressDialog.dismiss();
                     if(Utility.globalData.equals("1"))
-                        Utility.hideLoader(getActivity());
+                        //Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
 
                     Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
                 }
@@ -141,7 +146,8 @@ public class HomeFragment extends Fragment {
 
             //progressDialog.show();
             if(Utility.globalData.equals("0")){
-                Utility.displayLoader(getActivity());
+                //Utility.displayLoader(getActivity());
+                progressBar.setVisibility(View.VISIBLE);
             }
 
             friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
@@ -150,7 +156,8 @@ public class HomeFragment extends Fragment {
         else {
 
             //progressDialog.dismiss();
-            Utility.hideLoader(getActivity());
+            //Utility.hideLoader(getActivity());
+            progressBar.setVisibility(View.GONE);
 
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
@@ -194,7 +201,8 @@ public class HomeFragment extends Fragment {
                     String status = object1.getString("status");
                     if(status.equals("success")){
                         //progressDialog.dismiss();
-                        Utility.hideLoader(getActivity());
+                        //Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
                         go_bezzy.setText("Friend's List");
                         JSONArray array = object1.getJSONObject("total_feed_response").getJSONArray("friend_list");
                         for(int i = 0;i<array.length();i++){
@@ -214,7 +222,8 @@ public class HomeFragment extends Fragment {
                         if(Utility.internet_check(getActivity().getApplicationContext())) {
 
                             //progressDialog.show();
-                            Utility.displayLoader(getActivity());
+                            //Utility.displayLoader(getActivity());
+                            progressBar.setVisibility(View.VISIBLE);
 
                             Log.e("Result","1");
 
@@ -224,22 +233,27 @@ public class HomeFragment extends Fragment {
                         else {
 
                             //progressDialog.dismiss();
-                            Utility.hideLoader(getActivity());
+                            //Utility.hideLoader(getActivity());
+                            progressBar.setVisibility(View.GONE);
 
                             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                    //Utility.hideLoader(getActivity());
+                    progressBar.setVisibility(View.GONE);
+
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utility.hideLoader(getActivity());
+                //Utility.hideLoader(getActivity());
+                progressBar.setVisibility(View.GONE);
             }
         });
+
 
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         queue.add(request);
@@ -259,7 +273,8 @@ public class HomeFragment extends Fragment {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
-                        Utility.hideLoader(getActivity());
+                        //Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
                         JSONArray array = object.getJSONArray("all_user_list");
                         for(int i = 0 ;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
@@ -280,7 +295,8 @@ public class HomeFragment extends Fragment {
                 } catch (JSONException e) {
                     Log.e("Exception",e.toString());
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                   // Utility.hideLoader(getActivity());
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -290,7 +306,8 @@ public class HomeFragment extends Fragment {
 
                 Log.e("Exception",error.toString());
                 //progressDialog.dismiss();
-                Utility.hideLoader(getActivity());
+               // Utility.hideLoader(getActivity());
+                progressBar.setVisibility(View.GONE);
 
             }
         }){
