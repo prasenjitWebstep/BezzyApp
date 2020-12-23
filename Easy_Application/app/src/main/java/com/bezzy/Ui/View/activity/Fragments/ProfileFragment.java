@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +68,7 @@ public class ProfileFragment extends Fragment {
     SpotsDialog progressDialog;
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
+    ProgressBar progressBar;
 
 
 
@@ -83,6 +85,7 @@ public class ProfileFragment extends Fragment {
         userBio = view.findViewById(R.id.userBio);
         imageView=view.findViewById(R.id.logout);
         edit_btn = view.findViewById(R.id.edit_btn);
+        progressBar = view.findViewById(R.id.progressBar);
 
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
         layoutFollowing = view.findViewById(R.id.layoutFollowing);
@@ -180,12 +183,12 @@ public class ProfileFragment extends Fragment {
 
         if(Utility.internet_check(getActivity())) {
 
-            Utility.displayLoader(getActivity());
+            progressBar.setVisibility(View.VISIBLE);
 
             postRequest(APIs.BASE_URL+APIs.GETDATA);
         }
         else {
-
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -256,7 +259,7 @@ public class ProfileFragment extends Fragment {
                             }
                         });
 
-                        Utility.hideLoader(getActivity());
+                        progressBar.setVisibility(View.GONE);
 
                         edit_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -298,7 +301,7 @@ public class ProfileFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                    progressBar.setVisibility(View.GONE);
                     Log.e("Exception",e.toString());
                 }
 
@@ -306,7 +309,7 @@ public class ProfileFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utility.hideLoader(getActivity());
+                progressBar.setVisibility(View.GONE);
                 Log.e("VolleyError",error.toString());
 
             }

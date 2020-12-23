@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +67,7 @@ public class SearchFragment extends Fragment {
     SpotsDialog progressDialog;
     TextInputEditText searchName;
     CardView cardSearch;
+    ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +79,7 @@ public class SearchFragment extends Fragment {
         cardSearch = view.findViewById(R.id.cardSearch);
         searchName = view.findViewById(R.id.searchName);
         recyclerViewSearchResult = view.findViewById(R.id.recyclerViewSearchResult);
+        progressBar = view.findViewById(R.id.progressBar);
         search = "null";
 
         /*progressDialog = new SpotsDialog(getActivity());
@@ -115,7 +118,7 @@ public class SearchFragment extends Fragment {
 
             // progressDialog.show();
 
-            Utility.displayLoader(getActivity());
+            progressBar.setVisibility(View.VISIBLE);
 
             Log.e("Result","1");
 
@@ -125,7 +128,7 @@ public class SearchFragment extends Fragment {
         else {
 
             //progressDialog.dismiss();
-            Utility.hideLoader(getActivity());
+            progressBar.setVisibility(View.GONE);
 
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
@@ -171,12 +174,13 @@ public class SearchFragment extends Fragment {
 
                 Log.e("REsponse",response);
                 //progressDialog.dismiss();
-                Utility.hideLoader(getActivity());
+
 
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
+                        progressBar.setVisibility(View.GONE);
                         dataholder.clear();
                         JSONArray array = object.getJSONArray("all_user_list");
                         for(int i = 0 ;i<array.length();i++){
@@ -193,6 +197,7 @@ public class SearchFragment extends Fragment {
                 } catch (JSONException e) {
                     Log.e("Exception",e.toString());
                     e.printStackTrace();
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -202,7 +207,7 @@ public class SearchFragment extends Fragment {
 
                 Log.e("Exception",error.toString());
                 //progressDialog.dismiss();
-                Utility.hideLoader(getActivity());
+                progressBar.setVisibility(View.GONE);
 
             }
         }){
@@ -228,6 +233,7 @@ public class SearchFragment extends Fragment {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
+                        progressBar.setVisibility(View.GONE);
                         dataholder.clear();
                         JSONArray array = object.getJSONArray("search_result");
                         for(int i = 0;i<array.length();i++){
@@ -240,12 +246,11 @@ public class SearchFragment extends Fragment {
                         recyclerViewSearchResult.setAdapter(new Search_adapter(dataholder,getActivity()));
 
                     }else{
-                        Utility.hideLoader(getActivity());
                         Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
                         if(Utility.internet_check(getActivity())) {
 
                             //progressDialog.show();
-                            Utility.displayLoader(getActivity());
+                            progressBar.setVisibility(View.VISIBLE);
 
                             Log.e("Result","1");
 
@@ -255,7 +260,7 @@ public class SearchFragment extends Fragment {
                         else {
 
                             //progressDialog.dismiss();
-                            Utility.hideLoader(getActivity());
+                            progressBar.setVisibility(View.GONE);
 
                             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
                         }
