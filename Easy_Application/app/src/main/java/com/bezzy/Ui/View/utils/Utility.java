@@ -220,7 +220,7 @@ public class Utility {
                             fav_btn.setVisibility(View.VISIBLE);
                         }
 
-                        if(fav_btn.getVisibility() == View.VISIBLE){
+                       /* if(fav_btn.getVisibility() == View.VISIBLE){
                             fav_btn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -266,13 +266,13 @@ public class Utility {
                                     Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        });
+                        });*/
 
                         following_num.setText(object1.getString("number_of_like"));
 
                         following_numm.setText(object1.getString("number_of_comment"));
 
-                        chat_btn.setOnClickListener(new View.OnClickListener() {
+                        /*chat_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(context, CommentActivity.class);
@@ -284,7 +284,7 @@ public class Utility {
                                 }
                                 context.startActivity(intent);
                             }
-                        });
+                        });*/
 
                         servicesText.setText(object1.getString("post_content"));
 

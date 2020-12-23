@@ -206,7 +206,13 @@ public class ProfileFragment extends Fragment {
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 
-                        Glide.with(ProfileFragment.this).load(object.getJSONObject("usedetails").getString("profile_pic")).into(square_img);
+                        try{
+                            Glide.with(getActivity()).load(object.getJSONObject("usedetails").getString("profile_pic")).into(square_img);
+                        }catch (Exception e){
+                            Log.e("exception",e.toString());
+                        }
+
+
 
                         userName.setText(object.getJSONObject("usedetails").getString("get_name"));
                         following.setText(object.getJSONObject("usedetails").getString("following"));

@@ -119,6 +119,29 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
             }
         });
 
+        holder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(Utility.internet_check(context)) {
+
+                    Utility.displayLoader(context);
+
+                    block(APIs.BASE_URL+APIs.BLOCK,friendsHolder.get(position).getFriendId());
+
+
+                }
+                else {
+
+                    //progressDialog.dismiss();
+                    Utility.hideLoader(context);
+                    Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
         if(screen.equals("1")){
             Log.e("Screen","1");
             holder.btn.setVisibility(View.GONE);
