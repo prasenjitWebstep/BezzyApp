@@ -127,7 +127,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
 
                     Utility.displayLoader(context);
 
-                    block(APIs.BASE_URL+APIs.BLOCK,friendsHolder.get(position).getFriendId());
+                    remove(APIs.BASE_URL+APIs.REMOVEUSER,friendsHolder.get(position).getFriendId());
 
 
                 }
@@ -299,6 +299,53 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyFr
                 map.put("loginUserID",Utility.getUserId(context));
                 map.put("blockuserID",friendId);
                 Log.e("GETID",map.get("blockuserID"));
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
+
+    }
+
+    private void remove(String url,final String friendId){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("Response",response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("resp");
+                    if (resp.equals("success")) {
+                        Utility.hideLoader(context);
+                        Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, MyFriendsList.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intent);
+                    }else{
+                        Utility.hideLoader(context);
+                    }
+                } catch (JSONException e) {
+                    Utility.hideLoader(context);
+                    e.printStackTrace();
+                    Log.e("Exception",e.toString());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Utility.hideLoader(context);
+                Log.e("Exception",error.toString());
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError{
+                HashMap<String,String> map = new HashMap<>();
+                map.put("loginUserID",Utility.getUserId(context));
+                map.put("removeuserID",friendId);
+                Log.e("GETID",map.get("removeuserID"));
                 return map;
             }
         };

@@ -49,4 +49,5 @@ public class APIs {
     public static String BLOCK = "api/blockuser";
     public static String BLOCKLIST = "api/userblocklist";
     public static String UNBLOCK = "api/unblockuser";
+    public static String REMOVEUSER = "api/removeuser";
 }
