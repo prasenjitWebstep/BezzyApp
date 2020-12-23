@@ -14,6 +14,7 @@
         app:cardCornerRadius="10dp">
 
         <RelativeLayout
+            android:id="@+id/userrr"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:orientation="horizontal">
@@ -68,7 +69,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="10sp"
-                    android:visibility="gone" />
+                    android:visibility="invisible"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -84,7 +85,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="5dp"
                         android:src="@drawable/ic_remove"
-                        android:visibility="visible"
+                        android:visibility="invisible"
                         app:tint="@color/gradstart" />
 
                     <ImageView
@@ -93,7 +94,7 @@
                         android:layout_height="30dp"
                         android:layout_marginRight="5dp"
                         android:src="@drawable/ic_blocked"
-                        android:visibility="visible"
+                        android:visibility="invisible"
                         android:layout_marginLeft="5dp"
                         app:tint="@color/gradstart" />
 
@@ -103,9 +104,9 @@
                         android:layout_height="30dp"
                         android:layout_marginRight="5dp"
                         android:src="@drawable/ic_add_friend"
-                        android:visibility="visible"
+                        android:visibility="invisible"
                         android:layout_marginLeft="5dp"
-                        app:tint="@color/gradstart" />
+                        app:tint="@color/gradstart"/>
 
                 </LinearLayout>
 
@@ -132,10 +133,70 @@
                     android:visibility="invisible"
                     app:tint="@color/gradstart" />
 
-
             </RelativeLayout>
 
+
         </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/btn_part"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/userrr"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="bottom|center_horizontal">
+            <TextView
+                android:id="@+id/remove_btnn"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/login_button_background"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Remove"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:visibility="invisible"/>
+            <TextView
+                android:id="@+id/block_btnn"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/login_button_background"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Block"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:visibility="invisible"/>
+            <TextView
+                android:id="@+id/unfollow_btnn"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/login_button_background"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Follow back"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

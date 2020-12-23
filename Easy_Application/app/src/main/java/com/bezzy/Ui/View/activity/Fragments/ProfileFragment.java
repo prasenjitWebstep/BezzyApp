@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Blocklist;
+import com.bezzy.Ui.View.activity.Changepassword;
 import com.bezzy.Ui.View.activity.FollowingActivity;
 import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.MyFriendsList;
@@ -67,6 +68,7 @@ public class ProfileFragment extends Fragment {
     SpotsDialog progressDialog;
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
+    String userId;
 
 
 
@@ -90,6 +92,7 @@ public class ProfileFragment extends Fragment {
 
         postList = new ArrayList<>();
         imgList = new ArrayList<>();
+        userId =Utility.getUserId(getActivity());
        /* progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Logging Out Please Wait....");
         progressDialog.setCancelable(false);*/
@@ -417,4 +420,5 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
 
     }
+
 }

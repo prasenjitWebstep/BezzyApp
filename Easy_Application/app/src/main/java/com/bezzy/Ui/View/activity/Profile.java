@@ -54,11 +54,15 @@ public class Profile extends AppCompatActivity {
 
     FloatingActionButton floatingActionButton;
     Boolean isInBackground;
+    boolean doubleBackToExitPressedOnce = false;
+    boolean isClickedTwice = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_scrns);
+
+
 
 
 
@@ -157,19 +161,49 @@ public class Profile extends AppCompatActivity {
             BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     selectedFragment = new HomeFragment();
+                   /* if (doubleBackToExitPressedOnce) {
+                        finishAffinity();
+                    }*/
+                   /* this.doubleBackToExitPressedOnce = true;
+                    Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleBackToExitPressedOnce = false;
+                        }
+                    }, 2000);*/
+                    if (isClickedTwice) {
+                        this.finish();
+                    }
+                    isClickedTwice = true;
                     break;
                 case R.id.menu_chat:
                     selectedFragment = new ChatFragment();
+                    if (isClickedTwice) {
+                        this.finish();
+                    }
+                    isClickedTwice = true;
+
                     break;
                 case R.id.menu_search:
                     selectedFragment = new SearchFragment();
+                    if (isClickedTwice) {
+                        this.finish();
+                    }
+                    isClickedTwice = true;
+
                     break;
                 case R.id.menu_profile:
                     selectedFragment = new ProfileFragment();
+
                     break;
 
             }
@@ -177,7 +211,11 @@ public class Profile extends AppCompatActivity {
                     .replace(R.id.frame_layout, selectedFragment).commit();
             return true;
         }
-    };
+
+                private void finish() {
+                    Toast.makeText(Profile.this, "Press again to exit", Toast.LENGTH_SHORT).show();
+                }
+            };
 
 
 
