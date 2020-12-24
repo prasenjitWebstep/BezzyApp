@@ -125,7 +125,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             });
         }
 
-        if(getIntent().getExtras().getString("gender").equalsIgnoreCase("null") ||
+      /*  if(getIntent().getExtras().getString("gender").equalsIgnoreCase("null") ||
                 getIntent().getExtras().getString("gender").equals("")){
             textGenderLayout.setVisibility(View.GONE);
             spinnerLayut.setVisibility(View.VISIBLE);
@@ -134,7 +134,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener(this);
-        }
+        }*/
 
 
 
@@ -175,12 +175,12 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
         }
 
 
-       /* Spinner spinner =findViewById(R.id.spinner);
+        Spinner spinner =findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.gender, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);*/
+        spinner.setOnItemSelectedListener(this);
 
 
         btn_update.setOnClickListener(new View.OnClickListener() {
