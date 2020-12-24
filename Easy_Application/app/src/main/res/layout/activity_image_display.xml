@@ -70,7 +70,7 @@
                 </RelativeLayout>
 
 
-                <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+               <!-- <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
                     android:id="@+id/servicesText_t"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,7 +88,73 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/button"
                     android:text="EDIT"
-                    />
+                    />-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/user_descrecyl">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/submit_part">
+                        <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+                            android:id="@+id/servicesText_t"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:textColor="#fff"
+                            android:textSize="18sp"
+                            android:padding="5dp"
+                            android:fontFamily="sans-serif-thin"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="10dp"
+                            android:visibility="visible"/>
+                        <ImageView
+                            android:id="@+id/edit_post"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_pencil"
+                            app:tint="@color/white"
+                            android:layout_marginRight="10dp"
+                            android:visibility="gone"
+                            />
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/upload_part">
+                        <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+                            android:id="@+id/servicesText_t_ed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:textColor="#fff"
+                            android:textSize="18sp"
+                            android:padding="5dp"
+                            android:fontFamily="sans-serif-thin"
+                            android:layout_toLeftOf="@id/submit_post"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="10dp"
+                            android:visibility="gone"/>
+                        <ImageView
+                            android:id="@+id/submit_post"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_upload"
+                            app:tint="@color/white"
+                            android:layout_marginRight="10dp"
+                            android:visibility="gone"
+                            />
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/user_descrecyl"
