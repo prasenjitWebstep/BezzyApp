@@ -201,18 +201,20 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void Register() {
-        if(ed_email.getText().toString().isEmpty()){
-            ed_email.setError("enter email");
+        if(ed_name.getText().toString().isEmpty()){
+            ed_name.setError("Enter name");
+        }else if(ed_email.getText().toString().isEmpty()){
+            ed_email.setError("Enter email");
         }else if(!Patterns.EMAIL_ADDRESS.matcher(ed_email.getText().toString()).matches()){
-            ed_email.setError("enter valid email");
+            ed_email.setError("Enter valid email");
         }else if(ed_password.getText().toString().isEmpty()){
-            ed_password.setError("enter password");
+            ed_password.setError("Enter password");
         }else if(ed_password.getText().toString().length() < 8){
-            ed_password.setError("password must of at least 8 characters");
+            ed_password.setError("Password must of at least 8 characters");
         }else if(ed_cnfpasswd.getText().toString().isEmpty()){
-            ed_cnfpasswd.setError("enter confirm password");
+            ed_cnfpasswd.setError("Enter confirm password");
         }else if(!ed_cnfpasswd.getText().toString().equals(ed_password.getText().toString())){
-            ed_cnfpasswd.setError("password not matched");
+            ed_cnfpasswd.setError("Password not matched");
         }else if(ed_dob.getText().toString().isEmpty()){
             ed_dob.setError("Enter Date of Birth");
         }else if(str_gender.equals("null")){
@@ -279,12 +281,14 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                 // params.put("tags", "ccccc");  add string parameters
 //                params.put("userID", Utility.getUserId(getActivity()));
 //                params.put("post_content", "");
-                map.put("username",ed_email.getText().toString());
+                map.put("username","username1");
                 map.put("fullname",ed_name.getText().toString());
                 map.put("email",ed_email.getText().toString());
                 map.put("password",ed_password.getText().toString());
                 map.put("dob",ed_dob.getText().toString());
                 map.put("gender",str_gender);
+
+                Log.e("GETVALUE",map.get("username")+","+map.get("fullname")+","+map.get("email")+","+map.get("password")+","+map.get("dob")+","+map.get("gender"));
 
                 return map;
             }

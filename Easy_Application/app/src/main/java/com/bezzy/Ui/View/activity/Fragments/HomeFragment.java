@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.LoginActivity;
+import com.bezzy.Ui.View.activity.Massage;
 import com.bezzy.Ui.View.activity.NotificationActivity;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.Friendsfeed_Adapter;
@@ -98,6 +99,24 @@ public class HomeFragment extends Fragment {
 
         mSwipeRefreshLayout = view.findViewById(R.id.containers);
 
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(final RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(-1)) {
+
+                        mSwipeRefreshLayout.setEnabled(true);
+
+
+                }else{
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
+
+            }
+        });
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -124,6 +143,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
 
         dataholder=new ArrayList<>();
         friendsfeed_items = new ArrayList<>();
