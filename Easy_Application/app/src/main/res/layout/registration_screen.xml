@@ -86,14 +86,21 @@
 <!--                            android:layout_height="85dp"-->
 <!--                            android:src="@drawable/user" />-->
 <!--                    </androidx.cardview.widget.CardView>-->
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:id="@+id/profile_image"
-                        app:civ_border_width=".7dp"
-                        app:civ_border_color="@color/gradstart"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/image_part"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="5dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/user"/>
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:id="@+id/square_img"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/ic_user"/>
+
+                    </androidx.cardview.widget.CardView>
 
                     <ImageView
                         android:id="@+id/imgAdd"

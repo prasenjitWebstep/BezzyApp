@@ -12,7 +12,6 @@
         <item>Select Your Gender</item>
         <item>Male</item>
         <item>Female</item>
-        <item>Others</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Welcome Home</string>
@@ -22,7 +21,6 @@
 
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="other">Other</string>
     <string name="gender">Gender</string>
     <!--
     This string is used for square devices and overridden by hello_world in

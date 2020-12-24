@@ -61,7 +61,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     TextInputEditText ed_name, ed_username, ed_email, ed_password, ed_cnfpasswd,ed_dob;
-    CircleImageView profile_image;
+    ImageView square_img;
     TextView ed_gender;
     Spinner spinner;
     private String str_gender;
@@ -84,7 +84,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_screen);
-        profile_image = findViewById(R.id.profile_image);
+        square_img = findViewById(R.id.square_img);
         ed_email = findViewById(R.id.email);
         ed_password = findViewById(R.id.password);
         ed_name = findViewById(R.id.fullname);
@@ -140,12 +140,12 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        profile_image.setOnClickListener(new View.OnClickListener() {
+        square_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CropImage.activity()
                         .setAspectRatio(1,1)
-                        .setCropShape(CropImageView.CropShape.OVAL)
+                        .setCropShape(CropImageView.CropShape.RECTANGLE)
                         .setOutputCompressQuality(25)
                         .start(Registration.this);
             }
@@ -172,7 +172,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                     //Utility.displayLoader(Registration.this);
                     //TO:DO
                     //uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);
-                    profile_image.setImageBitmap(bitmap);
+                    square_img.setImageBitmap(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
@@ -201,7 +201,9 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void Register() {
-        if(ed_name.getText().toString().isEmpty()){
+        if(square_img.getDrawable() == null){
+            Toast.makeText(Registration.this,"Enter your profile picture",Toast.LENGTH_SHORT).show();
+        }else if(ed_name.getText().toString().isEmpty()){
             ed_name.setError("Enter name");
         }else if(ed_email.getText().toString().isEmpty()){
             ed_email.setError("Enter email");
@@ -272,7 +274,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             public void onErrorResponse(VolleyError error) {
                 Log.e("Error",error.toString());
                 Utility.hideLoader(Registration.this);
-                Toast.makeText(getApplicationContext().getApplicationContext(), "Please Upload Profile Picture", Toast.LENGTH_LONG).show();
+                /*Toast.makeText(getApplicationContext().getApplicationContext(), "Please Upload Profile Picture", Toast.LENGTH_LONG).show();*/
             }
         }){
             @Override
@@ -298,6 +300,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
                 params.put("user_profile_iamge", new DataPart(+imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
+                Log.e("GETVALUE",params.get("user_profile_iamge").toString());
                 return params;
             }
         };
@@ -309,57 +312,6 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                 RequestQueue rQueue = Volley.newRequestQueue(Registration.this);
                 rQueue.add(volleyMultipartRequest);
 
-//        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//
-//                try {
-//                    JSONObject object = new JSONObject(response);
-//                    if(object.getString("resp").equals("true")){
-//                        //progressDialog.dismiss();
-//                        Utility.hideLoader(Registration.this);
-//                        Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(Registration.this, OTPActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        startActivity(intent);
-//                        Utility.setOtpScreen(Registration.this,"1");
-//                        Utility.setUserId(Registration.this,object.getString("log_userID"));
-//                    }else{
-//                        //progressDialog.dismiss();
-//                        Utility.hideLoader(Registration.this);
-//                        Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    //progressDialog.dismiss();
-//                    Utility.hideLoader(Registration.this);
-//                    Log.e("Exception",e.toString());
-//                }
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                //progressDialog.dismiss();
-//                Utility.hideLoader(Registration.this);
-//                Log.e("Error",error.toString());
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                HashMap<String,String> map = new HashMap<>();
-//                map.put("username",ed_email.getText().toString());
-//                map.put("fullname",ed_name.getText().toString());
-//                map.put("email",ed_email.getText().toString());
-//                map.put("password",ed_password.getText().toString());
-//                map.put("dob",ed_dob.getText().toString());
-//                map.put("gender",str_gender);
-//                return map;
-//            }
-//        };
-//
-//        RequestQueue queue = Volley.newRequestQueue(Registration.this);
-//        queue.add(request);
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
