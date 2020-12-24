@@ -166,10 +166,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                 resultUri = result.getUri();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(Registration.this.getContentResolver(), resultUri);
-                    /*if(!progressDialog.isShowing()){
-                     *//* progressDialog.setMessage("Uploading Image Please Wait.....");
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();*//*
+                    /**//*
 
                     }*/
                     //Utility.displayLoader(Registration.this);

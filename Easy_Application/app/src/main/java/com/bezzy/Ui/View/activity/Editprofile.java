@@ -103,14 +103,13 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
         if(!getIntent().getExtras().getString("bio").equals("null")){
             ed_bio.setText(getIntent().getExtras().getString("bio"));
         }
-        //str_gender.equals(Utility.getGender(Editprofile.this));
+        str_gender="null";
 
 
-       /* progressDialog = new SpotsDialog(Editprofile.this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading Please Wait..");*/
 
-        if(getIntent().getExtras().getString("dob").equalsIgnoreCase("null") || getIntent().getExtras().getString("dob").equals("")){
+
+        if(getIntent().getExtras().getString("dob").equalsIgnoreCase("null") ||
+                getIntent().getExtras().getString("dob").equals("")){
             ed_dob.getText().clear();
             ed_dob.setFocusable(true);
             ed_dob.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +125,8 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             });
         }
 
-        if(getIntent().getExtras().getString("gender").equalsIgnoreCase("null") || getIntent().getExtras().getString("gender").equals("")){
+        if(getIntent().getExtras().getString("gender").equalsIgnoreCase("null") ||
+                getIntent().getExtras().getString("gender").equals("")){
             textGenderLayout.setVisibility(View.GONE);
             spinnerLayut.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -175,7 +175,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
         }
 
 
-       /* Spinner spinner = (Spinner) findViewById(R.id.spinnerr);
+       /* Spinner spinner =findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.gender, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -189,6 +189,19 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
                 Updateprofile();
             }
         });
+        ed_dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                day = cal.get(Calendar.DAY_OF_MONTH);
+                month = cal.get(Calendar.MONTH);
+                year = cal.get(Calendar.YEAR);
+
+                set();
+
+            }
+        });
+
 
     }
 
