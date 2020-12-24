@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 import kr.pe.burt.android.lib.androidgradientimageview.AndroidGradientImageView;
 
@@ -42,8 +44,9 @@ public class ImageDisplayActivity extends AppCompatActivity {
     TextView username,servicesText,following_num,following_numm;
     ImageView imageView,chat_btn,delete_btn;
     String id,postId,type,postId2,screen;
-    EmojiconTextView servicesText_t;
+    EmojiconEditText servicesText_t;
     String totalLikes;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +63,16 @@ public class ImageDisplayActivity extends AppCompatActivity {
         delete_btn=findViewById(R.id.delete_image);
         favBtnfilled = findViewById(R.id.favBtnfilled);
         favBtn = findViewById(R.id.favBtn);
+        button = findViewById(R.id.button);
 
 
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
         type = getIntent().getExtras().getString("type");
         screen = getIntent().getExtras().getString("screen");
+
+//        Log.e("GAAARRRR",id);
+//        Log.e("GAAARRRR MMMAAAAAAARRRRRRRRRRRR",type);
 
         if(screen.equals("1")){
             delete_btn.setVisibility(View.VISIBLE);
@@ -171,6 +178,19 @@ public class ImageDisplayActivity extends AppCompatActivity {
             }
         });
 
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String update;
+                servicesText_t.setFocusable(false);
+//                Log.e("POD",servicesText_t.getText().toString());
+                update = servicesText_t.getText().toString();
+                postUpdate(APIs.BASE_URL+APIs.UPDATEPOSTCAPTION,update);
+            }
+        });
+
     }
 
     @Override
@@ -184,6 +204,40 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
             Toast.makeText(ImageDisplayActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void postUpdate(String url, final String caption){
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("resp");
+                    if (resp.equals("success")) {
+//                        String message = object.getString("message");
+                        Log.e("OYOYOYOYOY", object.getString("message"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Exception", error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("post_id", id);
+                map.put("post_type",type );
+                map.put("post_caption_text",caption );
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ImageDisplayActivity.this);
+        queue.add(request);
     }
 
     private void friendsPostLike(String url) {
