@@ -13,6 +13,16 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
+    <string-array name="gender2">
+        <item>Male</item>
+        <item>Select Your Gender</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="gender3">
+        <item>Female</item>
+        <item>Select Your Gender</item>
+        <item>Male</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Welcome Home</string>
 

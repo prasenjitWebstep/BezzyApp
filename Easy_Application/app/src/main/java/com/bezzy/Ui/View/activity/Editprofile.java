@@ -72,6 +72,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
     String str_gender;
     LinearLayout spinnerLayut;
     TextInputLayout textGenderLayout;
+    String[] array1,array2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,21 +110,21 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
 
         if(getIntent().getExtras().getString("dob").equalsIgnoreCase("null") || getIntent().getExtras().getString("dob").equals("")){
             ed_dob.getText().clear();
-            ed_dob.setFocusable(true);
-            ed_dob.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Calendar cal = Calendar.getInstance();
-                    day = cal.get(Calendar.DAY_OF_MONTH);
-                    month = cal.get(Calendar.MONTH);
-                    year = cal.get(Calendar.YEAR);
-
-                    set();
-                }
-            });
         }
 
-        if(getIntent().getExtras().getString("gender").equalsIgnoreCase("null") || getIntent().getExtras().getString("gender").equals("")){
+        ed_dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                day = cal.get(Calendar.DAY_OF_MONTH);
+                month = cal.get(Calendar.MONTH);
+                year = cal.get(Calendar.YEAR);
+
+                set();
+            }
+        });
+
+        /*if(getIntent().getExtras().getString("gender").equalsIgnoreCase("null") || getIntent().getExtras().getString("gender").equals("")){
             textGenderLayout.setVisibility(View.GONE);
             spinnerLayut.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -131,8 +132,29 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener(this);
-        }
+        }*/
 
+        if(getIntent().getExtras().getString("gender").equalsIgnoreCase("Male")){
+            Log.e("GENDER","MALE");
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.gender2, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(this);
+        }else if(getIntent().getExtras().getString("gender").equalsIgnoreCase("Female")){
+            Log.e("GENDER","FEMALE");
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.gender3, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(this);
+        }else{
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.gender, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(this);
+        }
 
 
         textInputEmail = findViewById(R.id.text_input_email);
@@ -253,11 +275,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
                 map.put("fullname",ed_name.getText().toString());
                 map.put("email",ed_email.getText().toString());
                 map.put("dob",ed_dob.getText().toString());
-                if(getIntent().getExtras().getString("gender").equals("null")){
-                    map.put("gender",str_gender);
-                }else{
-                    map.put("gender",ed_gender.getText().toString());
-                }
+                map.put("gender",str_gender);
                 map.put("user_bio",ed_bio.getText().toString());
 
                 return map;
