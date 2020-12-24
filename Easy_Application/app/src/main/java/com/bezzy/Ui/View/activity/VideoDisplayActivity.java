@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +36,10 @@ public class VideoDisplayActivity extends AppCompatActivity {
     VideoView videoView;
     AndExoPlayerView andExoPlayerView;
     String id,postId,type,screen;
-    ImageView back_image,chat_btn,delete_image,favBtn,favBtnfilled;
+    ImageView back_image,chat_btn,delete_image,favBtn,favBtnfilled,imageEdit,imageSubmit;
     TextView servicesText,username,following_num,following_numm;
     String totalLikes;
+    EditText edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video_display);
         back_image = findViewById(R.id.back_image);
         username = findViewById(R.id.username);
-        servicesText = findViewById(R.id.servicesText);
+        servicesText = findViewById(R.id.servicesText_t);
         andExoPlayerView=findViewById(R.id.andExoPlayerView);
         following_num = findViewById(R.id.following_num);
         following_numm = findViewById(R.id.following_numm);
@@ -53,6 +55,9 @@ public class VideoDisplayActivity extends AppCompatActivity {
         chat_btn =  findViewById(R.id.chat_btn);
         favBtn = findViewById(R.id.favBtn);
         favBtnfilled = findViewById(R.id.favBtnfilled);
+        edit = findViewById(R.id.edit);
+        imageEdit = findViewById(R.id.imageEdit);
+        imageSubmit = findViewById(R.id.imageSubmit);
 
         id = getIntent().getExtras().getString("id");
         postId = getIntent().getExtras().getString("postId");
@@ -63,7 +68,38 @@ public class VideoDisplayActivity extends AppCompatActivity {
             delete_image.setVisibility(View.VISIBLE);
         }else{
             delete_image.setVisibility(View.INVISIBLE);
+            imageEdit.setVisibility(View.INVISIBLE);
         }
+
+        imageEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                servicesText.setVisibility(View.GONE);
+                edit.setVisibility(View.VISIBLE);
+                edit.setText(servicesText.getText().toString());
+                imageEdit.setVisibility(View.INVISIBLE);
+                imageSubmit.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        imageSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(Utility.internet_check(VideoDisplayActivity.this)) {
+
+                    Utility.displayLoader(VideoDisplayActivity.this);
+
+                    postUpdate(APIs.BASE_URL+APIs.EDITCAPTION,edit.getText().toString());
+                }
+                else {
+                    Utility.hideLoader(VideoDisplayActivity.this);
+                    Toast.makeText(VideoDisplayActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         if(favBtn.getVisibility() == View.VISIBLE){
             favBtn.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +190,55 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
             Toast.makeText(VideoDisplayActivity.this,"No Network!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void postUpdate(String url, final String caption){
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response",response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("resp");
+                    if (resp.equals("success")) {
+                        Utility.hideLoader(VideoDisplayActivity.this);
+//                        String message = object.getString("message");
+                        /*Log.e("OYOYOYOYOY", object.getString("message"));*/
+
+                        Toast.makeText(VideoDisplayActivity.this, object.getString("message"), Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(VideoDisplayActivity.this,Profile.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("From","Image");
+                        startActivity(intent);
+
+                    }else{
+                        Utility.hideLoader(VideoDisplayActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Utility.hideLoader(VideoDisplayActivity.this);
+                    Log.e("Exception",e.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error", error.toString());
+                Utility.hideLoader(VideoDisplayActivity.this);
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("post_id", id);
+                map.put("post_type",type );
+                map.put("post_caption_text",caption );
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(VideoDisplayActivity.this);
+        queue.add(request);
     }
 
     private void friendsPostLike(String url) {

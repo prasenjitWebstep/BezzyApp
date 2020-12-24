@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,12 +39,13 @@ import kr.pe.burt.android.lib.androidgradientimageview.AndroidGradientImageView;
 
 public class ImageDisplayActivity extends AppCompatActivity {
 
-    ImageView back_image,favBtn,favBtnfilled;
+    ImageView back_image,favBtn,favBtnfilled,imageEdit;
     TextView username,servicesText,following_num,following_numm;
-    ImageView imageView,chat_btn,delete_btn;
+    ImageView imageView,chat_btn,delete_btn,imageSubmit;
     String id,postId,type,postId2,screen;
     EmojiconTextView servicesText_t;
     String totalLikes;
+    EditText edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,9 @@ public class ImageDisplayActivity extends AppCompatActivity {
         delete_btn=findViewById(R.id.delete_image);
         favBtnfilled = findViewById(R.id.favBtnfilled);
         favBtn = findViewById(R.id.favBtn);
+        edit = findViewById(R.id.edit);
+        imageEdit = findViewById(R.id.imageEdit);
+        imageSubmit = findViewById(R.id.imageSubmit);
 
 
         id = getIntent().getExtras().getString("id");
@@ -69,9 +74,41 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
         if(screen.equals("1")){
             delete_btn.setVisibility(View.VISIBLE);
+            imageEdit.setVisibility(View.VISIBLE);
         }else{
             delete_btn.setVisibility(View.INVISIBLE);
+            imageEdit.setVisibility(View.INVISIBLE);
         }
+
+        imageEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                servicesText_t.setVisibility(View.GONE);
+                edit.setVisibility(View.VISIBLE);
+                edit.setText(servicesText_t.getText().toString());
+                imageEdit.setVisibility(View.INVISIBLE);
+                imageSubmit.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        imageSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(Utility.internet_check(ImageDisplayActivity.this)) {
+
+                    Utility.displayLoader(ImageDisplayActivity.this);
+
+                    postUpdate(APIs.BASE_URL+APIs.EDITCAPTION,edit.getText().toString());
+                }
+                else {
+                    Utility.hideLoader(ImageDisplayActivity.this);
+                    Toast.makeText(ImageDisplayActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +221,55 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
             Toast.makeText(ImageDisplayActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void postUpdate(String url, final String caption){
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Response",response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("resp");
+                    if (resp.equals("success")) {
+                        Utility.hideLoader(ImageDisplayActivity.this);
+//                        String message = object.getString("message");
+                        /*Log.e("OYOYOYOYOY", object.getString("message"));*/
+
+                        Toast.makeText(ImageDisplayActivity.this, object.getString("message"), Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(ImageDisplayActivity.this,Profile.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("From","Image");
+                        startActivity(intent);
+
+                    }else{
+                        Utility.hideLoader(ImageDisplayActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Utility.hideLoader(ImageDisplayActivity.this);
+                    Log.e("Exception",e.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error", error.toString());
+                Utility.hideLoader(ImageDisplayActivity.this);
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("post_id", id);
+                map.put("post_type",type );
+                map.put("post_caption_text",caption );
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ImageDisplayActivity.this);
+        queue.add(request);
     }
 
     private void friendsPostLike(String url) {

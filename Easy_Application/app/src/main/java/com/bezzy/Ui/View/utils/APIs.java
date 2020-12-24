@@ -50,4 +50,5 @@ public class APIs {
     public static String BLOCKLIST = "api/userblocklist";
     public static String UNBLOCK = "api/unblockuser";
     public static String REMOVEUSER = "api/removeuser";
+    public static String EDITCAPTION = "api/updatepostcaption";
 }

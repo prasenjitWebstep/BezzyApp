@@ -65,18 +65,61 @@
                         app:andexo_show_controller="true"
                         app:andexo_resize_mode="Fit" />
 
-                    <TextView
-                        android:id="@+id/servicesText"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLines="2"
-                        android:textColor="#fff"
-                        android:layout_above="@id/user_descrecyl"
-                        android:textSize="18sp"
-                        android:padding="5dp"
-                        android:fontFamily="sans-serif-thin"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="10dp"/>
+                        android:layout_above="@id/user_descrecyl">
+
+                        <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+                            android:id="@+id/servicesText_t"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:textColor="#fff"
+                            android:textSize="18sp"
+                            android:padding="5dp"
+                            android:fontFamily="sans-serif-thin"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toLeftOf="@+id/imageEdit"/>
+
+                        <EditText
+                            android:id="@+id/edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:textColor="#fff"
+                            android:textSize="18sp"
+                            android:padding="5dp"
+                            android:fontFamily="sans-serif-thin"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toLeftOf="@+id/imageEdit"
+                            android:visibility="gone"
+                            android:backgroundTint="@color/white"/>
+
+                        <ImageView
+                            android:id="@+id/imageEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_pen"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
+                            app:tint="@color/white"
+                            android:layout_centerVertical="true"/>
+
+                        <ImageView
+                            android:id="@+id/imageSubmit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_submit"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
+                            app:tint="@color/white"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone"/>
+
+                    </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/user_descrecyl"
