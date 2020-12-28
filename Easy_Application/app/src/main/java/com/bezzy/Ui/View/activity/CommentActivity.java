@@ -65,6 +65,7 @@ public class CommentActivity extends AppCompatActivity {
     String mention;
     ImageView emojiButton;
     Friendsnoti_item ob1;
+    String suggestNames;
 
 
     @Override
@@ -144,6 +145,29 @@ public class CommentActivity extends AppCompatActivity {
 
             }
         });
+
+        comment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(comment.getText().toString().equals("@")){
+                    Log.e("AAAHHH CHOD BARA",comment.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+//        if(comment.getText().toString().equals("@")){
+//            Log.e("AAAHHH CHOD BARA",comment.getText().toString());
+//        }
 
     }
 
