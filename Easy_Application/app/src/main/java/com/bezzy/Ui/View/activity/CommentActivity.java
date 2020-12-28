@@ -155,7 +155,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(comment.getText().toString().equals("@")){
-                    Log.e("AAAHHH CHOD BARA",comment.getText().toString());
+
                 }
             }
 
