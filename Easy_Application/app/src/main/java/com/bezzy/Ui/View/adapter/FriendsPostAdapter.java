@@ -58,6 +58,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
     FriendsPostModelImage postModelObj;
     ArrayList<FriendsPostModelImage> postModelList = new ArrayList<>();
     FriendsImagePostAdapter postImageObj;
+
     private static AlertDialog topupDialog;
     String postId;
 
@@ -105,7 +106,8 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         if(friendsModelList.get(position).getPost_type().equals("video")){
             holder.videoDisp.setVisibility(View.VISIBLE);
-            holder.imageDisp.setOnClickListener(new View.OnClickListener() {
+
+            holder.videoDisp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Utility.fullscreenDialog(context,friendsModelList.get(position).getPost_id());
@@ -117,13 +119,15 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             });
             holder.imageShow.setVisibility(View.GONE);
             holder.recyclerImageShow.setVisibility(View.GONE);
+            holder.andExoPlayerView.setVisibility(View.VISIBLE);
             JSONArray array = friendsModelList.get(position).getPost_image_video();
             for(int i=0; i<array.length(); i++){
                 try {
                     JSONObject object = array.getJSONObject(i);
-                    Glide.with(context)
-                            .load(object.getString("post_url"))
-                            .into(holder.imageDisp);
+//                    Glide.with(context)
+//                            .load(object.getString("post_url"))
+//                            .into(holder.imageDisp);
+                    holder.andExoPlayerView.setSource(object.getString("post_url"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
@@ -299,6 +303,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
         RecyclerView recyclerImageShow;
         RelativeLayout videoDisp;
         CardView cardHolder;
+        AndExoPlayerView andExoPlayerView;
 
         public FriendsPostHolder(@NonNull View itemView) {
             super(itemView);
@@ -316,6 +321,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             imageDisp = itemView.findViewById(R.id.imageDisp);
             videoDisp = itemView.findViewById(R.id.videoDisp);
             cardHolder = itemView.findViewById(R.id.cardHolder);
+            andExoPlayerView=itemView.findViewById(R.id.andExoPlayerView);
         }
     }
 }
