@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
     FrameLayout noti;
     TextView cart_badge,go_bezzy;
     ArrayList<Friendsfeed_item> friendsfeed_items;
-    ImageView chatButton;
+    ImageView chatButton,back_image;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     ProgressBar progressBar;
 
@@ -82,6 +82,7 @@ public class HomeFragment extends Fragment {
         go_bezzy = view.findViewById(R.id.go_bezzy);
         chatButton = view.findViewById(R.id.chatButton);
         progressBar = view.findViewById(R.id.progressBar);
+        back_image=view.findViewById(R.id.back_image);
 
         if(Utility.getNotificationStatus(getActivity().getApplicationContext()).equals("1")){
             cart_badge.setVisibility(View.VISIBLE);
@@ -216,7 +217,8 @@ public class HomeFragment extends Fragment {
                     if(status.equals("success")){
                         //progressDialog.dismiss();
                         progressBar.setVisibility(View.GONE);
-                        go_bezzy.setText("Friend's List");
+                        //go_bezzy.setText("Friend's List");
+                        back_image.setImageResource(R.drawable.logo);
                         JSONArray array = object1.getJSONObject("total_feed_response").getJSONArray("friend_list");
                         for(int i = 0;i<array.length();i++){
                             JSONObject object11 = array.getJSONObject(i);

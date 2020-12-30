@@ -123,12 +123,13 @@
             android:layout_below="@+id/viewnb">
 
             <LinearLayout
+                android:id="@+id/chat_boxx"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:orientation="horizontal"
                 android:layout_margin="5dp"
                 android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/emoji_btn"
+                android:layout_toRightOf="@id/image_send"
                 android:background="@drawable/comment_backgr">
 
                 <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
@@ -166,6 +167,17 @@
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentLeft="true"
+                />
+            <ImageView
+                android:id="@+id/image_send"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/landscape"
+                app:tint="@color/gradstart"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/emoji_btn"
                 />
 
         </RelativeLayout>

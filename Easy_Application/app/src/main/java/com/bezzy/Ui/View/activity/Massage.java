@@ -39,6 +39,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,7 +61,7 @@ public class Massage extends AppCompatActivity {
     CircleImageView img_logo;
     RecyclerView reyclerview_message_list;
     /*EditText edittext_chatbox;*/
-    ImageView send_msg;
+    ImageView send_msg,image_send;
     ChatMessageModel messageModel;
     LinearLayoutManager linearLayoutManager;
     ArrayList<ChatMessageModel> modelArrayList;
@@ -88,6 +89,7 @@ public class Massage extends AppCompatActivity {
         reyclerview_message_list = findViewById(R.id.reyclerview_message_list);
         edittext_chatbox = findViewById(R.id.edittext_chatbox);
         send_msg = findViewById(R.id.send_msg);
+        image_send=findViewById(R.id.image_send);
         chatProgress = findViewById(R.id.chatProgress);
         emojiButton = (ImageView) findViewById(R.id.emoji_btn);
         rootView = findViewById(R.id.root_view);
@@ -170,6 +172,16 @@ public class Massage extends AppCompatActivity {
                     }
 
                 }
+
+            }
+        });
+        image_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BottomSheetDialog bottomSheetDialog=new BottomSheetDialog(Massage.this);
+                bottomSheetDialog.setContentView(R.layout.bottomsheet);
+                bottomSheetDialog.setCanceledOnTouchOutside(false);
+
 
             }
         });
