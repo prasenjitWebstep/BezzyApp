@@ -1,9 +1,12 @@
 package com.bezzy.Ui.View.utils;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.CommentActivity;
+import com.bezzy.Ui.View.activity.Fragments.Photo_fragment;
 import com.bezzy.Ui.View.adapter.FriendsEnlargeImagePostAdapter;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy_application.R;
@@ -406,5 +412,46 @@ public class Utility {
         queue.add(request);
     }
 
+
+    public static void notifyUpload(Context context, boolean flag,String text1, String text2){
+
+        int notificationId = 101;
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_upgrade)
+                .setContentTitle(text1)
+                .setContentText(text2)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        if(flag == false){
+            notificationBuilder.setProgress(0,0,true);
+            notificationManager.notify(notificationId,notificationBuilder.build());
+
+        }else if(flag == true){
+            notificationBuilder.setSmallIcon(R.drawable.ic_check);
+            notificationBuilder.setContentText(text2);
+            notificationBuilder.setProgress(0,0,false);
+            notificationManager.notify(notificationId,notificationBuilder.build());
+        }
+
+        flag = false;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel("1001", "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            assert notificationManager != null;
+            notificationBuilder.setChannelId("1001");
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        notificationManager.notify(notificationId /* ID of notification */, notificationBuilder.build());
+
+    }
 
 }

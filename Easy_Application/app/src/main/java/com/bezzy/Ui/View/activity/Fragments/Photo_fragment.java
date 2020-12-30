@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -72,6 +74,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
@@ -102,10 +105,13 @@ public class Photo_fragment extends Fragment {
     View rootView;
     EmojiconEditText emojiconEditText;
     Uri imageuri;
-
+    Context context;
     Uri mUri;
 
 
+    public Photo_fragment(Context context) {
+        this.context = context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,7 +142,7 @@ public class Photo_fragment extends Fragment {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerDisplayImg.setLayoutManager(layoutManager);
 
-        emojIcon = new EmojIconActions(getActivity(), rootView, emojiconEditText, emojiButton);
+        emojIcon = new EmojIconActions(context, rootView, emojiconEditText, emojiButton);
         emojIcon.ShowEmojIcon();
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
             @Override
@@ -154,9 +160,9 @@ public class Photo_fragment extends Fragment {
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), Profile.class);
+                Intent i = new Intent(context, Profile.class);
                 startActivity(i);
-                ((Activity) getActivity()).overridePendingTransition(0, 0);
+                ((Activity) context).overridePendingTransition(0, 0);
             }
         });
 //        button.setOnClickListener(new View.OnClickListener() {
@@ -193,24 +199,24 @@ public class Photo_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(emojiconEditText.getText().toString().isEmpty()){
-                    Toast.makeText(getActivity().getApplicationContext(),"Please add any content to post",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
+                }else if(bitmapList.size() == 0){
+                    Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
                 }else{
-                    if (Utility.internet_check(getActivity())) {
+                    if (Utility.internet_check(context)) {
 
                         switch (option) {
                             case 101:
-                                Utility.displayLoader(getActivity());
-                                uploadCam(APIs.BASE_URL + APIs.POSTIMAGE);
+                                new UploadImageTask().execute();
                                 break;
                             case 1001:
-                                Utility.displayLoader(getActivity());
-                                upload(APIs.BASE_URL + APIs.POSTIMAGE);
+                                new UploadImageTask2().execute();
                                 break;
                         }
 
                     } else {
 
-                        Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "No Network!", Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -222,7 +228,7 @@ public class Photo_fragment extends Fragment {
     private void pickImageFromGallery() {
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
         builder.setTitle("Choose your profile picture");
 
@@ -300,25 +306,25 @@ public class Photo_fragment extends Fragment {
                         bitmap = (Bitmap) data.getExtras().get("data");
                         bitmapList.add(bitmap);
                         bitmapList.add(bitmap2);
-                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));
                     }
-
-
-
                     break;
                 case IMAGE_PICK_CODE:
                     option = 1001;
                     if (resultCode == RESULT_OK && data != null) {
-
                         bitmapList = new ArrayList<>();
                         ClipData clipData = data.getClipData();
                         if (clipData != null) {
                             for (int i = 0; i < clipData.getItemCount(); i++) {
                                 Uri imageUri = clipData.getItemAt(i).getUri();
                                 try {
-                                    InputStream is = getActivity().getContentResolver().openInputStream(imageUri);
+                                    InputStream is = context.getContentResolver().openInputStream(imageUri);
                                     Bitmap bitmap = BitmapFactory.decodeStream(is);
-                                    bitmapList.add(bitmap);
+                                    if(bitmapList.size()<5){
+                                        bitmapList.add(bitmap);
+                                    }else{
+                                        Toast.makeText(context,"Should not exceed more than 5 images",Toast.LENGTH_SHORT).show();
+                                    }
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
                                 }
@@ -326,7 +332,7 @@ public class Photo_fragment extends Fragment {
                         } else {
                             Uri imageUri = data.getData();
                             try {
-                                InputStream is = getActivity().getContentResolver().openInputStream(imageUri);
+                                InputStream is = context.getContentResolver().openInputStream(imageUri);
                                 Bitmap bitmap = BitmapFactory.decodeStream(is);
                                 bitmapList.add(bitmap);
                             } catch (FileNotFoundException e) {
@@ -334,7 +340,7 @@ public class Photo_fragment extends Fragment {
                             }
                         }
 
-                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(getActivity(), bitmapList));
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));
                     }
                     break;
             }
@@ -347,72 +353,115 @@ public class Photo_fragment extends Fragment {
         return byteArrayOutputStream.toByteArray();
     }
 
-    public void uploadCam(String url) {
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
-                new Response.Listener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        String response2 = new String(response.data);
-                        Log.e("RESPONSE2", response2);
-                        try {
-                            JSONObject object = new JSONObject(response2);
-                            String status = object.getString("resp");
-                            if (status.equals("success")) {
-                                //
-                                String postId = object.getString("post_id");
-                                Log.e("postId",postId);
-                                callApi(APIs.BASE_URL+APIs.CONTENT_POST,postId);
-                            } else {
-                                Utility.hideLoader(getActivity());
-                                String message = object.getString("message");
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+    public class UploadImageTask extends AsyncTask<Void, Void, Void> {
+
+
+        protected void onPreExecute() {
+
+            Utility.notifyUpload(context,false,"Image Upload","Uploading in Progress");
+            Intent intent = new Intent(context,Profile.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, APIs.BASE_URL + APIs.POSTIMAGE,
+                    new Response.Listener<NetworkResponse>() {
+                        @Override
+                        public void onResponse(NetworkResponse response) {
+                            String response2 = new String(response.data);
+                            Log.e("RESPONSE2", response2);
+                            try {
+                                JSONObject object = new JSONObject(response2);
+                                String status = object.getString("resp");
+                                if (status.equals("success")) {
+
+                                    final String postId = object.getString("post_id");
+                                    Log.e("postId",postId);
+
+                                    callApi(APIs.BASE_URL+APIs.CONTENT_POST,postId);
+
+
+                                } else {
+                                    String message = object.getString("message");
+                                    Utility.notifyUpload(context,true,"Image Upload",message);
+                                }
+//
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Utility.notifyUpload(context,true,"Image Upload","Exception: + \n +"+e.toString());
                             }
-//                            JSONObject obj = new JSONObject(new String(response.data));
-//                            Toast.makeText(getContext().getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Utility.hideLoader(getActivity());
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                       /* Toast.makeText(getContext().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();*/
-                         Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
-                        Utility.hideLoader(getActivity());
-                        Log.e("GotError", "" + error.getMessage());
-                    }
-                }) {
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("GotError", "" + error.getMessage());
+                            Utility.notifyUpload(context,true,"Image Upload","Error: + \n +"+error.toString());
+                        }
+                    }) {
 
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                // params.put("tags", "ccccc");  add string parameters
-                params.put("userID", Utility.getUserId(getActivity()));
-                params.put("post_content", "");
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
 
-                return params;
-            }
+                    params.put("userID", Utility.getUserId(context));
+                    params.put("post_content", "");
 
-            @Override
-            protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> params = new HashMap<>();
-                long imagename = System.currentTimeMillis();
-                params.put("post_image[]", new DataPart(+imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
-                return params;
-            }
+                    return params;
+                }
 
-        };
+                @Override
+                protected Map<String, DataPart> getByteData() {
+                    Map<String, DataPart> params = new HashMap<>();
+                    long imagename = System.currentTimeMillis();
+                    params.put("post_image[]", new DataPart(+imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
+                    return params;
+                }
+
+            };
 
 
-        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        RequestQueue rQueue = Volley.newRequestQueue(getActivity());
-        rQueue.add(volleyMultipartRequest);
+            volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    MY_SOCKET_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            RequestQueue rQueue = Volley.newRequestQueue(context);
+            rQueue.add(volleyMultipartRequest);
+
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+
+        }
+    }
+
+    public class UploadImageTask2 extends AsyncTask<Void, Void, Void> {
+
+
+        protected void onPreExecute() {
+
+            Utility.notifyUpload(context,false,"Image Upload","Uploading in Progress");
+            Intent intent = new Intent(context,Profile.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            upload(APIs.BASE_URL + APIs.POSTIMAGE);
+
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+
+        }
     }
 
     public void upload(String url) {
@@ -427,14 +476,19 @@ public class Photo_fragment extends Fragment {
                 try {
 
 
-                    String postId = response.getString("post_id");
-                    Log.e("postId",postId);
-                    callApi(APIs.BASE_URL+APIs.CONTENT_POST,postId);
-
+                    String resp = response.getString("resp");
+                    if(resp.equals("success")){
+                        String postId = response.getString("post_id");
+                        Log.e("postId",postId);
+                        callApi(APIs.BASE_URL+APIs.CONTENT_POST,postId);
+                    }else{
+                        String message = response.getString("message");
+                        Utility.notifyUpload(context,true,"Image Upload",message);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                    Utility.notifyUpload(context,true,"Image Upload","Exception: + \n +"+e.toString());
                     Log.e("exception",e.toString());
                 }
             }
@@ -442,18 +496,14 @@ public class Photo_fragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("VolleyError", error.toString());
-                Utility.hideLoader(getActivity());
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Unable to upload", Toast.LENGTH_SHORT).show();
-                }
+                Utility.notifyUpload(context,true,"Image Upload","Error: + \n +"+error.toString());
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("userID", Utility.getUserId(getActivity().getApplicationContext()));
+                params.put("userID", Utility.getUserId(context));
                 params.put("post_content", "");
-                Log.e("POST",params.get("post_content"));
                 return params;
             }
 
@@ -480,38 +530,33 @@ public class Photo_fragment extends Fragment {
         int socketTimeout = 500000;//30 seconds - change to what you want
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         multipartRequest.setRetryPolicy(policy);
-        RequestQueue rQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        RequestQueue rQueue = Volley.newRequestQueue(context);
         rQueue.add(multipartRequest);
     }
 
     private void callApi(String s, final String postId) {
-        StringRequest request = new StringRequest(Request.Method.POST, s, new Response.Listener<String>() {
+
+        StringRequest request = new StringRequest(Request.Method.POST,s , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 Log.e("PhotoResponse",response);
 
-                Utility.hideLoader(getActivity());
-
                 try {
                     JSONObject object = new JSONObject(response);
 
                     String resp = object.getString("resp");
+                    if(resp.equals("success")){
+                        Utility.notifyUpload(context,true,"Image Upload",object.getString("message"));
+                    }else{
+                        Utility.notifyUpload(context,true,"Image Upload",object.getString("message"));
+                    }
 
-                    if(resp.equals("success"))
-                    {
-                        Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                    else{
-                        Utility.hideLoader(getActivity());
-                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                    Log.e("Exception",e.toString());
+                    Utility.notifyUpload(context,true,"Image Upload","Exception: + \n +"+e.toString());
                 }
 
 
@@ -520,7 +565,8 @@ public class Photo_fragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utility.hideLoader(getActivity());
+                Log.e("Error",error.toString());
+                Utility.notifyUpload(context,true,"Image Upload","Error: + \n +"+error.toString());
             }
         }){
             @Override
@@ -533,7 +579,8 @@ public class Photo_fragment extends Fragment {
             }
         };
 
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        queue.add(request);
+        RequestQueue rQueue = Volley.newRequestQueue(context);
+        rQueue.add(request);
+
     }
 }

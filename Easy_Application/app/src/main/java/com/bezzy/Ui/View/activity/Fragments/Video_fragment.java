@@ -2,11 +2,13 @@ package com.bezzy.Ui.View.activity.Fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -74,7 +76,7 @@ public class Video_fragment extends Fragment {
     private static final String PLAYBACK_TIME = "play_time";
     private Uri video;
     private String videoPath;
-    Boolean allow;
+    Boolean allow = false;
 
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
@@ -83,6 +85,11 @@ public class Video_fragment extends Fragment {
     View rootView;
     //EmojiconEditText emojiconEditText;
     ImageView emojiButton;
+    Context context;
+
+    public Video_fragment(Context context) {
+        this.context = context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,12 +150,12 @@ public class Video_fragment extends Fragment {
                 }else if(allow == true){
                     if (Utility.internet_check(getActivity())) {
 
-                        Utility.displayLoader(getActivity());
-                        uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO);
+                        new UploadVideoTask().execute();
+
+                        allow = false;
 
                     } else {
 
-                        Utility.hideLoader(getActivity());
                         Toast.makeText(getActivity(), "No Network!", Toast.LENGTH_SHORT).show();
 
                     }
@@ -165,6 +172,30 @@ public class Video_fragment extends Fragment {
         videoView.setMediaController(controller);
 
         return view;
+    }
+
+    public class UploadVideoTask extends AsyncTask<Void, Void, Void> {
+
+
+        protected void onPreExecute() {
+
+            Utility.notifyUpload(context,false,"Video Upload","Uploading in Progress");
+            Intent intent = new Intent(context,Profile.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            uploadVideo(APIs.BASE_URL + APIs.POSTVIDEO);
+
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+
+        }
     }
 
     private void pickVideoFromgallery() {
@@ -302,22 +333,20 @@ public class Video_fragment extends Fragment {
                         Log.e("postId",postId);
                         callApi(APIs.BASE_URL+APIs.CONTENT_VIDEO,postId);
 
-                    } else {
-                        Utility.hideLoader(getActivity());
+                    } else{
                         String message = object.getString("message");
-                        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                        Utility.notifyUpload(context,true,"Video Upload",message);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                    Utility.notifyUpload(context,true,"Video Upload","Exception: + \n +"+e.toString());
                     Log.e("ImageUploadException", e.toString());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext().getApplicationContext(), "Please Upload at least one video to Post", Toast.LENGTH_LONG).show();
-                Utility.hideLoader(getActivity());
+                Utility.notifyUpload(context,true,"Video Upload","Error: + \n +"+error.toString());
                 Log.e("VolleyError", error.toString());
             }
         }
@@ -344,7 +373,7 @@ public class Video_fragment extends Fragment {
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        RequestQueue rQueue = Volley.newRequestQueue(getActivity());
+        RequestQueue rQueue = Volley.newRequestQueue(context);
         rQueue.add(volleyMultipartRequest);
 
     }
@@ -361,18 +390,15 @@ public class Video_fragment extends Fragment {
 
                     String resp = object.getString("resp");
 
-                    if(resp.equals("success"));
-                    {
-                        Utility.hideLoader(getActivity());
-                        Toast.makeText(getActivity(),object.getString("title"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity().getApplicationContext(), Profile.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                    if(resp.equals("success")){
+                        Utility.notifyUpload(context,true,"Video Upload",object.getString("message"));
+                    }else{
+                        Utility.notifyUpload(context,true,"Video Upload",object.getString("message"));
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.hideLoader(getActivity());
+                    Utility.notifyUpload(context,true,"Video Upload","Exception: + \n +"+e.toString());
 
                 }
 
@@ -382,7 +408,7 @@ public class Video_fragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utility.hideLoader(getActivity());
+                Utility.notifyUpload(context,true,"Video Upload","Exception: + \n +"+error.toString());
 
             }
         }){
@@ -396,7 +422,7 @@ public class Video_fragment extends Fragment {
             }
         };
 
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
     }
 

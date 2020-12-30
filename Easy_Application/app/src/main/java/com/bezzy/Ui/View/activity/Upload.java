@@ -33,7 +33,7 @@ public class Upload extends AppCompatActivity {
 //        button = findViewById(R.id.choose_image_button);
         BottomNavigationView btmnav = findViewById(R.id.navigation_upload);
         btmnav.setOnNavigationItemSelectedListener(navlistner);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_upload,new Photo_fragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_upload,new Photo_fragment(Upload.this)).commit();
 
 
 
@@ -56,10 +56,10 @@ public class Upload extends AppCompatActivity {
             Fragment fragment = null;
             switch(item.getItemId()){
                 case R.id.photo_upload:
-                    fragment= new Photo_fragment();
+                    fragment= new Photo_fragment(Upload.this);
                     break;
                 case R.id.video:
-                    fragment = new Video_fragment();
+                    fragment = new Video_fragment(Upload.this);
                     break;
                /* case R.id.live:
                     fragment = new Live_ragment();
