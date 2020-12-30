@@ -24,7 +24,8 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/gradstart"
             android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/back_image"
@@ -37,11 +38,11 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/notification"
-            android:visibility="gone" />
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/logo"
+            android:visibility="visible"/>
 
         <FrameLayout
             android:id="@+id/noti"
