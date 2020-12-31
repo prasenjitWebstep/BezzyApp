@@ -121,6 +121,7 @@ public class Photo_fragment extends Fragment {
     private static final String MENTION2_DISPLAYNAME = "polman";
     private static final String MENTION3_DISPLAYNAME = "Hendra Anggrian";
     private ArrayAdapter<Mention> defaultMentionAdapter;
+    ArrayList<String> idLst;
 
 
     public Photo_fragment(Context context) {
@@ -156,7 +157,7 @@ public class Photo_fragment extends Fragment {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerDisplayImg.setLayoutManager(layoutManager);
 
-        registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
+        followingUserList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
 
 //        emojIcon = new EmojIconActions(context, rootView, emojiconEditText, emojiButton);
 //        emojIcon.ShowEmojIcon();
@@ -202,10 +203,6 @@ public class Photo_fragment extends Fragment {
                     return;
                 }
                 pickImageFromGallery();
-//                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
-//                intent.setType("image/*");
-//                startActivityForResult(intent,1);
 
             }
         });
@@ -254,43 +251,15 @@ public class Photo_fragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Take Photo")) {
-
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
                     startActivityForResult(takePicture, CAMERA_PICK);
-//                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
-//                    startActivityForResult(takePicture, 0);
-//                    Intent intent = CropImage.activity().
-//                            setAspectRatio(1,1).
-//                            setCropShape(CropImageView.CropShape.RECTANGLE).
-//                            setOutputCompressQuality(80)
-//                            .getIntent(getContext());values = new ContentValues();
-//            values.put(MediaStore.Images.Media.TITLE, "New Picture");
-//            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-//            imageUri = getContentResolver().insert(
-//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-//            startActivityForResult(intent, PICTURE_RESULT);
-//                    startActivityForResult(intent, CAMERA_PICK);
-
-                            /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Declare mUri as globel varibale in class
-                            mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "pic_"+ String.valueOf(System.currentTimeMillis()) + ".jpg"));
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-                            startActivityForResult(intent, 0);*/
-
-
                 } else if (options[item].equals("Choose from Gallery")) {
-//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                    startActivityForResult(pickPhoto , 1);
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent, IMAGE_PICK_CODE);
-
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -298,11 +267,6 @@ public class Photo_fragment extends Fragment {
         });
         builder.show();
 
-//        Intent intent = new Intent(Intent.ACTION_PICK);
-//        intent.setType("image/*");
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(intent,IMAGE_PICK_CODE);
     }
 
 
@@ -600,7 +564,7 @@ public class Photo_fragment extends Fragment {
 
     }
 
-    private void registerUserResult(String url) {
+    private void followingUserList(String url) {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -615,7 +579,9 @@ public class Photo_fragment extends Fragment {
                     if(resp.equals("success")){
 //                        progressBar.setVisibility(View.GONE);
                         //dataholder.clear();
-                        JSONArray array = object.getJSONArray("all_user_list");
+                        JSONArray array = object.getJSONArray("following_user_list");
+                        defaultMentionAdapter = new MentionArrayAdapter<>(getContext());
+                        idLst = new ArrayList<>();
                         for(int i = 0 ;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
                             Log.e("HIHIHIHI",object1.getString("name"));
@@ -623,13 +589,14 @@ public class Photo_fragment extends Fragment {
                             //dataholder.add(ob1);
 //                            strings = new ArrayList<String>();
 //                            strings.add(object1.getString("name"));
-                            MENTION1_USERNAME = "Sujoy";
-                            defaultMentionAdapter = new MentionArrayAdapter<>(getContext());
-                            defaultMentionAdapter.addAll(
+                            MENTION1_USERNAME = object1.getString("name");
+                            String id = object1.getString("id");
+                            defaultMentionAdapter.add(
                                     new Mention(MENTION1_USERNAME)
                             );
-                            txt.setMentionAdapter(defaultMentionAdapter);
                         }
+
+                        txt.setMentionAdapter(defaultMentionAdapter);
 
                     }
                 } catch (JSONException e) {
@@ -652,7 +619,7 @@ public class Photo_fragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
-                map.put("log_userID", Utility.getUserId(getActivity()));
+                map.put("loguser_id", Utility.getUserId(getActivity()));
                 return map;
             }
         };
