@@ -36,12 +36,12 @@
             android:visibility="gone" />
 
         <ImageView
-            android:layout_width="30dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/logo"
+            android:layout_marginLeft="-55dp"
+            android:src="@drawable/bezzy_logo"
             android:visibility="visible"/>
 
         <FrameLayout
