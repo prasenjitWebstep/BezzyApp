@@ -69,7 +69,16 @@
             android:layout_marginRight="5dp"
             android:background="@drawable/rounded_button2">
 
-            <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+
+<!--            <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView-->
+<!--                android:id="@+id/textView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="What's on your mind?"-->
+<!--                app:socialFlags="hyperlink"-->
+<!--                app:hyperlinkColor="@color/green"/>-->
+
+            <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
                 android:id="@+id/ed_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
