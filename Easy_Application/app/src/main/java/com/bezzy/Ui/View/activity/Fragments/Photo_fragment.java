@@ -347,70 +347,7 @@ public class Photo_fragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
-            VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, APIs.BASE_URL + APIs.POSTIMAGE,
-                    new Response.Listener<NetworkResponse>() {
-                        @Override
-                        public void onResponse(NetworkResponse response) {
-                            String response2 = new String(response.data);
-                            Log.e("RESPONSE2", response2);
-                            try {
-                                JSONObject object = new JSONObject(response2);
-                                String status = object.getString("resp");
-                                if (status.equals("success")) {
-
-                                    final String postId = object.getString("post_id");
-                                    Log.e("postId",postId);
-
-                                    callApi(APIs.BASE_URL+APIs.CONTENT_POST,postId);
-
-
-                                } else {
-                                    String message = object.getString("message");
-                                    Utility.notifyUpload(context,true,"Image Upload",message);
-                                }
-//
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Utility.notifyUpload(context,true,"Image Upload","Exception: + \n +"+e.toString());
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e("GotError", "" + error.getMessage());
-                            Utility.notifyUpload(context,true,"Image Upload","Error: + \n +"+error.toString());
-                        }
-                    }) {
-
-
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<>();
-
-                    params.put("userID", Utility.getUserId(context));
-                    params.put("post_content", "");
-
-                    return params;
-                }
-
-                @Override
-                protected Map<String, DataPart> getByteData() {
-                    Map<String, DataPart> params = new HashMap<>();
-                    long imagename = System.currentTimeMillis();
-                    params.put("post_image[]", new DataPart(+imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
-                    return params;
-                }
-
-            };
-
-
-            volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    MY_SOCKET_TIMEOUT_MS,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            RequestQueue rQueue = Volley.newRequestQueue(context);
-            rQueue.add(volleyMultipartRequest);
+            uploadCam(APIs.BASE_URL + APIs.POSTIMAGE);
 
             return null;
         }
@@ -512,6 +449,73 @@ public class Photo_fragment extends Fragment {
         multipartRequest.setRetryPolicy(policy);
         RequestQueue rQueue = Volley.newRequestQueue(context);
         rQueue.add(multipartRequest);
+    }
+
+    public void uploadCam(String url){
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST,url ,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        String response2 = new String(response.data);
+                        Log.e("RESPONSE2", response2);
+                        try {
+                            JSONObject object = new JSONObject(response2);
+                            String status = object.getString("resp");
+                            if (status.equals("success")) {
+
+                                final String postId = object.getString("post_id");
+                                Log.e("postId",postId);
+
+                                callApi(APIs.BASE_URL+APIs.CONTENT_POST,postId);
+
+
+                            } else {
+                                String message = object.getString("message");
+                                Utility.notifyUpload(context,true,"Image Upload",message);
+                            }
+//
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Utility.notifyUpload(context,true,"Image Upload","Exception: + \n +"+e.toString());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("GotError", "" + error.getMessage());
+                        Utility.notifyUpload(context,true,"Image Upload","Error: + \n +"+error.toString());
+                    }
+                }) {
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("userID", Utility.getUserId(context));
+                params.put("post_content", "");
+
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imagename = System.currentTimeMillis();
+                params.put("post_image[]", new DataPart(+imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
+                return params;
+            }
+
+        };
+
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue rQueue = Volley.newRequestQueue(context);
+        rQueue.add(volleyMultipartRequest);
     }
 
     private void callApi(String s, final String postId) {
