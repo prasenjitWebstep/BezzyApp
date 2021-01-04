@@ -19,6 +19,7 @@ public class APIs {
     public static String REGISTERUSERLIST = "api/RegisterUserList";
     public static String SEARCH = "api/searchregisteruser";
     public static String NOTIFICATION = "api/Notificationlist";
+    public static String CLEAR_NOTIFICATION = "api/ClearNotificationlist";
     public static String GETIMAGEDETAILS = "api/postimagevideodetails";
     public static String FOLLOWINGREQUEST = "api/followingreqsend";
     public static String FOLLOWBACKREQUEST = "api/followingback";

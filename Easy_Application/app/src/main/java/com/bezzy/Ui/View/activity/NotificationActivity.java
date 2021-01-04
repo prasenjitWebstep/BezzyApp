@@ -44,7 +44,7 @@ public class NotificationActivity extends AppCompatActivity {
     Notification_item ob;
     ImageView back_image;
     SpotsDialog dialog;
-    TextView clearAll;
+    TextView clearAll,noNotiList;
 
 
     @Override
@@ -54,6 +54,7 @@ public class NotificationActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.noti_listf);
         back_image = findViewById(R.id.back_image);
         clearAll = findViewById(R.id.clearAll);
+        noNotiList = findViewById(R.id.noNotiList);
         /*dialog = new SpotsDialog(NotificationActivity.this);
         dialog.setMessage("Loading Please Wait...");
         dialog.setCancelable(false);*/
@@ -70,6 +71,24 @@ public class NotificationActivity extends AppCompatActivity {
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(Utility.internet_check(NotificationActivity.this)) {
+
+                    //dialog.show();
+                    Utility.displayLoader(NotificationActivity.this);
+
+                    Log.e("Result","1");
+
+                    clean(APIs.BASE_URL+APIs.CLEAR_NOTIFICATION+"/"+ Utility.getUserId(NotificationActivity.this));
+
+                }
+                else {
+
+                    // dialog.dismiss();
+                    Utility.hideLoader(NotificationActivity.this);
+
+                    Toast.makeText(NotificationActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -101,6 +120,64 @@ public class NotificationActivity extends AppCompatActivity {
 
     }
 
+    private void clean(String url) {
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("RESPONSE",response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String status = object.getString("status");
+                    if(status.equals("success")){
+                        //dialog.dismiss();
+                        Utility.hideLoader(NotificationActivity.this);
+
+                        if(Utility.internet_check(NotificationActivity.this)) {
+
+                            //dialog.show();
+                            Utility.displayLoader(NotificationActivity.this);
+
+                            Log.e("Result","1");
+
+                            Log.e("UserID",Utility.getUserId(NotificationActivity.this));
+
+                            show(APIs.BASE_URL+APIs.NOTIFICATION+"/"+ Utility.getUserId(NotificationActivity.this));
+
+                        }
+                        else {
+
+                            // dialog.dismiss();
+                            Utility.hideLoader(NotificationActivity.this);
+
+                            Toast.makeText(NotificationActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }else{
+                        //dialog.dismiss();
+                        Utility.hideLoader(NotificationActivity.this);
+                    }
+                } catch (JSONException e) {
+                    //dialog.dismiss();
+                    Utility.hideLoader(NotificationActivity.this);
+                    e.printStackTrace();
+                    Log.e("Exception",e.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dialog.dismiss();
+                Utility.hideLoader(NotificationActivity.this);
+                Log.e("Error",error.toString());
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(request);
+
+    }
+
     private void show(String url){
         dataholder.clear();
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -112,6 +189,8 @@ public class NotificationActivity extends AppCompatActivity {
                     String status = object.getString("status");
                     if(status.equals("success")){
                         //dialog.dismiss();
+                        recyclerView.setVisibility(View.VISIBLE);
+                        noNotiList.setVisibility(View.GONE);
                         Utility.hideLoader(NotificationActivity.this);
                         JSONArray array = object.getJSONArray("notification_list");
 
@@ -153,7 +232,10 @@ public class NotificationActivity extends AppCompatActivity {
                         recyclerView.setAdapter(new Notifi_Adapter(getApplicationContext(),dataholder));
                     }else{
                         //dialog.dismiss();
+                        recyclerView.setVisibility(View.GONE);
+                        noNotiList.setVisibility(View.VISIBLE);
                         Utility.hideLoader(NotificationActivity.this);
+
                     }
                 } catch (JSONException e) {
                     //dialog.dismiss();

@@ -60,9 +60,21 @@
         android:layout_margin="5dp"
         android:id="@+id/noti_listf"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/noNotiList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No Records Found"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="@color/gradstart"
+        android:visibility="gone"/>
+
 <!--    <TextView-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
