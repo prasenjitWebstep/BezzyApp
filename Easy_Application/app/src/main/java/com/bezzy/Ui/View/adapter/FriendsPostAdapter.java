@@ -165,8 +165,8 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                 holder.recyclerImageShow.setVisibility(View.VISIBLE);
                 holder.imageShow.setVisibility(View.GONE);
                 holder.videoDisp.setVisibility(View.GONE);
-                StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
-                layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+                GridLayoutManager layoutManager = new GridLayoutManager(context, 2);
+                /*layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);*/
                 holder.recyclerImageShow.setLayoutManager(layoutManager);
                 postModelList.clear();
                 for(int i=0;i<array.length();i++){

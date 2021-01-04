@@ -8,6 +8,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
@@ -294,8 +295,8 @@ public class Massage extends AppCompatActivity {
             recyclerImageShow.setLayoutManager(linearLayoutManager);
             recyclerImageShow.setAdapter(new ImageViewAdapter(Massage.this, bitmapList));
         }else{
-            GridLayoutManager linearLayoutManager = new GridLayoutManager(Massage.this,2);
-            recyclerImageShow.setLayoutManager(linearLayoutManager);
+            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+            recyclerImageShow.setLayoutManager(layoutManager);
             recyclerImageShow.setAdapter(new ImageViewAdapter(Massage.this, bitmapList));
         }
 
