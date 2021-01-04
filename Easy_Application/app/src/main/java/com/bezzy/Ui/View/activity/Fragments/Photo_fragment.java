@@ -91,14 +91,13 @@ import static android.app.Activity.RESULT_OK;
 public class Photo_fragment extends Fragment {
     ImageView imageView, back_image;
     TextView button,uoload;
-    SocialAutoCompleteTextView txt;
+    /*SocialAutoCompleteTextView txt;*/
     String base64String;
     String filePath;
     //Image request code
     private static final int IMAGE_PICK_CODE = 1001;
     private static final int CAMERA_PICK = 101;
     private static final int PERMISSION_CODE = 1001;
-    //EditText caption;
     Bitmap bitmap;
     Uri resultUri;
     int MY_SOCKET_TIMEOUT_MS = 10000;
@@ -106,10 +105,10 @@ public class Photo_fragment extends Fragment {
     RecyclerView recyclerDisplayImg;
     ArrayList<Bitmap> bitmapList;
     int option;
-    //EmojIconActions emojIcon;
+    EmojIconActions emojIcon;
     ImageView emojiButton;
     View rootView;
-    //EmojiconEditText emojiconEditText;
+    EmojiconEditText emojiconEditText;
     Uri imageuri;
     Context context;
     Uri mUri;
@@ -141,38 +140,38 @@ public class Photo_fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_photo_fragment, container, false);
         back_image = view.findViewById(R.id.back_image);
         imageView = view.findViewById(R.id.imageView);
-        // button = view.findViewById(R.id.choose_image_button);
-        //caption = view.findViewById(R.id.ed_content);
+         /*button = view.findViewById(R.id.choose_image_button);*/
+        emojiconEditText = view.findViewById(R.id.ed_content);
         button = view.findViewById(R.id.upload);
-        //image_part = view.findViewById(R.id.image_part);
+        image_part = view.findViewById(R.id.image_part);
 
         recyclerDisplayImg = view.findViewById(R.id.recyclerDisplayImg);
         uoload = view.findViewById(R.id.upload_post);
 
         rootView = view.findViewById(R.id.root_view);
         emojiButton =view.findViewById(R.id.emoji_btn);
-        txt =view.findViewById(R.id.ed_content);
+        /*txt =view.findViewById(R.id.ed_content);*/
         bitmapList = new ArrayList<>();
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerDisplayImg.setLayoutManager(layoutManager);
 
-        followingUserList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
+        /*followingUserList(APIs.BASE_URL+APIs.FOLLOWINGLIST);*/
 
-//        emojIcon = new EmojIconActions(context, rootView, emojiconEditText, emojiButton);
-//        emojIcon.ShowEmojIcon();
-//        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
-//            @Override
-//            public void onKeyboardOpen() {
-//                Log.e("Keyboard", "open");
-//
-//            }
-//            @Override
-//            public void onKeyboardClose() {
-//                Log.e("Keyboard", "close");
-//            }
-//        });
-//        emojIcon.addEmojiconEditTextList(emojiconEditText);
+        emojIcon = new EmojIconActions(context, rootView, emojiconEditText, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
+        emojIcon.addEmojiconEditTextList(emojiconEditText);
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,7 +212,7 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txt.getText().toString().isEmpty()){
+                if(emojiconEditText.getText().toString().isEmpty()){
                     Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
                 }else if(bitmapList.size() == 0){
                     Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
@@ -559,7 +558,7 @@ public class Photo_fragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("post_id",postId);
-                map.put("post_content",txt.getText().toString());
+                map.put("post_content",emojiconEditText.getText().toString());
                 Log.e("POSTCONTENT",map.get("post_content"));
                 return map;
             }
@@ -602,7 +601,7 @@ public class Photo_fragment extends Fragment {
                             );
                         }
 
-                        txt.setMentionAdapter(defaultMentionAdapter);
+                        /*txt.setMentionAdapter(defaultMentionAdapter);*/
 
                     }
                 } catch (JSONException e) {

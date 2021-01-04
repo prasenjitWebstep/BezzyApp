@@ -130,7 +130,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/comment_backgr"
-                android:layout_marginLeft="65dp"
+                android:layout_marginLeft="35dp"
                 android:layout_marginRight="5dp">
 
                 <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
@@ -180,7 +180,8 @@
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:layout_toLeftOf="@+id/chatBox"
-                android:layout_marginRight="-60dp"/>
+                android:layout_marginRight="-60dp"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
