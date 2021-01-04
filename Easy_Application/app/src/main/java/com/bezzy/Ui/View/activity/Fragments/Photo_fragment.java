@@ -407,7 +407,7 @@ public class Photo_fragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Utility.notifyUpload(context,true,"Image Upload","Exception: + \n +"+e.toString());
+                    Utility.notifyUpload(context,true,"Image Upload","Exception: "+" \n "+e.toString());
                     Log.e("exception",e.toString());
                 }
             }
@@ -415,7 +415,7 @@ public class Photo_fragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("VolleyError", error.toString());
-                Utility.notifyUpload(context,true,"Image Upload","Error: + \n +"+error.toString());
+                Utility.notifyUpload(context,true,"Image Upload","Error: "+" \n "+error.toString());
             }
         }) {
             @Override
@@ -478,7 +478,7 @@ public class Photo_fragment extends Fragment {
 //
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Utility.notifyUpload(context,true,"Image Upload","Exception: + \n +"+e.toString());
+                            Utility.notifyUpload(context,true,"Image Upload","Exception: "+"\n "+e.toString());
                         }
                     }
                 },
@@ -486,7 +486,7 @@ public class Photo_fragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("GotError", "" + error.getMessage());
-                        Utility.notifyUpload(context,true,"Image Upload","Error: + \n +"+error.toString());
+                        Utility.notifyUpload(context,true,"Image Upload","Error: "+" \n "+error.toString());
                     }
                 }) {
 
@@ -552,7 +552,7 @@ public class Photo_fragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Error",error.toString());
-                Utility.notifyUpload(context,true,"Image Upload","Error: + \n +"+error.toString());
+                Utility.notifyUpload(context,true,"Image Upload","Error: "+" \n "+error.toString());
             }
         }){
             @Override
