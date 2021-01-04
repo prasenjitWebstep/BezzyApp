@@ -102,7 +102,7 @@
                 android:layout_height="170dp"
                 android:visibility="gone">
 
-                <ImageView
+               <!-- <ImageView
                     android:id="@+id/imageDisp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -118,7 +118,17 @@
                     android:background="@drawable/play_button"
                     android:textSize="12sp"
                     android:padding="5dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"/>-->
+                <com.potyvideo.library.AndExoPlayerView
+                    android:id="@+id/andExoPlayerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:andexo_aspect_ratio="aspect_match"
+                    app:andexo_full_screen="true"
+                    app:andexo_play_when_ready="true"
+                    app:andexo_show_controller="true"
+                    app:andexo_resize_mode="Fit"
+                    android:visibility="visible"/>
 
             </RelativeLayout>
 
