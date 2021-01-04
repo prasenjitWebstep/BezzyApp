@@ -26,8 +26,10 @@
             android:textColor="@color/gradstart"
             android:textSize="17sp"
             android:textStyle="bold"
+            android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:layout_toLeftOf="@+id/upload"/>
 
         <ImageView
             android:id="@+id/back_image"
@@ -35,17 +37,23 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:src="@drawable/ic_baseline_keyboard_backspace_24"
-            android:visibility="visible"
+            android:visibility="gone"
             />
-        <ImageView
-            android:id="@+id/upload"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
+        <TextView
+            android:id="@+id/clearAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/notification"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:visibility="invisible"/>
+            android:layout_marginRight="5dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Clear All"
+            android:background="@drawable/login_button_background"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"/>
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

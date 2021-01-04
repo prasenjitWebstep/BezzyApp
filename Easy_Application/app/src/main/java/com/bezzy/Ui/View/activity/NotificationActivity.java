@@ -44,6 +44,7 @@ public class NotificationActivity extends AppCompatActivity {
     Notification_item ob;
     ImageView back_image;
     SpotsDialog dialog;
+    TextView clearAll;
 
 
     @Override
@@ -52,6 +53,7 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
         recyclerView=findViewById(R.id.noti_listf);
         back_image = findViewById(R.id.back_image);
+        clearAll = findViewById(R.id.clearAll);
         /*dialog = new SpotsDialog(NotificationActivity.this);
         dialog.setMessage("Loading Please Wait...");
         dialog.setCancelable(false);*/
@@ -62,6 +64,13 @@ public class NotificationActivity extends AppCompatActivity {
                 Intent intent = new Intent(NotificationActivity.this,Profile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+            }
+        });
+
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
