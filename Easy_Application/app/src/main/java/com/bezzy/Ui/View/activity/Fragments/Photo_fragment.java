@@ -54,6 +54,7 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Editprofile;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.ImageViewAdapter;
+import com.bezzy.Ui.View.model.TagModel;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
@@ -76,8 +77,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -113,6 +117,8 @@ public class Photo_fragment extends Fragment {
     Uri imageuri;
     Context context;
     Uri mUri;
+//    List<String> tagNames;
+//    List<String> idCollection;
 
     String MENTION1_USERNAME;
     //ArrayList<String> strings;
@@ -122,6 +128,8 @@ public class Photo_fragment extends Fragment {
     private static final String MENTION3_DISPLAYNAME = "Hendra Anggrian";
     private ArrayAdapter<Mention> defaultMentionAdapter;
     ArrayList<String> idLst;
+    TagModel obj;
+    ArrayList<TagModel> taglist;
 
 
     public Photo_fragment(Context context) {
@@ -153,6 +161,7 @@ public class Photo_fragment extends Fragment {
         emojiButton =view.findViewById(R.id.emoji_btn);
         txt =view.findViewById(R.id.ed_content);
         bitmapList = new ArrayList<>();
+        taglist = new ArrayList<>();
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerDisplayImg.setLayoutManager(layoutManager);
@@ -590,20 +599,38 @@ public class Photo_fragment extends Fragment {
                         idLst = new ArrayList<>();
                         for(int i = 0 ;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
-                            Log.e("HIHIHIHI",object1.getString("name"));
+                            //Log.e("HIHIHIHI",object1.getString("name"));
                             //ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"),object1.getString("user_is_flollowers"));
                             //dataholder.add(ob1);
 //                            strings = new ArrayList<String>();
 //                            strings.add(object1.getString("name"));
+//                            tagNames = new ArrayList<String>();
+//                            tagNames.add(object1.getString("name"));
+//                            idCollection = new ArrayList<String>();
+//                            idCollection.add(object1.getString("id"));
+//
+//                            Log.e("ARRAY TEST TEST",idCollection.toString());
+//                            Log.e("ARRAY TEST TEST",tagNames.toString());
+
+                            taglist.add(new TagModel(object1.getString("name"),object1.getString("id")));
+
+
                             MENTION1_USERNAME = object1.getString("name");
                             String id = object1.getString("id");
+//                            Log.e("LETS GET THE ID",id);
                             defaultMentionAdapter.add(
                                     new Mention(MENTION1_USERNAME)
                             );
                         }
 
-                        txt.setMentionAdapter(defaultMentionAdapter);
 
+
+                        txt.setMentionAdapter(defaultMentionAdapter);
+                        for(TagModel model : taglist){
+                            Log.e("TAGLIST",model.getName()+"/"+model.getId());
+                        }
+                        int current = txt.getSelectionStart();
+                        Log.e("WE ARE NOTHING",String.valueOf(current));
                     }
                 } catch (JSONException e) {
                     Log.e("Exception",e.toString());

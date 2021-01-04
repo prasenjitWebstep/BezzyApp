@@ -104,8 +104,8 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
         holder.following_numm.setText(friendsModelList.get(position).getNumber_of_comment());
 
         if(friendsModelList.get(position).getPost_type().equals("video")){
-            holder.andExoPlayerView.setVisibility(View.VISIBLE);
-            holder.andExoPlayerView.setOnClickListener(new View.OnClickListener() {
+            holder.videoDisp.setVisibility(View.VISIBLE);
+            holder.videoDisp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Utility.fullscreenDialog(context,friendsModelList.get(position).getPost_id());
@@ -117,6 +117,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             });
             holder.imageShow.setVisibility(View.GONE);
             holder.recyclerImageShow.setVisibility(View.GONE);
+            holder.andExoPlayerView.setVisibility(View.VISIBLE);
             JSONArray array = friendsModelList.get(position).getPost_image_video();
             for(int i=0; i<array.length(); i++){
                 try {
