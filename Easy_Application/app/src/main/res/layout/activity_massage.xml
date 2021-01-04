@@ -123,13 +123,15 @@
             android:layout_below="@+id/viewnb">
 
             <LinearLayout
+                android:id="@+id/chatBox"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:orientation="horizontal"
-                android:layout_margin="5dp"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/emoji_btn"
-                android:background="@drawable/comment_backgr">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/comment_backgr"
+                android:layout_marginLeft="65dp"
+                android:layout_marginRight="5dp">
 
                 <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
                     android:id="@+id/edittext_chatbox"
@@ -156,17 +158,29 @@
                     android:layout_gravity="center_vertical"/>
 
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/emoji_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/photo_btn"
                 android:src="@drawable/ic_happy"
+                app:tint="@color/gradstart"
+                android:layout_marginRight="-50dp"/>
+
+            <ImageView
+                android:id="@+id/photo_btn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_image"
                 app:tint="@color/gradstart"
                 android:layout_marginLeft="5dp"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:layout_alignParentLeft="true"
-                />
+                android:layout_toLeftOf="@+id/chatBox"
+                android:layout_marginRight="-60dp"/>
 
         </RelativeLayout>
 

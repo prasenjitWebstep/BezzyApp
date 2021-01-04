@@ -182,6 +182,7 @@ public class Photo_fragment extends Fragment {
                 ((Activity) context).overridePendingTransition(0, 0);
             }
         });
+
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -193,6 +194,7 @@ public class Photo_fragment extends Fragment {
 //                }
 //            }
 //        });
+
         uoload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

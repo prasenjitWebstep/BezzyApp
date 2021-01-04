@@ -1,13 +1,24 @@
 package com.bezzy.Ui.View.activity;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,11 +26,14 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -34,7 +48,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.adapter.Chatbox_adapter;
+import com.bezzy.Ui.View.adapter.ImageViewAdapter;
 import com.bezzy.Ui.View.model.ChatMessageModel;
+import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
@@ -44,6 +60,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -70,9 +88,12 @@ public class Massage extends AppCompatActivity {
     EmojIconActions emojIcon;
     View rootView;
     EmojiconEditText edittext_chatbox;
-    ImageView emojiButton;
+    ImageView emojiButton,photo_btn;
     String date;
     boolean isScrolling;
+    ArrayList<Bitmap> bitmapList;
+    int option;
+    private AlertDialog fullscreenDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -92,15 +113,29 @@ public class Massage extends AppCompatActivity {
         emojiButton = (ImageView) findViewById(R.id.emoji_btn);
         rootView = findViewById(R.id.root_view);
         isScrolling = true;
+        photo_btn = findViewById(R.id.photo_btn);
         /*emojiconEditText=findViewById(R.id.edittext_chatbox);*/
 
         modelArrayList = new ArrayList<>();
+        bitmapList = new ArrayList<>();
         page = 1;
 
         linearLayoutManager = new LinearLayoutManager(Massage.this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(false);
         reyclerview_message_list.setLayoutManager(linearLayoutManager);
+
+        photo_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(Massage.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Massage.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+                    return;
+                }
+                pickImageFromGallery();
+            }
+        });
 
 
         reyclerview_message_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -188,6 +223,94 @@ public class Massage extends AppCompatActivity {
             }
         });
         emojIcon.addEmojiconEditTextList(edittext_chatbox);
+
+    }
+
+    private void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 101);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case 101:
+                    option = 1001;
+                    if (resultCode == RESULT_OK && data != null) {
+                        bitmapList = new ArrayList<>();
+                        ClipData clipData = data.getClipData();
+                        if (clipData != null) {
+                            for (int i = 0; i < clipData.getItemCount(); i++) {
+                                Uri imageUri = clipData.getItemAt(i).getUri();
+                                try {
+                                    InputStream is = Massage.this.getContentResolver().openInputStream(imageUri);
+                                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                    if(bitmapList.size()<5){
+                                        bitmapList.add(bitmap);
+                                    }else{
+                                        Toast.makeText(Massage.this,"Should not exceed more than 5 images",Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+                            Uri imageUri = data.getData();
+                            try {
+                                InputStream is = Massage.this.getContentResolver().openInputStream(imageUri);
+                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                bitmapList.add(bitmap);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        showImageFullScreenDialog(bitmapList);
+                        /*recyclerDisplayImg.setAdapter(new ImageViewAdapter(Massage.this, bitmapList));*/
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void showImageFullScreenDialog(ArrayList<Bitmap> bitmapList) {
+
+        RecyclerView recyclerImageShow;
+        Button submitButton;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Massage.this,R.style.MaterialTheme);
+        View v= LayoutInflater.from(Massage.this).inflate(R.layout.message_image_layout,null);
+        recyclerImageShow = v.findViewById(R.id.recyclerImageShow);
+        submitButton = v.findViewById(R.id.submitButton);
+
+        if(bitmapList.size()<2){
+            Log.e("CHECK","Entered");
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Massage.this);
+            recyclerImageShow.setLayoutManager(linearLayoutManager);
+            recyclerImageShow.setAdapter(new ImageViewAdapter(Massage.this, bitmapList));
+        }else{
+            GridLayoutManager linearLayoutManager = new GridLayoutManager(Massage.this,2);
+            recyclerImageShow.setLayoutManager(linearLayoutManager);
+            recyclerImageShow.setAdapter(new ImageViewAdapter(Massage.this, bitmapList));
+        }
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+        builder.setView(v);
+        builder.setCancelable(true);
+        fullscreenDialog=builder.create();
+        fullscreenDialog.show();
 
     }
 
