@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -58,6 +59,9 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
     FriendsPostModelImage postModelObj;
     ArrayList<FriendsPostModelImage> postModelList = new ArrayList<>();
     FriendsImagePostAdapter postImageObj;
+    public static MediaController mediaController ;
+    boolean pauseOnScroll = true;
+    boolean pauseOnFling = true;
 
     private static AlertDialog topupDialog;
     String postId;
