@@ -26,7 +26,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/send_msg_backgr">
+            android:background="@drawable/send_msg_backgr"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/send_message_body"
@@ -78,6 +79,74 @@
                     android:visibility="invisible"
                     app:tint="@color/colourwhite"
                     android:layout_below="@+id/send_message_time"/>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutSenderImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/send_msg_backgr"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/send_message_image"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_margin="5dp"
+                android:textColor="@color/white"
+                android:src="@drawable/fgh"/>
+
+            <RelativeLayout
+                android:id="@+id/tick_part_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/send_message_image"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="3dp"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:id="@+id/send_image_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="2dp"
+                    android:padding="5dp"
+                    android:text="11:40 PM"
+                    android:textColor="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:textSize="10sp" />
+
+                <ImageView
+                    android:id="@+id/delivered_tick_image"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_double_tick_indicator"
+                    android:visibility="visible"
+                    app:tint="@color/colourwhite"
+                    android:layout_below="@+id/send_image_time"/>
+
+                <ImageView
+                    android:id="@+id/send_tick_image"
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_tick"
+                    android:visibility="invisible"
+                    app:tint="@color/colourwhite"
+                    android:layout_below="@+id/send_image_time"/>
             </RelativeLayout>
 
 

@@ -1,14 +1,15 @@
 package com.bezzy.Ui.View.model;
 
 public class ChatMessageModel {
-    public String message_by,chat_message,chat_date_time,chat_read_unread_status,date;
+    public String message_by,chat_message,chat_date_time,chat_read_unread_status,date,type;
 
-    public ChatMessageModel(String message_by, String chat_message, String chat_date_time, String chat_read_unread_status,String date) {
+    public ChatMessageModel(String message_by, String chat_message, String chat_date_time, String chat_read_unread_status,String date,String type) {
         this.message_by = message_by;
         this.chat_message = chat_message;
         this.chat_date_time = chat_date_time;
         this.chat_read_unread_status = chat_read_unread_status;
         this.date = date;
+        this.type = type;
     }
 
     public String getMessage_by() {
@@ -29,5 +30,9 @@ public class ChatMessageModel {
 
     public String getDate() {
         return date;
+    }
+
+    public String getType() {
+        return type;
     }
 }

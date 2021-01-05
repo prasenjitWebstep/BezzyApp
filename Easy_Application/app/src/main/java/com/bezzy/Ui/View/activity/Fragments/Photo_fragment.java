@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -108,10 +109,12 @@ public class Photo_fragment extends Fragment {
     EmojIconActions emojIcon;
     ImageView emojiButton;
     View rootView;
-    EmojiconEditText emojiconEditText;
+    /*EmojiconEditText emojiconEditText;*/
+    SocialAutoCompleteTextView autoCompleteTextView;
     Uri imageuri;
     Context context;
-    Uri mUri;
+    Uri mUri,imageUri;
+    ContentValues values;
 
     String MENTION1_USERNAME;
     //ArrayList<String> strings;
@@ -141,7 +144,7 @@ public class Photo_fragment extends Fragment {
         back_image = view.findViewById(R.id.back_image);
         imageView = view.findViewById(R.id.imageView);
          /*button = view.findViewById(R.id.choose_image_button);*/
-        emojiconEditText = view.findViewById(R.id.ed_content);
+        autoCompleteTextView = view.findViewById(R.id.ed_content);
         button = view.findViewById(R.id.upload);
         image_part = view.findViewById(R.id.image_part);
 
@@ -149,16 +152,16 @@ public class Photo_fragment extends Fragment {
         uoload = view.findViewById(R.id.upload_post);
 
         rootView = view.findViewById(R.id.root_view);
-        emojiButton =view.findViewById(R.id.emoji_btn);
+        /*emojiButton =view.findViewById(R.id.emoji_btn);*/
         /*txt =view.findViewById(R.id.ed_content);*/
         bitmapList = new ArrayList<>();
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerDisplayImg.setLayoutManager(layoutManager);
 
-        /*followingUserList(APIs.BASE_URL+APIs.FOLLOWINGLIST);*/
+        followingUserList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
 
-        emojIcon = new EmojIconActions(context, rootView, emojiconEditText, emojiButton);
+        /*emojIcon = new EmojIconActions(context, rootView, emojiconEditText, emojiButton);
         emojIcon.ShowEmojIcon();
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
             @Override
@@ -171,7 +174,7 @@ public class Photo_fragment extends Fragment {
                 Log.e("Keyboard", "close");
             }
         });
-        emojIcon.addEmojiconEditTextList(emojiconEditText);
+        emojIcon.addEmojiconEditTextList(emojiconEditText);*/
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +215,7 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(emojiconEditText.getText().toString().isEmpty()){
+                if(autoCompleteTextView.getText().toString().isEmpty()){
                     Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
                 }else if(bitmapList.size() == 0){
                     Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
@@ -252,8 +255,13 @@ public class Photo_fragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Take Photo")) {
+                    values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                    values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+                    imageUri = getActivity().getContentResolver().insert(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
+                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
                     startActivityForResult(takePicture, CAMERA_PICK);
                 } else if (options[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK);
@@ -280,14 +288,25 @@ public class Photo_fragment extends Fragment {
                 case CAMERA_PICK:
                     option = 101;
 
-                    if (resultCode == RESULT_OK && data != null) {
-                        BitmapFactory.Options options = new BitmapFactory.Options();
+                    if (resultCode == RESULT_OK) {
+                        /*BitmapFactory.Options options = new BitmapFactory.Options();
                         Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
                         bitmapList = new ArrayList<>();
                         bitmap = (Bitmap) data.getExtras().get("data");
                         bitmapList.add(bitmap);
                         bitmapList.add(bitmap2);
-                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));*/
+                        try {
+                            Log.e("IMAGEURI",imageUri.toString());
+                            String imageurl = getRealPathFromURI(imageUri);
+                            Log.e("IMAGESTRING",imageurl);
+                            Bitmap bitmap = StringToBitMap(imageurl);
+                            Log.e("BITMAP",bitmap.toString());
+                            bitmapList.add(bitmap);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e("ConversationException",e.toString());
+                        }
                     }
                     break;
                 case IMAGE_PICK_CODE:
@@ -325,6 +344,27 @@ public class Photo_fragment extends Fragment {
                     }
                     break;
             }
+        }
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor =  getActivity().managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            Log.e("String to Bitmap Exception",e.toString());
+            return null;
         }
     }
 
@@ -558,7 +598,7 @@ public class Photo_fragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("post_id",postId);
-                map.put("post_content",emojiconEditText.getText().toString());
+                map.put("post_content",autoCompleteTextView.getText().toString());
                 Log.e("POSTCONTENT",map.get("post_content"));
                 return map;
             }
@@ -601,7 +641,7 @@ public class Photo_fragment extends Fragment {
                             );
                         }
 
-                        /*txt.setMentionAdapter(defaultMentionAdapter);*/
+                        autoCompleteTextView.setMentionAdapter(defaultMentionAdapter);
 
                     }
                 } catch (JSONException e) {

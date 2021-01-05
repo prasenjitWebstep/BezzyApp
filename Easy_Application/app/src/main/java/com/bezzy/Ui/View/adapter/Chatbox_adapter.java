@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bezzy.Ui.View.model.ChatMessageModel;
 import com.bezzy_application.R;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -48,21 +49,49 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
     @Override
     public void onBindViewHolder(@NonNull ReceiveMassageHolder holder, int position) {
         if(mMessageList.get(position).getMessage_by().equals("self")){
-            holder.layoutSender.setVisibility(View.VISIBLE);
-            holder.send_message_body.setText(mMessageList.get(position).getChat_message());
-            holder.send_message_time.setText(mMessageList.get(position).getChat_date_time());
-            if(mMessageList.get(position).getChat_read_unread_status().equals("2")){
-                holder.send_tick.setVisibility(View.VISIBLE);
-                holder.delivered_tick.setVisibility(View.INVISIBLE);
+            if(mMessageList.get(position).getType().equals("text")){
+                holder.layoutSender.setVisibility(View.VISIBLE);
+                holder.layoutSenderImage.setVisibility(View.GONE);
+                holder.send_message_body.setText(mMessageList.get(position).getChat_message());
+                holder.send_message_time.setText(mMessageList.get(position).getChat_date_time());
+                if(mMessageList.get(position).getChat_read_unread_status().equals("2")){
+                    holder.send_tick.setVisibility(View.VISIBLE);
+                    holder.delivered_tick.setVisibility(View.INVISIBLE);
+                }else{
+                    holder.send_tick.setVisibility(View.INVISIBLE);
+                    holder.delivered_tick.setVisibility(View.VISIBLE);
+                }
             }else{
-                holder.send_tick.setVisibility(View.INVISIBLE);
-                holder.delivered_tick.setVisibility(View.VISIBLE);
+                holder.layoutSender.setVisibility(View.GONE);
+                holder.layoutSenderImage.setVisibility(View.VISIBLE);
+                Glide.with(mContext)
+                        .load(mMessageList.get(position).getChat_message())
+                        .into(holder.send_message_image);
+                holder.send_message_time.setText(mMessageList.get(position).getChat_date_time());
+                if(mMessageList.get(position).getChat_read_unread_status().equals("2")){
+                    holder.send_tick.setVisibility(View.VISIBLE);
+                    holder.delivered_tick.setVisibility(View.INVISIBLE);
+                }else{
+                    holder.send_tick.setVisibility(View.INVISIBLE);
+                    holder.delivered_tick.setVisibility(View.VISIBLE);
+                }
             }
-        }else{
-            holder.layoutreceiver.setVisibility(View.VISIBLE);
-            holder.rcv_message_body.setText(mMessageList.get(position).getChat_message());
-            holder.rcv_message_time.setText(mMessageList.get(position).getChat_date_time());
 
+        }else{
+
+            if(mMessageList.get(position).getType().equals("text")){
+                holder.layoutreceiver.setVisibility(View.VISIBLE);
+                holder.layoutreceiverimage.setVisibility(View.GONE);
+                holder.rcv_message_body.setText(mMessageList.get(position).getChat_message());
+                holder.rcv_message_time.setText(mMessageList.get(position).getChat_date_time());
+            }else{
+                holder.layoutreceiver.setVisibility(View.GONE);
+                holder.layoutreceiverimage.setVisibility(View.VISIBLE);
+                Glide.with(mContext)
+                        .load(mMessageList.get(position).getChat_message())
+                        .into(holder.send_message_image);
+                holder.rcv_image_time.setText(mMessageList.get(position).getChat_date_time());
+            }
         }
 
         String date[] = mMessageList.get(position).getDate().split(" ");
@@ -102,9 +131,9 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
 
 
     public class ReceiveMassageHolder extends RecyclerView.ViewHolder{
-        TextView rcv_message_body,rcv_message_time,send_message_body,send_message_time;
-        RelativeLayout layoutreceiver,layoutSender;
-        ImageView send_tick,delivered_tick;
+        TextView rcv_message_body,rcv_message_time,send_message_body,send_message_time,rcv_image_time;
+        RelativeLayout layoutreceiver,layoutSender,layoutreceiverimage,layoutSenderImage;
+        ImageView send_tick,delivered_tick,send_message_image;
 
 
         public ReceiveMassageHolder(@NonNull View itemView) {
@@ -117,6 +146,11 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
             send_message_time = itemView.findViewById(R.id.send_message_time);
             send_tick = itemView.findViewById(R.id.send_tick);
             delivered_tick = itemView.findViewById(R.id.delivered_tick);
+            layoutreceiverimage = itemView.findViewById(R.id.layoutreceiverimage);
+            layoutSenderImage = itemView.findViewById(R.id.layoutSenderImage);
+            send_message_image = itemView.findViewById(R.id.send_message_image);
+            rcv_image_time = itemView.findViewById(R.id.rcv_image_time);
+
         }
 
         /*void bind(UserMessage message) {

@@ -31,6 +31,7 @@ public class APIs {
     public static String LIKES_NAME="api/postlikeuserslist";
     public static String FRIENDSBLOCKDETAILS = "api/friendsingleblockdetails";
     public static String ADDCHAT = "api/add-chat-data";
+    public static String ADDCHATIMAGE = "api/add-chat-data-image";
     public static String CHAT_NOTI_LIST="api/chat-notification-list";
     public static String CHAT_LIST = "api/chat-list";
     public static String COMMENT_POST = "api/comment-post";

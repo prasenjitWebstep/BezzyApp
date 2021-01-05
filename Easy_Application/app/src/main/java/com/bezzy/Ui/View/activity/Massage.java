@@ -20,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,18 +43,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bezzy.Ui.View.activity.Fragments.Photo_fragment;
 import com.bezzy.Ui.View.adapter.Chatbox_adapter;
 import com.bezzy.Ui.View.adapter.ImageViewAdapter;
 import com.bezzy.Ui.View.model.ChatMessageModel;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
+import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
+import com.bezzy.Ui.View.utils.VolleyMultipleMultipartRequest;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
 
@@ -61,6 +67,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -304,6 +311,16 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (Utility.internet_check(Massage.this)) {
+
+                    new UploadImageTask2().execute();
+
+                } else {
+
+                    Toast.makeText(Massage.this, "No Network!", Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
 
@@ -313,6 +330,108 @@ public class Massage extends AppCompatActivity {
         fullscreenDialog=builder.create();
         fullscreenDialog.show();
 
+    }
+
+    public class UploadImageTask2 extends AsyncTask<Void, Void, Void> {
+
+
+        protected void onPreExecute() {
+
+            Utility.notifyUpload(Massage.this,false,"Image Upload","Uploading in Progress");
+            fullscreenDialog.dismiss();
+            /*Intent intent = new Intent(Massage.this,Profile.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);*/
+
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            sendImage(APIs.BASE_URL + APIs.ADDCHATIMAGE);
+
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+
+        }
+    }
+
+    public void sendImage(String url) {
+        VolleyMultipleMultipartRequest multipartRequest = new VolleyMultipleMultipartRequest(Request.Method.POST,
+                url, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.e("Response", response.toString());
+
+                try {
+
+
+                    String resp = response.getString("status");
+                    if(resp.equals("success")){
+                        Utility.notifyUpload(Massage.this,true,"Image Upload","Image Send Successfully");
+                        page = 1;
+                        chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
+                        modelArrayList.clear();
+                    }else{
+                        String message = response.getString("message");
+                        Utility.notifyUpload(Massage.this,true,"Image Upload",message);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Utility.notifyUpload(Massage.this,true,"Image Upload","Exception: "+" \n "+e.toString());
+                    Log.e("exception",e.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("VolleyError", error.toString());
+                Utility.notifyUpload(Massage.this,true,"Image Upload","Error: "+" \n "+error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("from_userID",Utility.getUserId(Massage.this));
+                params.put("to_userID",id);
+                return params;
+            }
+
+            @Override
+            protected Map<String, ArrayList<DataPart>> getByteData() {
+                Map<String, VolleyMultipartRequest.DataPart> params = new HashMap<>();
+                Map<String, ArrayList<DataPart>> imageList = new HashMap<>();
+                ArrayList<DataPart> dataPart = new ArrayList<>();
+                long imagename = System.currentTimeMillis();
+                for (int i = 0; i < bitmapList.size(); i++) {
+                    VolleyMultipleMultipartRequest.DataPart dp = new VolleyMultipleMultipartRequest.DataPart(+imagename + i + ".jpeg", getFileDataFromDrawable(bitmapList.get(i)));
+                    dataPart.add(dp);
+                    //params.put(imagename, new DataPart(imagename+i, Base64.decode(encodedImageList.get(i), Base64.DEFAULT), "image/jpeg"));
+                }
+                imageList.put("chat_image[]", dataPart);
+
+                for (DataPart dataPart1 : dataPart) {
+                    Log.e("Value", dataPart1.getFileName());
+                }
+
+                return imageList;
+            }
+        };
+        int socketTimeout = 500000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        multipartRequest.setRetryPolicy(policy);
+        RequestQueue rQueue = Volley.newRequestQueue(Massage.this);
+        rQueue.add(multipartRequest);
+    }
+
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 
     private void callApi() {
@@ -436,7 +555,8 @@ public class Massage extends AppCompatActivity {
                                     object1.getString("chat_message"),
                                     object1.getString("chat_msg_time"),
                                     object1.getString("chat_read_unread_status"),
-                                    object1.getString("chat_date_time"));
+                                    object1.getString("chat_date_time"),
+                                    object1.getString("type"));
                             modelArrayList.add(0,messageModel);
                         }
                         linearLayoutManager = new LinearLayoutManager(Massage.this);
@@ -519,7 +639,8 @@ public class Massage extends AppCompatActivity {
                                     object1.getString("chat_message"),
                                     object1.getString("chat_msg_time"),
                                     object1.getString("chat_read_unread_status"),
-                                    object1.getString("chat_date_time"));
+                                    object1.getString("chat_date_time"),
+                                    object1.getString("type"));
 
                             /*date = object1.getString("chat_date_time");*/
 
