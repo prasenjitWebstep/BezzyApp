@@ -6,14 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.bezzy.Ui.View.model.ChatMessageModel;
 import com.bezzy_application.R;
@@ -26,6 +25,7 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
     private Context mContext;
     private ArrayList<ChatMessageModel> mMessageList;
+    private AlertDialog fullscreenDialog;
 
     public Chatbox_adapter(Context mContext, ArrayList<ChatMessageModel> mMessageList) {
         this.mContext = mContext;
@@ -47,7 +47,7 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReceiveMassageHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReceiveMassageHolder holder, final int position) {
         if(mMessageList.get(position).getMessage_by().equals("self")){
             if(mMessageList.get(position).getType().equals("text")){
                 holder.layoutSender.setVisibility(View.VISIBLE);
@@ -67,6 +67,13 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
                 Glide.with(mContext)
                         .load(mMessageList.get(position).getChat_message())
                         .into(holder.send_message_image);
+                holder.send_message_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showImageFullScreenDialog(mMessageList.get(position).getChat_message());
+                    }
+                });
+
                 holder.send_message_time.setText(mMessageList.get(position).getChat_date_time());
                 if(mMessageList.get(position).getChat_read_unread_status().equals("2")){
                     holder.send_tick.setVisibility(View.VISIBLE);
@@ -90,6 +97,14 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
                 Glide.with(mContext)
                         .load(mMessageList.get(position).getChat_message())
                         .into(holder.send_message_image);
+
+                holder.send_message_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showImageFullScreenDialog(mMessageList.get(position).getChat_message());
+                    }
+                });
+
                 holder.rcv_image_time.setText(mMessageList.get(position).getChat_date_time());
             }
         }
@@ -100,6 +115,26 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
                 ""+date[0], Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP, 0, 150);
         toast.show();
+    }
+
+    private void showImageFullScreenDialog(String chat_message) {
+
+        ImageView imageShow;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.MaterialTheme);
+        View v= LayoutInflater.from(mContext).inflate(R.layout.imagedisplay_layout,null);
+        imageShow = v.findViewById(R.id.imageShow);
+
+
+        Glide.with(mContext)
+                .load(chat_message)
+                .into(imageShow);
+
+        builder.setView(v);
+        builder.setCancelable(true);
+        fullscreenDialog=builder.create();
+        fullscreenDialog.show();
+
     }
 
     /*@Override
