@@ -21,6 +21,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyHolder>
     Context context;
     ArrayList<Comment_item> replyList;
 
+
     public ReplyAdapter(Context context, ArrayList<Comment_item> replyList) {
         this.context = context;
         this.replyList = replyList;
