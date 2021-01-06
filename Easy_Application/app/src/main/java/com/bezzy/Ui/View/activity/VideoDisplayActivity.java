@@ -35,7 +35,7 @@ import java.util.Map;
 public class VideoDisplayActivity extends AppCompatActivity {
     VideoView videoView;
     AndExoPlayerView andExoPlayerView;
-    String id,postId,type,screen;
+    String id,postId,type,screen,tag;
     ImageView back_image,chat_btn,delete_image,favBtn,favBtnfilled,imageEdit,imageSubmit;
     TextView servicesText,username,following_num,following_numm;
     String totalLikes;
@@ -63,9 +63,19 @@ public class VideoDisplayActivity extends AppCompatActivity {
         postId = getIntent().getExtras().getString("postId");
         type = getIntent().getExtras().getString("type");
         screen = getIntent().getExtras().getString("screen");
+        tag = getIntent().getExtras().getString("postTag");
+
+        if(tag.equals("No")){
+            delete_image.setVisibility(View.INVISIBLE);
+            imageEdit.setVisibility(View.INVISIBLE);
+        }else{
+            delete_image.setVisibility(View.INVISIBLE);
+            imageEdit.setVisibility(View.INVISIBLE);
+        }
 
         if(screen.equals("1")){
             delete_image.setVisibility(View.VISIBLE);
+            imageEdit.setVisibility(View.VISIBLE);
         }else{
             delete_image.setVisibility(View.INVISIBLE);
             imageEdit.setVisibility(View.INVISIBLE);

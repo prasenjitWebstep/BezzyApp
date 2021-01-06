@@ -288,7 +288,7 @@ public class ProfileFragment extends Fragment {
                             JSONObject object1 = array1.getJSONObject(i);
                             postList.add(new PostModel(object1.getString("post_id"),object1.getString("post_url"),
                                     object1.getString("post_type"),object1.getString("id"),
-                                    object1.getString("post_time"),object1.getString("post_date")));
+                                    object1.getString("post_time"),object1.getString("post_date"),object1.getString("post_is_tag")));
 
 
                         }

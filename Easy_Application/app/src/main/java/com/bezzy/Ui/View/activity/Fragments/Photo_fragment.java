@@ -220,28 +220,28 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(autoCompleteTextView.getText().toString().isEmpty()){
-//                    Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
-//                }else if(bitmapList.size() == 0){
-//                    Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
-//                }else{
-//                    if (Utility.internet_check(context)) {
-//
-//                        switch (option) {
-//                            case 101:
-//                                new UploadImageTask().execute();
-//                                break;
-//                            case 1001:
-//                                new UploadImageTask2().execute();
-//                                break;
-//                        }
-//
-//                    } else {
-//
-//                        Toast.makeText(context, "No Network!", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }
+                if(autoCompleteTextView.getText().toString().isEmpty()){
+                    Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
+                }else if(bitmapList.size() == 0){
+                    Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
+                }else{
+                    if (Utility.internet_check(context)) {
+
+                        switch (option) {
+                            case 101:
+                                new UploadImageTask().execute();
+                                break;
+                            case 1001:
+                                new UploadImageTask2().execute();
+                                break;
+                        }
+
+                    } else {
+
+                        Toast.makeText(context, "No Network!", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
                 for(TagModel model : taglist){
                     Log.e("TAGLISTONBUTTON CLICK",model.getName()+"/"+model.getId());
                     if(autoCompleteTextView.getText().toString().contains(model.getName())){
