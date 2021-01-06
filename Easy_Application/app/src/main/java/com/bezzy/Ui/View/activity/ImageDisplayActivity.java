@@ -72,16 +72,9 @@ public class ImageDisplayActivity extends AppCompatActivity {
         type = getIntent().getExtras().getString("type");
         screen = getIntent().getExtras().getString("screen");
         tag = getIntent().getExtras().getString("postTag");
+        Log.e("TAG",tag);
 
-        if(tag.equals("No")){
-            delete_btn.setVisibility(View.INVISIBLE);
-            imageEdit.setVisibility(View.INVISIBLE);
-        }else{
-            delete_btn.setVisibility(View.VISIBLE);
-            imageEdit.setVisibility(View.VISIBLE);
-        }
-
-        if(screen.equals("1")){
+        if(screen.equals("1") && tag.equalsIgnoreCase("No")){
             delete_btn.setVisibility(View.VISIBLE);
             imageEdit.setVisibility(View.VISIBLE);
         }else{

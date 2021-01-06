@@ -65,15 +65,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
         screen = getIntent().getExtras().getString("screen");
         tag = getIntent().getExtras().getString("postTag");
 
-        if(tag.equals("No")){
-            delete_image.setVisibility(View.INVISIBLE);
-            imageEdit.setVisibility(View.INVISIBLE);
-        }else{
-            delete_image.setVisibility(View.INVISIBLE);
-            imageEdit.setVisibility(View.INVISIBLE);
-        }
-
-        if(screen.equals("1")){
+        if(screen.equals("1") && tag.equalsIgnoreCase("No")){
             delete_image.setVisibility(View.VISIBLE);
             imageEdit.setVisibility(View.VISIBLE);
         }else{

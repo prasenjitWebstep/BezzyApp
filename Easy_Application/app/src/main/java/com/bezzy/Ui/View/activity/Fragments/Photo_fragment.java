@@ -325,7 +325,7 @@ public class Photo_fragment extends Fragment {
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
-                Log.e("ExceptionError",error.toString());
+                Log.e("CropExceptionError",error.toString());
             }
         }else if(requestCode == IMAGE_PICK_CODE){
 
