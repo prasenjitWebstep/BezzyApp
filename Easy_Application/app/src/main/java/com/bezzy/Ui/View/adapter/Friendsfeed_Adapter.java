@@ -76,16 +76,6 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
     @Override
     public void onBindViewHolder(@NonNull final FriendsfeedHolder holder, final int position) {
 
-//        String var = String.valueOf(flag);
-//        Log.e("POSITION BABY",var);
-
-//        if (position == expandedPosition) {
-//            holder.friendsPostCards.setVisibility(View.VISIBLE);
-//        } else {
-//            holder.friendsPostCards.setVisibility(View.GONE);
-//        }
-
-
         Glide.with(context)
                 .load(friendList.get(position).getFriendPhoto())
                 .into(holder.circularImg);
@@ -105,6 +95,8 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
 
         if(!friendList.get(position).getFriendPostDays().equals("")){
             holder.oldPost.setVisibility(View.VISIBLE);
+            holder.noti.setVisibility(View.INVISIBLE);
+            holder.video.setVisibility(View.INVISIBLE);
             holder.userPost.setVisibility(View.VISIBLE);
             if(friendList.get(position).getFriendPostDays().equals("1")){
                 holder.userPost.setText("Posted "+friendList.get(position).getFriendPostDays()+" day ago");
@@ -117,6 +109,8 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
 
         if(!friendList.get(position).getUnreadPostNumber().equals("") || !friendList.get(position).getTodayPost().equals("")){
             holder.noti.setVisibility(View.VISIBLE);
+            holder.oldPost.setVisibility(View.INVISIBLE);
+            holder.video.setVisibility(View.INVISIBLE);
             if(!friendList.get(position).getUnreadPostNumber().equals("")){
                 holder.postBadge.setVisibility(View.VISIBLE);
                 holder.postBadge.setText(friendList.get(position).getUnreadPostNumber());
@@ -131,6 +125,13 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
             }
 
             holder.userPost.setTextColor(Color.parseColor("#f93f07"));
+        }
+
+        if(friendList.get(position).getFriendPostDays().equals("") && friendList.get(position).getUnreadPostNumber().equals("") && friendList.get(position).getTodayPost().equals("")){
+            holder.noti.setVisibility(View.INVISIBLE);
+            holder.oldPost.setVisibility(View.INVISIBLE);
+            holder.video.setVisibility(View.INVISIBLE);
+            holder.userPost.setVisibility(View.INVISIBLE);
         }
 
         final boolean isExpanded = position==mExpandedPosition;

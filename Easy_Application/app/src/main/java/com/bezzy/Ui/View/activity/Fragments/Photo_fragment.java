@@ -54,6 +54,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Editprofile;
 import com.bezzy.Ui.View.activity.Profile;
+import com.bezzy.Ui.View.activity.Registration;
 import com.bezzy.Ui.View.adapter.ImageViewAdapter;
 import com.bezzy.Ui.View.model.TagModel;
 import com.bezzy.Ui.View.utils.APIs;
@@ -265,14 +266,19 @@ public class Photo_fragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Take Photo")) {
-                    values = new ContentValues();
+                    /*values = new ContentValues();
                     values.put(MediaStore.Images.Media.TITLE, "New Picture");
                     values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
                     imageUri = getActivity().getContentResolver().insert(
                             MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-                    startActivityForResult(takePicture, CAMERA_PICK);
+                    startActivityForResult(takePicture, CAMERA_PICK);*/
+                    CropImage.activity()
+                            .setAspectRatio(1,1)
+                            .setCropShape(CropImageView.CropShape.RECTANGLE)
+                            .setOutputCompressQuality(25)
+                            .start(getActivity());
                 } else if (options[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType("image/*");
@@ -293,19 +299,82 @@ public class Photo_fragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            Log.e("CROP_CALLED","1");
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK ) {
+                resultUri = result.getUri();
+                Log.e("ResultUri",resultUri.toString());
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), resultUri);
+                    Log.e("CROPBITMAP",bitmap.toString());
+                    /*if(!progressDialog.isShowing()){
+                     *//* progressDialog.setMessage("Uploading Image Please Wait.....");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();*//*
+
+                    }*/
+                    //Utility.displayLoader(Registration.this);
+                    //TO:DO
+                    //uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);
+                    bitmapList.add(bitmap);
+                    recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("Exception",e.toString());
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.e("ExceptionError",error.toString());
+            }
+        }else if(requestCode == IMAGE_PICK_CODE){
+
+            if (resultCode == RESULT_OK && data != null) {
+                bitmapList = new ArrayList<>();
+                ClipData clipData = data.getClipData();
+                if (clipData != null) {
+                    for (int i = 0; i < clipData.getItemCount(); i++) {
+                        Uri imageUri = clipData.getItemAt(i).getUri();
+                        try {
+                            InputStream is = context.getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(is);
+                            if(bitmapList.size()<5){
+                                bitmapList.add(bitmap);
+                            }else{
+                                Toast.makeText(context,"Should not exceed more than 5 images",Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    Uri imageUri = data.getData();
+                    try {
+                        InputStream is = context.getContentResolver().openInputStream(imageUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        bitmapList.add(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));
+            }
+
+        }
+        /*if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case CAMERA_PICK:
                     option = 101;
 
                     if (resultCode == RESULT_OK) {
-                        /*BitmapFactory.Options options = new BitmapFactory.Options();
+                        *//*BitmapFactory.Options options = new BitmapFactory.Options();
                         Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
                         bitmapList = new ArrayList<>();
                         bitmap = (Bitmap) data.getExtras().get("data");
                         bitmapList.add(bitmap);
                         bitmapList.add(bitmap2);
-                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));*/
+                        recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));*//*
                         try {
                             Log.e("IMAGEURI",imageUri.toString());
                             String imageurl = getRealPathFromURI(imageUri);
@@ -354,7 +423,7 @@ public class Photo_fragment extends Fragment {
                     }
                     break;
             }
-        }
+        }*/
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -371,14 +440,14 @@ public class Photo_fragment extends Fragment {
             byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
             Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        } catch(Exception e) {
+        } catch(Exception e){
             e.getMessage();
             Log.e("String to Bitmap Exception",e.toString());
             return null;
         }
     }
 
-    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+    public byte[] getFileDataFromDrawable(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
@@ -395,6 +464,7 @@ public class Photo_fragment extends Fragment {
             startActivity(intent);
 
         }
+
         @Override
         protected Void doInBackground(Void... params) {
 
@@ -403,9 +473,8 @@ public class Photo_fragment extends Fragment {
             return null;
         }
 
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Void result) {}
 
-        }
     }
 
     public class UploadImageTask2 extends AsyncTask<Void, Void, Void> {
