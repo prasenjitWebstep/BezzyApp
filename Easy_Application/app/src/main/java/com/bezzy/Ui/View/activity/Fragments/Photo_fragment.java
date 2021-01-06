@@ -165,20 +165,20 @@ public class Photo_fragment extends Fragment {
 
         followingUserList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
 
-        /*emojIcon = new EmojIconActions(context, rootView, emojiconEditText, emojiButton);
-        emojIcon.ShowEmojIcon();
-        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
-            @Override
-            public void onKeyboardOpen() {
-                Log.e("Keyboard", "open");
-
-            }
-            @Override
-            public void onKeyboardClose() {
-                Log.e("Keyboard", "close");
-            }
-        });
-        emojIcon.addEmojiconEditTextList(emojiconEditText);*/
+//        emojIcon = new EmojIconActions(context, rootView, emojiconEditText, emojiButton);
+//        emojIcon.ShowEmojIcon();
+//        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+//            @Override
+//            public void onKeyboardOpen() {
+//                Log.e("Keyboard", "open");
+//
+//            }
+//            @Override
+//            public void onKeyboardClose() {
+//                Log.e("Keyboard", "close");
+//            }
+//        });
+//        emojIcon.addEmojiconEditTextList(emojiconEditText);
 
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,34 +219,34 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(autoCompleteTextView.getText().toString().isEmpty()){
-//                    Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
-//                }else if(bitmapList.size() == 0){
-//                    Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
-//                }else{
-//                    if (Utility.internet_check(context)) {
-//
-//                        switch (option) {
-//                            case 101:
-//                                new UploadImageTask().execute();
-//                                break;
-//                            case 1001:
-//                                new UploadImageTask2().execute();
-//                                break;
-//                        }
-//
-//                    } else {
-//
-//                        Toast.makeText(context, "No Network!", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }
-                for(TagModel model : taglist){
-                    Log.e("TAGLISTONBUTTON CLICK",model.getName()+"/"+model.getId());
-                    if(autoCompleteTextView.getText().toString().contains(model.getName())){
-                        Toast.makeText(getContext(),model.getId(),Toast.LENGTH_LONG).show();
+                if(autoCompleteTextView.getText().toString().isEmpty()){
+                    Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
+                }else if(bitmapList.size() == 0){
+                    Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
+                }else{
+                    if (Utility.internet_check(context)) {
+
+                        switch (option) {
+                            case 101:
+                                new UploadImageTask().execute();
+                                break;
+                            case 1001:
+                                new UploadImageTask2().execute();
+                                break;
+                        }
+
+                    } else {
+
+                        Toast.makeText(context, "No Network!", Toast.LENGTH_SHORT).show();
+
                     }
                 }
+//                for(TagModel model : taglist){
+//                    Log.e("TAGLISTONBUTTON CLICK",model.getName()+"/"+model.getId());
+//                    if(autoCompleteTextView.getText().toString().contains(model.getName())){
+//                        Toast.makeText(getContext(),model.getId(),Toast.LENGTH_LONG).show();
+//                    }
+//                }
             }
         });
         return view;
