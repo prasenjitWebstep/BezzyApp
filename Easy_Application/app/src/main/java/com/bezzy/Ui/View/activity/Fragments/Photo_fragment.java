@@ -55,6 +55,7 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Editprofile;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.adapter.ImageViewAdapter;
+import com.bezzy.Ui.View.model.TagModel;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
@@ -124,6 +125,8 @@ public class Photo_fragment extends Fragment {
     private static final String MENTION3_DISPLAYNAME = "Hendra Anggrian";
     private ArrayAdapter<Mention> defaultMentionAdapter;
     ArrayList<String> idLst;
+    TagModel obj;
+    ArrayList<TagModel> taglist;
 
 
     public Photo_fragment(Context context) {
@@ -155,6 +158,7 @@ public class Photo_fragment extends Fragment {
         /*emojiButton =view.findViewById(R.id.emoji_btn);*/
         /*txt =view.findViewById(R.id.ed_content);*/
         bitmapList = new ArrayList<>();
+        taglist = new ArrayList<>();
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerDisplayImg.setLayoutManager(layoutManager);
@@ -215,26 +219,32 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(autoCompleteTextView.getText().toString().isEmpty()){
-                    Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
-                }else if(bitmapList.size() == 0){
-                    Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
-                }else{
-                    if (Utility.internet_check(context)) {
-
-                        switch (option) {
-                            case 101:
-                                new UploadImageTask().execute();
-                                break;
-                            case 1001:
-                                new UploadImageTask2().execute();
-                                break;
-                        }
-
-                    } else {
-
-                        Toast.makeText(context, "No Network!", Toast.LENGTH_SHORT).show();
-
+//                if(autoCompleteTextView.getText().toString().isEmpty()){
+//                    Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
+//                }else if(bitmapList.size() == 0){
+//                    Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
+//                }else{
+//                    if (Utility.internet_check(context)) {
+//
+//                        switch (option) {
+//                            case 101:
+//                                new UploadImageTask().execute();
+//                                break;
+//                            case 1001:
+//                                new UploadImageTask2().execute();
+//                                break;
+//                        }
+//
+//                    } else {
+//
+//                        Toast.makeText(context, "No Network!", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                }
+                for(TagModel model : taglist){
+                    Log.e("TAGLISTONBUTTON CLICK",model.getName()+"/"+model.getId());
+                    if(autoCompleteTextView.getText().toString().contains(model.getName())){
+                        Toast.makeText(getContext(),model.getId(),Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -634,6 +644,8 @@ public class Photo_fragment extends Fragment {
                             //dataholder.add(ob1);
 //                            strings = new ArrayList<String>();
 //                            strings.add(object1.getString("name"));
+
+                            taglist.add(new TagModel(object1.getString("name"),object1.getString("id")));
                             MENTION1_USERNAME = object1.getString("name");
                             String id = object1.getString("id");
                             defaultMentionAdapter.add(
@@ -642,6 +654,11 @@ public class Photo_fragment extends Fragment {
                         }
 
                         autoCompleteTextView.setMentionAdapter(defaultMentionAdapter);
+                        for(TagModel model : taglist){
+                            Log.e("TAGLIST",model.getName()+"/"+model.getId());
+                        }
+                        int current = autoCompleteTextView.getSelectionStart();
+                        Log.e("WE ARE NOTHING",String.valueOf(current));
 
                     }
                 } catch (JSONException e) {
