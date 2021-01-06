@@ -27,6 +27,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyHolder>
         this.replyList = replyList;
     }
 
+
     @NonNull
     @Override
     public ReplyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
