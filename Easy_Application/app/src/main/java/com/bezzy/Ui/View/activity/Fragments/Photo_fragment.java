@@ -117,6 +117,7 @@ public class Photo_fragment extends Fragment {
     Context context;
     Uri mUri,imageUri;
     ContentValues values;
+    String post_id;
 
     String MENTION1_USERNAME;
     //ArrayList<String> strings;
@@ -128,6 +129,8 @@ public class Photo_fragment extends Fragment {
     ArrayList<String> idLst;
     TagModel obj;
     ArrayList<TagModel> taglist;
+    ArrayList<String> tagId;
+    String arrayToString;
 
 
     public Photo_fragment(Context context) {
@@ -160,6 +163,7 @@ public class Photo_fragment extends Fragment {
         /*txt =view.findViewById(R.id.ed_content);*/
         bitmapList = new ArrayList<>();
         taglist = new ArrayList<>();
+        tagId = new ArrayList<>();
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerDisplayImg.setLayoutManager(layoutManager);
@@ -220,6 +224,8 @@ public class Photo_fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
 //                if(autoCompleteTextView.getText().toString().isEmpty()){
 //                    Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
 //                }else if(bitmapList.size() == 0){
@@ -242,10 +248,37 @@ public class Photo_fragment extends Fragment {
 //
 //                    }
 //                }
+                //Toast.makeText(getContext(),"hi",Toast.LENGTH_LONG).show();
                 for(TagModel model : taglist){
                     Log.e("TAGLISTONBUTTON CLICK",model.getName()+"/"+model.getId());
                     if(autoCompleteTextView.getText().toString().contains(model.getName())){
-                        Toast.makeText(getContext(),model.getId(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(),model.getId(),Toast.LENGTH_LONG).show();
+                        tagId.add(model.getId());
+                    }
+                    arrayToString = tagId.toString().substring(1, tagId.toString().length() - 1);
+                    Log.e("HI BABBY",tagId.toString().substring(1, tagId.toString().length() - 1));
+
+                }
+                if(autoCompleteTextView.getText().toString().isEmpty()){
+                    Toast.makeText(context,"Please add any content to post",Toast.LENGTH_SHORT).show();
+                }else if(bitmapList.size() == 0){
+                    Toast.makeText(getContext(), "Please Upload at least one image to Post", Toast.LENGTH_LONG).show();
+                }else{
+                    if (Utility.internet_check(context)) {
+
+                        switch (option) {
+                            case 101:
+                                new UploadImageTask().execute();
+                                break;
+                            case 1001:
+                                new UploadImageTask2().execute();
+                                break;
+                        }
+
+                    } else {
+
+                        Toast.makeText(context, "No Network!", Toast.LENGTH_SHORT).show();
+
                     }
                 }
             }
@@ -301,6 +334,7 @@ public class Photo_fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             Log.e("CROP_CALLED","1");
+            option = 101;
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK ) {
                 resultUri = result.getUri();
@@ -328,7 +362,7 @@ public class Photo_fragment extends Fragment {
                 Log.e("ExceptionError",error.toString());
             }
         }else if(requestCode == IMAGE_PICK_CODE){
-
+            option = 1001;
             if (resultCode == RESULT_OK && data != null) {
                 bitmapList = new ArrayList<>();
                 ClipData clipData = data.getClipData();
@@ -678,6 +712,9 @@ public class Photo_fragment extends Fragment {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("post_id",postId);
                 map.put("post_content",autoCompleteTextView.getText().toString());
+                map.put("log_user_id",Utility.getUserId(context));
+                map.put("tag_user_id",arrayToString);
+                map.put("post_type_id","1");
                 Log.e("POSTCONTENT",map.get("post_content"));
                 return map;
             }
@@ -714,7 +751,7 @@ public class Photo_fragment extends Fragment {
 //                            strings = new ArrayList<String>();
 //                            strings.add(object1.getString("name"));
 
-                            taglist.add(new TagModel(object1.getString("name"),object1.getString("id")));
+                            taglist.add(new TagModel(object1.getString("name"),object1.getString("following_user_id")));
                             MENTION1_USERNAME = object1.getString("name");
                             String id = object1.getString("id");
                             defaultMentionAdapter.add(

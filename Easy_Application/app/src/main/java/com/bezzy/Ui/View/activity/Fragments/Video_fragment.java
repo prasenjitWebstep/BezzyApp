@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,17 +45,23 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Profile;
+import com.bezzy.Ui.View.model.TagModel;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.UploadHelper;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
 import com.bezzy_application.R;
+import com.hendraanggrian.appcompat.socialview.Mention;
+import com.hendraanggrian.appcompat.widget.MentionArrayAdapter;
+import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.iceteck.silicompressorr.SiliCompressor;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,7 +77,7 @@ public class Video_fragment extends Fragment {
     ImageView  back_image;
     VideoView videoView;
     TextView bufferText;
-    EmojiconEditText emojiconEditText;
+    //EmojiconEditText emojiconEditText;
     TextView upload_post, uploadVideo;
     private static final int REQUEST_PICK_VIDEO = 3;// Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
@@ -86,6 +93,22 @@ public class Video_fragment extends Fragment {
     //EmojiconEditText emojiconEditText;
     ImageView emojiButton;
     Context context;
+    SocialAutoCompleteTextView autoCompleteTextView;
+
+
+    String MENTION1_USERNAME;
+    //ArrayList<String> strings;
+    private static final String MENTION2_USERNAME = "sagnik";
+    private static final String MENTION3_USERNAME = "prasenjit";
+    private static final String MENTION2_DISPLAYNAME = "polman";
+    private static final String MENTION3_DISPLAYNAME = "Hendra Anggrian";
+    private ArrayAdapter<Mention> defaultMentionAdapter;
+    ArrayList<String> idLst;
+    TagModel obj;
+    ArrayList<TagModel> taglist;
+    ArrayList<String> tagId;
+    String arrayToString;
+
 
     public Video_fragment(Context context) {
         this.context = context;
@@ -102,7 +125,7 @@ public class Video_fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video_fragment, container, false);
         videoView = view.findViewById(R.id.video_view);
-        emojiconEditText = view.findViewById(R.id.ed_content);
+        autoCompleteTextView = view.findViewById(R.id.ed_content);
         upload_post = view.findViewById(R.id.upload_post);
         back_image = view.findViewById(R.id.back_image);
         emojiButton=view.findViewById(R.id.emoji_btn);
@@ -110,19 +133,24 @@ public class Video_fragment extends Fragment {
 
         uploadVideo = view.findViewById(R.id.upload);
 
-        emojIcon = new EmojIconActions(getActivity(), rootView, emojiconEditText, emojiButton);
-        emojIcon.ShowEmojIcon();
-        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
-            @Override
-            public void onKeyboardOpen() {
-                Log.e("Keyboard", "open");
-            }
-            @Override
-            public void onKeyboardClose() {
-                Log.e("Keyboard", "close");
-            }
-        });
-        emojIcon.addEmojiconEditTextList(emojiconEditText);
+        taglist = new ArrayList<>();
+        tagId = new ArrayList<>();
+
+        followingUserList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
+
+//        emojIcon = new EmojIconActions(getActivity(), rootView, emojiconEditText, emojiButton);
+//        emojIcon.ShowEmojIcon();
+//        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+//            @Override
+//            public void onKeyboardOpen() {
+//                Log.e("Keyboard", "open");
+//            }
+//            @Override
+//            public void onKeyboardClose() {
+//                Log.e("Keyboard", "close");
+//            }
+//        });
+        //emojIcon.addEmojiconEditTextList(emojiconEditText);
 
         videoView.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
 
@@ -145,7 +173,19 @@ public class Video_fragment extends Fragment {
         uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(emojiconEditText.getText().toString().isEmpty()){
+
+
+                for(TagModel model : taglist){
+                    Log.e("TAGLISTONBUTTON CLICK",model.getName()+"/"+model.getId());
+                    if(autoCompleteTextView.getText().toString().contains(model.getName())){
+                        //Toast.makeText(getContext(),model.getId(),Toast.LENGTH_LONG).show();
+                        tagId.add(model.getId());
+                    }
+                    arrayToString = tagId.toString().substring(1, tagId.toString().length() - 1);
+                    Log.e("HI BABBY",tagId.toString().substring(1, tagId.toString().length() - 1));
+
+                }
+                if(autoCompleteTextView.getText().toString().isEmpty()){
                     Toast.makeText(getActivity().getApplicationContext(),"Please add any content to post",Toast.LENGTH_SHORT).show();
                 }else if(allow == true){
                     if (Utility.internet_check(getActivity())) {
@@ -416,13 +456,88 @@ public class Video_fragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("post_id",postId);
-                map.put("post_content",emojiconEditText.getText().toString());
+                map.put("post_content",autoCompleteTextView.getText().toString());
                 Log.e("POSTCONTENT",map.get("post_content"));
+                map.put("log_user_id",Utility.getUserId(context));
+                map.put("tag_user_id",arrayToString);
+                map.put("post_type_id","3");
                 return map;
             }
         };
 
         RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+
+
+    private void followingUserList(String url) {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("REsponse",response);
+                //progressDialog.dismiss();
+
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("resp");
+                    if(resp.equals("success")){
+//                        progressBar.setVisibility(View.GONE);
+                        //dataholder.clear();
+                        JSONArray array = object.getJSONArray("following_user_list");
+                        defaultMentionAdapter = new MentionArrayAdapter<>(getContext());
+                        idLst = new ArrayList<>();
+                        for(int i = 0 ;i<array.length();i++){
+                            JSONObject object1 = array.getJSONObject(i);
+                            Log.e("HIHIHIHI",object1.getString("name"));
+                            //ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"),object1.getString("user_is_flollowers"));
+                            //dataholder.add(ob1);
+//                            strings = new ArrayList<String>();
+//                            strings.add(object1.getString("name"));
+
+                            taglist.add(new TagModel(object1.getString("name"),object1.getString("following_user_id")));
+                            MENTION1_USERNAME = object1.getString("name");
+                            String id = object1.getString("id");
+                            defaultMentionAdapter.add(
+                                    new Mention(MENTION1_USERNAME)
+                            );
+                        }
+
+                        autoCompleteTextView.setMentionAdapter(defaultMentionAdapter);
+                        for(TagModel model : taglist){
+                            Log.e("TAGLIST",model.getName()+"/"+model.getId());
+                        }
+                        int current = autoCompleteTextView.getSelectionStart();
+                        Log.e("WE ARE NOTHING",String.valueOf(current));
+
+                    }
+                } catch (JSONException e) {
+                    Log.e("Exception",e.toString());
+                    e.printStackTrace();
+                    //progressBar.setVisibility(View.GONE);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("Exception",error.toString());
+                //progressDialog.dismiss();
+                //progressBar.setVisibility(View.GONE);
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("loguser_id", Utility.getUserId(getActivity()));
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(request);
     }
 
