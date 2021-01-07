@@ -101,12 +101,12 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
     }
 
     private void readChatNoti(final String url, final String userID, final String image, final String name, final String activeStatus) {
-        Log.e("URL",url);
+        /*Log.e("URL",url);*/
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -127,7 +127,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Utility.hideLoader(context);
-                    Log.e("Exception",e.toString());
+                    /*Log.e("Exception",e.toString());*/
                 }
 
 
@@ -137,7 +137,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
             public void onErrorResponse(VolleyError error) {
 
                 Utility.hideLoader(context);
-                Log.e("Error",error.toString());
+                /*Log.e("Error",error.toString());*/
 
             }
         });

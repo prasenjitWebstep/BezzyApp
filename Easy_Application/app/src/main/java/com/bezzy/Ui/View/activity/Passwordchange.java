@@ -53,11 +53,15 @@ public class Passwordchange extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(password.getText().toString().length() < 8){
-                    password.setError("password must of at least 8 characters");
+                if(password.getText().toString().isEmpty()){
+                    password.setError("enter your current password");
+                }else if(new_password.getText().toString().isEmpty()){
+                    new_password.setError("enter your new password");
+                }else if(new_password.getText().toString().length()<8){
+                    new_password.setError("please enter at least 8 characters");
                 }else if(cnf_password.getText().toString().isEmpty()){
                     cnf_password.setError("enter confirm password");
-                }else if(!cnf_password.getText().toString().equals(password.getText().toString())) {
+                }else if(!cnf_password.getText().toString().equals(new_password.getText().toString())) {
                     cnf_password.setError("password not matched");
                 }else{
                     Log.e("Called","1");
@@ -121,7 +125,8 @@ public class Passwordchange extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
-                map.put("userID",userId);
+                map.put("userID",Utility.getUserId(Passwordchange.this));
+                map.put("current_password",password.getText().toString());
                 map.put("password",cnf_password.getText().toString());
                 Log.e("MAPGET",map.get("password")+" "+map.get("userID"));
                 return map;
