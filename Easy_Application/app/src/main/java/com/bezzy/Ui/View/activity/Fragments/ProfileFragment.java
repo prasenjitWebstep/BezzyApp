@@ -205,7 +205,7 @@ public class ProfileFragment extends Fragment {
                 try {
 
                     final JSONObject object = new JSONObject(response);
-                    Log.e("Response",response);
+                   // Log.e("Response",response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 
@@ -394,7 +394,7 @@ public class ProfileFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+               // Log.e("Response",response);
             }
         }, new Response.ErrorListener() {
             @Override

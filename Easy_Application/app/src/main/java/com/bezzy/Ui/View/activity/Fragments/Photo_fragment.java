@@ -513,7 +513,7 @@ public class Photo_fragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
 
-                Log.e("Response", response.toString());
+              //  Log.e("Response", response.toString());
 
                 try {
 
@@ -582,7 +582,7 @@ public class Photo_fragment extends Fragment {
                     @Override
                     public void onResponse(NetworkResponse response) {
                         String response2 = new String(response.data);
-                        Log.e("RESPONSE2", response2);
+                       // Log.e("RESPONSE2", response2);
                         try {
                             JSONObject object = new JSONObject(response2);
                             String status = object.getString("resp");
@@ -649,7 +649,7 @@ public class Photo_fragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
-                Log.e("PhotoResponse",response);
+              //  Log.e("PhotoResponse",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -701,7 +701,7 @@ public class Photo_fragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
-                Log.e("REsponse",response);
+               // Log.e("REsponse",response);
                 //progressDialog.dismiss();
 
 
@@ -716,7 +716,7 @@ public class Photo_fragment extends Fragment {
                         idLst = new ArrayList<>();
                         for(int i = 0 ;i<array.length();i++){
                             JSONObject object1 = array.getJSONObject(i);
-                            Log.e("HIHIHIHI",object1.getString("name"));
+                           // Log.e("HIHIHIHI",object1.getString("name"));
                             //ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"),object1.getString("user_is_flollowers"));
                             //dataholder.add(ob1);
 //                            strings = new ArrayList<String>();

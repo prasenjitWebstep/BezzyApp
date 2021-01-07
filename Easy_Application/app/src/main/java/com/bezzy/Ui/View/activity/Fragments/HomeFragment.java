@@ -209,7 +209,7 @@ public class HomeFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+               // Log.e("Response",response);
                 try {
                     JSONObject object1 = new JSONObject(response);
                     String status = object1.getString("status");
@@ -272,7 +272,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+               // Log.e("Response",response);
                // progressDialog.dismiss();
 
 

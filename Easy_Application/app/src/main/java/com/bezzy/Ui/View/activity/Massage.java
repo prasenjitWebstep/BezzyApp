@@ -364,7 +364,7 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                Log.e("Response", response.toString());
+              /**/  Log.e("Response", response.toString());
 
                 try {
 
@@ -625,7 +625,7 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("ChatResponse",response);
+               /* Log.e("ChatResponse",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);

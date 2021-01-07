@@ -105,7 +105,7 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+              /*  Log.e("Response",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -167,7 +167,7 @@ public class OTPActivity extends AppCompatActivity {
         StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+               /* Log.e("Response",response);*/
                 try {
                     JSONObject object=new JSONObject(response);
                     String resp=object.getString("resp");

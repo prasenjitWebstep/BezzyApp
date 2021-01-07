@@ -166,7 +166,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+               /* Log.e("Response",response);*/
                 //progressDialog.dismiss();
                 Utility.hideLoader(context);
                 try {

@@ -198,7 +198,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+               /* Log.e("Response",response);*/
 
                 try {
                     JSONObject object1 = new JSONObject(response);

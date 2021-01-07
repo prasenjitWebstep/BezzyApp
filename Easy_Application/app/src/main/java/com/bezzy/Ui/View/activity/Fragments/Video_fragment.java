@@ -361,7 +361,7 @@ public class Video_fragment extends Fragment {
             public void onResponse(NetworkResponse response) {
                 String response2 = new String(response.data);
 
-                Log.e("RESPONSE2", response2);
+               // Log.e("RESPONSE2", response2);
 
 
                 try {
@@ -423,7 +423,7 @@ public class Video_fragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
-                Log.e("PhotoResponse",response);
+               // Log.e("PhotoResponse",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -475,7 +475,7 @@ public class Video_fragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
-                Log.e("REsponse",response);
+              //  Log.e("REsponse",response);
                 //progressDialog.dismiss();
 
 

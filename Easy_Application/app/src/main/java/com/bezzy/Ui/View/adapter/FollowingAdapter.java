@@ -130,7 +130,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
 
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+              /*  Log.e("Response",response);*/
                 //progressDialog.dismiss();
                 Utility.hideLoader(context);
                 try {

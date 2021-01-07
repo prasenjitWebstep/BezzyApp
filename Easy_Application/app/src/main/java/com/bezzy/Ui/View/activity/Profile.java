@@ -126,7 +126,7 @@ public class Profile extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+              /*  Log.e("Response",response);*/
             }
         }, new Response.ErrorListener() {
             @Override
