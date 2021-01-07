@@ -299,19 +299,14 @@ public class Photo_fragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Take Photo")) {
-                    /*values = new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE, "New Picture");
-                    values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-                    imageUri = getActivity().getContentResolver().insert(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-                    startActivityForResult(takePicture, CAMERA_PICK);*/
-                    CropImage.activity()
+                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
+                    startActivityForResult(takePicture, CAMERA_PICK);
+                    /*CropImage.activity()
                             .setAspectRatio(1,1)
                             .setCropShape(CropImageView.CropShape.RECTANGLE)
                             .setOutputCompressQuality(25)
-                            .start(getActivity());
+                            .start(getActivity());*/
                 } else if (options[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType("image/*");
@@ -332,7 +327,7 @@ public class Photo_fragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+        /*if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             Log.e("CROP_CALLED","1");
             option = 101;
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -342,12 +337,12 @@ public class Photo_fragment extends Fragment {
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), resultUri);
                     Log.e("CROPBITMAP",bitmap.toString());
-                    /*if(!progressDialog.isShowing()){
-                     *//* progressDialog.setMessage("Uploading Image Please Wait.....");
+                    *//*if(!progressDialog.isShowing()){
+                     *//**//* progressDialog.setMessage("Uploading Image Please Wait.....");
                         progressDialog.setCancelable(false);
-                        progressDialog.show();*//*
+                        progressDialog.show();*//**//*
 
-                    }*/
+                    }*//*
                     //Utility.displayLoader(Registration.this);
                     //TO:DO
                     //uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);
@@ -360,6 +355,17 @@ public class Photo_fragment extends Fragment {
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 Log.e("ExceptionError",error.toString());
+            }
+        }*/if(requestCode == CAMERA_PICK){
+            if (resultCode == RESULT_OK && data != null) {
+                option = 101;
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
+                bitmapList = new ArrayList<>();
+                bitmap = (Bitmap) data.getExtras().get("data");
+                bitmapList.add(bitmap);
+                bitmapList.add(bitmap2);
+                recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));
             }
         }else if(requestCode == IMAGE_PICK_CODE){
             option = 1001;
