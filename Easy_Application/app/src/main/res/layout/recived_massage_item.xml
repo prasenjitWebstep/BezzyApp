@@ -49,43 +49,60 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
-            android:background="@drawable/recived_msg_bgr"
+            android:background="@color/white"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:gravity="left"
             android:layout_alignParentLeft="true"
             android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/send_message_image"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_margin="5dp"
-                android:src="@drawable/fgh"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardHolder"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:cardCornerRadius="8dp"
+                android:elevation="10dp"
+                android:layout_gravity="center">
 
-            <RelativeLayout
-                android:id="@+id/tick_part_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/send_message_image"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="3dp"
-                android:layout_alignParentRight="true">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/rcv_image_time"
+                    <ImageView
+                        android:id="@+id/send_message_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/dsz"
+                        android:background="@color/white"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/tick_part_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="2dp"
-                    android:padding="5dp"
-                    android:text="11:40 PM"
-                    android:textColor="@color/black"
-                    android:layout_alignParentRight="true"
-                    android:textSize="10sp" />
+                    android:layout_below="@id/send_message_image"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="3dp"
+                    android:layout_alignParentRight="true">
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/rcv_image_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="2dp"
+                        android:padding="5dp"
+                        android:text="11:40 PM"
+                        android:textColor="@color/deeporange"
+                        android:layout_alignParentRight="true"
+                        android:textSize="10sp" />
 
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
 
