@@ -337,15 +337,6 @@ public class Photo_fragment extends Fragment {
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), resultUri);
                     Log.e("CROPBITMAP",bitmap.toString());
-                    *//*if(!progressDialog.isShowing()){
-                     *//**//* progressDialog.setMessage("Uploading Image Please Wait.....");
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();*//**//*
-
-                    }*//*
-                    //Utility.displayLoader(Registration.this);
-                    //TO:DO
-                    //uploadImage(bitmap, APIs.BASE_URL+APIs.PERSONALIMAGEUPDATE);
                     bitmapList.add(bitmap);
                     recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));
                 } catch (IOException e) {
