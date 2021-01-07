@@ -299,14 +299,13 @@ public class Photo_fragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Take Photo")) {
-                    /*Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT,imageuri);
-                    startActivityForResult(takePicture, CAMERA_PICK);*/
-                    CropImage.activity()
+                    Intent intent = CropImage.activity()
                             .setAspectRatio(1,1)
                             .setCropShape(CropImageView.CropShape.RECTANGLE)
                             .setOutputCompressQuality(25)
-                            .start(getActivity());
+                            .getIntent(context);
+                    startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+
                 } else if (options[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType("image/*");
@@ -331,7 +330,9 @@ public class Photo_fragment extends Fragment {
             Log.e("CROP_CALLED","1");
             option = 101;
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK ) {
+            if (resultCode == RESULT_OK && data != null) {
+                Log.e("data",data.toString());
+                bitmapList = new ArrayList<>();
                 resultUri = result.getUri();
                 Log.e("ResultUri",resultUri.toString());
                 try {
@@ -347,18 +348,7 @@ public class Photo_fragment extends Fragment {
                 Exception error = result.getError();
                 Log.e("ExceptionError",error.toString());
             }
-        }/*if(requestCode == CAMERA_PICK){
-            if (resultCode == RESULT_OK && data != null) {
-                option = 101;
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                Bitmap bitmap2 = BitmapFactory.decodeFile(String.valueOf(imageuri), options);
-                bitmapList = new ArrayList<>();
-                bitmap = (Bitmap) data.getExtras().get("data");
-                bitmapList.add(bitmap);
-                bitmapList.add(bitmap2);
-                recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));
-            }
-        }*/else if(requestCode == IMAGE_PICK_CODE){
+        }else if(requestCode == IMAGE_PICK_CODE){
             option = 1001;
             if (resultCode == RESULT_OK && data != null) {
                 bitmapList = new ArrayList<>();
