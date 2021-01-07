@@ -72,16 +72,16 @@
                 android:layout_toRightOf="@+id/emoji_btn"
                 android:layout_marginLeft="10dp"/>
 
-            <ImageView
-                android:id="@+id/emoji_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_happy"
-                android:layout_marginRight="-10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                app:tint="@color/gradstart"
-                android:paddingTop="5dp"/>
+<!--            <ImageView-->
+<!--                android:id="@+id/emoji_btn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/ic_happy"-->
+<!--                android:layout_marginRight="-10dp"-->
+<!--                android:paddingLeft="5dp"-->
+<!--                android:paddingRight="5dp"-->
+<!--                app:tint="@color/gradstart"-->
+<!--                android:paddingTop="5dp"/>-->
 
 
             <TextView
