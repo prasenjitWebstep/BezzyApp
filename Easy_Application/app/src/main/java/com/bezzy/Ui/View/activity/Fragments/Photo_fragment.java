@@ -120,11 +120,6 @@ public class Photo_fragment extends Fragment {
     String post_id;
 
     String MENTION1_USERNAME;
-    //ArrayList<String> strings;
-    private static final String MENTION2_USERNAME = "sagnik";
-    private static final String MENTION3_USERNAME = "prasenjit";
-    private static final String MENTION2_DISPLAYNAME = "polman";
-    private static final String MENTION3_DISPLAYNAME = "Hendra Anggrian";
     private ArrayAdapter<Mention> defaultMentionAdapter;
     ArrayList<String> idLst;
     TagModel obj;
@@ -194,17 +189,6 @@ public class Photo_fragment extends Fragment {
             }
         });
 
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
-//                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-//                    requestPermissions(permissions,PERMISSION_CODE);
-//                }else{
-//                    pickImageFromGallery();
-//                }
-//            }
-//        });
 
         uoload.setOnClickListener(new View.OnClickListener() {
             @Override
