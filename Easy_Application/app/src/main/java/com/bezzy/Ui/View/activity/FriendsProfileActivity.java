@@ -143,7 +143,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
                 try {
 
                     JSONObject object = new JSONObject(response);
-                    Log.e("Response",response);
+                    /*Log.e("Response",response);*/
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 

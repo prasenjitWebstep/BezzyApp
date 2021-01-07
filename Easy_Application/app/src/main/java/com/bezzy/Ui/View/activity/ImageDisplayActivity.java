@@ -229,7 +229,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
@@ -275,12 +275,12 @@ public class ImageDisplayActivity extends AppCompatActivity {
     }
 
     private void friendsPostLike(String url) {
-        Log.e("URL",url);
+        /*Log.e("URL",url);*/
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String status = object.getString("status");
@@ -392,7 +392,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-                Log.e("Response", response);
+                /*Log.e("Response", response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("status");

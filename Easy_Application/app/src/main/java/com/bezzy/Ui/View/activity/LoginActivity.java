@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
@@ -186,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
                 map.put("username",etUsername.getText().toString());
                 map.put("password",etPassword.getText().toString());
                 map.put("device_token", FirebaseInstanceId.getInstance().getToken());
-                map.put("device_id",Settings.Secure.getString(LoginActivity.this.getContentResolver(),Settings.Secure.ANDROID_ID));
+                /*map.put("device_id",Settings.Secure.getString(LoginActivity.this.getContentResolver(),Settings.Secure.ANDROID_ID));*/
                 return map;
             }
         };

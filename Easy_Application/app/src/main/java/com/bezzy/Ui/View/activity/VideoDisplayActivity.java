@@ -198,7 +198,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
@@ -249,7 +249,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String status = object.getString("status");
@@ -278,7 +278,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
                 try {
                     final JSONObject object1 = new JSONObject(response);
                     String status = object1.getString("status");
@@ -310,7 +310,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 try {
                                     intent.putExtra("postId",object1.getString("post_id"));
-                                    Log.e("PostId",object1.getString("post_id"));
+                                    /*Log.e("PostId",object1.getString("post_id"));*/
                                     startActivity(intent);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -368,7 +368,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-                Log.e("Response", response);
+                /*Log.e("Response", response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("status");

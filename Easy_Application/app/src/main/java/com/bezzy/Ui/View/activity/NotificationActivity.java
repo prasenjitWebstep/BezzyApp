@@ -125,7 +125,7 @@ public class NotificationActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("RESPONSE",response);
+                /*Log.e("RESPONSE",response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String status = object.getString("status");
@@ -183,7 +183,7 @@ public class NotificationActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("RESPONSE",response);
+                /*Log.e("RESPONSE",response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String status = object.getString("status");

@@ -80,7 +80,7 @@ public class Friendsfeed extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
 
                 try {
                     JSONObject object1 = new JSONObject(response);

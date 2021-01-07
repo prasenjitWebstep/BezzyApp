@@ -44,34 +44,34 @@ public class MyFcmMessagingService extends FirebaseMessagingService {
 
         title=message=type="";
 
-        Log.e(TAG, "From: " + remoteMessage.getFrom());
+        /*Log.e(TAG, "From: " + remoteMessage.getFrom());*/
 
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "Message data payload: " + remoteMessage.getData());
+            /*Log.e(TAG, "Message data payload: " + remoteMessage.getData());*/
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.e(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            /*Log.e(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());*/
         }
 
         title = remoteMessage.getData().get("title");
 
-        Log.e("TITLE",title);
+        /*Log.e("TITLE",title);*/
 
         //message will contain the Push Message
         message= remoteMessage.getData().get("body");
 
-        Log.e("MESSAGE",message);
+        /*Log.e("MESSAGE",message);*/
 
         type = remoteMessage.getData().get("type");
 
-        Log.e("TYPE",type);
+        /*Log.e("TYPE",type);*/
 
         if(type.equals("chat_box_msg")){
-            Log.e("Chat","true");
+            /*Log.e("Chat","true");*/
             String username = remoteMessage.getData().get("from_usernam");
             String userimage = remoteMessage.getData().get("from_userimage");
             String userid = remoteMessage.getData().get("from_userid");

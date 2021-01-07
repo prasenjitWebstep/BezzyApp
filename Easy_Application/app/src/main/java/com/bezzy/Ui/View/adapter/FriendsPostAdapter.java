@@ -263,7 +263,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String status = object.getString("status");

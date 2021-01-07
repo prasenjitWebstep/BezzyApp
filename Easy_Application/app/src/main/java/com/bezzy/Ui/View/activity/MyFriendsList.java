@@ -82,7 +82,7 @@ public class MyFriendsList extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);

@@ -232,7 +232,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -294,7 +294,7 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");

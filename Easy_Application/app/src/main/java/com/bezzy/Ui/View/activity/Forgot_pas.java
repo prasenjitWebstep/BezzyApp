@@ -81,7 +81,7 @@ public class Forgot_pas extends AppCompatActivity {
         final StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("Response",response);
+                /*Log.e("Response",response);*/
                 try {
                     JSONObject jsonObject=new JSONObject(response);
                     if(jsonObject.getString("resp").equals("true")){

@@ -364,7 +364,7 @@ public class Massage extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-              /**/  Log.e("Response", response.toString());
+              /**/  /*Log.e("Response", response.toString());*/
 
                 try {
 
@@ -415,7 +415,7 @@ public class Massage extends AppCompatActivity {
                 imageList.put("chat_image[]", dataPart);
 
                 for (DataPart dataPart1 : dataPart) {
-                    Log.e("Value", dataPart1.getFileName());
+                    /*Log.e("Value", dataPart1.getFileName());*/
                 }
 
                 return imageList;
@@ -608,7 +608,7 @@ public class Massage extends AppCompatActivity {
                 map.put("from_userID",Utility.getUserId(Massage.this));
                 map.put("to_userID",id);
                 map.put("chat_message",edittext_chatbox.getText().toString());
-                Log.e("CHAT",map.get("chat_message"));
+                /*Log.e("CHAT",map.get("chat_message"));*/
                 return map;
             }
         };
@@ -619,7 +619,7 @@ public class Massage extends AppCompatActivity {
 
     private void chatList(String url) {
 
-        Log.e("URL",url);
+        /*Log.e("URL",url);*/
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

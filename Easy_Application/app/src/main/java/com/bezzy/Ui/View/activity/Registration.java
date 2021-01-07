@@ -247,7 +247,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                     @Override
                     public void onResponse(NetworkResponse response) {
                         String response2 = new String(response.data);
-                        Log.e("RESPONSE2", response2);
+                        /*Log.e("RESPONSE2", response2);*/
                         try {
                             JSONObject object = new JSONObject(response2);
                             String status = object.getString("resp");

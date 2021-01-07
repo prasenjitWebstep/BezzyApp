@@ -92,7 +92,7 @@ public class FollowingActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("FollowingResponse",response);
+                /*Log.e("FollowingResponse",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
