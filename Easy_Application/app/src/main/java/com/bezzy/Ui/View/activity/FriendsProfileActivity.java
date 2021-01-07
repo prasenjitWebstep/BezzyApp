@@ -178,7 +178,8 @@ public class FriendsProfileActivity extends AppCompatActivity {
                                     object1.getString("post_type"),
                                     object1.getString("id"),
                                     object1.getString("post_time"),
-                                    object1.getString("post_date")
+                                    object1.getString("post_date"),
+                                    object1.getString("post_is_tag")
                                     ));
 
 

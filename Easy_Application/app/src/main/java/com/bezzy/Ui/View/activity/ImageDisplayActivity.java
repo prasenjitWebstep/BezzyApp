@@ -42,7 +42,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     ImageView back_image,favBtn,favBtnfilled,imageEdit;
     TextView username,servicesText,following_num,following_numm;
     ImageView imageView,chat_btn,delete_btn,imageSubmit;
-    String id,postId,type,postId2,screen;
+    String id,postId,type,postId2,screen,tag;
     EmojiconTextView servicesText_t;
     String totalLikes;
     EditText edit;
@@ -71,8 +71,10 @@ public class ImageDisplayActivity extends AppCompatActivity {
         postId = getIntent().getExtras().getString("postId");
         type = getIntent().getExtras().getString("type");
         screen = getIntent().getExtras().getString("screen");
+        tag = getIntent().getExtras().getString("postTag");
+        Log.e("TAG",tag);
 
-        if(screen.equals("1")){
+        if(screen.equals("1") && tag.equalsIgnoreCase("No")){
             delete_btn.setVisibility(View.VISIBLE);
             imageEdit.setVisibility(View.VISIBLE);
         }else{

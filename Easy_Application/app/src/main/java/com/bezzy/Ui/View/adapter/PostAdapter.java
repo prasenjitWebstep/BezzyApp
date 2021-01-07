@@ -72,6 +72,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     intent.putExtra("id",postItems.get(position).getId());
                     intent.putExtra("postId",postItems.get(position).getPostId());
                     intent.putExtra("type",postItems.get(position).getType());
+                    intent.putExtra("postTag",postItems.get(position).getPostTag());
                     context.startActivity(intent);
                 }
                 else  {
@@ -80,6 +81,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     intent.putExtra("id", postItems.get(position).getId());
                     intent.putExtra("postId", postItems.get(position).getPostId());
                     intent.putExtra("type", postItems.get(position).getType());
+                    intent.putExtra("postTag",postItems.get(position).getPostTag());
                     context.startActivity(intent);
 
                 }
