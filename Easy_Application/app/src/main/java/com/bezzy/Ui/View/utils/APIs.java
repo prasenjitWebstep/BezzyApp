@@ -10,6 +10,7 @@ public class APIs {
     public static String FORGETPASSWORDSEND = "api/forgotpassotpsend";
     public static String RESENOTP ="api/resendotp";
     public static String CHANGEPASSWORD = "api/setforgotpassword";
+    public static String CHANGELOGINPASSWORD = "api/changepassword";
     public static String UPDATEPROFILE = "api/UpdateProfileData";
     public static String GETDATA = "api/geteditprofiledata";
     public static String PERSONALIMAGEUPDATE = "api/UpdateProfilePicture";

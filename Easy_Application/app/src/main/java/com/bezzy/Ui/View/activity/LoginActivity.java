@@ -186,6 +186,7 @@ public class LoginActivity extends AppCompatActivity {
                 map.put("username",etUsername.getText().toString());
                 map.put("password",etPassword.getText().toString());
                 map.put("device_token", FirebaseInstanceId.getInstance().getToken());
+                map.put("device_id",Settings.Secure.getString(LoginActivity.this.getContentResolver(),Settings.Secure.ANDROID_ID));
                 return map;
             }
         };

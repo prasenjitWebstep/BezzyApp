@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:allowBackup="true"
@@ -16,10 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.bezzy.Ui.View.activity.Likeslist"></activity>
-        <activity android:name="com.bezzy.Ui.View.activity.Passwordchange"></activity>
-        <activity android:name="com.bezzy.Ui.View.activity.Blocklist" />
-        <activity android:name="com.bezzy.Ui.View.activity.CommentReplyActivity" />
+        <activity android:name="com.bezzy.Ui.View.activity.Likeslist"
+            android:screenOrientation="portrait"
+            android:theme="@style/MaterialTheme"/>
+        <activity android:name="com.bezzy.Ui.View.activity.Passwordchange"
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme"/>
+        <activity android:name="com.bezzy.Ui.View.activity.Blocklist"
+            android:screenOrientation="portrait"
+            android:theme="@style/MaterialTheme"/>
+        <activity android:name="com.bezzy.Ui.View.activity.CommentReplyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MaterialTheme"/>
         <activity
             android:name="com.bezzy.Ui.View.activity.FollowingActivity"
             android:screenOrientation="portrait"

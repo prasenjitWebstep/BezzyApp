@@ -241,8 +241,9 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
                         //progressDialog.dismiss();
                         Utility.hideLoader(Editprofile.this);
                         Toast.makeText(Editprofile.this,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Editprofile.this, Profile.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Intent intent = new Intent(Editprofile.this,Profile.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("From","Image");
                         startActivity(intent);
 
 
@@ -302,7 +303,10 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
                         Utility.hideLoader(Editprofile.this);
 
                         Toast.makeText(Editprofile.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Editprofile.this,Profile.class));
+                        Intent intent = new Intent(Editprofile.this,Profile.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("From","Image");
+                        startActivity(intent);
 
                     }else{
                         //progressDialog.dismiss();
