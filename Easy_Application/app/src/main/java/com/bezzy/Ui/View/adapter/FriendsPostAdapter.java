@@ -2,11 +2,13 @@ package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -247,6 +249,10 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                 context.startActivity(intent);
             }
         });
+
+
+
+    }
         /*holder.imageShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,7 +263,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             }
         });*/
 
-    }
+
 
     private void friendsPostLike(String url, final TextView following_num) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -300,6 +306,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
         RelativeLayout videoDisp;
         CardView cardHolder;
         AndExoPlayerView andExoPlayerView;
+        RecyclerView recyclerView;
 
         public FriendsPostHolder(@NonNull View itemView) {
             super(itemView);
@@ -318,6 +325,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             videoDisp = itemView.findViewById(R.id.videoDisp);
             cardHolder = itemView.findViewById(R.id.cardHolder);
             andExoPlayerView=itemView.findViewById(R.id.andExoPlayerView);
+            recyclerView=itemView.findViewById(R.id.recyclerImageShow);
         }
     }
 }
