@@ -107,7 +107,7 @@ public class Massage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_massage);
-
+        checkToken();
         name = getIntent().getExtras().getString("userName");
         image = getIntent().getExtras().getString("userImage");
         id = getIntent().getExtras().getString("FrndId");
@@ -467,8 +467,6 @@ public class Massage extends AppCompatActivity {
         if(Utility.internet_check(Massage.this)) {
 
             if(Utility.internet_check(Massage.this)) {
-
-                checkToken();
 
                 instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
                 /*messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);*/
