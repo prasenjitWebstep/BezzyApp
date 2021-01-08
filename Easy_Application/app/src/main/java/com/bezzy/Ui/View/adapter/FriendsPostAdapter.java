@@ -115,6 +115,8 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                     context.startActivity(intent);*/
                 }
             });
+            holder.imageShow.setVisibility(View.GONE);
+            holder.recyclerImageShow.setVisibility(View.GONE);
             holder.andExoPlayerView.setVisibility(View.VISIBLE);
 
             JSONArray array = friendsModelList.get(position).getPost_image_video();
