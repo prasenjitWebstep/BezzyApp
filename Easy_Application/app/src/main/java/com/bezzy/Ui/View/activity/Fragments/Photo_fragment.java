@@ -53,6 +53,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.Editprofile;
+import com.bezzy.Ui.View.activity.Likeslist;
+import com.bezzy.Ui.View.activity.Passwordchange;
 import com.bezzy.Ui.View.activity.Profile;
 import com.bezzy.Ui.View.activity.Registration;
 import com.bezzy.Ui.View.adapter.ImageViewAdapter;
@@ -141,6 +143,7 @@ public class Photo_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        checkToken();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_fragment, container, false);
         back_image = view.findViewById(R.id.back_image);
@@ -268,6 +271,35 @@ public class Photo_fragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(context), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(context).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(context);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
     }
 
     private void pickImageFromGallery() {
