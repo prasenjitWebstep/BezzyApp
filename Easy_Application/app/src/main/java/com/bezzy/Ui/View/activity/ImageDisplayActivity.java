@@ -212,9 +212,39 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
     }
 
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(ImageDisplayActivity.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(ImageDisplayActivity.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(ImageDisplayActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(ImageDisplayActivity.this);
+        queue.add(request);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        checkToken();
         if(Utility.internet_check(ImageDisplayActivity.this)) {
 
             postRequest(APIs.BASE_URL+APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type+"/"+Utility.getUserId(ImageDisplayActivity.this));

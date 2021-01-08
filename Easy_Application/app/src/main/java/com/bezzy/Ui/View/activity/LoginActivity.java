@@ -108,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
                /* final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();*/
 
-
                 if(etUsername.getText().toString().isEmpty()|| etPassword.getText().toString().isEmpty()){
                     Toast.makeText(LoginActivity.this,"Fields should not be left empty",Toast.LENGTH_SHORT).show();
                 }else{
@@ -151,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                /*Log.e("Response",response);*/
+                Log.e("Response",response);
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
@@ -159,6 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                         Utility.hideLoader(LoginActivity.this);
                         Utility.setLogin(LoginActivity.this,"1");
                         Utility.setUserId(LoginActivity.this,object.getString("id"));
+                        Utility.setUserToken(LoginActivity.this,object.getString("remember_token"));
                         Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(LoginActivity.this, Profile.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

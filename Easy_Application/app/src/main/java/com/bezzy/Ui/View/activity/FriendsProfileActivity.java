@@ -109,11 +109,40 @@ public class FriendsProfileActivity extends AppCompatActivity {
 
     }
 
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(FriendsProfileActivity.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(FriendsProfileActivity.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(FriendsProfileActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(FriendsProfileActivity.this);
+        queue.add(request);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
-
+        checkToken();
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         postRecyclerView.setLayoutManager(layoutManager);
 

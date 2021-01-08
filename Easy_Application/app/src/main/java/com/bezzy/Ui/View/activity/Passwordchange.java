@@ -44,6 +44,16 @@ public class Passwordchange extends AppCompatActivity {
         cnf_password = findViewById(R.id.cnf_password);
         change = findViewById(R.id.change);
         new_password=findViewById(R.id.new_password);
+
+        if(Utility.internet_check(Passwordchange.this)) {
+
+            checkToken(APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(Passwordchange.this));
+
+        }
+        else {
+            Toast.makeText(Passwordchange.this,"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
         /*progressDialog = new SpotsDialog(Changepassword.this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading Please Wait..");*/
@@ -79,6 +89,35 @@ public class Passwordchange extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void checkToken(String url) {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(Passwordchange.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(Passwordchange.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(Passwordchange.this);
+        queue.add(request);
     }
 
     private void callAPIChangePassword(String url){

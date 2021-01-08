@@ -46,6 +46,8 @@ public class MyFriendsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_friends_list);
 
+        checkToken();
+
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
        /* progressDialog = new ProgressDialog(MyFriendsList.this);
@@ -74,6 +76,35 @@ public class MyFriendsList extends AppCompatActivity {
             Toast.makeText(MyFriendsList.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(MyFriendsList.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(MyFriendsList.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(MyFriendsList.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(MyFriendsList.this);
+        queue.add(request);
     }
 
     private void friendList(String url) {

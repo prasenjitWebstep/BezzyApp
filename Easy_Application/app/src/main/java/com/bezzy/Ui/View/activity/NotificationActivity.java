@@ -59,6 +59,8 @@ public class NotificationActivity extends AppCompatActivity {
         dialog.setMessage("Loading Please Wait...");
         dialog.setCancelable(false);*/
 
+        checkToken();
+
         back_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +120,35 @@ public class NotificationActivity extends AppCompatActivity {
             Toast.makeText(NotificationActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(NotificationActivity.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(NotificationActivity.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(NotificationActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(NotificationActivity.this);
+        queue.add(request);
     }
 
     private void clean(String url) {

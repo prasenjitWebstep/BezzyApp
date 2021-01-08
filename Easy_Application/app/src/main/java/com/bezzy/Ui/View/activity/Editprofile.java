@@ -79,6 +79,8 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editprofile);
 
+        checkToken();
+
         profile_image = findViewById(R.id.profile_image);
         btn_update=findViewById(R.id.update);
         ed_dob = findViewById(R.id.dob);
@@ -209,6 +211,35 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
+    }
+
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(Editprofile.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(Editprofile.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(Editprofile.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(Editprofile.this);
+        queue.add(request);
     }
 
     public void set(){

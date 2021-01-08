@@ -49,6 +49,8 @@ public class FollowingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_following);
 
+        checkToken();
+
         recyclerFriendsList = findViewById(R.id.recyclerFriendsList);
         go_bezzy = findViewById(R.id.go_bezzy);
         /*progressDialog = new SpotsDialog(FollowingActivity.this);
@@ -61,6 +63,35 @@ public class FollowingActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(FollowingActivity.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(FollowingActivity.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(FollowingActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(FollowingActivity.this);
+        queue.add(request);
     }
 
     @Override

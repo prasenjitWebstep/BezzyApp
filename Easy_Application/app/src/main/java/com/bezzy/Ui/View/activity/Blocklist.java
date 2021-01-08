@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,15 @@ public class Blocklist extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(Blocklist.this);
         recyclerblockList.setLayoutManager(layoutManager);
 
+        if(Utility.internet_check(Blocklist.this)) {
+
+            checkToken(APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(Blocklist.this));
+
+        }
+        else {
+            Toast.makeText(Blocklist.this,"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
 //        if(Utility.internet_check(Blocklist.this)) {
 //
 //            //dialog.show();
@@ -71,6 +81,35 @@ public class Blocklist extends AppCompatActivity {
 //            Utility.hideLoader(Blocklist.this);
 //            Toast.makeText(Blocklist.this,"No Network!",Toast.LENGTH_SHORT).show();
 //        }
+    }
+
+    private void checkToken(String url) {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(Blocklist.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(Blocklist.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(Blocklist.this);
+        queue.add(request);
     }
 
     @Override

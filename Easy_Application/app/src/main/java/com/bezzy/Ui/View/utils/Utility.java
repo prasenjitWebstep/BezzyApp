@@ -21,6 +21,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,6 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.activity.CommentActivity;
 import com.bezzy.Ui.View.activity.Fragments.Photo_fragment;
+import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.adapter.FriendsEnlargeImagePostAdapter;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy_application.R;
@@ -40,6 +42,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Utility {
 
@@ -104,6 +108,18 @@ public class Utility {
     public static String getUserId(Context mContext) {
         SharedPreferences memIdPreferences = mContext.getSharedPreferences("Bezzy", 0); // 0 - for private mode
         return memIdPreferences.getString("userId", "");
+    }
+
+    public static void setUserToken(Context mContext, String type) {
+        SharedPreferences preferences = mContext.getSharedPreferences("Bezzy", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("token", type);
+        editor.apply();
+    }
+
+    public static String getUserToken(Context mContext) {
+        SharedPreferences memIdPreferences = mContext.getSharedPreferences("Bezzy", 0); // 0 - for private mode
+        return memIdPreferences.getString("token", "");
     }
 
 
@@ -451,6 +467,45 @@ public class Utility {
             notificationManager.createNotificationChannel(notificationChannel);
         }
         notificationManager.notify(notificationId /* ID of notification */, notificationBuilder.build());
+
+    }
+
+    public static void logoutFunction(final Context context){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, APIs.BASE_URL+APIs.LOGOUT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("resp");
+                    if(resp.equals("success")){
+
+                        //progressDialog.dismiss();
+                        Toast.makeText(context,object.getString("message"),Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(context, LoginActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(i);
+                        Utility.setLogin(context,"0");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("profile_id",Utility.getUserId(context));
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(stringRequest);
 
     }
 

@@ -5,6 +5,7 @@ public class APIs {
     //public static String BASE_URL = "http://bezzy.websteptech.co.uk/";
     public static String BASE_URL = "http://161.35.122.165/bezzy.websteptech.co.uk/";
     public static String LOGIN_URL = "api/login";
+    public static String MEMBER_TOKEN = "api/getuser_remembertoken";
     public static String REGISTRATION = "api/registration";
     public static String OTPVERIFICATION = "api/verifyotp";
     public static String FORGETPASSWORDSEND = "api/forgotpassotpsend";

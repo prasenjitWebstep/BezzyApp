@@ -234,6 +234,35 @@ public class Massage extends AppCompatActivity {
 
     }
 
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(Massage.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(Massage.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(Massage.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(Massage.this);
+        queue.add(request);
+    }
+
     private void pickImageFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -439,6 +468,7 @@ public class Massage extends AppCompatActivity {
 
             if(Utility.internet_check(Massage.this)) {
 
+                checkToken();
 
                 instantChat(APIs.BASE_URL+APIs.INSTANT_MSG+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+"1");
                 /*messageStatUpdate(APIs.BASE_URL+APIs.GET_MESSAGE_SEEN);*/

@@ -297,7 +297,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
         TextView title_text,post_status,following_num,following_numm,descrip;
         ImageView favBtn,favBtnfilled,chat_btn,imageDisp,imageShow;
         RecyclerView recyclerImageShow;
-        RelativeLayout videoDisp;
+        CardView videoDisp;
         CardView cardHolder;
 
         public FriendsPostHolder(@NonNull View itemView) {

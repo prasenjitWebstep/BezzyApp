@@ -184,6 +184,8 @@ public class VideoDisplayActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        checkToken();
+
         if(Utility.internet_check(VideoDisplayActivity.this)) {
 
             postRequest(APIs.BASE_URL+ APIs.GETIMAGEDETAILS+"/"+postId+"/"+id+"/"+type+"/"+Utility.getUserId(VideoDisplayActivity.this));
@@ -192,6 +194,35 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
             Toast.makeText(VideoDisplayActivity.this,"No Network!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(VideoDisplayActivity.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(VideoDisplayActivity.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(VideoDisplayActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(VideoDisplayActivity.this);
+        queue.add(request);
     }
 
     private void postUpdate(String url, final String caption){

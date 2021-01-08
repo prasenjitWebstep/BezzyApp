@@ -62,6 +62,8 @@ public class CommentReplyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment_reply);
 
+        checkToken();
+
         img_logo = findViewById(R.id.img_logo);
         title_text = findViewById(R.id.title_text);
         comment_user = findViewById(R.id.comment_user);
@@ -136,6 +138,35 @@ public class CommentReplyActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(CommentReplyActivity.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(CommentReplyActivity.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(CommentReplyActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(CommentReplyActivity.this);
+        queue.add(request);
     }
 
     @Override

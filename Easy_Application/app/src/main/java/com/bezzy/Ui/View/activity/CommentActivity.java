@@ -145,6 +145,44 @@ public class CommentActivity extends AppCompatActivity {
             }
         });
 
+        if(Utility.internet_check(CommentActivity.this)) {
+
+            checkToken();
+
+        }
+        else {
+            Toast.makeText(CommentActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(CommentActivity.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(CommentActivity.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(CommentActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(CommentActivity.this);
+        queue.add(request);
     }
 
     @Override

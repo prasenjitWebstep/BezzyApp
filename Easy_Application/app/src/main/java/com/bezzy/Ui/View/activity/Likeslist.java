@@ -38,7 +38,7 @@ public class Likeslist extends AppCompatActivity {
         recyclerView = findViewById(R.id.like_listnames);
         post_id = getIntent().getExtras().getString("postId");
 
-
+        checkToken();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -61,6 +61,35 @@ public class Likeslist extends AppCompatActivity {
             Utility.hideLoader(Likeslist.this);
             Toast.makeText(Likeslist.this, "No Network!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void checkToken() {
+        StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(Likeslist.this), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(Likeslist.this).equals(object.getString("remember_token"))){
+
+
+                    }else{
+                        Utility.logoutFunction(Likeslist.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(Likeslist.this);
+        queue.add(request);
     }
 
     private void Likesname(String url) {

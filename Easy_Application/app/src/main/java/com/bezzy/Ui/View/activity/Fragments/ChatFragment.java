@@ -77,14 +77,51 @@ public class ChatFragment extends Fragment {
         dataholder=new ArrayList<>();
         if(Utility.internet_check(getActivity())) {
 
-            progressBar.setVisibility(View.VISIBLE);
-            chatNotiList(APIs.BASE_URL+APIs.CHAT_NOTI_LIST+"/"+Utility.getUserId(getActivity()));
+            checkToken(APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(getActivity()));
 
         }
         else {
-            progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void checkToken(String url) {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
+
+                        if(Utility.internet_check(getActivity())) {
+
+                            progressBar.setVisibility(View.VISIBLE);
+                            chatNotiList(APIs.BASE_URL+APIs.CHAT_NOTI_LIST+"/"+Utility.getUserId(getActivity()));
+
+                        }
+                        else {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }else{
+                        Utility.logoutFunction(getActivity());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue.add(request);
     }
 
     private void chatNotiList(String url){
