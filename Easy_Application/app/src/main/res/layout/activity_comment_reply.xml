@@ -163,7 +163,7 @@
             android:layout_toRightOf="@id/emoji_btn"
             android:background="@drawable/comment_backgr">
 
-            <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+            <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
                 android:id="@+id/edittext_comment"
                 android:hint="Enter message"
                 android:background="@android:color/transparent"
@@ -198,7 +198,7 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_alignParentLeft="true"
-            />
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

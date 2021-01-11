@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,10 +24,14 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.adapter.Comment_adapter;
 import com.bezzy.Ui.View.adapter.ReplyAdapter;
 import com.bezzy.Ui.View.model.Comment_item;
+import com.bezzy.Ui.View.model.TagModel;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.hendraanggrian.appcompat.socialview.Mention;
+import com.hendraanggrian.appcompat.widget.MentionArrayAdapter;
+import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,9 +58,16 @@ public class CommentReplyActivity extends AppCompatActivity {
     EmojIconActions emojIcon;
     View rootView;
     EmojiconEditText comment;
+    SocialAutoCompleteTextView autoCompleteTextView;
     String mention;
     ImageView emojiButton;
     String id,postId;
+    private ArrayAdapter<Mention> defaultMentionAdapter;
+    ArrayList<String> idLst;
+    ArrayList<TagModel> taglist;
+    String MENTION1_USERNAME;
+    ArrayList<String> tagId;
+    String arrayToString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +98,8 @@ public class CommentReplyActivity extends AppCompatActivity {
         postId = getIntent().getExtras().getString("postId");
 
         rootView = findViewById(R.id.root_view);
-        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
+        autoCompleteTextView=findViewById(R.id.edittext_comment);
+        /*emojiButton = (ImageView) findViewById(R.id.emoji_btn);
         comment=findViewById(R.id.edittext_comment);
         emojIcon = new EmojIconActions(this, rootView, comment, emojiButton);
         emojIcon.ShowEmojIcon();
@@ -100,7 +113,7 @@ public class CommentReplyActivity extends AppCompatActivity {
                 Log.e("Keyboard", "close");
             }
         });
-        emojIcon.addEmojiconEditTextList(comment);
+        emojIcon.addEmojiconEditTextList(comment);*/
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
@@ -110,9 +123,26 @@ public class CommentReplyActivity extends AppCompatActivity {
         dataholder = new ArrayList<>();
         dataholder2 = new ArrayList<>();
 
+        tagId = new ArrayList<>();
+
+        arrayToString = "";
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                for(TagModel model : taglist){
+                    Log.e("TAGLISTONBUTTON CLICK",model.getName()+"/"+model.getId());
+                    if(autoCompleteTextView.getText().toString().contains(model.getName())){
+                        //Toast.makeText(getContext(),model.getId(),Toast.LENGTH_LONG).show();
+                        tagId.add(model.getId());
+                    }
+                    arrayToString = tagId.toString().substring(1, tagId.toString().length() - 1);
+                    Log.e("HI BABBY",tagId.toString().substring(1, tagId.toString().length() - 1));
+
+                }
+
+                Log.e("ARRAY",arrayToString);
 
                 try {
                     InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
@@ -172,6 +202,10 @@ public class CommentReplyActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        taglist = new ArrayList<>();
+
+        followingUserList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
 
         if(Utility.internet_check(CommentReplyActivity.this)) {
 
@@ -259,7 +293,7 @@ public class CommentReplyActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String status=object.getString("status");
                     if(status.equals("success")){
-                        comment.getText().clear();
+                        autoCompleteTextView.getText().clear();
                         if(Utility.internet_check(CommentReplyActivity.this)) {
 
                             //dialog.show();
@@ -302,6 +336,7 @@ public class CommentReplyActivity extends AppCompatActivity {
                 map.put("userID",Utility.getUserId(CommentReplyActivity.this));
                 map.put("PostId",postId);
                 map.put("commentParentId",id);
+                map.put("tag_user_id",arrayToString);
                 map.put("commentText",comment.getText().toString());
 
                 return map;
@@ -311,4 +346,75 @@ public class CommentReplyActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(CommentReplyActivity.this);
         queue.add(request);
     }
+
+    private void followingUserList(String url) {
+        taglist.clear();
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                // Log.e("REsponse",response);
+                //progressDialog.dismiss();
+
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("resp");
+                    if(resp.equals("success")){
+//                        progressBar.setVisibility(View.GONE);
+                        //dataholder.clear();
+                        JSONArray array = object.getJSONArray("following_user_list");
+                        defaultMentionAdapter = new MentionArrayAdapter<>(CommentReplyActivity.this);
+                        for(int i = 0 ;i<array.length();i++){
+                            JSONObject object1 = array.getJSONObject(i);
+                            // Log.e("HIHIHIHI",object1.getString("name"));
+                            //ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"),object1.getString("user_is_flollowers"));
+                            //dataholder.add(ob1);
+//                            strings = new ArrayList<String>();
+//                            strings.add(object1.getString("name"));
+
+                            taglist.add(new TagModel(object1.getString("name"),object1.getString("following_user_id")));
+                            MENTION1_USERNAME = object1.getString("name");
+                            defaultMentionAdapter.add(
+                                    new Mention(MENTION1_USERNAME)
+                            );
+                        }
+
+                        autoCompleteTextView.setMentionAdapter(defaultMentionAdapter);
+                        for(TagModel model : taglist){
+                            Log.e("TAGLIST",model.getName()+"/"+model.getId());
+                        }
+                        int current = autoCompleteTextView.getSelectionStart();
+                        Log.e("WE ARE NOTHING",String.valueOf(current));
+
+                    }
+                } catch (JSONException e) {
+                    Log.e("Exception",e.toString());
+                    e.printStackTrace();
+                    //progressBar.setVisibility(View.GONE);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("Exception",error.toString());
+                //progressDialog.dismiss();
+                //progressBar.setVisibility(View.GONE);
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("loguser_id", Utility.getUserId(CommentReplyActivity.this));
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(CommentReplyActivity.this);
+        queue.add(request);
+    }
+
 }

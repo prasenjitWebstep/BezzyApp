@@ -90,6 +90,8 @@ public class CommentActivity extends AppCompatActivity {
 
         tagId = new ArrayList<>();
 
+        arrayToString = "";
+
         try{
             screen = getIntent().getExtras().getString("screen");
             if (screen.equals("1")){
