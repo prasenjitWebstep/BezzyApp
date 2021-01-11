@@ -100,7 +100,8 @@
                     android:orientation="horizontal"
                     android:layout_margin="5dp"
                     android:padding="5dp"
-                    android:layout_alignParentBottom="true">
+                    android:layout_alignParentBottom="true"
+                    android:visibility="invisible">
 
                     <RelativeLayout
                         android:layout_width="match_parent"

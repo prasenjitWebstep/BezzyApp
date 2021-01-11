@@ -57,7 +57,6 @@ public class CommentReplyActivity extends AppCompatActivity {
     RelativeLayout layout_chatbox;
     EmojIconActions emojIcon;
     View rootView;
-    EmojiconEditText comment;
     SocialAutoCompleteTextView autoCompleteTextView;
     String mention;
     ImageView emojiButton;
@@ -337,7 +336,7 @@ public class CommentReplyActivity extends AppCompatActivity {
                 map.put("PostId",postId);
                 map.put("commentParentId",id);
                 map.put("tag_user_id",arrayToString);
-                map.put("commentText",comment.getText().toString());
+                map.put("commentText",autoCompleteTextView.getText().toString());
 
                 return map;
             }
