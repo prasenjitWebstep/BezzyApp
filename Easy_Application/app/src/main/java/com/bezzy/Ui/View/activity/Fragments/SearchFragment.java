@@ -166,29 +166,35 @@ public class SearchFragment extends Fragment {
 
                 try {
                     JSONObject object = new JSONObject(response);
-                    if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
+                    try{
 
-                        if(Utility.internet_check(getActivity())) {
+                        if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
 
-                            // progressDialog.show();
+                            if(Utility.internet_check(getActivity())) {
 
-                            progressBar.setVisibility(View.VISIBLE);
+                                // progressDialog.show();
 
-                            Log.e("Result","1");
+                                progressBar.setVisibility(View.VISIBLE);
 
-                            registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
+                                Log.e("Result","1");
 
+                                registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
+
+                            }
+                            else {
+
+                                //progressDialog.dismiss();
+                                progressBar.setVisibility(View.GONE);
+
+                                Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }else{
+                            Utility.logoutFunction(getActivity());
                         }
-                        else {
 
-                            //progressDialog.dismiss();
-                            progressBar.setVisibility(View.GONE);
-
-                            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-                        }
-
-                    }else{
-                        Utility.logoutFunction(getActivity());
+                    }catch (Exception e){
+                        Log.e("Exception",e.toString());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

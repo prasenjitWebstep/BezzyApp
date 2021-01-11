@@ -183,6 +183,17 @@ public class ProfileFragment extends Fragment {
 
         if(Utility.internet_check(getActivity())) {
 
+            progressBar.setVisibility(View.VISIBLE);
+
+            postRequest(APIs.BASE_URL+APIs.GETDATA);
+        }
+        else {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
+        if(Utility.internet_check(getActivity())) {
+
             checkToken(APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(getActivity()));
 
         }
@@ -199,22 +210,16 @@ public class ProfileFragment extends Fragment {
 
                 try {
                     JSONObject object = new JSONObject(response);
-                    if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
+                    try{
+                        if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
 
-                        if(Utility.internet_check(getActivity())) {
-
-                            progressBar.setVisibility(View.VISIBLE);
-
-                            postRequest(APIs.BASE_URL+APIs.GETDATA);
+                        }else{
+                            Utility.logoutFunction(getActivity());
                         }
-                        else {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-                        }
-
-                    }else{
-                        Utility.logoutFunction(getActivity());
+                    }catch (Exception e){
+                        Log.e("exception",e.toString());
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

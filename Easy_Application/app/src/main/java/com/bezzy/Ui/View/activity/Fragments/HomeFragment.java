@@ -178,27 +178,33 @@ public class HomeFragment extends Fragment {
 
                 try {
                     JSONObject object = new JSONObject(response);
-                    if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
+                    try{
+                        if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
 
-                        if(Utility.internet_check(getActivity())) {
+                            if(Utility.internet_check(getActivity())) {
 
-                            //progressDialog.show();
-                            progressBar.setVisibility(View.VISIBLE);
+                                //progressDialog.show();
+                                progressBar.setVisibility(View.VISIBLE);
 
-                            friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
+                                friendsBlockList(APIs.BASE_URL+APIs.FRIENDSBLOCKLIST+"/"+Utility.getUserId(getActivity()));
 
+                            }
+                            else {
+
+                                //progressDialog.dismiss();
+                                progressBar.setVisibility(View.GONE);
+
+                                Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }else{
+                            Utility.logoutFunction(getActivity());
                         }
-                        else {
+                    }catch (Exception e){
+                        Log.e("Exception",e.toString());
 
-                            //progressDialog.dismiss();
-                            progressBar.setVisibility(View.GONE);
-
-                            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-                        }
-
-                    }else{
-                        Utility.logoutFunction(getActivity());
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

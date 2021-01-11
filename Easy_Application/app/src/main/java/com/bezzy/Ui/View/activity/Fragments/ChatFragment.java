@@ -92,21 +92,27 @@ public class ChatFragment extends Fragment {
 
                 try {
                     JSONObject object = new JSONObject(response);
-                    if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
+                    try{
 
-                        if(Utility.internet_check(getActivity())) {
+                        if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
 
-                            progressBar.setVisibility(View.VISIBLE);
-                            chatNotiList(APIs.BASE_URL+APIs.CHAT_NOTI_LIST+"/"+Utility.getUserId(getActivity()));
+                            if(Utility.internet_check(getActivity())) {
 
+                                progressBar.setVisibility(View.VISIBLE);
+                                chatNotiList(APIs.BASE_URL+APIs.CHAT_NOTI_LIST+"/"+Utility.getUserId(getActivity()));
+
+                            }
+                            else {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }else{
+                            Utility.logoutFunction(getActivity());
                         }
-                        else {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-                        }
 
-                    }else{
-                        Utility.logoutFunction(getActivity());
+                    }catch (Exception e){
+                        Log.e("Exception",e.toString());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
