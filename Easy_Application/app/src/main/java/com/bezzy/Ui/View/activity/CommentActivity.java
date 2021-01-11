@@ -34,9 +34,13 @@ import com.bezzy.Ui.View.model.Comment_item;
 import com.bezzy.Ui.View.model.FriendsPostModel;
 import com.bezzy.Ui.View.model.Friendsnoti_item;
 import com.bezzy.Ui.View.model.Notification_item;
+import com.bezzy.Ui.View.model.TagModel;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.hendraanggrian.appcompat.socialview.Mention;
+import com.hendraanggrian.appcompat.widget.MentionArrayAdapter;
+import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,10 +65,16 @@ public class CommentActivity extends AppCompatActivity {
     RelativeLayout layout_chatbox;
     EmojIconActions emojIcon;
     View rootView;
-    EmojiconEditText comment;
     String mention;
     ImageView emojiButton;
     Friendsnoti_item ob1;
+    SocialAutoCompleteTextView autoCompleteTextView;
+    private ArrayAdapter<Mention> defaultMentionAdapter;
+    ArrayList<String> idLst;
+    ArrayList<TagModel> taglist;
+    String MENTION1_USERNAME;
+    ArrayList<String> tagId;
+    String arrayToString;
 
 
     @Override
@@ -72,11 +82,13 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         recyclerView=findViewById(R.id.reyclerview_comment_list);
-        comment=findViewById(R.id.edittext_comment);
+        autoCompleteTextView=findViewById(R.id.edittext_comment);
         imageView=findViewById(R.id.send_msg);
         layout_chatbox = findViewById(R.id.layout_chatbox);
 
         id = getIntent().getExtras().getString("postId");
+
+        tagId = new ArrayList<>();
 
         try{
             screen = getIntent().getExtras().getString("screen");
@@ -93,9 +105,8 @@ public class CommentActivity extends AppCompatActivity {
 
 
         rootView = findViewById(R.id.root_view);
-        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
-        comment=findViewById(R.id.edittext_comment);
-        emojIcon = new EmojIconActions(this, rootView, comment, emojiButton);
+       /* emojiButton = (ImageView) findViewById(R.id.emoji_btn);*/
+        /*emojIcon = new EmojIconActions(this, rootView, comment, emojiButton);
         emojIcon.ShowEmojIcon();
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
             @Override
@@ -107,7 +118,7 @@ public class CommentActivity extends AppCompatActivity {
                 Log.e("Keyboard", "close");
             }
         });
-        emojIcon.addEmojiconEditTextList(comment);
+        emojIcon.addEmojiconEditTextList(comment);*/
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
@@ -120,6 +131,19 @@ public class CommentActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                for(TagModel model : taglist){
+                    Log.e("TAGLISTONBUTTON CLICK",model.getName()+"/"+model.getId());
+                    if(autoCompleteTextView.getText().toString().contains(model.getName())){
+                        //Toast.makeText(getContext(),model.getId(),Toast.LENGTH_LONG).show();
+                        tagId.add(model.getId());
+                    }
+                    arrayToString = tagId.toString().substring(1, tagId.toString().length() - 1);
+                    Log.e("HI BABBY",tagId.toString().substring(1, tagId.toString().length() - 1));
+
+                }
+
+                Log.e("ARRAY",arrayToString);
 
                 try {
                     InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
@@ -156,6 +180,76 @@ public class CommentActivity extends AppCompatActivity {
 
     }
 
+    private void followingUserList(String url) {
+        taglist.clear();
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                // Log.e("REsponse",response);
+                //progressDialog.dismiss();
+
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resp = object.getString("resp");
+                    if(resp.equals("success")){
+//                        progressBar.setVisibility(View.GONE);
+                        //dataholder.clear();
+                        JSONArray array = object.getJSONArray("following_user_list");
+                        defaultMentionAdapter = new MentionArrayAdapter<>(CommentActivity.this);
+                        for(int i = 0 ;i<array.length();i++){
+                            JSONObject object1 = array.getJSONObject(i);
+                            // Log.e("HIHIHIHI",object1.getString("name"));
+                            //ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"),object1.getString("user_is_flollowers"));
+                            //dataholder.add(ob1);
+//                            strings = new ArrayList<String>();
+//                            strings.add(object1.getString("name"));
+
+                            taglist.add(new TagModel(object1.getString("name"),object1.getString("following_user_id")));
+                            MENTION1_USERNAME = object1.getString("name");
+                            defaultMentionAdapter.add(
+                                    new Mention(MENTION1_USERNAME)
+                            );
+                        }
+
+                        autoCompleteTextView.setMentionAdapter(defaultMentionAdapter);
+                        for(TagModel model : taglist){
+                            Log.e("TAGLIST",model.getName()+"/"+model.getId());
+                        }
+                        int current = autoCompleteTextView.getSelectionStart();
+                        Log.e("WE ARE NOTHING",String.valueOf(current));
+
+                    }
+                } catch (JSONException e) {
+                    Log.e("Exception",e.toString());
+                    e.printStackTrace();
+                    //progressBar.setVisibility(View.GONE);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("Exception",error.toString());
+                //progressDialog.dismiss();
+                //progressBar.setVisibility(View.GONE);
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("loguser_id", Utility.getUserId(CommentActivity.this));
+                return map;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(CommentActivity.this);
+        queue.add(request);
+    }
+
     private void checkToken() {
         StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(CommentActivity.this), new Response.Listener<String>() {
             @Override
@@ -188,6 +282,10 @@ public class CommentActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        taglist = new ArrayList<>();
+
+        followingUserList(APIs.BASE_URL+APIs.FOLLOWINGLIST);
 
         if(Utility.internet_check(CommentActivity.this)) {
 
@@ -276,7 +374,7 @@ public class CommentActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     String status=object.getString("status");
                     if(status.equals("success")){
-                        comment.getText().clear();
+                        autoCompleteTextView.getText().clear();
                         if(Utility.internet_check(CommentActivity.this)) {
 
                             //dialog.show();
@@ -319,7 +417,8 @@ public class CommentActivity extends AppCompatActivity {
                 map.put("userID",Utility.getUserId(CommentActivity.this));
                 map.put("PostId",id);
                 map.put("commentParentId","0");
-                map.put("commentText",comment.getText().toString());
+                map.put("tag_user_id",arrayToString);
+                map.put("commentText",autoCompleteTextView.getText().toString());
 
                 return map;
             }

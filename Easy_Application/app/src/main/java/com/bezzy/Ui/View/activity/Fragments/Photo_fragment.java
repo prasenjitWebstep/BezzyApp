@@ -664,7 +664,6 @@ public class Photo_fragment extends Fragment {
 
                 try {
                     JSONObject object = new JSONObject(response);
-
                     String resp = object.getString("resp");
                     if(resp.equals("success")){
                         Utility.notifyUpload(context,true,"Image Upload",object.getString("message"));
@@ -672,14 +671,11 @@ public class Photo_fragment extends Fragment {
                         Utility.notifyUpload(context,true,"Image Upload",object.getString("message"));
                     }
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
                     Utility.notifyUpload(context,true,"Image Upload","Exception: + \n +"+e.toString());
                 }
-
-
 
             }
         }, new Response.ErrorListener() {
