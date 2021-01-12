@@ -54,4 +54,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.iceteck.silicompressorr:silicompressor:2.2.4'
     implementation 'com.hendraanggrian.appcompat:socialview-commons:0.2'
+    implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
 }

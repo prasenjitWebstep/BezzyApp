@@ -2,6 +2,7 @@ package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -39,6 +41,15 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.potyvideo.library.AndExoPlayerView;
 import com.rishabhharit.roundedimageview.RoundedImageView;
 
@@ -121,9 +132,12 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             for(int i=0; i<array.length(); i++){
                 try {
                     JSONObject object = array.getJSONObject(i);
-                    Glide.with(context)
+                    /*Glide.with(context)
                             .load(object.getString("post_url"))
-                            .into(holder.imageDisp);
+                            .into(holder.imageDisp);*/
+
+                    startPlayingVideo(context,object.getString("post_url"),holder.imageDisp,R.string.app_name);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
@@ -259,6 +273,31 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
     }
 
+    private void startPlayingVideo(Context ctx , String CONTENT_URL, PlayerView playerView, int appNameRes) {
+
+        PlayerView pvMain = playerView;
+
+        //BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        //TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        //TrackSelector trackSelectorDef = new DefaultTrackSelector(videoTrackSelectionFactory);
+        TrackSelector trackSelectorDef = new DefaultTrackSelector();
+
+        SimpleExoPlayer absPlayerInternal = ExoPlayerFactory.newSimpleInstance(ctx, trackSelectorDef);
+
+        String userAgent = Util.getUserAgent(ctx, ctx.getString(appNameRes));
+
+        DefaultDataSourceFactory defdataSourceFactory = new DefaultDataSourceFactory(ctx,userAgent);
+        Uri uriOfContentUrl = Uri.parse(CONTENT_URL);
+        MediaSource mediaSource = new ProgressiveMediaSource.Factory(defdataSourceFactory).createMediaSource(uriOfContentUrl);
+
+        absPlayerInternal.prepare(mediaSource);
+        absPlayerInternal.setVolume(0f);
+        absPlayerInternal.setPlayWhenReady(true);
+
+        pvMain.setPlayer(absPlayerInternal);
+
+    }
+
     private void friendsPostLike(String url, final TextView following_num) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -295,10 +334,11 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         CircleImageView img_logo;
         TextView title_text,post_status,following_num,following_numm,descrip;
-        ImageView favBtn,favBtnfilled,chat_btn,imageDisp,imageShow;
+        ImageView favBtn,favBtnfilled,chat_btn,imageShow;
         RecyclerView recyclerImageShow;
         CardView videoDisp;
         CardView cardHolder;
+        PlayerView imageDisp;
 
         public FriendsPostHolder(@NonNull View itemView) {
             super(itemView);
