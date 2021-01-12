@@ -11,22 +11,11 @@
         android:background="@drawable/video_background_gradient">
 
         <ImageView
-            android:id="@+id/rotateIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_rotate"
-            android:layout_margin="5dp"
-            android:layout_alignParentBottom="true"
-            app:tint="@color/white"
-            android:layout_centerHorizontal="true"/>
-
-        <ImageView
             android:id="@+id/imageShow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:src="@drawable/dsz"
-            android:layout_above="@+id/rotateIcon"/>
+            android:src="@drawable/dsz"/>
 
 
     </RelativeLayout>

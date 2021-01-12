@@ -69,6 +69,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -285,24 +286,25 @@ public class Massage extends AppCompatActivity {
                             for (int i = 0; i < clipData.getItemCount(); i++) {
                                 Uri imageUri = clipData.getItemAt(i).getUri();
                                 try {
-                                    InputStream is = Massage.this.getContentResolver().openInputStream(imageUri);
-                                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                    Bitmap bitmap = Utility.handleSamplingAndRotationBitmap(Massage.this,imageUri);
                                     if(bitmapList.size()<5){
                                         bitmapList.add(bitmap);
                                     }else{
                                         Toast.makeText(Massage.this,"Should not exceed more than 5 images",Toast.LENGTH_SHORT).show();
                                     }
-                                } catch (FileNotFoundException e) {
+                                }catch (IOException e) {
                                     e.printStackTrace();
                                 }
                             }
                         } else {
-                            Uri imageUri = data.getData();
+                            Uri imageUri = null;
+                            imageUri = data.getData();
+                            bitmapList = new ArrayList<>();
+                            bitmapList.clear();
                             try {
-                                InputStream is = Massage.this.getContentResolver().openInputStream(imageUri);
-                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                Bitmap bitmap = Utility.handleSamplingAndRotationBitmap(Massage.this,imageUri);
                                 bitmapList.add(bitmap);
-                            } catch (FileNotFoundException e) {
+                            }catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }

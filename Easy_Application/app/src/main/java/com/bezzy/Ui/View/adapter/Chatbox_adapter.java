@@ -124,19 +124,12 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.MaterialTheme);
         View v= LayoutInflater.from(mContext).inflate(R.layout.imagedisplay_layout,null);
         imageShow = v.findViewById(R.id.imageShow);
-        rotateIcon = v.findViewById(R.id.rotateIcon);
 
 
         Glide.with(mContext)
                 .load(chat_message)
                 .into(imageShow);
 
-        rotateIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageShow.setRotation(imageShow.getRotation() + 90);
-            }
-        });
 
         builder.setView(v);
         builder.setCancelable(true);

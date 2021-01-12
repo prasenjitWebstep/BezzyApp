@@ -373,25 +373,28 @@ public class Photo_fragment extends Fragment {
                     for (int i = 0; i < clipData.getItemCount(); i++) {
                         Uri imageUri = clipData.getItemAt(i).getUri();
                         try {
-                            InputStream is = context.getContentResolver().openInputStream(imageUri);
-                            Bitmap bitmap = BitmapFactory.decodeStream(is);
+                            Bitmap bitmap = Utility.handleSamplingAndRotationBitmap(context,imageUri);
                             if(bitmapList.size()<5){
                                 bitmapList.add(bitmap);
                             }else{
                                 Toast.makeText(context,"Should not exceed more than 5 images",Toast.LENGTH_SHORT).show();
                             }
-                        } catch (FileNotFoundException e) {
+                        }catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 } else {
-                    Uri imageUri = data.getData();
+                    Uri imageUri = null;
+                    imageUri = data.getData();
+                    bitmapList = new ArrayList<>();
+                    bitmapList.clear();
+                    Log.e("IMAGEURI",imageUri.toString());
                     try {
-                        InputStream is = context.getContentResolver().openInputStream(imageUri);
-                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        Bitmap bitmap = Utility.handleSamplingAndRotationBitmap(context,imageUri);
                         bitmapList.add(bitmap);
-                    } catch (FileNotFoundException e) {
+                    }catch (IOException e) {
                         e.printStackTrace();
+                        Log.e("IOEXCEPTION",e.toString());
                     }
                 }
 
