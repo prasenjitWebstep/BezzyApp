@@ -63,8 +63,19 @@
                         app:andexo_full_screen="true"
                         app:andexo_play_when_ready="true"
                         app:andexo_show_controller="true"
-                        app:andexo_resize_mode="Fit"
+                        app:andexo_resize_mode="Fill"
+                        android:fitsSystemWindows="true"
+                        app:resize_mode="fill"
                         android:visibility="gone"/>
+                   <!-- <com.google.android.exoplayer2.ui.PlayerView
+                        android:id="@+id/andExoPlayerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fitsSystemWindows="true"
+                        app:resize_mode="fill"
+
+
+                        />-->
 
                     <ImageView
                         android:id="@+id/imageShow"
