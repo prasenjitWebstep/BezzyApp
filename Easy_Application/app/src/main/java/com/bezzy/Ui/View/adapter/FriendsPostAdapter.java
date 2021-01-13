@@ -41,15 +41,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
+
 import com.potyvideo.library.AndExoPlayerView;
 import com.rishabhharit.roundedimageview.RoundedImageView;
 
@@ -116,7 +108,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         if(friendsModelList.get(position).getPost_type().equals("video")){
             holder.videoDisp.setVisibility(View.VISIBLE);
-            holder.imageDisp.setOnClickListener(new View.OnClickListener() {
+            holder.videoDisp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Utility.fullscreenDialog(context,friendsModelList.get(position).getPost_id());
@@ -126,6 +118,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                     context.startActivity(intent);*/
                 }
             });
+            holder.andExoPlayerView.setVisibility(View.VISIBLE);
             holder.imageShow.setVisibility(View.GONE);
             holder.recyclerImageShow.setVisibility(View.GONE);
             JSONArray array = friendsModelList.get(position).getPost_image_video();
@@ -136,7 +129,8 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                             .load(object.getString("post_url"))
                             .into(holder.imageDisp);*/
 
-                    startPlayingVideo(context,object.getString("post_url"),holder.imageDisp,R.string.app_name);
+                    holder.andExoPlayerView.setSource(object.getString("post_url"));
+                    holder.andExoPlayerView.getPlayer().setVolume(0f);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -273,7 +267,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
     }
 
-    private void startPlayingVideo(Context ctx , String CONTENT_URL, PlayerView playerView, int appNameRes) {
+    /*private void startPlayingVideo(Context ctx , String CONTENT_URL, PlayerView playerView, int appNameRes) {
 
         PlayerView pvMain = playerView;
 
@@ -296,7 +290,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         pvMain.setPlayer(absPlayerInternal);
 
-    }
+    }*/
 
     private void friendsPostLike(String url, final TextView following_num) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -338,7 +332,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
         RecyclerView recyclerImageShow;
         CardView videoDisp;
         CardView cardHolder;
-        PlayerView imageDisp;
+        AndExoPlayerView andExoPlayerView;
 
         public FriendsPostHolder(@NonNull View itemView) {
             super(itemView);
@@ -353,9 +347,10 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             recyclerImageShow = itemView.findViewById(R.id.recyclerImageShow);
             imageShow = itemView.findViewById(R.id.imageShow);
             descrip = itemView.findViewById(R.id.descrip);
-            imageDisp = itemView.findViewById(R.id.imageDisp);
+            //imageDisp = itemView.findViewById(R.id.imageDisp);
             videoDisp = itemView.findViewById(R.id.videoDisp);
             cardHolder = itemView.findViewById(R.id.cardHolder);
+            andExoPlayerView=itemView.findViewById(R.id.andExoPlayerView);
         }
     }
 }
