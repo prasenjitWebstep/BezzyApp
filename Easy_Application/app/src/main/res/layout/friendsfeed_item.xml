@@ -115,7 +115,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fitsSystemWindows="true"
-                        app:resize_mode="fixed_width"/>
+                        app:resize_mode="fill"
+
+
+                        />
 
                     <!--<ImageView
                         android:id="@+id/imageDisp"

@@ -42,6 +42,7 @@ import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -293,7 +294,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
         absPlayerInternal.prepare(mediaSource);
         absPlayerInternal.setVolume(0f);
         absPlayerInternal.setPlayWhenReady(true);
-
+        absPlayerInternal.setRepeatMode(Player.REPEAT_MODE_ALL);
         pvMain.setPlayer(absPlayerInternal);
 
     }
