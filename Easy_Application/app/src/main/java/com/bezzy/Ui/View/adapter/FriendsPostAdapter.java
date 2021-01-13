@@ -133,6 +133,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                     holder.andExoPlayerView.getPlayer().setVolume(0f);
                     holder.andExoPlayerView.setPlayWhenReady(true);
 
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("Exception",e.toString());
