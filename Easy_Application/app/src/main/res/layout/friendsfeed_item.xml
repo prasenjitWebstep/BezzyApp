@@ -98,7 +98,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/videoDisp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="250dp"
                 app:cardCornerRadius="8dp"
                 android:layout_margin="5dp"
@@ -107,16 +107,16 @@
                 android:visibility="gone">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp">
 
                     <com.google.android.exoplayer2.ui.PlayerView
                         android:id="@+id/imageDisp"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:fitsSystemWindows="true"
-                        app:resize_mode="fill"
-                        />
+                        android:layout_centerInParent="true"
+                        app:resize_mode="fixed_height"/>
 
                     <!--<ImageView
                         android:id="@+id/imageDisp"
