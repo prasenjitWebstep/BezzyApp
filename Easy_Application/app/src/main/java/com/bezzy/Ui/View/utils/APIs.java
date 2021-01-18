@@ -55,4 +55,5 @@ public class APIs {
     public static String UNBLOCK = "api/unblockuser";
     public static String REMOVEUSER = "api/removeuser";
     public static String EDITCAPTION = "api/updatepostcaption";
+    public static String TERMSCONDITIONS = "api/terms-condition";
 }

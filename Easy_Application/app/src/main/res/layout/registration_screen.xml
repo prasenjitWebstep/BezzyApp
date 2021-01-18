@@ -277,6 +277,29 @@
                  </RadioGroup>
                  </LinearLayout>-->
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/checkAccept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="I accept "/>
+
+                    <TextView
+                        android:id="@+id/textTerms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Terms &amp; Conditions"
+                        android:textColor="@color/gradstart"
+                        android:textSize="15sp"
+                        android:padding="5dp"/>
+
+                </LinearLayout>
+
 
                 <Button
                     android:id="@+id/register"
@@ -292,7 +315,8 @@
                     android:text="Register"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"
+                    android:visibility="invisible"/>
 
             </LinearLayout>
 

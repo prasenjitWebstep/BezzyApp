@@ -406,35 +406,6 @@ public class Utility {
         queue.add(request);
     }
 
-    private static void friendsPostLike(String url, final TextView following_num, Context context) {
-        Log.e("URL",url);
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-              /*  Log.e("Response",response);*/
-                try {
-                    JSONObject object = new JSONObject(response);
-                    String status = object.getString("status");
-                    if(status.equals("success")){
-                        String number = object.getJSONObject("activity").getString("number_of_activity");
-                        following_num.setText(number);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(request);
-    }
 
 
     public static void notifyUpload(Context context, boolean flag,String text1, String text2){

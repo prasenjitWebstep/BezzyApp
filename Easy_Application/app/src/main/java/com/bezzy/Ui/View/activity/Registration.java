@@ -1,21 +1,28 @@
 package com.bezzy.Ui.View.activity;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -37,6 +44,7 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.activity.OTPActivity;
+import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
@@ -44,6 +52,7 @@ import com.bezzy.Ui.View.utils.VolleyMultipleMultipartRequest;
 import com.bezzy_application.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.potyvideo.library.AndExoPlayerView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -52,6 +61,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,9 +70,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 //import dmax.dialog.SpotsDialog;
 
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private static AlertDialog termsDialog;
     TextInputEditText ed_name, ed_username, ed_email, ed_password, ed_cnfpasswd,ed_dob;
     ImageView square_img;
-    TextView ed_gender;
+    TextView ed_gender,textTerms;
     Spinner spinner;
     private String str_gender;
     Button btn_register;
@@ -72,7 +83,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     private TextInputLayout textInputUsername;
     private TextInputLayout textInputPassword;
     int MY_SOCKET_TIMEOUT_MS = 10000;
-
+    CheckBox checkAccept;
    // SpotsDialog progressDialog;
     int day,month,year;
     Uri resultUri;
@@ -96,6 +107,9 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         textInputPassword = findViewById(R.id.text_input_password);
         spinner = findViewById(R.id.spinner);
         imageView=findViewById(R.id.back_image);
+        checkAccept = findViewById(R.id.checkAccept);
+        textTerms = findViewById(R.id.textTerms);
+
 
        /* progressDialog = new SpotsDialog(Registration.this);
         progressDialog.setCancelable(false);*/
@@ -151,6 +165,89 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+        checkAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(btn_register.getVisibility() == View.INVISIBLE){
+                    btn_register.setVisibility(View.VISIBLE);
+                }else if(btn_register.getVisibility() == View.VISIBLE){
+                    btn_register.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        textTerms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fullscreenDialog(Registration.this);
+            }
+        });
+
+    }
+
+    public static void fullscreenDialog(Context context){
+
+        TextView textTerms;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.MaterialTheme);
+        View v= LayoutInflater.from(context).inflate(R.layout.terms_layout,null);
+        textTerms = v.findViewById(R.id.textView);
+
+        if(Utility.internet_check(context)) {
+
+            //progressDialog.show();
+            Utility.displayLoader(context);
+            termsConditions(APIs.BASE_URL+APIs.TERMSCONDITIONS,textTerms,context);
+
+        }
+        else {
+
+            //progressDialog.dismiss();
+            Utility.hideLoader(context);
+
+            Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
+
+        builder.setView(v);
+        builder.setCancelable(true);
+        termsDialog=builder.create();
+        termsDialog.show();
+    }
+
+    private static void termsConditions(String url, final TextView textTerms, final Context context) {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Utility.hideLoader(context);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        textTerms.setText(Html.fromHtml(object.getString("page_content"), Html.FROM_HTML_MODE_COMPACT));
+                    } else {
+                        textTerms.setText(Html.fromHtml(object.getString("page_content")));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("Exception",e.toString());
+                    Utility.hideLoader(context);
+                }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Utility.hideLoader(context);
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
     }
 
 
