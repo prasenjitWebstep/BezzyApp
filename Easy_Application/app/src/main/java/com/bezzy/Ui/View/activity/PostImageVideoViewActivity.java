@@ -133,6 +133,7 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
                                 try {
                                     JSONObject object2 = array.getJSONObject(i);
                                     andExoPlayerView.setSource(object2.getString("post_url"));
+                                    andExoPlayerView.setShowFullScreen(false);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     Log.e("Exception",e.toString());

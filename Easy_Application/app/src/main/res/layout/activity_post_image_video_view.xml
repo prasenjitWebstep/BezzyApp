@@ -62,11 +62,10 @@
                         app:andexo_aspect_ratio="aspect_match"
                         app:andexo_full_screen="true"
                         app:andexo_play_when_ready="true"
-                        app:andexo_show_controller="false"
-                        app:use_controller="false"
-                        app:andexo_resize_mode="Fill"
+                        app:andexo_show_controller="true"
+                        app:use_controller="true"
                         android:fitsSystemWindows="true"
-                        app:resize_mode="fill"
+                        app:resize_mode="fit"
                         android:visibility="gone"/>
                    <!-- <com.google.android.exoplayer2.ui.PlayerView
                         android:id="@+id/andExoPlayerView"
