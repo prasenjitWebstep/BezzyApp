@@ -103,6 +103,7 @@ public class Massage extends AppCompatActivity {
     ArrayList<Bitmap> bitmapList;
     int option;
     private AlertDialog fullscreenDialog;
+    boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -123,6 +124,7 @@ public class Massage extends AppCompatActivity {
         rootView = findViewById(R.id.root_view);
         isScrolling = true;
         photo_btn = findViewById(R.id.photo_btn);
+        flag = true;
         /*emojiconEditText=findViewById(R.id.edittext_chatbox);*/
 
         modelArrayList = new ArrayList<>();
@@ -183,7 +185,10 @@ public class Massage extends AppCompatActivity {
 
         chatList(APIs.BASE_URL+APIs.CHAT_LIST+"/"+Utility.getUserId(Massage.this)+"/"+id+"/"+String.valueOf(page));
 
-        callApi();
+        if(flag == true){
+            callApi();
+        }
+
         
         title_text.setText(name);
         Glide.with(Massage.this)
@@ -487,7 +492,10 @@ public class Massage extends AppCompatActivity {
 
         }
 
-        refresh(2000);
+        if(flag == true){
+            refresh(2000);
+        }
+
     }
 
     private void instantChat(String url) {
@@ -542,8 +550,11 @@ public class Massage extends AppCompatActivity {
         });
 
 
-        RequestQueue queue = Volley.newRequestQueue(Massage.this);
-        queue.add(request);
+        int socketTimeout = 500000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
+        RequestQueue rQueue = Volley.newRequestQueue(Massage.this);
+        rQueue.add(request);
 
     }
 
@@ -560,6 +571,11 @@ public class Massage extends AppCompatActivity {
         handler.postDelayed(runnable,i);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        flag = false;
+    }
 
     private void addchat(String url) {
 
