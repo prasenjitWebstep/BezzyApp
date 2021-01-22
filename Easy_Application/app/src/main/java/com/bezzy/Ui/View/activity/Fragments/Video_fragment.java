@@ -442,8 +442,6 @@ public class Video_fragment extends Fragment {
 
                 }
 
-
-
             }
         }, new Response.ErrorListener() {
             @Override
