@@ -200,7 +200,7 @@ public class Video_fragment extends Fragment {
 
                     }
                 }else{
-                    Toast.makeText(getContext(),"Please choose a video less than 35Mb",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"Please choose a video less than 500Mb",Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -346,7 +346,7 @@ public class Video_fragment extends Fragment {
         String fileSize = returnCursor.getString(sizeIndex);
         int convertToInt = Integer.parseInt(fileSize);
         int sizeToKb = convertToInt/1024;
-        if(sizeToKb>35000){
+        if(sizeToKb>500000){
             allow = false;
         }else{
             allow = true;
