@@ -40,6 +40,16 @@ import com.bezzy.Ui.View.adapter.FriendsEnlargeImagePostAdapter;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.potyvideo.library.AndExoPlayerView;
 
 import org.json.JSONArray;
@@ -56,6 +66,7 @@ public class Utility {
 
     private static AlertDialog topupDialog,fullscreenDialog;
     public static String globalData = "0";
+    public static SimpleExoPlayer absPlayerInternal;
 
     public static boolean internet_check(Context context){
         //Test for Connection
@@ -176,8 +187,8 @@ public class Utility {
 
     public static void fullscreenDialog(Context context, String post_id){
 
-        AndExoPlayerView andExoPlayerView;
-        ImageView imageShow,fav_btn,favBtnfilled,chat_btn;
+        final PlayerView andExoPlayerView;
+        ImageView imageShow,fav_btn,favBtnfilled,chat_btn,back_image;
         RecyclerView recyclerImageShow;
         TextView servicesText,following_num,following_numm;
         ArrayList<FriendsPostModelImage> postModelList;
@@ -193,6 +204,7 @@ public class Utility {
         fav_btn = v.findViewById(R.id.fav_btn);
         favBtnfilled = v.findViewById(R.id.favBtnfilled);
         chat_btn = v.findViewById(R.id.chat_btn);
+        back_image = v.findViewById(R.id.back_image);
         postModelList = new ArrayList<>();
 
         if(Utility.internet_check(context)) {
@@ -214,15 +226,28 @@ public class Utility {
             Toast.makeText(context,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
+        back_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(andExoPlayerView.getVisibility() == View.VISIBLE){
+                    absPlayerInternal.setVolume(0f);
+                    absPlayerInternal.stop();
+                    fullscreenDialog.dismiss();
+                }else{
+                    fullscreenDialog.dismiss();
+                }
+            }
+        });
+
 
         builder.setView(v);
-        builder.setCancelable(true);
+        builder.setCancelable(false);
         fullscreenDialog=builder.create();
         fullscreenDialog.show();
     }
 
     private static void friendsPostLargeView(String url, final Context context,
-                                             final AndExoPlayerView andExoPlayerView,
+                                             final PlayerView andExoPlayerView,
                                              final ImageView imageShow,
                                              final RecyclerView recyclerImageShow,
                                              final TextView servicesText,
@@ -328,8 +353,9 @@ public class Utility {
                             for(int i=0; i<array.length(); i++){
                                 try {
                                     JSONObject object2 = array.getJSONObject(i);
-                                    andExoPlayerView.setSource(object2.getString("post_url"));
-                                    andExoPlayerView.setShowFullScreen(false);
+                                    startPlayingVideo(context,object2.getString("post_url"),andExoPlayerView,R.string.app_name);
+                                    /*andExoPlayerView.setSource(object2.getString("post_url"));
+                                    andExoPlayerView.setShowFullScreen(false);*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     Log.e("Exception",e.toString());
@@ -404,6 +430,30 @@ public class Utility {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
+    }
+
+    private static void startPlayingVideo(Context ctx, String CONTENT_URL, PlayerView playerView, int appNameRes) {
+
+        PlayerView pvMain = playerView;
+
+        //BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        //TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        //TrackSelector trackSelectorDef = new DefaultTrackSelector(videoTrackSelectionFactory);
+        TrackSelector trackSelectorDef = new DefaultTrackSelector();
+
+        absPlayerInternal = ExoPlayerFactory.newSimpleInstance(ctx, trackSelectorDef);
+
+        String userAgent = Util.getUserAgent(ctx, ctx.getString(appNameRes));
+
+        DefaultDataSourceFactory defdataSourceFactory = new DefaultDataSourceFactory(ctx,userAgent);
+        Uri uriOfContentUrl = Uri.parse(CONTENT_URL);
+        MediaSource mediaSource = new ProgressiveMediaSource.Factory(defdataSourceFactory).createMediaSource(uriOfContentUrl);
+
+        absPlayerInternal.prepare(mediaSource);
+      /*  absPlayerInternal.setVolume(0f);*/
+        absPlayerInternal.setPlayWhenReady(true);
+        pvMain.setPlayer(absPlayerInternal);
+
     }
 
 

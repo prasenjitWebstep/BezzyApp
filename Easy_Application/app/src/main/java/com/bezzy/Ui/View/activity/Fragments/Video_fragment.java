@@ -87,7 +87,7 @@ public class Video_fragment extends Fragment {
 
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
-    int MY_SOCKET_TIMEOUT_MS = 150000;
+    int MY_SOCKET_TIMEOUT_MS = 50000;
     EmojIconActions emojIcon;
     View rootView;
     //EmojiconEditText emojiconEditText;
