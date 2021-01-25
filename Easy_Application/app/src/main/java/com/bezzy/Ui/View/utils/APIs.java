@@ -3,7 +3,7 @@ package com.bezzy.Ui.View.utils;
 public class APIs {
 
     //public static String BASE_URL = "http://bezzy.websteptech.co.uk/";
-    public static String BASE_URL = "http://ec2-3-235-227-122.compute-1.amazonaws.com/";
+    public static String BASE_URL = "http://bezzy-app.com/admin/";
     public static String LOGIN_URL = "api/login";
     public static String MEMBER_TOKEN = "api/getuser_remembertoken";
     public static String REGISTRATION = "api/registration";

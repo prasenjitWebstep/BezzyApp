@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -55,8 +56,22 @@ public class Forgot_pas extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Emailsend();
-
+                if(email_send.getText().toString().isEmpty()){
+                    email_send.setError("Enter email");
+                }else if(!Patterns.EMAIL_ADDRESS.matcher(email_send.getText().toString()).matches()){
+                    email_send.setError("Enter valid email");
+                }else{
+                    if(Utility.internet_check(Forgot_pas.this)) {
+                        //progressDialog.show();
+                        Utility.displayLoader(Forgot_pas.this);
+                        callAPIEmailSend(APIs.BASE_URL+APIs.FORGETPASSWORDSEND);
+                    }
+                    else {
+                        //progressDialog.dismiss();
+                        Utility.hideLoader(Forgot_pas.this);
+                        Toast.makeText(Forgot_pas.this,"No Network!",Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
         /*progressDialog = new ProgressDialog(Forgot_pas.this);
