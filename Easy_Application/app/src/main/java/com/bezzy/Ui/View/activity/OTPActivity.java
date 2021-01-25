@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class OTPActivity extends AppCompatActivity {
     OtpView otp_view;
     SpotsDialog progressDialog;
     TextView resend;
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +54,16 @@ public class OTPActivity extends AppCompatActivity {
         btnVerify = findViewById(R.id.btnVerify);
         otp_view = findViewById(R.id.otp_view);
         resend = findViewById(R.id.resend);
+        back=findViewById(R.id.back_image);
        /* progressDialog = new SpotsDialog(OTPActivity.this);
         progressDialog.setMessage("Verifying Please Wait...");
         progressDialog.setCancelable(false);*/
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
         btnVerify.setOnClickListener(new View.OnClickListener() {

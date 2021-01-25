@@ -37,7 +37,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.kaopiz.kprogresshud.KProgressHUD;
 
 
 import org.json.JSONException;
@@ -46,7 +45,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import dmax.dialog.SpotsDialog;
+
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword;
@@ -333,7 +332,7 @@ public class LoginActivity extends AppCompatActivity {
                 map.put("emaiID",personEmail);
                 map.put("image",profileImage.toString());
                 Log.e("IMAGE",map.get("image"));
-                map.put("device_token",FirebaseInstanceId.getInstance().getToken());
+                map.put("device_token", FirebaseInstanceId.getInstance().getToken());
                 return map;
             }
         };
