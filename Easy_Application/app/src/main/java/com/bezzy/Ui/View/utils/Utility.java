@@ -46,6 +46,7 @@ import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -199,7 +200,7 @@ public class Utility {
 
     public static void fullscreenDialog(Context context, String post_id){
 
-        final VideoView andExoPlayerView;
+        final PlayerView andExoPlayerView;
         ImageView imageShow,fav_btn,favBtnfilled,chat_btn,back_image;
         RecyclerView recyclerImageShow;
         TextView servicesText,following_num,following_numm;
@@ -242,9 +243,9 @@ public class Utility {
             @Override
             public void onClick(View v) {
                 if(andExoPlayerView.getVisibility() == View.VISIBLE){
-                    /*absPlayerInternal.stop();
-                    absPlayerInternal.setVolume(0f);*/
-                    andExoPlayerView.stopPlayback();
+                    absPlayerInternal.stop();
+                    absPlayerInternal.setVolume(0f);
+                    /*andExoPlayerView.stopPlayback();*/
                     fullscreenDialog.dismiss();
                 }else{
                     fullscreenDialog.dismiss();
@@ -260,7 +261,7 @@ public class Utility {
     }
 
     private static void friendsPostLargeView(String url, final Context context,
-                                             final VideoView andExoPlayerView,
+                                             final PlayerView andExoPlayerView,
                                              final ImageView imageShow,
                                              final RecyclerView recyclerImageShow,
                                              final TextView servicesText,
@@ -366,14 +367,14 @@ public class Utility {
                             for(int i=0; i<array.length(); i++){
                                 try {
                                     JSONObject object2 = array.getJSONObject(i);
-                                    videoURL = object2.getString("post_url");
+                                    /*videoURL = object2.getString("post_url");
                                     mContext = context;
                                     mandExoPlayerView = andExoPlayerView;
                                     MyTaskParams params = new MyTaskParams(videoURL);
                                     DownloadXML myTask = new DownloadXML();
-                                    myTask.execute(params);
+                                    myTask.execute(params);*/
                                     /*initializePlayer(context,videoURL,andExoPlayerView);*/
-                                    /*startPlayingVideo(context,object2.getString("post_url"),andExoPlayerView,R.string.app_name);*/
+                                    startPlayingVideo(context,object2.getString("post_url"),andExoPlayerView,R.string.app_name);
                                     /*andExoPlayerView.setSource(object2.getString("post_url"));
                                     andExoPlayerView.setShowFullScreen(false);*/
                                 } catch (JSONException e) {
@@ -509,6 +510,8 @@ public class Utility {
         //TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         //TrackSelector trackSelectorDef = new DefaultTrackSelector(videoTrackSelectionFactory);
         TrackSelector trackSelectorDef = new DefaultTrackSelector();
+
+        DefaultLoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(32*1024, 64*1024, 1024, 1024).createDefaultLoadControl();
 
         absPlayerInternal = ExoPlayerFactory.newSimpleInstance(ctx, trackSelectorDef);
 
