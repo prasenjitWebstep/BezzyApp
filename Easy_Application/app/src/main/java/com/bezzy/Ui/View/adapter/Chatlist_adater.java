@@ -27,6 +27,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,7 +72,7 @@ public class Chatlist_adater extends RecyclerView.Adapter<Chatlist_adater.ChatLi
         String date = s[0];
         holder.tvDate.setText(date);
         holder.tvLastmsg.setText(chatlistItem.getLastmsg());
-        Glide.with(context).load(chatlistItem.getImage()).into(holder.image);
+        Glide.with(context).load(chatlistItem.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.image);
 
         holder.relativeHolder.setOnClickListener(new View.OnClickListener() {
             @Override

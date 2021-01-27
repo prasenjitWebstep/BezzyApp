@@ -29,6 +29,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hendraanggrian.appcompat.socialview.Mention;
 import com.hendraanggrian.appcompat.widget.MentionArrayAdapter;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
@@ -84,6 +85,7 @@ public class CommentReplyActivity extends AppCompatActivity {
 
         Glide.with(CommentReplyActivity.this)
                 .load(getIntent().getExtras().getString("image"))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(img_logo);
 
         title_text.setText(getIntent().getExtras().getString("name"));

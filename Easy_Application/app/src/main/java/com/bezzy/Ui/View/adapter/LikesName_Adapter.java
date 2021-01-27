@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bezzy.Ui.View.model.Likes_name;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,7 @@ public class LikesName_Adapter extends RecyclerView.Adapter<LikesName_Adapter.Li
         holder.username.setText(dataholder.get(position).getUsername());
         Glide.with(context)
                 .load(dataholder.get(position).getUser_image())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.image);
 
 

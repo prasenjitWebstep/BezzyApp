@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class ImageViewAdapter extends RecyclerView.Adapter<ImageViewAdapter.Imag
 
         Glide.with(context)
                 .load(bitList.get(position))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageDisp);
 
 

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bezzy.Ui.View.model.Comment_item;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -43,6 +44,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyHolder>
 
         Glide.with(context)
                 .load(replyList.get(position).getUser_image())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.img_logo);
 
     }

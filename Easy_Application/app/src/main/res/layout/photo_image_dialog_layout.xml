@@ -42,15 +42,12 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
-                    <com.google.android.exoplayer2.ui.PlayerView
+                    <VideoView
                         android:id="@+id/andExoPlayerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:andexo_aspect_ratio="aspect_match"
-                        app:andexo_full_screen="true"
-                        app:andexo_play_when_ready="true"
-                        app:andexo_show_controller="true"
-                        app:andexo_resize_mode="Fit"
+                        android:fitsSystemWindows="true"
+                        android:layout_centerInParent="true"
                         android:visibility="gone"/>
 
                     <ImageView

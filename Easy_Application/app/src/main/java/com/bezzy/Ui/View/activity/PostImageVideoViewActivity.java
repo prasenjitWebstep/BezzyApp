@@ -28,6 +28,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.potyvideo.library.AndExoPlayerView;
 
 import org.json.JSONArray;
@@ -153,6 +154,7 @@ public class PostImageVideoViewActivity extends AppCompatActivity {
                                         JSONObject object2 = array.getJSONObject(i);
                                         Glide.with(PostImageVideoViewActivity.this)
                                                 .load(object2.getString("post_url"))
+                                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                                 .into(imageShow);
 
                                     } catch (JSONException e) {

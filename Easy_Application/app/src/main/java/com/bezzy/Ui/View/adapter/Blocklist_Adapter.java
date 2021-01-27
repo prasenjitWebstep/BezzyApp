@@ -29,6 +29,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,6 +62,7 @@ public class Blocklist_Adapter extends RecyclerView.Adapter<Blocklist_Adapter.Un
     public void onBindViewHolder(@NonNull Unblockholder holder, final int position) {
         Glide.with(context)
                 .load(unblockHolder.get(position).getImage())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.circularImg);
 
         holder.userName.setText(unblockHolder.get(position).getName());

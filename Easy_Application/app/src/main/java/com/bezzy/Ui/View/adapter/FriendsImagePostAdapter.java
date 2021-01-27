@@ -16,6 +16,7 @@ import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,7 @@ public class FriendsImagePostAdapter extends RecyclerView.Adapter<FriendsImagePo
 
         Glide.with(context)
                 .load(postList.get(position).getPostUrl())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageDisp);
 
         holder.imageDisp.setOnClickListener(new View.OnClickListener() {

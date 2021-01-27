@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bezzy.Ui.View.model.ChatMessageModel;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -66,6 +67,7 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
                 holder.layoutSenderImage.setVisibility(View.VISIBLE);
                 Glide.with(mContext)
                         .load(mMessageList.get(position).getChat_message())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.send_message_image);
                 holder.send_message_image.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -96,6 +98,7 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
                 holder.layoutreceiverimage.setVisibility(View.VISIBLE);
                 Glide.with(mContext)
                         .load(mMessageList.get(position).getChat_message())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.send_message_image);
 
                 holder.send_message_image.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +131,7 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
 
         Glide.with(mContext)
                 .load(chat_message)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageShow);
 
 

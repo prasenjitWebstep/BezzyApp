@@ -26,6 +26,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +61,7 @@ public class Comment_adapter extends RecyclerView.Adapter<Comment_adapter.Commen
 
         Glide.with(context)
                 .load(dataholder.get(position).getUser_image())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageView);
 
         holder.following_num.setText(dataholder.get(position).getCommentLikeNo());

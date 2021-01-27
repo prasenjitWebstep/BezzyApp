@@ -62,6 +62,7 @@ import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
 import com.bezzy.Ui.View.utils.VolleyMultipleMultipartRequest;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -193,6 +194,7 @@ public class Massage extends AppCompatActivity {
         title_text.setText(name);
         Glide.with(Massage.this)
                 .load(image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(img_logo);
 
 

@@ -41,6 +41,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -92,6 +93,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         Glide.with(context)
                 .load(friendsModelList.get(position).getPhoto())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.img_logo);
 
         holder.descrip.setText(friendsModelList.get(position).getPostTime());
@@ -167,6 +169,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                         JSONObject object = array.getJSONObject(i);
                         Glide.with(context)
                                 .load(object.getString("post_url"))
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(holder.imageShow);
 
                     } catch (JSONException e) {

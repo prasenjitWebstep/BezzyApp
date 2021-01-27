@@ -23,6 +23,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         Glide.with(context)
                 .load(postItems.get(position).getImage())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageDisp);
 
         if(postItems.get(position).getType().equals("video")){

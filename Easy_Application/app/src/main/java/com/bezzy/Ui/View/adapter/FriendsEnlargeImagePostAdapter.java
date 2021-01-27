@@ -14,6 +14,7 @@ import com.bezzy.Ui.View.activity.PostImageVideoViewActivity;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class FriendsEnlargeImagePostAdapter extends RecyclerView.Adapter<Friends
 
         Glide.with(context)
                 .load(postList.get(position).getPostUrl())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageDisp);
 
     }

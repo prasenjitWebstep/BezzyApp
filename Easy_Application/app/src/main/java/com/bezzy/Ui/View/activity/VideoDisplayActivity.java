@@ -352,6 +352,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
                             /*Glide.with(ImageDisplayActivity.this)
                                     .load(object11.getString("url"))
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(imageView);*/
                     }
                 } catch (JSONException e) {

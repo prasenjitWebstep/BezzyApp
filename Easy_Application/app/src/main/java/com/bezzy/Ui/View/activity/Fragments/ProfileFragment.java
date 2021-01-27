@@ -26,9 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -45,6 +47,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -252,7 +255,7 @@ public class ProfileFragment extends Fragment {
                     if(resp.equals("true")){
 
                         try{
-                            Glide.with(getActivity()).load(object.getJSONObject("usedetails").getString("profile_pic")).into(square_img);
+                            Glide.with(getActivity()).load(object.getJSONObject("usedetails").getString("profile_pic")).diskCacheStrategy(DiskCacheStrategy.ALL).into(square_img);
                         }catch (Exception e){
                             Log.e("exception",e.toString());
                         }
@@ -364,6 +367,9 @@ public class ProfileFragment extends Fragment {
             }
         };
 
+        int socketTimeout = 500000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(request);
     }

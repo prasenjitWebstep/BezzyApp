@@ -27,6 +27,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -352,6 +353,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
                         }
                         Glide.with(ImageDisplayActivity.this)
                                 .load(object11.getString("url"))
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(imageView);
                         if(object11.getString("login_user_like").equals("Yes")){
                             favBtnfilled.setVisibility(View.VISIBLE);

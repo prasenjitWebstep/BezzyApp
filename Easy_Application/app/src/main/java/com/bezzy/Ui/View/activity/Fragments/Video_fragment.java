@@ -270,7 +270,7 @@ public class Video_fragment extends Fragment {
         // Show the "Buffering..." message while the video loads.
         //bufferText.setVisibility(VideoView.GONE);
         if (uri != null) {
-            upload_post.setVisibility(View.GONE);
+            upload_post.setVisibility(View.VISIBLE);
             videoView.setVisibility(View.VISIBLE);
             videoView.setVideoURI(uri);
         }

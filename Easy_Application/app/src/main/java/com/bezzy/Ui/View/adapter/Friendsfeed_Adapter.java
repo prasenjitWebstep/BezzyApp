@@ -37,6 +37,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,6 +79,7 @@ public class Friendsfeed_Adapter extends RecyclerView.Adapter<Friendsfeed_Adapte
 
         Glide.with(context)
                 .load(friendList.get(position).getFriendPhoto())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.circularImg);
 
         holder.circularImg.setOnClickListener(new View.OnClickListener() {

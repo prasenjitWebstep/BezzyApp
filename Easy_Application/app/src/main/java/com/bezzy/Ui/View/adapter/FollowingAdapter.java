@@ -34,6 +34,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,6 +71,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyFr
 
         Glide.with(context)
                 .load(friendsHolder.get(position).getImage())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.circularImg);
 
         holder.userName.setText(friendsHolder.get(position).getName());

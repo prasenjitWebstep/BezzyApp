@@ -34,6 +34,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +66,7 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
     @Override
     public void onBindViewHolder(@NonNull searchViewHolder holder, final int position) {
-        Glide.with(context).load(dataholder.get(position).getImg()).into(holder.square_img);
+        Glide.with(context).load(dataholder.get(position).getImg()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.square_img);
         holder.header.setText(dataholder.get(position).getHeader());
        /* if(dataholder.get(position).getDesc().equals("NULL") || dataholder.get(position).getDesc().equals(null)){
             holder.bio.setVisibility(View.INVISIBLE);

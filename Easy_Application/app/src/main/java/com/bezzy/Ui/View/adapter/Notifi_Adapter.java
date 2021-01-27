@@ -31,6 +31,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +68,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
 
         Glide.with(context)
                 .load(dataholder.get(position).getImg())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.img_logo);
 
         holder.cardClick.setOnClickListener(new View.OnClickListener() {

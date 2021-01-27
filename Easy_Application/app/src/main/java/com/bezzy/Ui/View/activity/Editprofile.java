@@ -36,6 +36,7 @@ import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.potyvideo.library.AndExoPlayerView;
@@ -93,7 +94,10 @@ public class Editprofile extends AppCompatActivity implements AdapterView.OnItem
         spinnerLayut = findViewById(R.id.spinnerLayut);
         textGenderLayout = findViewById(R.id.textGenderLayout);
 
-        Glide.with(Editprofile.this).load(getIntent().getExtras().getString("image")).into(profile_image);
+        Glide.with(Editprofile.this)
+                .load(getIntent().getExtras().getString("image"))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(profile_image);
 
         ed_username.setText(getIntent().getExtras().getString("username"));
         ed_name.setText(getIntent().getExtras().getString("name"));

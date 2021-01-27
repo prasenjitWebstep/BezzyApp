@@ -2,22 +2,27 @@ package com.bezzy.Ui.View.utils;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
@@ -40,6 +45,7 @@ import com.bezzy.Ui.View.adapter.FriendsEnlargeImagePostAdapter;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -67,6 +73,12 @@ public class Utility {
     private static AlertDialog topupDialog,fullscreenDialog;
     public static String globalData = "0";
     public static SimpleExoPlayer absPlayerInternal;
+    public static String videoURL;
+    private static int mCurrentPosition = 0;
+    static ProgressDialog pDialog;
+    private static Context mContext;
+    private static VideoView mandExoPlayerView;
+    private static MediaController mediaC;
 
     public static boolean internet_check(Context context){
         //Test for Connection
@@ -187,7 +199,7 @@ public class Utility {
 
     public static void fullscreenDialog(Context context, String post_id){
 
-        final PlayerView andExoPlayerView;
+        final VideoView andExoPlayerView;
         ImageView imageShow,fav_btn,favBtnfilled,chat_btn,back_image;
         RecyclerView recyclerImageShow;
         TextView servicesText,following_num,following_numm;
@@ -230,8 +242,9 @@ public class Utility {
             @Override
             public void onClick(View v) {
                 if(andExoPlayerView.getVisibility() == View.VISIBLE){
-                    absPlayerInternal.setVolume(0f);
-                    absPlayerInternal.stop();
+                    /*absPlayerInternal.stop();
+                    absPlayerInternal.setVolume(0f);*/
+                    andExoPlayerView.stopPlayback();
                     fullscreenDialog.dismiss();
                 }else{
                     fullscreenDialog.dismiss();
@@ -247,7 +260,7 @@ public class Utility {
     }
 
     private static void friendsPostLargeView(String url, final Context context,
-                                             final PlayerView andExoPlayerView,
+                                             final VideoView andExoPlayerView,
                                              final ImageView imageShow,
                                              final RecyclerView recyclerImageShow,
                                              final TextView servicesText,
@@ -353,7 +366,14 @@ public class Utility {
                             for(int i=0; i<array.length(); i++){
                                 try {
                                     JSONObject object2 = array.getJSONObject(i);
-                                    startPlayingVideo(context,object2.getString("post_url"),andExoPlayerView,R.string.app_name);
+                                    videoURL = object2.getString("post_url");
+                                    mContext = context;
+                                    mandExoPlayerView = andExoPlayerView;
+                                    MyTaskParams params = new MyTaskParams(videoURL);
+                                    DownloadXML myTask = new DownloadXML();
+                                    myTask.execute(params);
+                                    /*initializePlayer(context,videoURL,andExoPlayerView);*/
+                                    /*startPlayingVideo(context,object2.getString("post_url"),andExoPlayerView,R.string.app_name);*/
                                     /*andExoPlayerView.setSource(object2.getString("post_url"));
                                     andExoPlayerView.setShowFullScreen(false);*/
                                 } catch (JSONException e) {
@@ -375,6 +395,7 @@ public class Utility {
                                         JSONObject object2 = array.getJSONObject(i);
                                         Glide.with(context)
                                                 .load(object2.getString("post_url"))
+                                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                                 .into(imageShow);
 
                                     } catch (JSONException e) {
@@ -432,6 +453,54 @@ public class Utility {
         queue.add(request);
     }
 
+    private static class MyTaskParams {
+        String videoUrl;
+
+        public MyTaskParams(String videoUrl) {
+            this.videoUrl = videoUrl;
+        }
+    }
+
+    static class DownloadXML extends AsyncTask<MyTaskParams, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            displayLoader(mContext);
+            Log.e("EXECUTIONSTARTED","TRUE");
+        }
+
+        @Override
+        protected Void doInBackground(MyTaskParams... myTaskParams) {
+            String videoUrl = myTaskParams[0].videoUrl;
+
+            try {
+                Log.e("EXECUTIONProcessing","TRUE");
+                mandExoPlayerView.setVideoURI(Uri.parse(videoUrl));
+                //videoView.setVideoURI(Uri.parse(videofilename));
+                mandExoPlayerView.requestFocus();
+                mediaC  = new MediaController(mContext);
+                mediaC.setAnchorView(mandExoPlayerView);
+                mandExoPlayerView.setMediaController(mediaC);
+                /* andExoPlayerView.setMediaController(new MediaController(mContext));*/
+
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void args) {
+
+            hideLoader(mContext);
+            Log.e("STARTED","TRUE");
+            mandExoPlayerView.start();
+        }
+
+    }
+
     private static void startPlayingVideo(Context ctx, String CONTENT_URL, PlayerView playerView, int appNameRes) {
 
         PlayerView pvMain = playerView;
@@ -452,6 +521,7 @@ public class Utility {
         absPlayerInternal.prepare(mediaSource);
       /*  absPlayerInternal.setVolume(0f);*/
         absPlayerInternal.setPlayWhenReady(true);
+        absPlayerInternal.setRepeatMode(Player.REPEAT_MODE_ALL);
         pvMain.setPlayer(absPlayerInternal);
 
     }
