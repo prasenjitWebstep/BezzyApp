@@ -70,20 +70,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         Glide.with(context)
                 .load(postItems.get(position).getImage())
-                .transition(withCrossFade(factory))
+                .thumbnail(100f)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageDisp);
 
         if(postItems.get(position).getType().equals("video")){
-            holder.cardAdv.setVisibility(View.GONE);
-            holder.videoDisp.setVisibility(View.VISIBLE);
-            startPlayingVideo(context,postItems.get(position).getImage(),holder.vidDisp,R.string.app_name);
-
+            holder.play.setVisibility(View.VISIBLE);
         }else {
-            holder.cardAdv.setVisibility(View.VISIBLE);
-            holder.videoDisp.setVisibility(View.GONE);
+            holder.play.setVisibility(View.GONE);
         }
         holder.date_time.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
+
 
 
 
@@ -153,19 +150,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageDisp;
-        TextView date_time;
-        CardView videoDisp,cardAdv;
-        PlayerView vidDisp;
+        TextView play,date_time;
 
         public PostViewHolder(@NonNull View itemView) {
 
             super(itemView);
 
             imageDisp = itemView.findViewById(R.id.imageDisp);
-            cardAdv = itemView.findViewById(R.id.cardAdv);
-            videoDisp = itemView.findViewById(R.id.videoDisp);
             date_time=itemView.findViewById(R.id.date_time);
-            vidDisp = itemView.findViewById(R.id.vidDisp);
+            play = itemView.findViewById(R.id.play);
 
         }
     }

@@ -344,7 +344,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                     @Override
                     public void onResponse(NetworkResponse response) {
                         String response2 = new String(response.data);
-                        Log.e("RESPONSE2", response2);
+                        /*Log.e("RESPONSE2", response2);*/
                         try {
                             JSONObject object = new JSONObject(response2);
                             String status = object.getString("resp");
@@ -386,7 +386,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                 map.put("dob",ed_dob.getText().toString());
                 map.put("gender",str_gender);
 
-                Log.e("GETVALUE",map.get("username")+","+map.get("fullname")+","+map.get("email")+","+map.get("password")+","+map.get("dob")+","+map.get("gender"));
+                //Log.e("GETVALUE",map.get("username")+","+map.get("fullname")+","+map.get("email")+","+map.get("password")+","+map.get("dob")+","+map.get("gender"));
 
                 return map;
             }
@@ -396,7 +396,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
                 params.put("user_profile_iamge", new DataPart(+imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
-                Log.e("GETVALUE",params.get("user_profile_iamge").toString());
+                //Log.e("GETVALUE",params.get("user_profile_iamge").toString());
                 return params;
             }
         };

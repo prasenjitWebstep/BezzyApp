@@ -149,32 +149,39 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.e("Response",response);
+               /* Log.e("Response",response);*/
 
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("resp");
-                    String otpStatus = object.getString("otp_status");
-                    if(resp.equals("true") && otpStatus.equals("true")){
-                        Utility.hideLoader(LoginActivity.this);
-                        Utility.setLogin(LoginActivity.this,"1");
-                        Utility.setUserId(LoginActivity.this,object.getString("id"));
-                        Utility.setUserToken(LoginActivity.this,object.getString("remember_token"));
-                        Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(LoginActivity.this, Profile.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                    }else if(resp.equals("false") && otpStatus.equals("false")){
-                        Utility.setUserId(LoginActivity.this,object.getString("id"));
-                        Utility.setUserToken(LoginActivity.this,object.getString("remember_token"));
-                        Utility.hideLoader(LoginActivity.this);
-                        Intent i = new Intent(LoginActivity.this, OTPActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                        Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
-                    }else{
-                        Utility.hideLoader(LoginActivity.this);
-                        Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
+                    if(resp.equals("true")){
+                        String otpStatus = object.getString("otp_status");
+                        if(otpStatus.equals("true")){
+                            Utility.hideLoader(LoginActivity.this);
+                            Utility.setLogin(LoginActivity.this,"1");
+                            Utility.setUserId(LoginActivity.this,object.getString("id"));
+                            Utility.setUserToken(LoginActivity.this,object.getString("remember_token"));
+                            Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(LoginActivity.this, Profile.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                        }
+                    }else {
+                        String title = object.getString("title");
+                        if(title.equals("fail")){
+                            Utility.hideLoader(LoginActivity.this);
+                            Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
+                        }else{
+
+                            Utility.setUserId(LoginActivity.this,object.getString("id"));
+                            Utility.setUserToken(LoginActivity.this,object.getString("remember_token"));
+                            Utility.hideLoader(LoginActivity.this);
+                            Intent i = new Intent(LoginActivity.this, OTPActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            Toast.makeText(LoginActivity.this,object.getString("message"),Toast.LENGTH_SHORT).show();
+
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
