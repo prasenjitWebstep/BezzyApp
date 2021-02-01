@@ -122,8 +122,6 @@ public class HomeFragment extends Fragment {
             public void onRefresh() {
 
                 mSwipeRefreshLayout.setRefreshing(false);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-                recyclerView.setLayoutManager(linearLayoutManager);
 
                 if(Utility.internet_check(getActivity())) {
 
@@ -154,9 +152,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
 
         callCheckNotificationBadge();
 
@@ -272,6 +267,8 @@ public class HomeFragment extends Fragment {
                                     object11.getString("unread_post_number"));
                             friendsfeed_items.add(item);
                         }
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                        recyclerView.setLayoutManager(linearLayoutManager);
                         recyclerView.setAdapter(new Friendsfeed_Adapter(getActivity(),friendsfeed_items));
                     }else{
                         progressBar.setVisibility(View.GONE);

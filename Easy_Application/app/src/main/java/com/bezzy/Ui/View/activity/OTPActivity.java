@@ -114,7 +114,7 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-              /*  Log.e("Response",response);*/
+                Log.e("Response",response);
 
                 try {
                     JSONObject object = new JSONObject(response);
@@ -130,8 +130,8 @@ public class OTPActivity extends AppCompatActivity {
 
                         Toast.makeText(OTPActivity.this,message,Toast.LENGTH_SHORT).show();
 
-                        Utility.setOtpScreen(OTPActivity.this,"0");
-                        Intent intent = new Intent(OTPActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(OTPActivity.this, Profile.class);
+                        Utility.setLogin(OTPActivity.this,"1");
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
 

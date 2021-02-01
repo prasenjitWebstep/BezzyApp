@@ -2,6 +2,7 @@ package com.bezzy.Ui.View.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bezzy.Ui.View.activity.Fragments.ProfileFragment;
@@ -24,9 +26,23 @@ import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.potyvideo.library.AndExoPlayerView;
 
 import java.util.ArrayList;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
@@ -49,16 +65,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, final int position) {
 
+        DrawableCrossFadeFactory factory = new DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build();
+
 
         Glide.with(context)
                 .load(postItems.get(position).getImage())
+                .transition(withCrossFade(factory))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageDisp);
 
         if(postItems.get(position).getType().equals("video")){
-            holder.play.setVisibility(View.VISIBLE);
+            holder.cardAdv.setVisibility(View.GONE);
+            holder.videoDisp.setVisibility(View.VISIBLE);
+            startPlayingVideo(context,postItems.get(position).getImage(),holder.vidDisp,R.string.app_name);
+
         }else {
-            holder.play.setVisibility(View.GONE);
+            holder.cardAdv.setVisibility(View.VISIBLE);
+            holder.videoDisp.setVisibility(View.GONE);
         }
         holder.date_time.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
 
@@ -95,6 +118,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     }
 
+    private static void startPlayingVideo(Context ctx, String CONTENT_URL, PlayerView playerView, int appNameRes) {
+
+        PlayerView pvMain = playerView;
+
+        //BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        //TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        //TrackSelector trackSelectorDef = new DefaultTrackSelector(videoTrackSelectionFactory);
+        TrackSelector trackSelectorDef = new DefaultTrackSelector();
+
+        DefaultLoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(32*1024, 64*1024, 1024, 1024).createDefaultLoadControl();
+
+        SimpleExoPlayer absPlayerInternal = ExoPlayerFactory.newSimpleInstance(ctx, trackSelectorDef);
+
+        String userAgent = Util.getUserAgent(ctx, ctx.getString(appNameRes));
+
+        DefaultDataSourceFactory defdataSourceFactory = new DefaultDataSourceFactory(ctx,userAgent);
+        Uri uriOfContentUrl = Uri.parse(CONTENT_URL);
+        MediaSource mediaSource = new ProgressiveMediaSource.Factory(defdataSourceFactory).createMediaSource(uriOfContentUrl);
+
+        absPlayerInternal.prepare(mediaSource);
+        absPlayerInternal.setVolume(0f);
+        absPlayerInternal.setPlayWhenReady(true);
+        absPlayerInternal.setRepeatMode(Player.REPEAT_MODE_ALL);
+        pvMain.setPlayer(absPlayerInternal);
+
+    }
+
     @Override
     public int getItemCount() {
         return postItems.size();
@@ -103,15 +153,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageDisp;
-        TextView play,date_time;
+        TextView date_time;
+        CardView videoDisp,cardAdv;
+        PlayerView vidDisp;
 
         public PostViewHolder(@NonNull View itemView) {
 
             super(itemView);
 
             imageDisp = itemView.findViewById(R.id.imageDisp);
-            play = itemView.findViewById(R.id.play);
+            cardAdv = itemView.findViewById(R.id.cardAdv);
+            videoDisp = itemView.findViewById(R.id.videoDisp);
             date_time=itemView.findViewById(R.id.date_time);
+            vidDisp = itemView.findViewById(R.id.vidDisp);
 
         }
     }

@@ -344,14 +344,13 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                     @Override
                     public void onResponse(NetworkResponse response) {
                         String response2 = new String(response.data);
-                        /*Log.e("RESPONSE2", response2);*/
+                        Log.e("RESPONSE2", response2);
                         try {
                             JSONObject object = new JSONObject(response2);
                             String status = object.getString("resp");
                             if(status.equals("true")){
                                 Toast.makeText(Registration.this,object.getString("reg_msg"),Toast.LENGTH_SHORT).show();
                                 Utility.hideLoader(Registration.this);
-                                Utility.setOtpScreen(Registration.this,"1");
                                 Utility.setUserId(Registration.this,object.getString("log_userID"));
                                 Intent intent = new Intent(Registration.this, OTPActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
