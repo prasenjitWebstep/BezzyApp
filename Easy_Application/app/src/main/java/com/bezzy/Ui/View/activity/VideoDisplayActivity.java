@@ -1,10 +1,8 @@
 package com.bezzy.Ui.View.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,17 +24,6 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.potyvideo.library.AndExoPlayerView;
 
 import org.json.JSONException;
@@ -47,14 +34,12 @@ import java.util.Map;
 
 public class VideoDisplayActivity extends AppCompatActivity {
     VideoView videoView;
-    /*AndExoPlayerView andExoPlayerView;*/
-    PlayerView andExoPlayerView;
+    AndExoPlayerView andExoPlayerView;
     String id,postId,type,screen,tag;
     ImageView back_image,chat_btn,delete_image,favBtn,favBtnfilled,imageEdit,imageSubmit;
     TextView servicesText,username,following_num,following_numm;
     String totalLikes;
     EditText edit;
-    public static SimpleExoPlayer absPlayerInternal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,13 +178,6 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
         });
 
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        absPlayerInternal.stop();
-        absPlayerInternal.setVolume(0f);
     }
 
     @Override
@@ -351,9 +329,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
                             favBtn.setVisibility(View.VISIBLE);
                         }
 
-                        /*andExoPlayerView.setSource(object11.getString("url"));*/
-
-                        startPlayingVideo(VideoDisplayActivity.this,object11.getString("url"),andExoPlayerView,R.string.app_name);
+                        andExoPlayerView.setSource(object11.getString("url"));
 
                         totalLikes = String.valueOf(object11.getString("total_like"));
                         following_num.setText(object11.getString("total_like"));
@@ -393,33 +369,6 @@ public class VideoDisplayActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(VideoDisplayActivity.this);
         queue.add(request);
-    }
-
-    private static void startPlayingVideo(Context ctx, String CONTENT_URL, PlayerView playerView, int appNameRes) {
-
-        PlayerView pvMain = playerView;
-
-        //BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        //TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        //TrackSelector trackSelectorDef = new DefaultTrackSelector(videoTrackSelectionFactory);
-        TrackSelector trackSelectorDef = new DefaultTrackSelector();
-
-        DefaultLoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(32*1024, 64*1024, 1024, 1024).createDefaultLoadControl();
-
-        absPlayerInternal = ExoPlayerFactory.newSimpleInstance(ctx, trackSelectorDef);
-
-        String userAgent = Util.getUserAgent(ctx, ctx.getString(appNameRes));
-
-        DefaultDataSourceFactory defdataSourceFactory = new DefaultDataSourceFactory(ctx,userAgent);
-        Uri uriOfContentUrl = Uri.parse(CONTENT_URL);
-        MediaSource mediaSource = new ProgressiveMediaSource.Factory(defdataSourceFactory).createMediaSource(uriOfContentUrl);
-
-        absPlayerInternal.prepare(mediaSource);
-        /*  absPlayerInternal.setVolume(0f);*/
-        absPlayerInternal.setPlayWhenReady(true);
-        absPlayerInternal.setRepeatMode(Player.REPEAT_MODE_ALL);
-        pvMain.setPlayer(absPlayerInternal);
-
     }
 
     public void delete(){
