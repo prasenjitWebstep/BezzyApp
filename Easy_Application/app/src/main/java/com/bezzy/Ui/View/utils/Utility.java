@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.utils;
 
+import android.animation.ObjectAnimator;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -44,8 +45,10 @@ import com.bezzy.Ui.View.activity.LoginActivity;
 import com.bezzy.Ui.View.adapter.FriendsEnlargeImagePostAdapter;
 import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy_application.R;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
@@ -382,9 +385,22 @@ public class Utility {
                                     try {
 
                                         JSONObject object2 = array.getJSONObject(i);
+
+                                        ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+                                            @Override
+                                            public void animate(View view) {
+                                                view.setAlpha(0f);
+
+                                                ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                                                fadeAnim.setDuration(2500);
+                                                fadeAnim.start();
+                                            }
+                                        };
+
                                         Glide.with(context)
                                                 .load(object2.getString("post_url"))
                                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                                .transition(GenericTransitionOptions.with(animationObject))
                                                 .into(imageShow);
 
                                     } catch (JSONException e) {

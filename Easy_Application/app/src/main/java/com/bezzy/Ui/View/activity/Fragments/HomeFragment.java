@@ -244,6 +244,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void friendsBlockList(String url) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         friendsfeed_items.clear();
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -267,8 +269,6 @@ public class HomeFragment extends Fragment {
                                     object11.getString("unread_post_number"));
                             friendsfeed_items.add(item);
                         }
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-                        recyclerView.setLayoutManager(linearLayoutManager);
                         recyclerView.setAdapter(new Friendsfeed_Adapter(getActivity(),friendsfeed_items));
                     }else{
                         progressBar.setVisibility(View.GONE);

@@ -1,9 +1,11 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -61,6 +64,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -97,11 +101,6 @@ public class Video_fragment extends Fragment {
 
 
     String MENTION1_USERNAME;
-    //ArrayList<String> strings;
-    private static final String MENTION2_USERNAME = "sagnik";
-    private static final String MENTION3_USERNAME = "prasenjit";
-    private static final String MENTION2_DISPLAYNAME = "polman";
-    private static final String MENTION3_DISPLAYNAME = "Hendra Anggrian";
     private ArrayAdapter<Mention> defaultMentionAdapter;
     ArrayList<String> idLst;
     TagModel obj;
@@ -157,7 +156,14 @@ public class Video_fragment extends Fragment {
         upload_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickVideoFromgallery();
+
+                if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                    pickVideoFromgallery();
+                }else{
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+                }
+
+
             }
         });
 
@@ -212,6 +218,17 @@ public class Video_fragment extends Fragment {
         videoView.setMediaController(controller);
 
         return view;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 1 && grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            pickVideoFromgallery();
+        }else{
+            Toast.makeText(getActivity(),"Permission Denied",Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class UploadVideoTask extends AsyncTask<Void, Void, Void> {
@@ -322,19 +339,67 @@ public class Video_fragment extends Fragment {
                 if (data != null) {
                     //Toast.makeText(getActivity(), "Video content URI: " + data.getData(),Toast.LENGTH_LONG).show();
                     video = data.getData();
-                    /*String filePath = SiliCompressor.with(getActivity()).compressVideo(data.getData(), destinationDirectory);*/
-                    Log.e("FetechedVideo", video.toString());
-                    /*videoPath = getPath(video);
-                    Log.e("FetechedVideoPath",videoPath);*/
-
-
                     initializePlayer(video);
-                    checkSize(video);
+                     checkSize(video);
+
+                    /*Uri uri = data.getData();
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+                    Log.e("URI",uri.toString());
+                    Log.e("PATH",file.getAbsolutePath().toString());
+                    new CompressVideo().execute(uri.toString(),file.getPath(),"null");*/
 
                 }
             }
         } else if (resultCode != Activity.RESULT_CANCELED) {
             Toast.makeText(getActivity(), "Sorry, there was an error!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class CompressVideo extends AsyncTask<String,String,String>{
+
+        String videopath = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            Utility.displayLoader(context);
+
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            Uri uri = Uri.parse(strings[0]);
+            Log.e("URI2",uri.toString());
+            String path = strings[1];
+            Log.e("Path",path);
+            try {
+                videopath = SiliCompressor.with(context).compressVideo(uri,strings[1]);
+                Log.e("VIDEOPATH",videopath);
+            }catch (Exception e){
+                Log.e("NULLEXCEPTION",e.toString());
+            }
+
+            return videopath;
+        }
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            Utility.hideLoader(context);
+            File file = new File(s);
+
+            video = Uri.fromFile(file);
+
+            Log.e("Compressed", video.toString());
+
+            initializePlayer(video);
+            allow = true;
+           /* checkSize(video);*/
+
         }
     }
 
@@ -404,7 +469,7 @@ public class Video_fragment extends Fragment {
             protected Map<String, DataPart> getByteData() throws AuthFailureError {
                 Map<String, DataPart> params = new HashMap<>();
                 long videoname = System.currentTimeMillis();
-                params.put("post_video", new DataPart(videoname + ".mp4", getFileDataFromDrawable(getActivity(), video)));
+                params.put("post_video", new DataPart(String.valueOf(videoname), getFileDataFromDrawable(getActivity(), video)));
                 Log.e("Value", params.get("post_video").toString());
                 return params;
             }

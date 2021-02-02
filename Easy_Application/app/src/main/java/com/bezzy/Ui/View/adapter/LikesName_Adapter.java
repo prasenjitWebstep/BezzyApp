@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.adapter;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bezzy.Ui.View.model.Likes_name;
 import com.bezzy_application.R;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 
 import java.util.ArrayList;
 
@@ -41,9 +44,22 @@ public class LikesName_Adapter extends RecyclerView.Adapter<LikesName_Adapter.Li
     @Override
     public void onBindViewHolder(@NonNull Likesname holder, int position) {
         holder.username.setText(dataholder.get(position).getUsername());
+
+        ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+            @Override
+            public void animate(View view) {
+                view.setAlpha(0f);
+
+                ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                fadeAnim.setDuration(2500);
+                fadeAnim.start();
+            }
+        };
+
         Glide.with(context)
                 .load(dataholder.get(position).getUser_image())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transition(GenericTransitionOptions.with(animationObject))
                 .into(holder.image);
 
 

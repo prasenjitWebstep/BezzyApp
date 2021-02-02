@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
@@ -61,8 +62,10 @@ import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
 import com.bezzy.Ui.View.utils.VolleyMultipleMultipartRequest;
 import com.bezzy_application.R;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -192,9 +195,22 @@ public class Massage extends AppCompatActivity {
 
         
         title_text.setText(name);
+
+        ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+            @Override
+            public void animate(View view) {
+                view.setAlpha(0f);
+
+                ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                fadeAnim.setDuration(2500);
+                fadeAnim.start();
+            }
+        };
+
         Glide.with(Massage.this)
                 .load(image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transition(GenericTransitionOptions.with(animationObject))
                 .into(img_logo);
 
 

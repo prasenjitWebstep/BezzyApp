@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.adapter;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bezzy.Ui.View.model.ChatMessageModel;
 import com.bezzy_application.R;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 
 import java.util.ArrayList;
 
@@ -65,10 +68,24 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
             }else{
                 holder.layoutSender.setVisibility(View.GONE);
                 holder.layoutSenderImage.setVisibility(View.VISIBLE);
+
+                ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+                    @Override
+                    public void animate(View view) {
+                        view.setAlpha(0f);
+
+                        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                        fadeAnim.setDuration(2500);
+                        fadeAnim.start();
+                    }
+                };
+
                 Glide.with(mContext)
                         .load(mMessageList.get(position).getChat_message())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .transition(GenericTransitionOptions.with(animationObject))
                         .into(holder.send_message_image);
+
                 holder.send_message_image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -96,9 +113,22 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
             }else{
                 holder.layoutreceiver.setVisibility(View.GONE);
                 holder.layoutreceiverimage.setVisibility(View.VISIBLE);
+
+                ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+                    @Override
+                    public void animate(View view) {
+                        view.setAlpha(0f);
+
+                        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                        fadeAnim.setDuration(2500);
+                        fadeAnim.start();
+                    }
+                };
+
                 Glide.with(mContext)
                         .load(mMessageList.get(position).getChat_message())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .transition(GenericTransitionOptions.with(animationObject))
                         .into(holder.send_message_image);
 
                 holder.send_message_image.setOnClickListener(new View.OnClickListener() {
@@ -128,10 +158,22 @@ public class Chatbox_adapter extends RecyclerView.Adapter<Chatbox_adapter.Receiv
         View v= LayoutInflater.from(mContext).inflate(R.layout.imagedisplay_layout,null);
         imageShow = v.findViewById(R.id.imageShow);
 
+        ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+            @Override
+            public void animate(View view) {
+                view.setAlpha(0f);
+
+                ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                fadeAnim.setDuration(2500);
+                fadeAnim.start();
+            }
+        };
+
 
         Glide.with(mContext)
                 .load(chat_message)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transition(GenericTransitionOptions.with(animationObject))
                 .into(imageShow);
 
 

@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.activity.Fragments;
 
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,8 +47,10 @@ import com.bezzy.Ui.View.model.PostModel;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -255,7 +258,23 @@ public class ProfileFragment extends Fragment {
                     if(resp.equals("true")){
 
                         try{
-                            Glide.with(getActivity()).load(object.getJSONObject("usedetails").getString("profile_pic")).diskCacheStrategy(DiskCacheStrategy.ALL).into(square_img);
+
+                            ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+                                @Override
+                                public void animate(View view) {
+                                    view.setAlpha(0f);
+
+                                    ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                                    fadeAnim.setDuration(2500);
+                                    fadeAnim.start();
+                                }
+                            };
+
+                            Glide.with(getActivity())
+                                    .load(object.getJSONObject("usedetails").getString("profile_pic"))
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .transition(GenericTransitionOptions.with(animationObject))
+                                    .into(square_img);
                         }catch (Exception e){
                             Log.e("exception",e.toString());
                         }
@@ -328,7 +347,7 @@ public class ProfileFragment extends Fragment {
 
                         JSONArray array = object.getJSONArray("user_all_posts");
                         JSONArray array1 = array.getJSONArray(array.length()-1);
-                        /*Log.e("Array",array1.toString());*/
+                        Log.e("Array",array1.toString());
                         for(int i=0;i<array1.length();i++){
                             JSONObject object1 = array1.getJSONObject(i);
                             postList.add(new PostModel(object1.getString("post_id"),object1.getString("post_url"),

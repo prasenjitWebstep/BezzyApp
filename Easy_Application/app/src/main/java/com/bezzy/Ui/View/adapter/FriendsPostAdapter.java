@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.adapter;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -40,8 +41,10 @@ import com.bezzy.Ui.View.model.FriendsPostModelImage;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -91,9 +94,21 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         holder.title_text.setText(friendsModelList.get(position).getName());
 
+        ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+            @Override
+            public void animate(View view) {
+                view.setAlpha(0f);
+
+                ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                fadeAnim.setDuration(2500);
+                fadeAnim.start();
+            }
+        };
+
         Glide.with(context)
                 .load(friendsModelList.get(position).getPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transition(GenericTransitionOptions.with(animationObject))
                 .into(holder.img_logo);
 
         holder.descrip.setText(friendsModelList.get(position).getPostTime());

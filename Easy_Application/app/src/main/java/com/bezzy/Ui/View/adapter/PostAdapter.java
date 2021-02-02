@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.adapter;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,9 +25,11 @@ import com.bezzy.Ui.View.model.PostModel;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
@@ -65,23 +68,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, final int position) {
 
-        DrawableCrossFadeFactory factory = new DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build();
+        ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+            @Override
+            public void animate(View view) {
+                view.setAlpha(0f);
 
+                ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                fadeAnim.setDuration(2500);
+                fadeAnim.start();
+            }
+        };
 
         Glide.with(context)
                 .load(postItems.get(position).getImage())
-                .thumbnail(100f)
+                .transition(GenericTransitionOptions.with(animationObject))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageDisp);
+
 
         if(postItems.get(position).getType().equals("video")){
             holder.play.setVisibility(View.VISIBLE);
         }else {
             holder.play.setVisibility(View.GONE);
         }
+
+
         holder.date_time.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
-
-
 
 
         holder.imageDisp.setOnClickListener(new View.OnClickListener() {

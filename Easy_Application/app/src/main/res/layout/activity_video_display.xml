@@ -54,7 +54,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.potyvideo.library.AndExoPlayerView
+                    <!--<com.potyvideo.library.AndExoPlayerView
                         android:id="@+id/andExoPlayerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -63,7 +63,18 @@
                         app:andexo_full_screen="true"
                         app:andexo_play_when_ready="true"
                         app:andexo_show_controller="true"
-                        app:andexo_resize_mode="Fit" />
+                        app:andexo_resize_mode="Fit" />-->
+
+                    <com.google.android.exoplayer2.ui.PlayerView
+                        android:id="@+id/andExoPlayerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:andexo_aspect_ratio="aspect_match"
+                        app:andexo_full_screen="true"
+                        app:andexo_play_when_ready="true"
+                        app:andexo_show_controller="true"
+                        app:andexo_resize_mode="Fit"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"

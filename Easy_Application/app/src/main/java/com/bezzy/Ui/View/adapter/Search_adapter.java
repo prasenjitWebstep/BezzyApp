@@ -1,5 +1,6 @@
 package com.bezzy.Ui.View.adapter;
 
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -33,8 +34,10 @@ import com.bezzy.Ui.View.model.Searchnoti_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +69,23 @@ public class Search_adapter extends RecyclerView.Adapter<Search_adapter.searchVi
 
     @Override
     public void onBindViewHolder(@NonNull searchViewHolder holder, final int position) {
-        Glide.with(context).load(dataholder.get(position).getImg()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.square_img);
+
+        ViewPropertyTransition.Animator animationObject = new ViewPropertyTransition.Animator() {
+            @Override
+            public void animate(View view) {
+                view.setAlpha(0f);
+
+                ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                fadeAnim.setDuration(2500);
+                fadeAnim.start();
+            }
+        };
+
+        Glide.with(context)
+                .load(dataholder.get(position).getImg())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transition(GenericTransitionOptions.with(animationObject))
+                .into(holder.square_img);
         holder.header.setText(dataholder.get(position).getHeader());
        /* if(dataholder.get(position).getDesc().equals("NULL") || dataholder.get(position).getDesc().equals(null)){
             holder.bio.setVisibility(View.INVISIBLE);
