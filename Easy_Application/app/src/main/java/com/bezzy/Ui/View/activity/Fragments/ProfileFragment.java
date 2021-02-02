@@ -347,7 +347,7 @@ public class ProfileFragment extends Fragment {
 
                         JSONArray array = object.getJSONArray("user_all_posts");
                         JSONArray array1 = array.getJSONArray(array.length()-1);
-                        Log.e("Array",array1.toString());
+                        /*Log.e("Array",array1.toString());*/
                         for(int i=0;i<array1.length();i++){
                             JSONObject object1 = array1.getJSONObject(i);
                             postList.add(new PostModel(object1.getString("post_id"),object1.getString("post_url"),

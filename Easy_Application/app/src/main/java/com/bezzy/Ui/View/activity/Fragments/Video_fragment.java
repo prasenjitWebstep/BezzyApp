@@ -340,7 +340,7 @@ public class Video_fragment extends Fragment {
                     //Toast.makeText(getActivity(), "Video content URI: " + data.getData(),Toast.LENGTH_LONG).show();
                     video = data.getData();
                     initializePlayer(video);
-                     checkSize(video);
+                    checkSize(video);
 
                     /*Uri uri = data.getData();
                     File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
@@ -469,7 +469,7 @@ public class Video_fragment extends Fragment {
             protected Map<String, DataPart> getByteData() throws AuthFailureError {
                 Map<String, DataPart> params = new HashMap<>();
                 long videoname = System.currentTimeMillis();
-                params.put("post_video", new DataPart(String.valueOf(videoname), getFileDataFromDrawable(getActivity(), video)));
+                params.put("post_video", new DataPart(videoname + ".mp4", getFileDataFromDrawable(getActivity(), video)));
                 Log.e("Value", params.get("post_video").toString());
                 return params;
             }
