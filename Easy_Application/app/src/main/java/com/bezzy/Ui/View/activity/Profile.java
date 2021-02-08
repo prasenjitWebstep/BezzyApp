@@ -1,6 +1,7 @@
 package com.bezzy.Ui.View.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -40,6 +42,13 @@ import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.OnSuccessListener;
+import com.google.android.play.core.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +63,7 @@ public class Profile extends AppCompatActivity {
 
     FloatingActionButton floatingActionButton;
     Boolean isInBackground;
+    private int REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +71,7 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.profile_scrns);
 
 
-
+        appUpdate();
 
         //SessionManager.getInstance(getApplicationContext()).userLogout();
         BottomNavigationView btmnav = findViewById(R.id.bottomnav);
@@ -105,11 +115,47 @@ public class Profile extends AppCompatActivity {
             }
         });
 
+
+
+    }
+
+    public void appUpdate(){
+        final AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(Profile.this);
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+        appUpdateInfoTask.addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+                if(result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)){
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.IMMEDIATE,Profile.this,REQUEST_CODE);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                        Log.e("UPDATEEXCEPTION",e.toString());
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            Toast.makeText(Profile.this,"Start Download",Toast.LENGTH_SHORT).show();
+
+            if(requestCode != RESULT_OK){
+                Log.e("TAG","Unable to Update "+resultCode);
+            }
+
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        appUpdate();
+
         if(Utility.internet_check(Profile.this)) {
 
 

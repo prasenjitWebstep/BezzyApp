@@ -344,6 +344,11 @@ public class Photo_fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             Log.e("CROP_CALLED","1");
+            try{
+                Log.e("CROP_DATA",data.toString());
+            }catch (Exception e){
+                Log.e("CROPEXCEPTIONDATA",e.toString());
+            }
             option = 101;
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK && data != null) {
@@ -358,11 +363,11 @@ public class Photo_fragment extends Fragment {
                     recyclerDisplayImg.setAdapter(new ImageViewAdapter(context, bitmapList));
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.e("Exception",e.toString());
+                    Log.e("CROPEXCEPTION",e.toString());
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
-                Log.e("ExceptionError",error.toString());
+                Log.e("CROPEXCEPTIONERROR",error.toString());
             }
         }else if(requestCode == IMAGE_PICK_CODE){
             option = 1001;
