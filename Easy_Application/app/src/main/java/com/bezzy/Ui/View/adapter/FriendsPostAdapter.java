@@ -185,6 +185,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                         Glide.with(context)
                                 .load(object.getString("post_url"))
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .transition(GenericTransitionOptions.with(animationObject))
                                 .into(holder.imageShow);
 
                     } catch (JSONException e) {

@@ -51,6 +51,7 @@ import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.transition.ViewPropertyTransition;
+import com.mikelau.views.shimmer.ShimmerRecyclerViewX;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,7 +71,8 @@ public class ProfileFragment extends Fragment {
     TextView userName,following,follower,Likes,userBio,edit_btn,block_btn;
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
-    RecyclerView postRecyclerView;
+    /*RecyclerView postRecyclerView;*/
+    ShimmerRecyclerViewX postRecyclerView;
     SpotsDialog progressDialog;
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
@@ -94,6 +96,7 @@ public class ProfileFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
 
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
+        postRecyclerView.showShimmerAdapter();
         layoutFollowing = view.findViewById(R.id.layoutFollowing);
         layoutFollower = view.findViewById(R.id.layoutFollower);
 
@@ -120,10 +123,10 @@ public class ProfileFragment extends Fragment {
 
                         switch (item.getItemId()) {
                             case R.id.menu_blocklist:
-                               blocklist();
+                                blocklist();
                                 break;
                             case R.id.menu_changepas:
-                               newpassword();
+                                newpassword();
                                 break;
                             case R.id.menu_logout:
                                 logout();
@@ -147,7 +150,6 @@ public class ProfileFragment extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
                 try {
                     JSONObject object = new JSONObject(response);
                     String resp = object.getString("status");
@@ -157,12 +159,10 @@ public class ProfileFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         }){
             @Override
@@ -175,7 +175,6 @@ public class ProfileFragment extends Fragment {
         };
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(stringRequest);
-
     }
 */
     @Override
@@ -186,6 +185,7 @@ public class ProfileFragment extends Fragment {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         postRecyclerView.setLayoutManager(layoutManager);
+        postRecyclerView.showShimmerAdapter();
 
         if(Utility.internet_check(getActivity())) {
 
@@ -253,7 +253,7 @@ public class ProfileFragment extends Fragment {
                 try {
 
                     final JSONObject object = new JSONObject(response);
-                   // Log.e("Response",response);
+                    // Log.e("Response",response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 
@@ -358,7 +358,16 @@ public class ProfileFragment extends Fragment {
                         }
 
                         Log.e("Called","Adapter Called");
-                        postRecyclerView.setAdapter((new PostAdapter(postList,getActivity(),"1")));
+
+                        postRecyclerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                postRecyclerView.hideShimmerAdapter();
+                                postRecyclerView.setAdapter((new PostAdapter(postList,getActivity(),"1")));
+                            }
+                        }, 5000);
+
+
 
                     }else{
                         Utility.hideLoader(getActivity());
@@ -461,7 +470,7 @@ public class ProfileFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-               // Log.e("Response",response);
+                // Log.e("Response",response);
             }
         }, new Response.ErrorListener() {
             @Override

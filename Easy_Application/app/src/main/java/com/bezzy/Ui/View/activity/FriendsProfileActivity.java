@@ -36,6 +36,7 @@ import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.transition.ViewPropertyTransition;
+import com.mikelau.views.shimmer.ShimmerRecyclerViewX;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,7 +56,8 @@ public class FriendsProfileActivity extends AppCompatActivity {
     TextView userName,following,follower,Likes,userBio,edit_btn;
     ArrayList<PostModel> postList;
     ArrayList<String> imgList;
-    RecyclerView postRecyclerView;
+    /*RecyclerView postRecyclerView;*/
+    ShimmerRecyclerViewX postRecyclerView;
     SpotsDialog progressDialog;
     String friendsId;
     ImageView imageView;
@@ -77,6 +79,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
         imageView= findViewById(R.id.logout);
         edit_btn = findViewById(R.id.edit_btn);
         postRecyclerView = findViewById(R.id.postRecyclerView);
+        postRecyclerView.showShimmerAdapter();
         layoutFollowing = findViewById(R.id.layoutFollowing);
         layoutFollower = findViewById(R.id.layoutFollower);
 
@@ -151,7 +154,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
         checkToken();
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         postRecyclerView.setLayoutManager(layoutManager);
-
+        postRecyclerView.showShimmerAdapter();
 
         if(Utility.internet_check(FriendsProfileActivity.this)) {
 
@@ -242,7 +245,14 @@ public class FriendsProfileActivity extends AppCompatActivity {
                         }
 
                         Log.e("Called","Adapter Called");
-                        postRecyclerView.setAdapter((new PostAdapter(postList,FriendsProfileActivity.this,"2")));
+
+                        postRecyclerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                postRecyclerView.hideShimmerAdapter();
+                                postRecyclerView.setAdapter((new PostAdapter(postList,FriendsProfileActivity.this,"2")));
+                            }
+                        }, 5000);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

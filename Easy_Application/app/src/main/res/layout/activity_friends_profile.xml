@@ -284,14 +284,25 @@
                 android:layout_height="match_parent"
                 android:layout_below="@id/edit_part">
 
-                <androidx.recyclerview.widget.RecyclerView
+                <!--<androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/postRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="5dp">
 
-                </androidx.recyclerview.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>-->
+
+                <com.mikelau.views.shimmer.ShimmerRecyclerViewX
+                    android:id="@+id/postRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:shimmer_demo_child_count="10"
+                    app:shimmer_demo_grid_child_count="2"
+                    app:shimmer_demo_layout="@layout/layout_second_demo_grid"
+                    app:shimmer_demo_layout_manager_type="grid"
+                    app:shimmer_demo_angle="20"
+                    android:layout_marginTop="5dp"/>
 
             </RelativeLayout>
 
