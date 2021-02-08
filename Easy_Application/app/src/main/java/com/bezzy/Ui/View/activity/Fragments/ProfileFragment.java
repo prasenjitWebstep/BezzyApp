@@ -93,6 +93,7 @@ public class ProfileFragment extends Fragment {
         edit_btn = view.findViewById(R.id.edit_btn);
         progressBar = view.findViewById(R.id.progressBar);
 
+
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
         layoutFollowing = view.findViewById(R.id.layoutFollowing);
         layoutFollower = view.findViewById(R.id.layoutFollower);
