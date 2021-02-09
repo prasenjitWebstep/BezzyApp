@@ -40,11 +40,11 @@ import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.transition.ViewPropertyTransition;
+import com.canhub.cropper.CropImage;
+import com.canhub.cropper.CropImageView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.potyvideo.library.AndExoPlayerView;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;

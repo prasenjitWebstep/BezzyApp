@@ -64,12 +64,12 @@ import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy.Ui.View.utils.VolleyMultipartRequest;
 import com.bezzy.Ui.View.utils.VolleyMultipleMultipartRequest;
 import com.bezzy_application.R;
+import com.canhub.cropper.CropImage;
+import com.canhub.cropper.CropImageView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.hendraanggrian.appcompat.socialview.Mention;
 import com.hendraanggrian.appcompat.widget.MentionArrayAdapter;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 
 import org.json.JSONArray;
@@ -345,7 +345,7 @@ public class Photo_fragment extends Fragment {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             Log.e("CROP_CALLED","1");
             try{
-                Log.e("CROP_DATA",data.toString());
+                Log.e("CROPDATA",data.toString());
             }catch (Exception e){
                 Log.e("CROPEXCEPTIONDATA",e.toString());
             }
