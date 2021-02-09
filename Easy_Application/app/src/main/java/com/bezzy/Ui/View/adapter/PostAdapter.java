@@ -88,13 +88,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
 
         if(postItems.get(position).getType().equals("video")){
-            holder.play.setVisibility(View.VISIBLE);
+            holder.cardAdv.setVisibility(View.GONE);
+            startPlayingVideo(context,postItems.get(position).getImage(),holder.andExoPlayerView,R.string.app_name,postItems.get(position).getPostTime(),postItems.get(position).getPostDate(),holder.date_time2,holder.cardAdv2);
         }else {
-            holder.play.setVisibility(View.GONE);
+            holder.cardAdv2.setVisibility(View.GONE);
+            holder.cardAdv.setVisibility(View.VISIBLE);
+            holder.date_time.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
         }
-
-
-        holder.date_time.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
 
 
         holder.imageDisp.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +128,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     }
 
-    private static void startPlayingVideo(Context ctx, String CONTENT_URL, PlayerView playerView, int appNameRes) {
+    private static void startPlayingVideo(Context ctx, String CONTENT_URL, PlayerView playerView, int appNameRes, String postTime, String postDate, TextView date_time, CardView cardAdv2) {
 
         PlayerView pvMain = playerView;
 
@@ -152,7 +152,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         absPlayerInternal.setPlayWhenReady(true);
         absPlayerInternal.setRepeatMode(Player.REPEAT_MODE_ALL);
         pvMain.setPlayer(absPlayerInternal);
-
+        cardAdv2.setVisibility(View.VISIBLE);
+        date_time.setText(postTime + " " + postDate);
     }
 
     @Override
@@ -163,7 +164,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageDisp;
-        TextView play,date_time;
+        TextView play,date_time,date_time2;
+        PlayerView andExoPlayerView;
+        CardView cardAdv2,cardAdv;
 
         public PostViewHolder(@NonNull View itemView) {
 
@@ -172,6 +175,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             imageDisp = itemView.findViewById(R.id.imageDisp);
             date_time=itemView.findViewById(R.id.date_time);
             play = itemView.findViewById(R.id.play);
+            andExoPlayerView = itemView.findViewById(R.id.andExoPlayerView);
+            cardAdv = itemView.findViewById(R.id.cardAdv);
+            cardAdv2 = itemView.findViewById(R.id.cardAdv2);
+            date_time2 = itemView.findViewById(R.id.date_time2);
 
         }
     }

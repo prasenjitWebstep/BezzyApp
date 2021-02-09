@@ -89,7 +89,7 @@ public class Notifi_Adapter extends RecyclerView.Adapter<Notifi_Adapter.Noyifica
         holder.cardClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dataholder.get(position).getPostType().equals("post")){
+                if(dataholder.get(position).getPostType().equals("post") && !dataholder.get(position).getPostId().equals("")){
                     Intent intent = new Intent(context, PostImageVideoViewActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("postId",dataholder.get(position).getPostId());
