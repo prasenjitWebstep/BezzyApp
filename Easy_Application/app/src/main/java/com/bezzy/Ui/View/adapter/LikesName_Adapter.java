@@ -51,7 +51,7 @@ public class LikesName_Adapter extends RecyclerView.Adapter<LikesName_Adapter.Li
                 view.setAlpha(0f);
 
                 ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
-                fadeAnim.setDuration(2500);
+                fadeAnim.setDuration(1500);
                 fadeAnim.start();
             }
         };

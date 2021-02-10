@@ -3,7 +3,10 @@ package com.bezzy.Ui.View.adapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +78,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 view.setAlpha(0f);
 
                 ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
-                fadeAnim.setDuration(2500);
+                fadeAnim.setDuration(1500);
                 fadeAnim.start();
             }
         };
@@ -89,7 +92,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         if(postItems.get(position).getType().equals("video")){
             holder.cardAdv.setVisibility(View.GONE);
-            startPlayingVideo(context,postItems.get(position).getImage(),holder.andExoPlayerView,R.string.app_name,postItems.get(position).getPostTime(),postItems.get(position).getPostDate(),holder.date_time2,holder.cardAdv2);
+            holder.cardAdv2.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .asBitmap()
+                    .load(postItems.get(position).getImage())
+                    .transition(GenericTransitionOptions.with(animationObject))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.imageDisp2);
+
+
+
+            holder.date_time2.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
         }else {
             holder.cardAdv2.setVisibility(View.GONE);
             holder.cardAdv.setVisibility(View.VISIBLE);
@@ -110,17 +123,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     intent.putExtra("postTag",postItems.get(position).getPostTag());
                     context.startActivity(intent);
                 }
-                else  {
-                    Intent intent = new Intent(context, VideoDisplayActivity.class);
-                    intent.putExtra("screen",screen);
-                    intent.putExtra("id", postItems.get(position).getId());
-                    intent.putExtra("postId", postItems.get(position).getPostId());
-                    intent.putExtra("type", postItems.get(position).getType());
-                    intent.putExtra("postTag",postItems.get(position).getPostTag());
-                    context.startActivity(intent);
 
-                }
+            }
+        });
 
+        holder.imageDisp2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, VideoDisplayActivity.class);
+                intent.putExtra("screen",screen);
+                intent.putExtra("id", postItems.get(position).getId());
+                intent.putExtra("postId", postItems.get(position).getPostId());
+                intent.putExtra("type", postItems.get(position).getType());
+                intent.putExtra("postTag",postItems.get(position).getPostTag());
+                context.startActivity(intent);
             }
         });
 
@@ -163,9 +179,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     class PostViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView imageDisp;
+        ImageView imageDisp,imageDisp2;
         TextView play,date_time,date_time2;
-        PlayerView andExoPlayerView;
         CardView cardAdv2,cardAdv;
 
         public PostViewHolder(@NonNull View itemView) {
@@ -175,7 +190,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             imageDisp = itemView.findViewById(R.id.imageDisp);
             date_time=itemView.findViewById(R.id.date_time);
             play = itemView.findViewById(R.id.play);
-            andExoPlayerView = itemView.findViewById(R.id.andExoPlayerView);
+            imageDisp2 = itemView.findViewById(R.id.imageDisp2);
             cardAdv = itemView.findViewById(R.id.cardAdv);
             cardAdv2 = itemView.findViewById(R.id.cardAdv2);
             date_time2 = itemView.findViewById(R.id.date_time2);

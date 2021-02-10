@@ -141,6 +141,32 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        Log.e("Called","GridCalled");
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
+        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        postRecyclerView.setLayoutManager(layoutManager);
+        postRecyclerView.showShimmerAdapter();
+
+        if(Utility.internet_check(getActivity())) {
+
+            progressBar.setVisibility(View.VISIBLE);
+
+            postRequest(APIs.BASE_URL+APIs.GETDATA);
+        }
+        else {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
+        if(Utility.internet_check(getActivity())) {
+
+            checkToken(APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(getActivity()));
+
+        }
+        else {
+            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
 
         return view;
 
@@ -181,31 +207,6 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Log.e("Called","GridCalled");
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
-        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-        postRecyclerView.setLayoutManager(layoutManager);
-        postRecyclerView.showShimmerAdapter();
-
-        if(Utility.internet_check(getActivity())) {
-
-            progressBar.setVisibility(View.VISIBLE);
-
-            postRequest(APIs.BASE_URL+APIs.GETDATA);
-        }
-        else {
-            progressBar.setVisibility(View.GONE);
-            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-        }
-
-        if(Utility.internet_check(getActivity())) {
-
-            checkToken(APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(getActivity()));
-
-        }
-        else {
-            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-        }
 
     }
 
@@ -265,7 +266,7 @@ public class ProfileFragment extends Fragment {
                                     view.setAlpha(0f);
 
                                     ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
-                                    fadeAnim.setDuration(2500);
+                                    fadeAnim.setDuration(1500);
                                     fadeAnim.start();
                                 }
                             };
@@ -363,11 +364,10 @@ public class ProfileFragment extends Fragment {
                             @Override
                             public void run() {
                                 postRecyclerView.hideShimmerAdapter();
-                                postRecyclerView.setAdapter((new PostAdapter(postList,getActivity(),"1")));
                             }
                         }, 5000);
 
-
+                        postRecyclerView.setAdapter((new PostAdapter(postList,getActivity(),"1")));
 
                     }else{
                         Utility.hideLoader(getActivity());

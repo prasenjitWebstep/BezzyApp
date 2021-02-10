@@ -330,7 +330,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
                         }
 
                         andExoPlayerView.setSource(object11.getString("url"));
-
+                        andExoPlayerView.setShowFullScreen(false);
                         totalLikes = String.valueOf(object11.getString("total_like"));
                         following_num.setText(object11.getString("total_like"));
                         following_numm.setText(object11.getString("total_comment"));

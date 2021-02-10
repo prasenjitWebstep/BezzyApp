@@ -202,7 +202,7 @@ public class Massage extends AppCompatActivity {
                 view.setAlpha(0f);
 
                 ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
-                fadeAnim.setDuration(2500);
+                fadeAnim.setDuration(1500);
                 fadeAnim.start();
             }
         };

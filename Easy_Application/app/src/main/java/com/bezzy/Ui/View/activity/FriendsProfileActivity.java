@@ -115,6 +115,24 @@ public class FriendsProfileActivity extends AppCompatActivity {
             }
         });
 
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+        postRecyclerView.setLayoutManager(layoutManager);
+        postRecyclerView.showShimmerAdapter();
+
+        if(Utility.internet_check(FriendsProfileActivity.this)) {
+
+            // progressDialog.show();
+            Utility.displayLoader(FriendsProfileActivity.this);
+
+            postRequest(APIs.BASE_URL+APIs.GETDATA);
+        }
+        else {
+
+            //progressDialog.show();
+            Utility.displayLoader(FriendsProfileActivity.this);
+            Toast.makeText(FriendsProfileActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -152,23 +170,6 @@ public class FriendsProfileActivity extends AppCompatActivity {
         super.onResume();
 
         checkToken();
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
-        postRecyclerView.setLayoutManager(layoutManager);
-        postRecyclerView.showShimmerAdapter();
-
-        if(Utility.internet_check(FriendsProfileActivity.this)) {
-
-            // progressDialog.show();
-            Utility.displayLoader(FriendsProfileActivity.this);
-
-            postRequest(APIs.BASE_URL+APIs.GETDATA);
-        }
-        else {
-
-            //progressDialog.show();
-            Utility.displayLoader(FriendsProfileActivity.this);
-            Toast.makeText(FriendsProfileActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
-        }
 
     }
 
@@ -200,7 +201,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
                                 view.setAlpha(0f);
 
                                 ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
-                                fadeAnim.setDuration(2500);
+                                fadeAnim.setDuration(1500);
                                 fadeAnim.start();
                             }
                         };

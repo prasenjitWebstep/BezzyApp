@@ -549,30 +549,36 @@ public class Video_fragment extends Fragment {
 //                        progressBar.setVisibility(View.GONE);
                         //dataholder.clear();
                         JSONArray array = object.getJSONArray("following_user_list");
-                        defaultMentionAdapter = new MentionArrayAdapter<>(getContext());
-                        idLst = new ArrayList<>();
-                        for(int i = 0 ;i<array.length();i++){
-                            JSONObject object1 = array.getJSONObject(i);
-                            Log.e("HIHIHIHI",object1.getString("name"));
-                            //ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"),object1.getString("user_is_flollowers"));
-                            //dataholder.add(ob1);
+                        try{
+                            defaultMentionAdapter = new MentionArrayAdapter<>(getContext());
+                            idLst = new ArrayList<>();
+                            for(int i = 0 ;i<array.length();i++){
+                                JSONObject object1 = array.getJSONObject(i);
+                                // Log.e("HIHIHIHI",object1.getString("name"));
+                                //ob1 = new Friendsnoti_item(object1.getString("name"),object1.getString("user_bio"),object1.getString("image"),object1.getString("user_id"),object1.getString("user_is_flollowers"));
+                                //dataholder.add(ob1);
 //                            strings = new ArrayList<String>();
 //                            strings.add(object1.getString("name"));
 
-                            taglist.add(new TagModel(object1.getString("name"),object1.getString("following_user_id")));
-                            MENTION1_USERNAME = object1.getString("name");
-                            String id = object1.getString("id");
-                            defaultMentionAdapter.add(
-                                    new Mention(MENTION1_USERNAME)
-                            );
+                                taglist.add(new TagModel(object1.getString("name"),object1.getString("following_user_id")));
+                                MENTION1_USERNAME = object1.getString("name");
+                                String id = object1.getString("id");
+                                defaultMentionAdapter.add(
+                                        new Mention(MENTION1_USERNAME)
+                                );
+                            }
+
+                            autoCompleteTextView.setMentionAdapter(defaultMentionAdapter);
+                        }catch (Exception e){
+                            Log.e("Exception",e.toString());
                         }
 
-                        autoCompleteTextView.setMentionAdapter(defaultMentionAdapter);
+                        /*autoCompleteTextView.setMentionAdapter(defaultMentionAdapter);
                         for(TagModel model : taglist){
                             Log.e("TAGLIST",model.getName()+"/"+model.getId());
                         }
                         int current = autoCompleteTextView.getSelectionStart();
-                        Log.e("WE ARE NOTHING",String.valueOf(current));
+                        Log.e("WE ARE NOTHING",String.valueOf(current));*/
 
                     }
                 } catch (JSONException e) {
