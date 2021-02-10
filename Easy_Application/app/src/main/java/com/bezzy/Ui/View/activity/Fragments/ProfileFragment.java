@@ -158,15 +158,6 @@ public class ProfileFragment extends Fragment {
             Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
         }
 
-        if(Utility.internet_check(getActivity())) {
-
-            checkToken(APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(getActivity()));
-
-        }
-        else {
-            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-        }
-
 
         return view;
 
@@ -207,6 +198,14 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        if(Utility.internet_check(getActivity())) {
+
+            checkToken(APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(getActivity()));
+
+        }
+        else {
+            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+        }
 
     }
 
