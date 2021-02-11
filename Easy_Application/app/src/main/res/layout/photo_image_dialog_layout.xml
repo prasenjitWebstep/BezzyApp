@@ -40,7 +40,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight=".5">
 
                     <com.google.android.exoplayer2.ui.PlayerView
                         android:id="@+id/andExoPlayerView"
@@ -71,22 +71,22 @@
                     android:id="@+id/servicesText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="2"
+                    android:maxLines="5"
                     android:textColor="#fff"
                     android:layout_above="@id/user_descrecyl"
                     android:textSize="18sp"
                     android:padding="5dp"
                     android:fontFamily="sans-serif-thin"
                     android:textStyle="bold"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"/>
 
                 <LinearLayout
                     android:id="@+id/user_descrecyl"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal"
-                    android:layout_marginTop="15dp"
-                    android:padding="5dp"
                     android:layout_alignParentBottom="true">
 
                     <RelativeLayout
