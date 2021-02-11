@@ -135,10 +135,10 @@
                             android:id="@+id/following_part"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
-                            android:layout_centerVertical="true">
+                            android:layout_centerVertical="true"
+                            android:layout_toStartOf="@+id/chat_part">
 
                             <TextView
                                 android:id="@+id/following_num"
@@ -159,7 +159,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/ic_heart"
+                                android:src="@drawable/ic_favorite"
                                 app:tint="@color/white" />
 
                             <ImageView
@@ -179,7 +179,8 @@
                             android:layout_toRightOf="@id/following_part"
                             android:layout_marginLeft="5dp"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="10dp"
+                            android:layout_toStartOf="@+id/delete_image">
                             <TextView
                                 android:id="@+id/following_numm"
                                 android:layout_width="20dp"
@@ -205,17 +206,15 @@
                                 />
 
                         </RelativeLayout>
+
                         <ImageView
                             android:id="@+id/delete_image"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
                             android:src="@drawable/ic_delete"
                             app:tint="@color/white"
-                            android:layout_marginRight="10dp"
-                            android:visibility="gone"
-                            />
+                            android:layout_centerVertical="true"/>
 
 
                     </RelativeLayout>
