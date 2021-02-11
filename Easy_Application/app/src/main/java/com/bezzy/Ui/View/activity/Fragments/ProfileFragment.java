@@ -301,7 +301,7 @@ public class ProfileFragment extends Fragment {
                 try {
 
                     final JSONObject object = new JSONObject(response);
-                    Log.e("Response",response);
+                    //Log.e("Response",response);
                     String resp = object.getString("resp");
                     if(resp.equals("true")){
 
