@@ -303,7 +303,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
                                 postRecyclerView.hideShimmerAdapter();
                                 postRecyclerView.setAdapter((new PostAdapter(postList,FriendsProfileActivity.this,"2")));
                             }
-                        }, 5000);
+                        }, 3000);
                     }else{
                         Utility.hideLoader(FriendsProfileActivity.this);
                     }

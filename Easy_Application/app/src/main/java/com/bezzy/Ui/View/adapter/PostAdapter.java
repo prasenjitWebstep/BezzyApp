@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,9 +84,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         };
 
-        Glide.with(context)
+
+        String image = postItems.get(position).getImage().replace("\\", "");
+        /*Log.e("Image",image);*/
+
+        Glide.with(holder.itemView.getContext())
                 .asBitmap()
-                .load(postItems.get(position).getImage())
+                .load(image)
                 .transition(GenericTransitionOptions.with(animationObject))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageDisp);
