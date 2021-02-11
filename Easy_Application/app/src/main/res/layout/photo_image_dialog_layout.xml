@@ -92,7 +92,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".6">
+                        android:layout_weight=".7">
                         <ImageView
                             android:id="@+id/foroward_btn"
                             android:src="@drawable/share"
@@ -160,6 +160,7 @@
                             android:layout_weight="1"
                             android:textStyle="normal"
                             android:textColor="#fff"
+                            android:layout_marginRight="5dp"
                             android:layout_centerVertical="true"
                             android:fontFamily="sans-serif-medium"
                             android:layout_toRightOf="@id/chat_btn"/>
