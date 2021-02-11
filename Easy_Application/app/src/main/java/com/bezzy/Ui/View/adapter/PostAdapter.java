@@ -84,6 +84,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         };
 
         Glide.with(context)
+                .asBitmap()
                 .load(postItems.get(position).getImage())
                 .transition(GenericTransitionOptions.with(animationObject))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -91,21 +92,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
 
         if(postItems.get(position).getType().equals("video")){
-            holder.cardAdv.setVisibility(View.GONE);
-            holder.cardAdv2.setVisibility(View.VISIBLE);
-            Glide.with(context)
-                    .asBitmap()
-                    .load(postItems.get(position).getImage())
-                    .transition(GenericTransitionOptions.with(animationObject))
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.imageDisp2);
-
-
-
-            holder.date_time2.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
+            holder.play.setVisibility(View.VISIBLE);
+            holder.date_time.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
         }else {
-            holder.cardAdv2.setVisibility(View.GONE);
-            holder.cardAdv.setVisibility(View.VISIBLE);
+            holder.play.setVisibility(View.GONE);
             holder.date_time.setText(postItems.get(position).getPostTime() + " " + postItems.get(position).getPostDate());
         }
 
@@ -122,54 +112,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     intent.putExtra("type",postItems.get(position).getType());
                     intent.putExtra("postTag",postItems.get(position).getPostTag());
                     context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, VideoDisplayActivity.class);
+                    intent.putExtra("screen",screen);
+                    intent.putExtra("id", postItems.get(position).getId());
+                    intent.putExtra("postId", postItems.get(position).getPostId());
+                    intent.putExtra("type", postItems.get(position).getType());
+                    intent.putExtra("postTag",postItems.get(position).getPostTag());
+                    context.startActivity(intent);
                 }
 
             }
         });
-
-        holder.imageDisp2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, VideoDisplayActivity.class);
-                intent.putExtra("screen",screen);
-                intent.putExtra("id", postItems.get(position).getId());
-                intent.putExtra("postId", postItems.get(position).getPostId());
-                intent.putExtra("type", postItems.get(position).getType());
-                intent.putExtra("postTag",postItems.get(position).getPostTag());
-                context.startActivity(intent);
-            }
-        });
-
-
-
-    }
-
-    private static void startPlayingVideo(Context ctx, String CONTENT_URL, PlayerView playerView, int appNameRes, String postTime, String postDate, TextView date_time, CardView cardAdv2) {
-
-        PlayerView pvMain = playerView;
-
-        //BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        //TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        //TrackSelector trackSelectorDef = new DefaultTrackSelector(videoTrackSelectionFactory);
-        TrackSelector trackSelectorDef = new DefaultTrackSelector();
-
-        DefaultLoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(32*1024, 64*1024, 1024, 1024).createDefaultLoadControl();
-
-        SimpleExoPlayer absPlayerInternal = ExoPlayerFactory.newSimpleInstance(ctx, trackSelectorDef);
-
-        String userAgent = Util.getUserAgent(ctx, ctx.getString(appNameRes));
-
-        DefaultDataSourceFactory defdataSourceFactory = new DefaultDataSourceFactory(ctx,userAgent);
-        Uri uriOfContentUrl = Uri.parse(CONTENT_URL);
-        MediaSource mediaSource = new ProgressiveMediaSource.Factory(defdataSourceFactory).createMediaSource(uriOfContentUrl);
-
-        absPlayerInternal.prepare(mediaSource);
-        absPlayerInternal.setVolume(0f);
-        absPlayerInternal.setPlayWhenReady(true);
-        absPlayerInternal.setRepeatMode(Player.REPEAT_MODE_ALL);
-        pvMain.setPlayer(absPlayerInternal);
-        cardAdv2.setVisibility(View.VISIBLE);
-        date_time.setText(postTime + " " + postDate);
     }
 
     @Override
@@ -179,9 +133,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     class PostViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView imageDisp,imageDisp2;
-        TextView play,date_time,date_time2;
-        CardView cardAdv2,cardAdv;
+        ImageView imageDisp;
+        TextView play,date_time;
 
         public PostViewHolder(@NonNull View itemView) {
 
@@ -190,11 +143,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             imageDisp = itemView.findViewById(R.id.imageDisp);
             date_time=itemView.findViewById(R.id.date_time);
             play = itemView.findViewById(R.id.play);
-            imageDisp2 = itemView.findViewById(R.id.imageDisp2);
-            cardAdv = itemView.findViewById(R.id.cardAdv);
-            cardAdv2 = itemView.findViewById(R.id.cardAdv2);
-            date_time2 = itemView.findViewById(R.id.date_time2);
-
         }
     }
 }

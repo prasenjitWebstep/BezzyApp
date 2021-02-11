@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,6 +78,7 @@ public class ProfileFragment extends Fragment {
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
     ProgressBar progressBar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
 
@@ -105,6 +107,52 @@ public class ProfileFragment extends Fragment {
        /* progressDialog = new SpotsDialog(getActivity());
         progressDialog.setMessage("Logging Out Please Wait....");
         progressDialog.setCancelable(false);*/
+
+        mSwipeRefreshLayout = view.findViewById(R.id.containers);
+
+
+        postRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(final RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(-1)) {
+
+                    mSwipeRefreshLayout.setEnabled(true);
+
+
+                }else{
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
+
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                mSwipeRefreshLayout.setRefreshing(false);
+
+                postList.clear();
+
+                if(Utility.internet_check(getActivity())) {
+
+                    StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
+                    layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+                    postRecyclerView.setLayoutManager(layoutManager);
+                    postRecyclerView.showShimmerAdapter();
+
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    postRequest(APIs.BASE_URL+APIs.GETDATA);
+                }
+                else {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
 
@@ -348,6 +396,7 @@ public class ProfileFragment extends Fragment {
                         JSONArray array = object.getJSONArray("user_all_posts");
                         JSONArray array1 = array.getJSONArray(array.length()-1);
                         /*Log.e("Array",array1.toString());*/
+                        postList.clear();
                         for(int i=0;i<array1.length();i++){
                             JSONObject object1 = array1.getJSONObject(i);
                             postList.add(new PostModel(object1.getString("post_id"),object1.getString("post_url"),
@@ -363,10 +412,9 @@ public class ProfileFragment extends Fragment {
                             @Override
                             public void run() {
                                 postRecyclerView.hideShimmerAdapter();
+                                postRecyclerView.setAdapter((new PostAdapter(postList,getActivity(),"1")));
                             }
                         }, 5000);
-
-                        postRecyclerView.setAdapter((new PostAdapter(postList,getActivity(),"1")));
 
                     }else{
                         Utility.hideLoader(getActivity());

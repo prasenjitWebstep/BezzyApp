@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -68,6 +70,7 @@ public class SearchFragment extends Fragment {
     TextInputEditText searchName;
     CardView cardSearch;
     ProgressBar progressBar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,6 +84,8 @@ public class SearchFragment extends Fragment {
         recyclerViewSearchResult = view.findViewById(R.id.recyclerViewSearchResult);
         progressBar = view.findViewById(R.id.progressBar);
         search = "null";
+
+        dataholder = new ArrayList<>();
 
         /*progressDialog = new SpotsDialog(getActivity());
         progressDialog.setCancelable(false);
@@ -100,6 +105,68 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        mSwipeRefreshLayout = view.findViewById(R.id.containers);
+
+
+        recyclerViewSearchResult.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(final RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(-1)) {
+
+                    mSwipeRefreshLayout.setEnabled(true);
+
+
+                }else{
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
+
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                mSwipeRefreshLayout.setRefreshing(false);
+
+                GridLayoutManager linearLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),3);
+                recyclerViewSearchResult.setLayoutManager(linearLayoutManager);
+
+                dataholder.clear();
+
+                if(Utility.internet_check(getActivity())) {
+
+                    // progressDialog.show();
+
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    Log.e("Result","1");
+
+                    registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
+
+                }
+                else {
+
+                    //progressDialog.dismiss();
+                    progressBar.setVisibility(View.GONE);
+
+                    Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                }
+
+                if(Utility.internet_check(getActivity())) {
+
+                    checkToken(APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(getActivity()));
+
+                }
+                else {
+                    Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
 
 
         return view;
@@ -113,6 +180,25 @@ public class SearchFragment extends Fragment {
         recyclerViewSearchResult.setLayoutManager(linearLayoutManager);
 
         dataholder = new ArrayList<>();
+
+        if(Utility.internet_check(getActivity())) {
+
+            // progressDialog.show();
+
+            progressBar.setVisibility(View.VISIBLE);
+
+            Log.e("Result","1");
+
+            registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
+
+        }
+        else {
+
+            //progressDialog.dismiss();
+            progressBar.setVisibility(View.GONE);
+
+            Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
+        }
 
         if(Utility.internet_check(getActivity())) {
 
@@ -170,24 +256,6 @@ public class SearchFragment extends Fragment {
 
                         if(Utility.getUserToken(getActivity()).equals(object.getString("remember_token"))){
 
-                            if(Utility.internet_check(getActivity())) {
-
-                                // progressDialog.show();
-
-                                progressBar.setVisibility(View.VISIBLE);
-
-                                Log.e("Result","1");
-
-                                registerUserResult(APIs.BASE_URL+APIs.REGISTERUSERLIST);
-
-                            }
-                            else {
-
-                                //progressDialog.dismiss();
-                                progressBar.setVisibility(View.GONE);
-
-                                Toast.makeText(getActivity(),"No Network!",Toast.LENGTH_SHORT).show();
-                            }
 
                         }else{
                             Utility.logoutFunction(getActivity());

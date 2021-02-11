@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
@@ -62,6 +63,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
     String friendsId;
     ImageView imageView;
     RelativeLayout layoutFollowing,layoutFollower;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
 
@@ -90,6 +92,53 @@ public class FriendsProfileActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);*/
 
         friendsId = getIntent().getExtras().getString("friendId");
+
+        mSwipeRefreshLayout = findViewById(R.id.containers);
+
+
+        postRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(final RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(-1)) {
+
+                    mSwipeRefreshLayout.setEnabled(true);
+
+
+                }else{
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
+
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                mSwipeRefreshLayout.setRefreshing(false);
+
+                postList.clear();
+
+                if(Utility.internet_check(FriendsProfileActivity.this)) {
+
+                    StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL);
+                    layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+                    postRecyclerView.setLayoutManager(layoutManager);
+                    postRecyclerView.showShimmerAdapter();
+                    postList.clear();
+
+                    Utility.displayLoader(FriendsProfileActivity.this);
+
+                    postRequest(APIs.BASE_URL+APIs.GETDATA);
+                }
+                else {
+                    Utility.hideLoader(FriendsProfileActivity.this);
+                    Toast.makeText(FriendsProfileActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
         layoutFollowing.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +178,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
         else {
 
             //progressDialog.show();
-            Utility.displayLoader(FriendsProfileActivity.this);
+            Utility.hideLoader(FriendsProfileActivity.this);
             Toast.makeText(FriendsProfileActivity.this,"No Network!",Toast.LENGTH_SHORT).show();
         }
 
@@ -225,6 +274,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
                         JSONArray array = object.getJSONArray("user_all_posts");
                         JSONArray array1 = array.getJSONArray(array.length()-1);
                         /*Log.e("Array",array1.toString());*/
+                        postList.clear();
                         for(int i=0;i<array1.length();i++){
                             JSONObject object1 = array1.getJSONObject(i);
                             postList.add(new PostModel(object1.getString("post_id"),
@@ -254,9 +304,12 @@ public class FriendsProfileActivity extends AppCompatActivity {
                                 postRecyclerView.setAdapter((new PostAdapter(postList,FriendsProfileActivity.this,"2")));
                             }
                         }, 5000);
+                    }else{
+                        Utility.hideLoader(FriendsProfileActivity.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utility.hideLoader(FriendsProfileActivity.this);
                     Log.e("Exception",e.toString());
                 }
 
