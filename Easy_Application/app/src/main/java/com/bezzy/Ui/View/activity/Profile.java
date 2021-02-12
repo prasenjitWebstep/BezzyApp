@@ -205,9 +205,9 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onSuccess(AppUpdateInfo result) {
                 Log.e("Result",result.toString());
-                Log.e("UPDATE",String.valueOf(result.updateAvailability())+" "+String.valueOf(result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)));
+                Log.e("UPDATE",String.valueOf(result.updateAvailability()));
                 Log.e("UPDATEVALUE", String.valueOf(UpdateAvailability.UPDATE_AVAILABLE));
-                if(result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)){
+                if(result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE){
                     try {
                         Toast.makeText(Profile.this,"Update Available",Toast.LENGTH_SHORT).show();
                         appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.IMMEDIATE,Profile.this,REQUEST_CODE);
