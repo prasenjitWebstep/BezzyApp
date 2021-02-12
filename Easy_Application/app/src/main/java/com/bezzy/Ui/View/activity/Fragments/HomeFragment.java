@@ -2,8 +2,10 @@ package com.bezzy.Ui.View.activity.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,6 +42,13 @@ import com.bezzy.Ui.View.model.Friendsnoti_item;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.OnSuccessListener;
+import com.google.android.play.core.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +58,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
+import static android.app.Activity.RESULT_OK;
 
 
 public class HomeFragment extends Fragment {

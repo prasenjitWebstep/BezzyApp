@@ -65,13 +65,14 @@ public class Profile extends AppCompatActivity {
     Boolean isInBackground;
     private int REQUEST_CODE = 101;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_scrns);
 
 
-        appUpdate();
+
 
         //SessionManager.getInstance(getApplicationContext()).userLogout();
         BottomNavigationView btmnav = findViewById(R.id.bottomnav);
@@ -119,36 +120,7 @@ public class Profile extends AppCompatActivity {
 
     }
 
-    public void appUpdate(){
-        final AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(Profile.this);
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-        appUpdateInfoTask.addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
-            @Override
-            public void onSuccess(AppUpdateInfo result) {
-                if(result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)){
-                    try {
-                        appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.FLEXIBLE,Profile.this,REQUEST_CODE);
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                        Log.e("UPDATEEXCEPTION",e.toString());
-                    }
-                }
-            }
-        });
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE){
-            Toast.makeText(Profile.this,"Start Download",Toast.LENGTH_SHORT).show();
-
-            if(requestCode != RESULT_OK){
-                Log.e("TAG","Unable to Update "+resultCode);
-            }
-
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -224,6 +196,43 @@ public class Profile extends AppCompatActivity {
             return true;
         }
     };
+
+    public void appUpdate(){
+        Log.e("FunctionCalled","1");
+        final AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(Profile.this);
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+        appUpdateInfoTask.addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+                Log.e("Result",result.toString());
+                Log.e("UPDATE",String.valueOf(result.updateAvailability())+" "+String.valueOf(result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)));
+                Log.e("UPDATEVALUE", String.valueOf(UpdateAvailability.UPDATE_AVAILABLE));
+                if(result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)){
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.IMMEDIATE,Profile.this,REQUEST_CODE);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                        Log.e("UPDATEEXCEPTION",e.toString());
+                    }
+                }else{
+                    Toast.makeText(Profile.this,"No Update Available",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            Toast.makeText(Profile.this,"Start Download",Toast.LENGTH_SHORT).show();
+
+            if(requestCode != RESULT_OK){
+                Log.e("TAG","Unable to Update "+resultCode);
+            }
+
+        }
+    }
 
 
 
