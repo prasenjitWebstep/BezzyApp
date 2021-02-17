@@ -3,6 +3,7 @@ package com.bezzy.Ui.View.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
@@ -24,6 +26,11 @@ import com.android.volley.toolbox.Volley;
 import com.bezzy.Ui.View.utils.APIs;
 import com.bezzy.Ui.View.utils.Utility;
 import com.bezzy_application.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.potyvideo.library.AndExoPlayerView;
 
 import org.json.JSONException;
@@ -196,6 +203,8 @@ public class VideoDisplayActivity extends AppCompatActivity {
         }
     }
 
+
+
     private void checkToken() {
         StringRequest request = new StringRequest(Request.Method.GET, APIs.BASE_URL+APIs.MEMBER_TOKEN+"/"+Utility.getUserId(VideoDisplayActivity.this), new Response.Listener<String>() {
             @Override
@@ -305,7 +314,7 @@ public class VideoDisplayActivity extends AppCompatActivity {
     }
 
 
-    private void postRequest(String url) {
+    private void postRequest(final String url) {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

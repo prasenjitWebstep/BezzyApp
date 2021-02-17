@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.bezzy.Ui.View.activity.DisplaySharePosts">
+
+    <RelativeLayout
+        android:id="@+id/back_bezy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/rounded_button">
+
+        <TextView
+            android:id="@+id/go_bezzy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/back_image"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/gradstart"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/back_image"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_baseline_keyboard_backspace_24"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="-55dp"
+            android:src="@drawable/bezzy_logo"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lightgrey">
+
+        <RelativeLayout
+            android:id="@+id/user_part"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                app:civ_border_width="0.5dp"
+                app:civ_border_color="#5ADDED"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/add_img"/>
+
+            <LinearLayout
+                android:id="@+id/text_part"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/img_logo"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:padding="3dp"/>
+
+                <TextView
+                    android:id="@+id/post_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 New Post"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:textSize="11sp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/add_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:src="@drawable/notification"
+                android:visibility="gone"
+                app:tint="#A8A4A4" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/user_part">
+
+            <TextView
+                android:id="@+id/descrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginLeft="10dp"
+                android:padding="3dp"
+                android:layout_marginBottom="10dp"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:textColor="@color/black"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/videoDisp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="5dp"
+                android:elevation="10dp"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="@color/lightgrey"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.exoplayer2.ui.PlayerView
+                        android:id="@+id/andExoPlayerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:andexo_aspect_ratio="aspect_match"
+                        app:andexo_full_screen="true"
+                        app:andexo_play_when_ready="true"
+                        app:andexo_show_controller="true"
+                        app:andexo_resize_mode="Fill"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardHolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="5dp"
+                android:elevation="10dp"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="@color/lightgrey"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imageShow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/dsz"
+                        android:background="@color/white"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerImageShow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:visibility="gone"/>
+
+            <View
+                android:id="@+id/viewnb"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dfdfdf"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

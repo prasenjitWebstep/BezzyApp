@@ -55,6 +55,10 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.potyvideo.library.AndExoPlayerView;
 import com.rishabhharit.roundedimageview.RoundedImageView;
 
@@ -272,6 +276,13 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             }
         });
 
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareapp(APIs.BASE_URL+APIs.FRIENDSBLOCKDETAILS+"/"+friendsModelList.get(position).getPost_id()+"/"+Utility.getUserId(context));
+            }
+        });
+
         holder.following_num.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,6 +301,33 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
                 context.startActivity(intent);
             }
         });*/
+
+    }
+
+    private void shareapp(String shareUrl){
+
+        String sharelinktext;
+
+        try {
+            final Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+
+            sharelinktext = "http://bezzyapp.page.link/?"+
+                    "link="+shareUrl+
+                    "&apn="+ context.getPackageName();
+
+            Log.e("ShareLink",sharelinktext);
+
+
+            sharingIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Hi"+"\n"+"Check this from link : "+" "+
+                            sharelinktext);
+            context.startActivity(Intent.createChooser(sharingIntent, context.getResources().getString(R.string.app_name)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 
@@ -354,7 +392,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
 
         CircleImageView img_logo;
         TextView title_text,post_status,following_num,following_numm,descrip;
-        ImageView favBtn,favBtnfilled,chat_btn,imageShow;
+        ImageView favBtn,favBtnfilled,chat_btn,imageShow,share;
         RecyclerView recyclerImageShow;
         CardView videoDisp;
         CardView cardHolder;
@@ -376,6 +414,7 @@ public class FriendsPostAdapter extends RecyclerView.Adapter<FriendsPostAdapter.
             imageDisp = itemView.findViewById(R.id.imageDisp);
             videoDisp = itemView.findViewById(R.id.videoDisp);
             cardHolder = itemView.findViewById(R.id.cardHolder);
+            share = itemView.findViewById(R.id.share);
         }
     }
 }
